@@ -20,20 +20,28 @@ function localReg(newUser, newEmail, newPassword) {
     var collection = db.collection("user");
     collection.findOne({email: newEmail}, function(err, result) {
         if (null != result) {
-          console.log("USERNAME ALREADY EXIST:", result.email);
+          console.log("EMAIL ALREADY EXIST:", result.email);
 
-          deferred.resolve(false);
+          deferred.resolve(0);
         } else {
-          var saltString = bcrypt.genSaltSync(10);
-          var myobj = { user: newUser, email: newEmail, password: bcrypt.hashSync(newPassword,saltString)};
- 
-          console.log("CREATING USER:", newUser);
+          collection.findOne({user: newUser}, function(err, result) {
+            if (null != result) {
+              console.log("USERNAME ALREADY EXIST:", result.user);
 
-          db.collection("user").insertOne(myobj, function(err, res) {
-            if (err) throw err;
-            console.log("USER CREATED");
-            db.close();
-            deferred.resolve(myobj);
+              deferred.resolve(1);
+            } else {
+              var saltString = bcrypt.genSaltSync(10);
+              var myobj = { user: newUser, email: newEmail, password: bcrypt.hashSync(newPassword,saltString)};
+ 
+              console.log("CREATING USER:", newUser);
+
+              db.collection("user").insertOne(myobj, function(err, res) {
+                if (err) throw err;
+                console.log("USER CREATED");
+                db.close();
+                deferred.resolve(myobj);
+              });
+            }
           });
         }
      });
@@ -50,9 +58,8 @@ function localAuth(login, pwd) {
     var collection = db.collection("user");
     collection.findOne({email: login}, function(err, result) {
         if (err) throw err;
-        console.log(result.user);
-        if (undefined == result.user) {
-          console.log("USERNAME NOT FOUND:", result.user);
+        if (null == result) {
+          console.log("USERNAME NOT FOUND:", login);
 
           deferred.resolve(false);
         } else {
@@ -100,6 +107,7 @@ passport.use('local-signin', new LocalStrategy(
       if (!user) {
         console.log("COULD NOT LOG IN");
         req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
+        req.session.errorCause = 'badLog';
         done(null, user);
       }
     })
@@ -116,14 +124,21 @@ passport.use('local-signup', new LocalStrategy(
   function(req, username,  password, done) {
     localReg(username, req.body.newEmail, password)
     .then(function (user) {
-      if (user) {
+      if (user == 0) {
+        console.log("COULD NOT REGISTER USER");
+        req.session.error = 'That email is already in use, please try a different one.'; //inform user could not log them in
+        req.session.errorCause = 'email';
+        done(null, false);
+      }
+      else if (user == 1) {
+        console.log("COULD NOT REGISTER EMAIL");
+        req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
+        req.session.errorCause = 'user';
+        done(null, false);
+      }
+      else if (user) {
         console.log("REGISTERED: " + user.user);
         req.session.success = 'You are successfully registered and logged in ' + user.user + '!';
-        done(null, user);
-      }
-      if (!user) {
-        console.log("COULD NOT REGISTER");
-        req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
         done(null, user);
       }
     })
@@ -151,11 +166,13 @@ router.get('/recherche', function(req, res, next) {
   }
 });
 
+
 router.get('/inscription', function(req, res, next) {
   if(req.user){
-    res.render('inscription', {user: 'log' });
+    res.redirect('/');
   } else{
-    res.render('inscription', {user: '' });
+    res.render('inscription', {status: req.session.error || [], errorCause: req.session.errorCause });
+    req.session.destroy();
   }
 });
 

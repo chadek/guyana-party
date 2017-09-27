@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="/images/favicon.ico"/>
     <link rel="stylesheet" href="/stylesheets/foundation.css" />
     <!-- Font Foundation -->
-    <link href="foundation-icons/foundation-icons.css" rel="stylesheet">
+    <link href="/foundation-icons/foundation-icons.css" rel="stylesheet">
     
     <!-- Style pour le OR -->
     <link rel="stylesheet" type="text/css" href="/stylesheets/OR.css">
@@ -16,11 +16,7 @@
   <body>
     
     <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-      <% if(user == 'log') { %> 
-        <%- include partials/menu_log.ejs %> 
-      <% } else { %>
         <%- include partials/menu.ejs %>
-      <% } %>
     </div>    
 
     <div class="off-canvas-content" data-off-canvas-content>
@@ -48,7 +44,7 @@
           </div>
 
           <form action="/connection" method="post">
-            <div class="form-icons" id="connection" style="display: block">
+            <div class="form-icons" id="connection" style="display: <% if(errorCause == 'user' || errorCause == 'email') { %> none <% } else { %> block <% }%>"">
 
               <div class="input-group">
                 <span class="input-group-label">
@@ -64,20 +60,23 @@
                 <input class="input-group-field" type="password" placeholder="Password" name="pwd">
               </div>
             <button class="button expanded">Sign Up</button>
+            <p>
+              <%= status %>
+            </p>
             </div>
           </form>
 
           <form action="/inscription/ajouter" method="post">
-            <div class="form-icons" id="inscription" style="display: none">
+            <div class="form-icons" id="inscription" style="display: <% if(errorCause == 'user' || errorCause == 'email') { %> block <% } else { %> none <% }%>">
               <div class="input-group">
-                <span class="input-group-label">
+                <span class="input-group-label" <% if(errorCause == 'user') { %> style="color:red" <% } %> >
                   <i class="fi-torsos-male-female size-36"></i>
                 </span>
                 <input class="input-group-field" type="text" placeholder="Nom du compte" name="newUser">
               </div>
 
               <div class="input-group">
-                <span class="input-group-label">
+                <span class="input-group-label" <% if(errorCause == 'email') { %> style="color:red" <% } %>>
                   <i class="fi-mail size-36"></i>
                 </span>
                 <input class="input-group-field" type="text" placeholder="Email, identifiant" name="newEmail">
@@ -90,6 +89,9 @@
                 <input class="input-group-field" type="password" placeholder="Password" name="newPassword">
               </div>
               <button class="button expanded">Sign In</button>
+              <p>
+              <%= status %>
+              </p>
             </div>
 
             
@@ -116,9 +118,9 @@
     </div>
 
 
-    <script src="js/vendor/jquery.min.js"></script>
+    <script src="/js/vendor/jquery.min.js"></script>
     <!-- <script src="js/vendor/what-input.min.js"></script> -->
-    <script src="js/foundation.min.js"></script>
+    <script src="/js/foundation.min.js"></script>
     <script>
       $(document).foundation();
     </script>
