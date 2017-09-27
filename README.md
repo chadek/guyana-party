@@ -5,7 +5,7 @@ Site d'évènement en Guyane
 Prérequis:
   * Installer node js
   * Installer le Node Packaged Module (npm)
-  * Télécharger toute les dépendances à l'aide de npm (npm install)
+  * Télécharger toute les dépendances à l'aide de npm (lancer npm install à l'emplacement du fichier package.json)
   * Installer MongoDB et démarrer le service (sudo service mongod start)
   
   Pour démarrer l'application en mode développement exécuter l'instruction suivante à partir du dossier principal: DEBUG=guyana-party:* npm start
