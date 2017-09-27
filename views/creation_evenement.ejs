@@ -1,0 +1,241 @@
+<!doctype html>
+<html class="no-js" lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>One more event</title>
+    <!-- Foundation -->
+    <link rel="stylesheet" href="/stylesheets/foundation.css" />
+
+
+    <!-- Font Foundation -->
+    <link href="foundation-icons/foundation-icons.css" rel="stylesheet">
+    <!-- JQuery -->
+    <!-- <script src="js/vendor/jquery.min.js"></script> -->
+    <script src="js/vendor/jquery.js"></script>
+
+    <!-- Date Picker -->
+    <script src="js/foundation-datepicker.js"></script>
+    <script src="js/locales/foundation-datepicker.fr.js"></script>
+    <link rel="stylesheet" href="/stylesheets/foundation-datepicker.min.css">
+
+    <!-- Horloge Picker -->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/jquery-clockpicker.min.css">
+    <!-- MAPS -->
+    <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+    <script>
+      function init_focus(){
+        document.recherche_evenenement.input_recherche.focus();
+      }
+    </script>
+    <script>
+      function init_maps() {
+        // OpenStreetMap
+        projmerc = new OpenLayers.Projection("EPSG:900913");
+        proj4326 = new OpenLayers.Projection("EPSG:4326");
+        map = new OpenLayers.Map("basicMap",
+            {
+            projection: projmerc,
+            displayProjection: proj4326,
+            controls:
+                [
+                new OpenLayers.Control.MousePosition(),
+                new OpenLayers.Control.KeyboardDefaults(),
+                new OpenLayers.Control.Navigation(),
+                ],
+            }
+        );
+        var maplayer = new OpenLayers.Layer.OSM("OpenStreetMap");
+        map.addLayer(maplayer);
+        // 4.93291,-52.30087
+        var mapcenter = new OpenLayers.LonLat(-52.30087, 4.93291);
+        map.setCenter(mapcenter.transform(proj4326, projmerc), 14);
+        var mappanel = new OpenLayers.Control.Panel();
+        map.addControl(mappanel);
+      }
+    </script>
+    <style type="text/css">
+      .olControlPanel{
+          display: block;
+          left: 50%;
+          top: 50%;
+
+          width: 100px;
+          height: 100px;
+          /* CAUTION: you will have to adjust the negative margins left and top to background image width and height */
+          margin: -90px 0px 0px -52px;
+          background: url("foundation-icons/svgs/fi-marker.svg");
+
+
+        }
+      #basicMap{
+        height:300px;
+      }
+
+    </style>
+
+
+  </head>
+  <body onload="init_maps();">
+
+    <%- include partials/menu.ejs %>
+    
+    <div class="off-canvas-content" data-off-canvas-content>
+    <!-- Contenu de la page -->
+      <div class="title-bar">
+        <div class="title-bar-left">
+          <button class="menu-icon" type="button" data-open="offCanvas"></button>
+          <span class="title-bar-title">Menu</span>
+        </div>
+        <div class="title-bar-title" style="position: absolute; left: 44%;">
+          <span class="title-bar-title">Et un évènement de plus!</span>
+        </div>
+        <!-- <div class="title-bar-right">
+          <span class="title-bar-title">Se connecter</span>
+        </div> -->
+      </div>
+
+      <div class="row">
+
+        <div class="large-6 columns large-centered">
+          <form>
+            <div class="row">
+              <div class="small-12 small-centered columns" style="text-align: center">
+                <h2>Créez votre évènement !</h2>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="large-12 columns input-group">
+                <span class="input-group-label">
+                  <i class="fi-clipboard-pencil size-36"></i>
+                </span>
+                <input class="input-group-field" type="text" placeholder="Nom d'évènement">
+              </div>
+            </div>
+
+            <!-- DATETIME FLYER-->
+            <div class="row">
+              <div class="large-5 small-5 columns">
+                <div class="input-group">
+                  <span class="input-group-label">
+                    <i class="fi-calendar size-36"></i>
+                  </span>
+                  <input type="text" class="input-group-field" value="16-06-2017" id="dp1">
+                </div>
+              </div>
+              <div class="large-4 small-4 columns">
+                <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
+                  <span class="input-group-label">
+                    <i class="fi-clock size-36"></i>
+                  </span>
+                  <input type="text" class="input-group-field" value="12:21">
+                </div>
+              </div>
+              <div class="large-3 small-3 columns">
+                <label for="exampleFileUpload" class="button expanded">Flyer</label>
+                <input type="file" id="exampleFileUpload" class="show-for-sr">
+              </div>
+            </div>
+
+            <!-- LIEU -->
+            <div class="row">
+              <div class="large-9 small-8 columns">
+                <div class="input-group">
+                  <span class="input-group-label">
+                    <i class="fi-marker size-36"></i>
+                  </span>
+                  <input class="input-group-field" type="text" placeholder="Nom du lieu">
+                </div>
+              </div>
+              <div class="large-3 small-4 columns">
+                <input type="submit" value="Créer" name="creation_event" class="success button expanded">
+                  <!-- <i class="fi-plus size-36"></i> Créer
+                </input> -->
+              </div>
+            </div>
+
+            <!-- MAPS -->
+
+            <div class="row">
+              <div class="large-12 columns">
+                <div id="basicMap" ></div>
+                <button onclick="alert(map.getCenter().transform(projmerc, proj4326).toString())">Show position (map center)</button>
+              </div>
+            </div>  
+          </form>
+      </div>
+
+
+    </div>
+
+
+    
+    <script src="js/foundation.min.js"></script>
+    <!-- Date Picker -->
+    <!-- <script src='js/foundation-datepicker.min.js'></script> -->
+    <script>
+      $(function () {
+
+
+        window.prettyPrint && prettyPrint();
+        $('#dp1').fdatepicker({
+          initialDate: '02-12-1989',
+          format: 'mm-dd-yyyy',
+          // keyboardNavigation: false,
+          disableDblClickSelection: true,
+          language : 'fr',
+          leftArrow:'<<',
+          rightArrow:'>>',
+          closeIcon:'X',
+          closeButton: true
+          // autoShow: false
+        });
+
+
+        // implementation of disabled form fields
+        var nowTemp = new Date();
+        var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+        var checkin = $('#dpd1').fdatepicker({
+          onRender: function (date) {
+            return date.valueOf() < now.valueOf() ? 'disabled' : '';
+          }
+        }).on('changeDate', function (ev) {
+          if (ev.date.valueOf() > checkout.date.valueOf()) {
+            var newDate = new Date(ev.date)
+            newDate.setDate(newDate.getDate() + 1);
+            checkout.update(newDate);
+          }
+          checkin.hide();
+          $('#dpd2')[0].focus();
+        }).data('datepicker');
+        var checkout = $('#dpd2').fdatepicker({
+          onRender: function (date) {
+            return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+          }
+        }).on('changeDate', function (ev) {
+          checkout.hide();
+        }).data('datepicker');
+      });
+    </script>
+
+    <!-- Clock Picker -->
+    <script type="text/javascript" src="js/jquery-clockpicker.min.js"></script>
+    <script type="text/javascript">
+    $('.clockpicker').clockpicker()
+      .find('input').change(function(){
+        console.log(this.value);
+      });
+
+    </script>
+    
+
+
+    <script src="js/index.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+
+  </body>
+</html>

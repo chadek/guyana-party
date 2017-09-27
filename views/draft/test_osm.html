@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/foundation.css"/>
+        <script src="js/vendor/jquery.js"></script>
+
+        <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+        <title>OpenLayers Simplest Example</title>
+
+        <script>
+            function init_maps() {
+                // OpenStreetMap
+                projmerc = new OpenLayers.Projection("EPSG:900913");
+                proj4326 = new OpenLayers.Projection("EPSG:4326");
+                map = new OpenLayers.Map("localisation",
+                    {
+                        projection: projmerc,
+                        displayProjection: proj4326,
+                        controls:
+                        [
+                        new OpenLayers.Control.MousePosition(),
+                        new OpenLayers.Control.KeyboardDefaults(),
+                        new OpenLayers.Control.Navigation(),
+                        ],
+                    }
+                );
+                var maplayer = new OpenLayers.Layer.OSM("OpenStreetMap");
+                map.addLayer(maplayer);
+                // 4.93291,-52.30087
+                var mapcenter = new OpenLayers.LonLat(-52.30087, 4.93291);
+                map.setCenter(mapcenter.transform(proj4326, projmerc), 14);
+                var mappanel = new OpenLayers.Control.Panel();
+                map.addControl(mappanel);
+            }
+        </script>
+    </head>
+<body onload="init_maps();">
+
+    <button class="button" data-open="exampleModal1">Nom du lieu</button>
+    <div class="large reveal" id="exampleModal1" data-reveal>
+        <p>Nom de l'évènement</p>
+        <div  id="on" style="height: 300px;">
+            
+        </div>
+        
+       
+      <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div id="localisation" style="height: 300px;">
+        
+    </div>
+
+    <script src="js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+</body>
+</html>

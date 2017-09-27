@@ -1,0 +1,121 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vinila</title>
+    <link rel="shortcut icon" href="/images/favicon.ico"/>
+    <link rel="stylesheet" href="/stylesheets/foundation.css" />
+    <!-- Font Foundation -->
+    <link href="foundation-icons/foundation-icons.css" rel="stylesheet">
+    
+    <!-- Style pour le OR -->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/OR.css">
+  </head>
+  <body>
+
+    <%- include partials/menu.ejs %>
+    
+    <div class="off-canvas-content" data-off-canvas-content>
+    <!-- Contenu de la page -->
+      <div class="title-bar">
+        <div class="title-bar-left">
+          <button class="menu-icon" type="button" data-open="offCanvas"></button>
+          <span class="title-bar-title">Menu</span>
+        </div>
+        <div class="title-bar-title" style="position: absolute; left: 44%;">
+          <span class="title-bar-title">Vinila</span>
+        </div>
+        <!-- <div class="title-bar-right">
+          <span class="title-bar-title">Se connecter</span>
+        </div> -->
+      </div>
+
+      
+      
+      <div class="row" style="vertical-align: middle;">
+        <div class="large-6 medium-6 small-12 medium-centered large-centered columns">
+          <div class="expanded button-group-option" data-grouptype="OU">
+            <button class="button success radius" onclick="connection()">Connexion</button>
+            <button class="button primary radius" onclick="inscription()">Inscription</button>
+          </div>
+
+          <form action="/connection" method="post">
+            <div class="form-icons" id="connection" style="display: block">
+
+              <div class="input-group">
+                <span class="input-group-label">
+                  <i class="fi-mail size-36"></i>
+                </span>
+                <input class="input-group-field" type="email" placeholder="Email, identifiant" name="login">
+              </div>
+
+              <div class="input-group">
+                <span class="input-group-label">
+                  <i class="fi-key size-36"></i>
+                </span>
+                <input class="input-group-field" type="password" placeholder="Password" name="pwd">
+              </div>
+            <button class="button expanded">Sign Up</button>
+            </div>
+          </form>
+
+          <form action="/inscription/ajouter" method="post">
+            <div class="form-icons" id="inscription" style="display: none">
+              <div class="input-group">
+                <span class="input-group-label">
+                  <i class="fi-torsos-male-female size-36"></i>
+                </span>
+                <input class="input-group-field" type="text" placeholder="Nom du compte" name="newUser">
+              </div>
+
+              <div class="input-group">
+                <span class="input-group-label">
+                  <i class="fi-mail size-36"></i>
+                </span>
+                <input class="input-group-field" type="text" placeholder="Email, identifiant" name="newEmail">
+              </div>
+
+              <div class="input-group">
+                <span class="input-group-label">
+                  <i class="fi-key size-36"></i>
+                </span>
+                <input class="input-group-field" type="password" placeholder="Password" name="newPassword">
+              </div>
+              <button class="button expanded">Sign In</button>
+            </div>
+
+            
+          </form>
+
+          <script type="text/javascript">
+            function inscription(){
+              var x = document.getElementById('connection');
+              var y = document.getElementById('inscription');
+              x.style.display = 'none';
+              y.style.display = 'block';
+            }
+
+            function connection(){
+              var x = document.getElementById('connection');
+              var y = document.getElementById('inscription');
+              x.style.display = 'block';
+              y.style.display = 'none';
+            }
+
+          </script>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="js/vendor/jquery.min.js"></script>
+    <!-- <script src="js/vendor/what-input.min.js"></script> -->
+    <script src="js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+
+  </body>
+</html>

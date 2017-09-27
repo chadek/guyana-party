@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Résultat de la recherche</title>
+    <link rel="shortcut icon" href="/images/favicon.ico"/>
+    <!-- Foundation -->
+    <link rel="stylesheet" href="/stylesheets//foundation.css" />
+    <!-- CARD style -->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/card.css">
+    <!-- Foundation Font -->
+    <link href="foundation-icons/foundation-icons.css" rel="stylesheet">
+
+    <!-- MAPS -->
+    <link rel="stylesheet" href="/stylesheets/ol.css" type="text/css">
+    <script src="js/ol.js"></script>
+
+
+</head>
+<body>
+
+    <%- include partials/menu.ejs %>
+    
+    <div class="off-canvas-content" data-off-canvas-content>
+    <!-- Contenu de la page -->
+
+    <!-- TITLE -->
+		<div data-sticky-container>
+			<div class="title-bar" data-sticky data-options="marginTop:0;" style="width:100%; z-index: 100000">
+				<div class="title-bar-left">
+		          <button class="menu-icon" type="button" data-open="offCanvas"></button>
+		          <span class="title-bar-title">Menu</span>
+		        </div>
+		        <div class="title-bar-title" style="position: absolute; left: 44%;">
+		          <span class="title-bar-title">Recherche</span>
+		        </div>
+			</div>
+		</div>
+
+		<div class="row" style="width: 100vw !important;
+      						margin-left: auto;
+   							margin-right: auto;
+   							max-width: initial;">
+
+	      	<div class="columns large-4">
+	      		<div class="row">
+	      			<div class="column">
+			      		<form action="recherche" name="recherche_evenenement" method="post">
+							<div class="input-group">
+							  <span class="input-group-label">
+							    <i class="fi-magnifying-glass size-36"></i>
+							  </span>
+							  <input name="input_recherche" class="input-group-field" type="text" placeholder="Ville, tags…" autofocus="">
+							  <div class="input-group-button">
+							    <input type="submit" class="button" value="Rechercher">
+							  </div>
+							</div>
+						</form>
+	      			</div>
+	      		</div>
+
+	      		<div>
+				<!-- Print event from database --> 
+	      			<?php 
+		                for ($i=0; $i < 10; $i++) { 
+		                    include 'one_event_recherche.html';
+		                }
+		                
+		            ?>
+	      		</div>
+
+	      	</div>
+
+
+	      	<div class="columns large-8 hide-for-small-only hide-for-medium-only" style="position: fixed; right: 0;">
+	      		<div id="map" class="map" style="height: 90vh; margin-top: 15px;"></div>
+			    <script>
+			      var distance = 40;
+
+			      var count = 20000;
+			      var features = new Array(count);
+			      var e = 4500000;
+			      for (var i = 0; i < count; ++i) {
+			        var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+			        features[i] = new ol.Feature(new ol.geom.Point(coordinates));
+			      }
+
+			      var source = new ol.source.Vector({
+			        features: features
+			      });
+
+			      var clusterSource = new ol.source.Cluster({
+			        distance: distance,
+			        source: source
+			      });
+
+			      var styleCache = {};
+			      var clusters = new ol.layer.Vector({
+			        source: clusterSource,
+			        style: function(feature) {
+			          var size = feature.get('features').length;
+			          var style = styleCache[size];
+			          if (!style) {
+			            style = new ol.style.Style({
+			              image: new ol.style.Circle({
+			                radius: 10,
+			                stroke: new ol.style.Stroke({
+			                  color: '#fff'
+			                }),
+			                fill: new ol.style.Fill({
+			                  color: '#3399CC'
+			                })
+			              }),
+			              text: new ol.style.Text({
+			                text: size.toString(),
+			                fill: new ol.style.Fill({
+			                  color: '#fff'
+			                })
+			              })
+			            });
+			            styleCache[size] = style;
+			          }
+			          return style;
+			        }
+			      });
+
+			      var raster = new ol.layer.Tile({
+			        source: new ol.source.OSM()
+			      });
+
+			      var map = new ol.Map({
+			        layers: [raster, clusters],
+			        target: 'map',
+			        view: new ol.View({
+			          center: [0, 0],
+			          zoom: 2
+			        })
+			      });
+
+			    </script>
+	      	</div>
+		</div>
+
+    </div>
+
+    <script src="js/vendor/jquery.min.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script src="js/index.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+
+</body>
+</html>
+
+<!-- http://openlayersbook.github.io/ch11-creating-web-map-apps/example-05.html -->
+<!-- https://openlayers.org/en/latest/examples/cluster.html -->

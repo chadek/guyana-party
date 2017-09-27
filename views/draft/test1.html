@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>test visibility</title>
+</head>
+<body>
+
+	<button onclick="change()" id="but">Changer</button>
+	<div id="jvqc" style="display: block;">Je veux que change</div>
+	<div id="da" style="display: none;"> Disparais, appparais</div>
+	<script type="text/javascript">
+		function change() {
+			var x = document.getElementById('jvqc');
+			var y = document.getElementById('da');
+			var z = document.getElementById('but');
+			if (x.style.display === 'none') {
+				x.style.display = 'block';
+				y.style.display = 'none';
+				z.innerHTML = "Bonjour";
+
+			}else{
+				x.style.display = 'none';
+				y.style.display = 'block';
+
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Organisme</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="/images/favicon.ico"/>
+    <!-- Foundation -->
+    <link rel="stylesheet" href="/stylesheets/foundation.css" />
+    <!-- CARD style -->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/card.css">
+    <!-- Foundation Font -->
+    <link href="foundation-icons/foundation-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/stylesheets/mobile_toggle.css">
+</head>
+<body>
+    
+    <%- include partials/menu.ejs %>
+
+    <div class="off-canvas-content" data-off-canvas-content>
+    <!-- Contenu de la page -->
+
+    <!-- TITLE -->
+        <div data-sticky-container>
+            <div class="title-bar" data-sticky data-options="marginTop:0;" style="width:100%; z-index: 100000">
+                <div class="title-bar-left">
+                  <button class="menu-icon" type="button" data-open="offCanvas"></button>
+                  <span class="title-bar-title">Menu</span>
+                </div>
+                <div class="title-bar-title" style="position: absolute; left: 44%;">
+                  <span class="title-bar-title">Nom Organisme</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+        	<div class="column large-12 hide-for-medium-only hide-for-small-only">Large</div>
+        	<div class="column medium-12 hide-for-large-only hide-for-small-only">Medium</div>
+        	<div class="column small-12 hide-for-large-only hide-for-medium-only">small</div>
+        </div> -->
+
+        <div class="row">
+        	<div class="columns large-4">
+        		<div class="row">
+                    <div style="background: url('rectangle-1.jpg'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;">
+                    </div>
+            	</div>
+           	</div>
+
+            <div class="columns large-8">
+            	<div class="row">
+                    <div class="row">
+                        <div class="column" style="text-align: center;"><h4>Nom de l'organisme</h4></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns large-6">
+                        <div class="input-group">
+                            <span class="input-group-label">
+                                <i class="fi-clipboard-pencil size-36"></i>
+                            </span>
+                            <label class="input-group-field">Type d'organisme</label>
+                        </div>
+                    </div>
+                    <div class="columns shrink">
+                        <a class="button success" href="creation_evenement.php">Créer un évènement</a>
+                        <a class="button warning" href="organisme.php">Modifier vos informations</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+        	<div class="column">
+                <div class="row">
+                    <div class="column" style="text-align: center;"><h3>Vos évènements</h3></div>
+                </div>
+
+                <div class="mobile-app-toggle" data-mobile-app-toggle>
+                  <button class="button">Passé</button>
+                  <button class="button is-active">Actuellement</button>
+                  <button class="button">À venir</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+        	<div class="column">
+                <?php 
+                    for ($i=0; $i < 10; $i++) { 
+                        include 'one_event_orga.html';
+                    }  
+                ?>
+        	</div>
+        </div>
+    </div>
+
+    <script src="js/vendor/jquery.min.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script src="js/index.js"></script>
+    <script>
+        $('[data-mobile-app-toggle] .button').click(function () {
+          $(this).siblings().removeClass('is-active');
+          $(this).addClass('is-active');
+        });
+    </script>
+    <script>
+      $(document).foundation();
+    </script>
+
+</body>
+</html>
