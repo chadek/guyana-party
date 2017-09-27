@@ -79,7 +79,10 @@
   </head>
   <body onload="init_maps();">
 
-    <%- include partials/menu.ejs %>
+    <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
+      <%- include partials/menu_log.ejs %>
+    </div>  
+
     
     <div class="off-canvas-content" data-off-canvas-content>
     <!-- Contenu de la page -->

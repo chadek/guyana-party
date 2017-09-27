@@ -79,7 +79,13 @@
   </head>
   <body onload="init_focus(); init_maps();">
 
-    <%- include partials/menu.ejs %>
+    <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
+      <% if(user == 'log') { %> 
+        <%- include partials/menu_log.ejs %> 
+      <% } else { %>
+        <%- include partials/menu.ejs %>
+      <% } %>
+    </div>    
     
     <div class="off-canvas-content" data-off-canvas-content>
     <!-- Contenu de la page -->

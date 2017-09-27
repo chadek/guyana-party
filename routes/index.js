@@ -8,7 +8,10 @@ var Q = require('q');
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 
-// Create a password salt
+//===============MONGODB=================
+
+// ====Gestion d'utilisateur===//
+// creation d'utilisateur
 function localReg(newUser, newEmail, newPassword) {
   console.log("localReg");
   var deferred = Q.defer();
@@ -16,8 +19,7 @@ function localReg(newUser, newEmail, newPassword) {
     if (err) throw err;
     var collection = db.collection("user");
     collection.findOne({email: newEmail}, function(err, result) {
-        console.log(result.email);
-        if (undefined != result.email) {
+        if (null != result) {
           console.log("USERNAME ALREADY EXIST:", result.email);
 
           deferred.resolve(false);
@@ -39,7 +41,7 @@ function localReg(newUser, newEmail, newPassword) {
   return deferred.promise;
 }
   
-
+// authentification d'utilisateur
 function localAuth(login, pwd) {
   console.log(login);
   var deferred = Q.defer();
@@ -134,28 +136,61 @@ passport.use('local-signup', new LocalStrategy(
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  if(req.user){
+    res.render('index', {user: 'log' });
+  } else{
+    res.render('index', { user: '' });
+  }
 });
 
 router.get('/recherche', function(req, res, next) {
-  res.render('recherche');
+  if(req.user){
+    res.render('recherche', {user: 'log' });
+  } else{
+    res.render('recherche', {user: '' });
+  }
 });
 
 router.get('/inscription', function(req, res, next) {
-  res.render('inscription');
+  if(req.user){
+    res.render('inscription', {user: 'log' });
+  } else{
+    res.render('inscription', {user: '' });
+  }
 });
 
 router.get('/organisme', function(req, res, next) {
-  res.render('organisme');
+  if(req.user){
+    res.render('organisme');
+  } else {
+    res.redirect('/inscription');
+  } 
 });
 
 router.get('/evenement', function(req, res, next) {
-  res.render('evenement');
+  if(req.user){
+    res.render('evenement', {user: 'log' });
+  } else{
+    res.render('evenement', {user: '' });
+  }  
 });
 
-router.get('/creation_evenement', function(req, res, next) {
-  res.render('creation_evenement');
+router.get('/creation_evenement', function(req, res, next){ 
+  if(req.user){
+    res.render('creation_evenement');
+  } else {
+    res.redirect('/inscription');
+  } 
 });
+
+router.get('/deconnexion', function(req, res){
+  var name = req.user.user;
+  console.log("LOGGIN OUT " + req.user.user)
+  req.logout();
+  res.redirect('/');
+  req.session.notice = "You have successfully been logged out " + name + "!";
+});
+
 
 /* POST inscription */
 router.post('/inscription/ajouter', passport.authenticate('local-signup', {
@@ -170,5 +205,14 @@ router.post('/connection', passport.authenticate('local-signin', {
   failureRedirect: '/inscription'
   })
 );
+
+/* creation d'evenement */
+router.post('/creation_evenement/ajouter', function(req, res, next){ 
+  if(req.user){
+    res.render('creation_evenement');
+  } else {
+    res.redirect('/inscription');
+  } 
+});
 
 module.exports = router;
