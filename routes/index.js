@@ -1,82 +1,170 @@
 var express = require('express');
 var router = express.Router();
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/guyana-party";
+
 // Require the bcrypt package
+var fs = require('fs');
+var sanitize = require('mongo-sanitize');
 var bcrypt = require('bcrypt');
 var Q = require('q');
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
+//var Grid = require('gridfs-stream');
 
+var mongoose = require('mongoose');
+var url = "mongodb://localhost:27017/guyana-party";
+
+mongoose.connect(url);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'error while connecting'));
+db.once('open',function(){
+  //var gfs = Grid(db.db, mongoose.mongo);
+  console.log("connection OK");
+});
 //===============MONGODB=================
+
+//==Mongoose model==
+var userSchema = mongoose.Schema({
+  user: String,
+  email: String,
+  password: String
+});
+
+var eventSchema = mongoose.Schema({
+  userId: String,
+  name: String,
+  date: Date,
+  address: String,
+  longitude: String,
+  latitude: String,
+  flyer: String 
+});
+
+var User = mongoose.model('User', userSchema);
+var Event = mongoose.model('Event', eventSchema);
 
 // ====Gestion d'utilisateur===//
 // creation d'utilisateur
 function localReg(newUser, newEmail, newPassword) {
+  // prevent noSQL injection
+  newUser = sanitize(newUser);
+  newEmail = sanitize(newEmail);
+  newPassword = sanitize(newPassword);
+
   console.log("localReg");
+  //promise declaration
   var deferred = Q.defer();
-  MongoClient.connect(url, function(err, db) {
+  //connect to db
+  User.findOne({user: newUser},function(err, result) {
     if (err) throw err;
-    var collection = db.collection("user");
-    collection.findOne({email: newEmail}, function(err, result) {
+    if (null != result) {
+      console.log("EMAIL ALREADY EXIST:", result.email);
+
+      deferred.resolve(0);
+    } else {
+      User.findOne({email: newEmail},function(err, result) {
+        if (err) throw err;
         if (null != result) {
-          console.log("EMAIL ALREADY EXIST:", result.email);
+          console.log("USERNAME ALREADY EXIST:", result.user);
 
-          deferred.resolve(0);
+          deferred.resolve(1);
         } else {
-          collection.findOne({user: newUser}, function(err, result) {
-            if (null != result) {
-              console.log("USERNAME ALREADY EXIST:", result.user);
+          // salt and hash password before sending it to database
+          newPassword = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10));
+          var user = new User({ user: newUser, email: newEmail, password: newPassword});
 
-              deferred.resolve(1);
-            } else {
-              var saltString = bcrypt.genSaltSync(10);
-              var myobj = { user: newUser, email: newEmail, password: bcrypt.hashSync(newPassword,saltString)};
- 
-              console.log("CREATING USER:", newUser);
+          console.log("CREATING USER:", newUser);
 
-              db.collection("user").insertOne(myobj, function(err, res) {
-                if (err) throw err;
-                console.log("USER CREATED");
-                db.close();
-                deferred.resolve(myobj);
-              });
-            }
+          user.save(function(err, res) {
+            if (err) throw err;
+            console.log("USER CREATED");
+            deferred.resolve(user);
           });
         }
-     });
+      });
+    }
   });
   return deferred.promise;
 }
   
 // authentification d'utilisateur
 function localAuth(login, pwd) {
-  console.log(login);
-  var deferred = Q.defer();
-  MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    var collection = db.collection("user");
-    collection.findOne({email: login}, function(err, result) {
-        if (err) throw err;
-        if (null == result) {
-          console.log("USERNAME NOT FOUND:", login);
+  // prevent noSQL injection
+  login = sanitize(login);
+  pwd = sanitize(pwd);
 
-          deferred.resolve(false);
-        } else {
-          console.log("FOUND USER: " + result.user);
-          if (bcrypt.compareSync(pwd, result.password)){
-            deferred.resolve(result);
-          } else {
-            console.log("AUTHENTICATION FAILED");
-            deferred.resolve(false);
-          }
-        }
-        db.close();
-      });
+  console.log(login);
+  //promise declaration
+  var deferred = Q.defer();
+  //connect to db
+
+  User.findOne({email: login}, function(err, result) {
+
+    console.log("USERNAME NOT FOUND:", login);
+    if (err) throw err;
+    if (null == result) {
+      console.log("USERNAME NOT FOUND:", login);
+
+      deferred.resolve(false);
+    } else {
+      console.log("FOUND USER: " + result.user);
+      // compare pwd to pwd store in db
+      if (bcrypt.compareSync(pwd, result.password)){
+        deferred.resolve(result);
+      } else {
+        console.log("AUTHENTICATION FAILED");
+        deferred.resolve(false);
+      }
+    }
   });
+  // return promise
   return deferred.promise;
 }
 
+
+//====Gestion evenement===//
+
+// create new event
+function newEvent(userId, name, date, longitude, latitude, flyer){
+  console.log("newEvent");    
+  if (flyer != null){ 
+    flyer = newFile(flyer, function(err, result) {
+      var event = new Event({ userId: userId, name: name, date: date, longitude: longitude, latitude: latitude, flyer: flyer});
+      console.log("CREATING EVENT (with flyer) :", name);
+      user.save(function(err, res) {
+        if (err) throw err;
+        console.log("EVENT CREATED");
+      });
+    });
+  } else {
+    var event = new Event({ userId: userId, name: name, date: date, longitude: longitude, latitude: latitude, flyer: flyer});
+    console.log("CREATING EVENT (without flyer) :", name);
+    user.save(function(err, res) {
+      if (err) throw err;
+      console.log("EVENT CREATED");
+    });
+  }
+}
+
+//==========GridFS function=========//
+function newFile(){
+  MongoClient.connect(url, function(err, db) {
+    var writestream = Grid.createWriteStream({
+        filename: name
+    });
+    writestream.on('close', function (file) {
+      callback(null, file);
+    });
+    fs.createReadStream(path).pipe(writestream);
+  });
+}
+
+function getFile(){
+
+}
+
+function deleteFile(){
+
+}
 
 //===============PASSPORT=================
 
@@ -152,7 +240,7 @@ passport.use('local-signup', new LocalStrategy(
 /* GET home page. */
 router.get('/', function(req, res, next) {
   if(req.user){
-    res.render('index', {user: 'log' });
+    res.render('index', {user: req.user.user });
   } else{
     res.render('index', { user: '' });
   }
@@ -160,7 +248,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/recherche', function(req, res, next) {
   if(req.user){
-    res.render('recherche', {user: 'log' });
+    res.render('recherche', {user: req.user.user });
   } else{
     res.render('recherche', {user: '' });
   }

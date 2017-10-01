@@ -3,7 +3,7 @@ $(document).foundation();
 
 window.prettyPrint && prettyPrint();
 $('#dp1').fdatepicker({
-  format: 'mm-dd-yyyy',
+  format: 'dd-mm-yyyy',
   disableDblClickSelection: true
 });
 $('#dp2').fdatepicker({

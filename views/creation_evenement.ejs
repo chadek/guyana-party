@@ -30,10 +30,18 @@
       }
     </script>
     <script>
+
+      var markers = new OpenLayers.Layer.Markers( "Markers" );
+      projmerc = new OpenLayers.Projection("EPSG:900913");
+      proj4326 = new OpenLayers.Projection("EPSG:4326");    
+     
+
       function init_maps() {
         // OpenStreetMap
-        projmerc = new OpenLayers.Projection("EPSG:900913");
-        proj4326 = new OpenLayers.Projection("EPSG:4326");
+        // pour faire du geocoding : http://wiki.openstreetmap.org/wiki/FR:Nominatim
+        // http://nominatim.openstreetmap.org/search?q=address+address&format=jsonv2 ==> renvoie du json avec les coordonné
+        // on peut faire l'inverse : http://nominatim.openstreetmap.org/reverse?
+
         map = new OpenLayers.Map("basicMap",
             {
             projection: projmerc,
@@ -49,10 +57,72 @@
         var maplayer = new OpenLayers.Layer.OSM("OpenStreetMap");
         map.addLayer(maplayer);
         // 4.93291,-52.30087
-        var mapcenter = new OpenLayers.LonLat(-52.30087, 4.93291);
-        map.setCenter(mapcenter.transform(proj4326, projmerc), 14);
+        // set coordinate for marker and center
+        var lonlat = new OpenLayers.LonLat(-52.30087, 4.93291);
+        console.log(lonlat.lat);
+
+
+        map.addLayer(markers);
+        markers.addMarker(new OpenLayers.Marker(lonlat));
+      
+        map.setCenter(lonlat.transform(proj4326,projmerc), 14);
+        
+
         var mappanel = new OpenLayers.Control.Panel();
         map.addControl(mappanel);
+        
+
+        var events = map.events;
+        events.register("mousedown",map,function(e){
+            console.log("mousedown");
+            return true;
+        },true); 
+
+        events.register('click', map, function(e) {
+            lonlat = map.getLonLatFromPixel(e.xy);
+
+            lonlat = lonlat.transform(projmerc,proj4326);
+
+            // update coordinate fields
+            document.getElementById("latitude").value = lonlat.lat;
+            document.getElementById("longitude").value = lonlat.lon;
+            console.log(lonlat.lat);
+            console.log(lonlat.lon);
+
+            //geocoding from nominatim
+            var str1 = "http://nominatim.openstreetmap.org/reverse?format=json&lat="
+            var str2 = lonlat.lat.toString();
+            var str3 = "&lon=";
+            var str4 = lonlat.lon.toString();
+
+            var queryUrl = str1.concat(str2, str3, str4);
+            $.getJSON(queryUrl, function(external) {
+                var output = "";
+                console.log(external.address);
+                $.each(external.address, function(i, result) {
+                    output = output.concat(result," ");
+                });
+                console.log(output);
+                document.getElementById("address").value = output;
+            });
+
+            lonlat.transform(proj4326,projmerc);
+            markers.clearMarkers();
+            markers.addMarker(new OpenLayers.Marker(lonlat));
+            return true;
+        },true); 
+
+        events.register('zoomend', map, function(ev){
+          
+          console.log("zoom");
+          markers.addMarker(new OpenLayers.Marker(lonlat));
+          return true;
+        },true);
+
+      }
+
+      function addNewMarker(pos){
+
       }
     </script>
     <style type="text/css">
@@ -65,7 +135,7 @@
           height: 100px;
           /* CAUTION: you will have to adjust the negative margins left and top to background image width and height */
           margin: -90px 0px 0px -52px;
-          background: url("foundation-icons/svgs/fi-marker.svg");
+          /*background: url("/foundation-icons/svgs/fi-marker.svg");*/
 
 
         }
@@ -114,7 +184,9 @@
                 <span class="input-group-label">
                   <i class="fi-clipboard-pencil size-36"></i>
                 </span>
-                <input class="input-group-field" type="text" placeholder="Nom d'évènement">
+                <input class="input-group-field" type="text" placeholder="Nom d'évènement" name="name" id="name">
+                <input type="hidden" name="longitude" value="-52.30087" id="longitude">
+                <input type="hidden" name="latitude" value="4.93291" id="latitude">
               </div>
             </div>
 
@@ -125,7 +197,7 @@
                   <span class="input-group-label">
                     <i class="fi-calendar size-36"></i>
                   </span>
-                  <input type="text" class="input-group-field" value="16-06-2017" id="dp1">
+                  <input type="text" class="input-group-field" value="16-06-2017" id="dp1" name="date">
                 </div>
               </div>
               <div class="large-4 small-4 columns">
@@ -133,7 +205,7 @@
                   <span class="input-group-label">
                     <i class="fi-clock size-36"></i>
                   </span>
-                  <input type="text" class="input-group-field" value="12:21">
+                  <input type="text" class="input-group-field" value="12:21" name="heure">
                 </div>
               </div>
               <div class="large-3 small-3 columns">
@@ -149,7 +221,7 @@
                   <span class="input-group-label">
                     <i class="fi-marker size-36"></i>
                   </span>
-                  <input class="input-group-field" type="text" placeholder="Nom du lieu">
+                  <input class="input-group-field" type="text" placeholder="Nom du lieu" name="address" id="address">
                 </div>
               </div>
               <div class="large-3 small-4 columns">
@@ -175,70 +247,28 @@
 
 
     
-    <script src="js/foundation.min.js"></script>
-    <!-- Date Picker -->
-    <!-- <script src='js/foundation-datepicker.min.js'></script> -->
-    <script>
-      $(function () {
-
-
-        window.prettyPrint && prettyPrint();
-        $('#dp1').fdatepicker({
-          initialDate: '02-12-1989',
-          format: 'mm-dd-yyyy',
-          // keyboardNavigation: false,
-          disableDblClickSelection: true,
-          language : 'fr',
-          leftArrow:'<<',
-          rightArrow:'>>',
-          closeIcon:'X',
-          closeButton: true
-          // autoShow: false
-        });
-
-
-        // implementation of disabled form fields
-        var nowTemp = new Date();
-        var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-        var checkin = $('#dpd1').fdatepicker({
-          onRender: function (date) {
-            return date.valueOf() < now.valueOf() ? 'disabled' : '';
-          }
-        }).on('changeDate', function (ev) {
-          if (ev.date.valueOf() > checkout.date.valueOf()) {
-            var newDate = new Date(ev.date)
-            newDate.setDate(newDate.getDate() + 1);
-            checkout.update(newDate);
-          }
-          checkin.hide();
-          $('#dpd2')[0].focus();
-        }).data('datepicker');
-        var checkout = $('#dpd2').fdatepicker({
-          onRender: function (date) {
-            return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
-          }
-        }).on('changeDate', function (ev) {
-          checkout.hide();
-        }).data('datepicker');
-      });
-    </script>
+    <script src="/js/foundation.min.js"></script>
 
     <!-- Clock Picker -->
-    <script type="text/javascript" src="js/jquery-clockpicker.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-clockpicker.min.js"></script>
     <script type="text/javascript">
-    $('.clockpicker').clockpicker()
-      .find('input').change(function(){
-        console.log(this.value);
+      // Clock Picker
+      $('.clockpicker').clockpicker()
+        .find('input').change(function(){
+          console.log(this.value);
+        });
+
+      //  Date Picker
+      $(document).foundation();
+
+      window.prettyPrint && prettyPrint();
+      $('#dp1').fdatepicker({
+        format: 'dd-mm-yyyy',
+        disableDblClickSelection: true
       });
 
     </script>
-    
 
-
-    <script src="js/index.js"></script>
-    <script>
-      $(document).foundation();
-    </script>
 
   </body>
 </html>

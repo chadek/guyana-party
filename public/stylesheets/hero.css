@@ -1,6 +1,6 @@
 
 .hero {
-  background: url("../image/IMG_6708.JPG") top right no-repeat;
+  background: url("/images/ile.jpg") top right no-repeat;
   /*height: 65vh;*/
   background-size: cover;
   display: -webkit-flex;
