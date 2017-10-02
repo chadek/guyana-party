@@ -10,15 +10,15 @@
 
 
     <!-- Font Foundation -->
-    <link href="foundation-icons/foundation-icons.css" rel="stylesheet">
+    <link href="/foundation-icons/foundation-icons.css" rel="stylesheet">
     <!-- JQuery -->
     <!-- <script src="js/vendor/jquery.min.js"></script> -->
-    <script src="js/vendor/jquery.js"></script>
+    <script src="/js/vendor/jquery.js"></script>
   </head>
   <body>
 
     <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-      <% if(user == 'log') { %> 
+      <% if(user != '') { %> 
         <%- include partials/menu_log.ejs %> 
       <% } else { %>
         <%- include partials/menu.ejs %>
@@ -40,7 +40,10 @@
       <div class="row">
       	<div class="columns large-4 medium-4">
       		<div class="row">
-      			<div style="background: url('/images/rectangle-1.jpg'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;">
+
+            <!-- remplacer par flyer -->
+      			<div style="background: url(' /file/<%= event.flyer %> '); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;">
+              
       			</div>	
       		</div>
       		
@@ -50,7 +53,7 @@
 
       		<div class="row">
       			<div class="columns large-10 medium-10 small-10" style="text-align: center;">
-      				<h3>Nom de l'évènement</h3>
+      				<h3><%= event.name %> </h3>
       			</div>
             <div class="columns large-2 medium-2 small-2">
               <a class="button fi-pencil" href="#"></a>
@@ -59,10 +62,10 @@
 
       		<div class="row">
       			<div class="columns large-6 medium-6">
-      				<a href="organisme.php">Nom de l'organisateur</a>
+      				<a href="/organisme">Organisme</a>
       			</div>
       			<div class="columns large-6 medium-6">
-      				Nom du lieu
+      				<%= event.address %> 
       			</div>
       		</div>
       		<div class="row">
@@ -72,10 +75,10 @@
               <i class="fi-rss"></i>
             </div>
       			<div class="columns large-4 medium-4 small-4">
-      				12/09/2017
+      				<%= event.date %> 
       			</div>
       			<div class="columns large-4 medium-4 small-4">
-      				4:20 PM
+      				<%= event.heure %> 
       			</div>
       		</div>
       		<div class="row">
@@ -93,17 +96,23 @@
   	  <script>
   	  	// http://harrywood.co.uk/maps/examples/openlayers/marker-array.view.html
 
-  	    map = new OpenLayers.Map("mapdiv");
-  	    map.addLayer(new OpenLayers.Layer.OSM());
-  	    
-  	    epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
-  	    projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
-  	   
-  	    var lonLat = new OpenLayers.LonLat( -52.30087, 4.93291 ).transform(epsg4326, projectTo);
-  	          
-  	    var zoom=14;
-  	    map.setCenter (lonLat, zoom);
+        var markers = new OpenLayers.Layer.Markers( "Markers" );
 
+        map = new OpenLayers.Map("mapdiv");
+        map.addLayer(markers);
+        map.addLayer(new OpenLayers.Layer.OSM());
+        
+        epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
+        projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
+       
+        var lonlat = new OpenLayers.LonLat( <%= event.longitude %>, <%= event.latitude %> ).transform(epsg4326, projectTo);
+        
+        markers.addMarker(new OpenLayers.Marker(lonlat));   
+        
+        var zoom=14;
+        map.setCenter (lonlat, zoom);
+
+        /*
   	    var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
     		var markers = [
       			[ -52.300900, 4.931609],
@@ -117,18 +126,18 @@
     			var feature = new OpenLayers.Feature.Vector(
     				new OpenLayers.Geometry.Point( lon, lat ).transform(epsg4326, projectTo),
     				{description: "marker number " + i} ,
-    				{externalGraphic: 'foundation-icons/svgs/fi-marker.svg', graphicHeight: 60, graphicWidth: 60, graphicXOffset:-30, graphicYOffset:-50  }
+    				{externalGraphic: '/foundation-icons/svgs/fi-marker.svg', graphicHeight: 60, graphicWidth: 60, graphicXOffset:-30, graphicYOffset:-50  }
     				);             
     			vectorLayer.addFeatures(feature);
     		}
   		  map.addLayer(vectorLayer);
+        */
   		  //end  
   	  </script>
 
     </div> <!-- of canvas content -->
-    <script src="js/foundation.min.js"></script>
+    <script src="/js/foundation.min.js"></script>
     
-    <script src="js/index.js"></script>
     <script>
       $(document).foundation();
     </script>

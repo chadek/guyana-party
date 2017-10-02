@@ -31,7 +31,7 @@
     </script>
     <script>
 
-      var markers = new OpenLayers.Layer.Markers( "Markers" );
+     
       projmerc = new OpenLayers.Projection("EPSG:900913");
       proj4326 = new OpenLayers.Projection("EPSG:4326");    
      
@@ -61,7 +61,7 @@
         var lonlat = new OpenLayers.LonLat(-52.30087, 4.93291);
         console.log(lonlat.lat);
 
-
+        var markers = new OpenLayers.Layer.Markers( "Markers" );
         map.addLayer(markers);
         markers.addMarker(new OpenLayers.Marker(lonlat));
       
@@ -100,7 +100,7 @@
                 var output = "";
                 console.log(external.address);
                 $.each(external.address, function(i, result) {
-                    output = output.concat(result,"");
+                    output = output.concat(result," - ");
                 });
                 console.log(output);
                 document.getElementById("address").value = output;
@@ -209,8 +209,8 @@
                 </div>
               </div>
               <div class="large-3 small-3 columns">
-                <label for="exampleFileUpload" class="button expanded">Flyer</label>
-                <input type="file" id="exampleFileUpload" name="flyer" class="show-for-sr">
+                <label for="fileUpload" class="button expanded">Flyer</label>
+                <input type="file" id="fileUpload" name="flyer" class="show-for-sr" accept="image/gif, image/jpeg, image/png">
               </div>
             </div>
 

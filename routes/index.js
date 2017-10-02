@@ -255,14 +255,48 @@ router.get('/organisme', function(req, res, next) {
   } 
 });
 
+// display all event
 router.get('/evenement', function(req, res, next) {
+  var log = "";
   if(req.user){
-    res.render('evenement', {user: 'log' });
-  } else{
-    res.render('evenement', {user: '' });
-  }  
+    log = "log"
+  }
+  Event.find( function(err, result) {
+    if (err) throw err;
+     console.log(result);
+     res.render('evenement_mult', {user: log, event: result });
+  });
+
 });
 
+// display event from id
+router.get('/evenement/:eventId', function(req, res, next) {
+  var log = "";
+  if(req.user){
+    log = "log"
+  }
+
+  // TODO get userName by querying mongo
+  console.log(req.params.eventId);
+  Event.findById(req.params.eventId,function(err, result) {
+    if (err) throw err;
+    console.log(result);
+    res.render('evenement', {user: log, event: result });
+  });
+
+});
+
+// get file from id (streaming)
+router.get('/file/:fileId', function(req, res, next) {
+      //read from mongodb
+      console.log("get file");
+      var readstream = gfs.createReadStream({
+           _id: req.params.fileId
+      });
+      readstream.pipe(res);
+});
+
+// page de création d'événement
 router.get('/creation_evenement', function(req, res, next){ 
   if(req.user){
     res.render('creation_evenement');
@@ -271,6 +305,7 @@ router.get('/creation_evenement', function(req, res, next){
   } 
 });
 
+// deconnexion de l'utilisateur
 router.get('/deconnexion', function(req, res){
   var name = req.user.user;
   console.log("LOGGIN OUT " + req.user.user)
