@@ -23,12 +23,12 @@ English version:
 Website for events in Guyana
 
 Prerequistes:
- *NodeJS
- *npm
- *mongodb
+ * NodeJS
+ * npm
+ * mongodb
 
 Usage:
- npm install
- launch mongodb
- DEBUG=guyana-party:* npm start
- go to 127.0.0.1:3000
+ * npm install
+ * launch mongodb
+ * DEBUG=guyana-party:* npm start
+ * go to 127.0.0.1:3000
