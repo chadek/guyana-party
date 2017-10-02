@@ -28,7 +28,7 @@ Prerequistes:
  * mongodb
 
 Usage:
- npm install
- launch mongodb
- DEBUG=guyana-party:* npm start
- go to 127.0.0.1:3000
+ * npm install
+ * launch mongodb
+ * DEBUG=guyana-party:* npm start
+ * go to 127.0.0.1:3000
