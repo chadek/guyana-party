@@ -10,14 +10,14 @@
 
 
     <!-- Font Foundation -->
-    <link href="foundation-icons/foundation-icons.css" rel="stylesheet">
+    <link href="/foundation-icons/foundation-icons.css" rel="stylesheet">
     <!-- JQuery -->
     <!-- <script src="js/vendor/jquery.min.js"></script> -->
-    <script src="js/vendor/jquery.js"></script>
+    <script src="/js/vendor/jquery.js"></script>
 
     <!-- Date Picker -->
-    <script src="js/foundation-datepicker.js"></script>
-    <script src="js/locales/foundation-datepicker.fr.js"></script>
+    <script src="/js/foundation-datepicker.js"></script>
+    <script src="/js/locales/foundation-datepicker.fr.js"></script>
     <link rel="stylesheet" href="/stylesheets/foundation-datepicker.min.css">
 
     <!-- Horloge Picker -->
@@ -100,7 +100,7 @@
                 var output = "";
                 console.log(external.address);
                 $.each(external.address, function(i, result) {
-                    output = output.concat(result," ");
+                    output = output.concat(result,"");
                 });
                 console.log(output);
                 document.getElementById("address").value = output;
@@ -172,7 +172,7 @@
       <div class="row">
 
         <div class="large-6 columns large-centered">
-          <form>
+          <form action="/creation_evenement/ajouter" enctype="multipart/form-data" method="post" >
             <div class="row">
               <div class="small-12 small-centered columns" style="text-align: center">
                 <h2>Créez votre évènement !</h2>
@@ -210,7 +210,7 @@
               </div>
               <div class="large-3 small-3 columns">
                 <label for="exampleFileUpload" class="button expanded">Flyer</label>
-                <input type="file" id="exampleFileUpload" class="show-for-sr">
+                <input type="file" id="exampleFileUpload" name="flyer" class="show-for-sr">
               </div>
             </div>
 

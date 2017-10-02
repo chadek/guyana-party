@@ -2,24 +2,39 @@ var express = require('express');
 var router = express.Router();
 
 // Require the bcrypt package
-var fs = require('fs');
 var sanitize = require('mongo-sanitize');
 var bcrypt = require('bcrypt');
 var Q = require('q');
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
-//var Grid = require('gridfs-stream');
 
 var mongoose = require('mongoose');
 var url = "mongodb://localhost:27017/guyana-party";
 
+var streamifier = require('streamifier');
+var fs = require('fs');
+var mongoose = require("mongoose");
+var Grid = require('gridfs-stream');
+Grid.mongo = mongoose.mongo;
+var multer  = require('multer')
+
+ 
+var upload = multer({ destination: 'flyers/' })
+
+
 mongoose.connect(url);
 var db = mongoose.connection;
+var gfs = "";
+
 db.on('error', console.error.bind(console, 'error while connecting'));
 db.once('open',function(){
-  //var gfs = Grid(db.db, mongoose.mongo);
+  gfs = Grid(db.db);
   console.log("connection OK");
 });
+
+
+
+
 //===============MONGODB=================
 
 //==Mongoose model==
@@ -32,10 +47,11 @@ var userSchema = mongoose.Schema({
 var eventSchema = mongoose.Schema({
   userId: String,
   name: String,
-  date: Date,
-  address: String,
+  date: String,
+  heure: String,
   longitude: String,
   latitude: String,
+  address: String,
   flyer: String 
 });
 
@@ -123,40 +139,7 @@ function localAuth(login, pwd) {
 
 //====Gestion evenement===//
 
-// create new event
-function newEvent(userId, name, date, longitude, latitude, flyer){
-  console.log("newEvent");    
-  if (flyer != null){ 
-    flyer = newFile(flyer, function(err, result) {
-      var event = new Event({ userId: userId, name: name, date: date, longitude: longitude, latitude: latitude, flyer: flyer});
-      console.log("CREATING EVENT (with flyer) :", name);
-      user.save(function(err, res) {
-        if (err) throw err;
-        console.log("EVENT CREATED");
-      });
-    });
-  } else {
-    var event = new Event({ userId: userId, name: name, date: date, longitude: longitude, latitude: latitude, flyer: flyer});
-    console.log("CREATING EVENT (without flyer) :", name);
-    user.save(function(err, res) {
-      if (err) throw err;
-      console.log("EVENT CREATED");
-    });
-  }
-}
 
-//==========GridFS function=========//
-function newFile(){
-  MongoClient.connect(url, function(err, db) {
-    var writestream = Grid.createWriteStream({
-        filename: name
-    });
-    writestream.on('close', function (file) {
-      callback(null, file);
-    });
-    fs.createReadStream(path).pipe(writestream);
-  });
-}
 
 function getFile(){
 
@@ -312,12 +295,43 @@ router.post('/connection', passport.authenticate('local-signin', {
 );
 
 /* creation d'evenement */
-router.post('/creation_evenement/ajouter', function(req, res, next){ 
-  if(req.user){
-    res.render('creation_evenement');
-  } else {
+router.post('/creation_evenement/ajouter', upload.single('flyer') ,function (req, res, next) { 
+  console.log("ajout");
+  console.log(req.body);
+  console.log(req.file);
+  if(req.user){       
+    // streaming to gridfs
+    //filename to store in mongodb
+    var writestream = gfs.createWriteStream({
+        mode: 'w',
+        filename: req.file.originalname 
+    });
+    streamifier.createReadStream(req.file.buffer).pipe(writestream);
+    
+    writestream.on('close', function (file) {
+      // do something with `file`
+      console.log(file.filename + ' Written To DB');
+
+      console.log("newEvent");    
+      var event = new Event({ userId: req.user._id, 
+                              name: req.body.name, 
+                              date: req.body.date, 
+                              heure: req.body.heure, 
+                              longitude: req.body.longitude, 
+                              latitude: req.body.latitude, 
+                              address: req.body.address, 
+                              flyer: file._id});
+      console.log("CREATING EVENT (with flyer) :", req.body.name);
+      event.save(function(err, result) {
+        if (err) throw err;
+        console.log("EVENT CREATED");
+        res.redirect('/evenement/'+ result._id);
+      });
+    });
+  }else {
     res.redirect('/inscription');
   } 
+
 });
 
 module.exports = router;
