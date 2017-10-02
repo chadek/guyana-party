@@ -23,9 +23,9 @@ English version:
 Website for events in Guyana
 
 Prerequistes:
- *NodeJS
- *npm
- *mongodb
+ * NodeJS
+ * npm
+ * mongodb
 
 Usage:
  npm install
