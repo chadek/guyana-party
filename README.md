@@ -17,3 +17,18 @@ Prérequis:
   * db.createCollection("collectionName")
   * db.user.insert({ fieldName: 'someValue', otherFieldName: 13566 })
   * db.user.find().pretty()
+
+English version:
+
+Website for events in Guyana
+
+Prerequistes:
+ *NodeJS
+ *npm
+ *mongodb
+
+Usage:
+ npm install
+ launch mongodb
+ DEBUG=guyana-party:* npm start
+ go to 127.0.0.1:3000
