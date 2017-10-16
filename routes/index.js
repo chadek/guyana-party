@@ -3,17 +3,17 @@ var router = express.Router();
 var path = require('path');
 
 var passport = require( path.join(__dirname, "../Utils/auth" ) ); 
+var streamifier = require('streamifier');
+var fs = require('fs');
+var multer  = require('multer')
 
 var mongoose = require('mongoose');
 var url = "mongodb://localhost:27017/guyana-party";
 
-var streamifier = require('streamifier');
-var fs = require('fs');
 var Grid = require('gridfs-stream');
 Grid.mongo = mongoose.mongo;
-var multer  = require('multer')
 
- 
+
 var upload = multer({ destination: 'flyers/' })
 
 
@@ -39,19 +39,11 @@ var Event = models.Event;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  if(req.user){
-    res.render('index', {user: req.user });
-  } else{
-    res.render('index', { user: '' });
-  }
+  res.render('index', {user: req.user });
 });
 
 router.get('/recherche', function(req, res, next) {
-  if(req.user){
-    res.render('recherche', {user: req.user });
-  } else{
-    res.render('recherche', {user: '' }); 
-  }
+  res.render('recherche', {user: req.user });
 });
 
 
@@ -64,6 +56,7 @@ router.get('/inscription', function(req, res, next) {
   }
 });
 
+
 router.get('/organisme', function(req, res, next) {
   if(req.user){
     res.render('organisme');
@@ -74,36 +67,61 @@ router.get('/organisme', function(req, res, next) {
 
 // display all event
 router.get('/evenement', function(req, res, next) {
+  console.log(req.user);
   Event.find( function(err, result) {
     if (err) throw err;
-     console.log(result);
-     res.render('evenement_mult', {user: req.user, event: result });
+    console.log(result);
+    res.render('evenement_mult', {user: req.user, event: result });
   });
 
 });
 
 // display event from id
 router.get('/evenement/:eventId', function(req, res, next) {
-
+  
   // TODO get userName by querying mongo
   console.log(req.params.eventId);
   Event.findById(req.params.eventId,function(err, result) {
-    if (err) throw err;
-    console.log(result);
-    res.render('evenement', {user: req.user, event: result });
+    if (err) {
+      // error raised when id doesn't exist => raise 404 error (else throw exception)
+      if (err.name == 'CastError') {
+        var err = new Error('Not Found');
+        err.status = 404;
+        next(err);
+      } else {
+        throw err;
+      }
+    } else {
+      console.log(result);
+      res.render('evenement', {user: req.user, event: result });
+    }
+
   });
 
 });
 
 // get file from id (streaming)
 router.get('/file/:fileId', function(req, res, next) {
-      //read from mongodb
-      console.log("get file");
-      var readstream = gfs.createReadStream({
-           _id: req.params.fileId
-      });
-      readstream.pipe(res);
+  //read from mongodb
+  console.log("get file");
+  var readStream = gfs.createReadStream({
+       _id: req.params.fileId
+  });
+
+  readStream.on('open', function () {
+    // This just pipes the read stream to the response object (which goes to the client)
+    readStream.pipe(res);
+  });
+
+  // This catches any errors that happen while creating the readable stream (usually invalid names) and raise 404 error
+  readStream.on('error', function(err) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+  });
 });
+
+
 
 // page de création d'événement
 router.get('/creation_evenement', function(req, res, next){ 
@@ -184,7 +202,7 @@ router.post('/creation_evenement/ajouter', upload.single('flyer') ,function (req
                                 longitude: req.body.longitude, 
                                 latitude: req.body.latitude, 
                                 address: req.body.address, 
-                                flyer: null});
+                                flyer: 'noFlyer'});
       console.log("CREATING EVENT (without flyer) :", req.body.name);
       event.save(function(err, result) {
         if (err) throw err;

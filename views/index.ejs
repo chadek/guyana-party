@@ -25,7 +25,7 @@
   <body>
 
     <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-      <% if(user != '') { %> 
+      <% if(user) { %> 
         <%- include partials/menu_log.ejs %> 
       <% } else { %>
         <%- include partials/menu.ejs %>
@@ -43,7 +43,7 @@
           <span class="title-bar-title">EventBook</span>
         </div>
         <div class="title-bar-right">
-          <span class="title-bar-title"> <% if(user != '') { %> Connecté en tant que <%= user %> <% } %></span>
+          <span class="title-bar-title"> <% if(user) { %> Connecté en tant que <%= user %> <% } %></span>
         </div>
       </div>
 
