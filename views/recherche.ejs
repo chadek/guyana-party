@@ -22,7 +22,7 @@
 <body>
 
     <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-      <% if(user == 'log') { %> 
+      <% if(user != '') { %> 
         <%- include partials/menu_log.ejs %> 
       <% } else { %>
         <%- include partials/menu.ejs %>

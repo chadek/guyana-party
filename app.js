@@ -4,9 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var session = require('express-session')
-var index = require('./routes/index');
-var users = require('./routes/users');
-var passport = require('passport');
+var index = require( path.join(__dirname, './routes/index') );
+var users = require( path.join(__dirname, './routes/users') );
+var passport = require( path.join(__dirname, './Utils/auth') );
 
 var app = express();
 
@@ -21,7 +21,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: { }
-}))
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(logger('dev'));
