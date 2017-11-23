@@ -56,6 +56,7 @@ passport.use('local-signin', new LocalStrategy(
         if (bcrypt.compareSync(password, result.password)){
           console.log("LOGGED IN AS: " + result.user);
           // sending back user mail as data for cookie (could be also id)
+
           done(null, result.user);
         } else {
           console.log("AUTHENTICATION FAILED");

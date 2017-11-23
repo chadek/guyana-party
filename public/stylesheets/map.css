@@ -1,0 +1,33 @@
+#map {
+	position: relative;
+	top: 0;
+	height: 70vh;
+}
+
+#geolocation {
+	position: absolute;
+	z-index: 2;
+	top: 5px;
+	right: 5px;
+	font-size: 13px;
+	background-color: #3071a9;
+	color: #fff;
+	border: 1px solid #285e8e;
+	padding: 6px 12px;
+	border-radius: 4px;
+}
+
+
+.ol-popup {
+	position: absolute;
+	background-color: white;
+	-webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+	filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+	padding: 15px;
+	border-radius: 10px;
+	border: 1px solid #cccccc;
+	bottom: 12px;
+	left: -50px;
+	min-width: 220px;
+}
+

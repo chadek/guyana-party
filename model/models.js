@@ -13,8 +13,8 @@ module.exports = function(mongoose) {
 	  name: String,
 	  date: String,
 	  heure: String,
-	  longitude: String,
-	  latitude: String,
+	  longitude: Number,
+	  latitude: Number,
 	  address: String,
 	  flyer: String 
 	});

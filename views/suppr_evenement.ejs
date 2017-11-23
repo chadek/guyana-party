@@ -38,9 +38,11 @@
           <span class="title-bar-title"> <% if(user) { %> Connecté en tant que <%= user %> <% } %></span>
         </div>
       </div>
+      <p>
+      <% if(error == 'notAllowed') { %> Vous n'êtes pas le créateur de cet événement, vous ne pouvez pas le supprimer 
+      <% } else { %> Evenement supprimer <% } %>
+      </p>
 
-      <p><%= userProfil.user %></p>
-      <p><%= userProfil.email %></p>
 
     </div> <!-- end off-cavenas -->
 

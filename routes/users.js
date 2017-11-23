@@ -18,7 +18,8 @@ router.get('/:username', function(req, res, next) {
 	User.findOne({user: req.params.username}, function(err, result) {
 	    if (err) throw err;
 	    if (null != result) {
-	    	res.render('user',{user: result});
+	    	var userFound = {user: result.user, email: result.email}
+	    	res.render('user',{user: req.user , userProfil: userFound});
 		} else {
 	        var err = new Error('Not Found');
         	err.status = 404;

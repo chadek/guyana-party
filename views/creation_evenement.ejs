@@ -95,6 +95,7 @@
             var str3 = "&lon=";
             var str4 = lonlat.lon.toString();
 
+            // get JSON from nominatim
             var queryUrl = str1.concat(str2, str3, str4);
             $.getJSON(queryUrl, function(external) {
                 var output = "";
@@ -172,7 +173,7 @@
       <div class="row">
 
         <div class="large-6 columns large-centered">
-          <form action="/creation_evenement/ajouter" enctype="multipart/form-data" method="post" >
+          <form action="/evenement/creation/ajouter" enctype="multipart/form-data" method="post" >
             <div class="row">
               <div class="small-12 small-centered columns" style="text-align: center">
                 <h2>Créez votre évènement !</h2>

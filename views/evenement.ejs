@@ -59,7 +59,7 @@
       				<h3><%= event.name %> </h3>
       			</div>
             <div class="columns large-2 medium-2 small-2">
-              <a class="button fi-pencil" href="#"></a>
+              <a class="button fi-pencil" href="/evenement/id/<%= event._id %>/delete"></a>
             </div>
       		</div>
 
@@ -110,7 +110,7 @@
        
         var lonlat = new OpenLayers.LonLat( <%= event.longitude %>, <%= event.latitude %> ).transform(epsg4326, projectTo);
         
-        markers.addMarker(new OpenLayers.Marker(lonlat));   
+        markers.addMarker(new OpenLayers.Marker(lonlat));
         
         var zoom=14;
         map.setCenter (lonlat, zoom);

@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session')
 var index = require( path.join(__dirname, './routes/index') );
 var users = require( path.join(__dirname, './routes/users') );
+var event = require( path.join(__dirname, './routes/event') );
 var passport = require( path.join(__dirname, './Utils/auth') );
 
 var app = express();
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/evenement', event);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
