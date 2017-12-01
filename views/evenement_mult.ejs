@@ -101,8 +101,17 @@
 
       <!-- CONTENANT DE LA MAPS -->
       <div id="map">
-        <button id="geolocation">Géolocalisation</button>
         <div id="popup" class="ol-popup"></div>
+        <nav id="map_menu">
+          <button id="geolocation">Géolocalisation</button>
+          <ul class="no_list">
+            <form>
+              <li><input type="checkbox" name="layer" id="party" checked=""> Festif </li>
+              <li><input type="checkbox" name="layer" id="sport" checked=""> Sportif </li>
+              <li><input type="checkbox" name="layer" id="culture" checked=""> Culturel </li>
+            </form>
+          </ul>
+        </nav>
       </div>
 
   	  <script>

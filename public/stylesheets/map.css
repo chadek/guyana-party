@@ -5,10 +5,6 @@
 }
 
 #geolocation {
-	position: absolute;
-	z-index: 2;
-	top: 5px;
-	right: 5px;
 	font-size: 13px;
 	background-color: #3071a9;
 	color: #fff;
@@ -17,6 +13,18 @@
 	border-radius: 4px;
 }
 
+#map_menu {
+	position: absolute;
+	z-index: 2;
+	top: 5px;
+	right: 5px;
+}
+
+.no_list {
+ 	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
 
 .ol-popup {
 	position: absolute;

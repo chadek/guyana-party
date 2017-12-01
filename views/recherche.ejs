@@ -15,7 +15,7 @@
 
     <!-- MAPS -->
     <link rel="stylesheet" href="/stylesheets/ol.css" type="text/css">
-    <script src="js/ol.js"></script>
+    <script src="js/ol/ol.js"></script>
 
 
 </head>
@@ -105,9 +105,34 @@
 			        source: source
 			      });
 
-			      
+			      var styleCache = {};
 			      var clusters = new ol.layer.Vector({
-			        source: clusterSource
+			        source: clusterSource,
+			        style: function(feature) {
+			          var size = feature.get('features').length;
+			          var style = styleCache[size];
+			          if (!style) {
+			            style = new ol.style.Style({
+			              image: new ol.style.Circle({
+			                radius: 10,
+			                stroke: new ol.style.Stroke({
+			                  color: '#fff'
+			                }),
+			                fill: new ol.style.Fill({
+			                  color: '#3399CC'
+			                })
+			              }),
+			              text: new ol.style.Text({
+			                text: size.toString(),
+			                fill: new ol.style.Fill({
+			                  color: '#fff'
+			                })
+			              })
+			            });
+			            styleCache[size] = style;
+			          }
+			          return style;
+			        }
 			      });
 
 			      var raster = new ol.layer.Tile({

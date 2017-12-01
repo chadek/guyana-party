@@ -17,6 +17,7 @@ mongoose.connect(url, { useMongoClient: true });
 var db = mongoose.connection;
 var gfs = "";
 
+// init gidfs (use to store data in db)
 db.on('error', console.error.bind(console, 'error while connecting to DB'));
 db.once('open',function(){
   gfs = Grid(db.db);
@@ -77,7 +78,7 @@ router.get('/id/:eventId', function(req, res, next) {
 });
 
 
-// delete event if user login 
+// delete event if user log in (delete also flyer) 
 router.get('/id/:eventId/delete', function(req, res, next) {
   if(req.user){
 	  console.log(req.params.eventId);
@@ -131,7 +132,7 @@ router.get('/id/:eventId/delete', function(req, res, next) {
 });
 
 
-// page de création d'événement
+// return new event page if log else redirect to inscription page
 router.get('/creation', function(req, res, next){ 
   if(req.user){
     res.render('creation_evenement');
@@ -140,7 +141,8 @@ router.get('/creation', function(req, res, next){
   } 
 });
 
-/* creation d'evenement */
+
+// Creat event with data send by user 
 router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, next) { 
   console.log("ajout");
   console.log(req.body);
