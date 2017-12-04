@@ -37,8 +37,8 @@ $(document).ready(function(){
 		tracking: true
 	});
 
-
-	var test = new ol.style.Style({
+	// style applied to usr location point
+	var style_geo = new ol.style.Style({
 		image: new ol.style.Circle({
 			radius: 7,
 			stroke: new ol.style.Stroke({
@@ -62,7 +62,7 @@ $(document).ready(function(){
 					text: 'Votre localisation est <br>'
 				})]
 			}),
-			style: test
+			style: style_geo
 		});
 
 		map.addLayer(point);
@@ -93,10 +93,13 @@ $(document).ready(function(){
 				
 
 		});
-		clusterise()
+		// call clusterise after features[] is filled
+		clusterise();
 	});
 
+    // use to wait features array to be filled
     function clusterise(){
+
 		var source = new ol.source.Vector({
 			features: features
 		});
@@ -112,28 +115,37 @@ $(document).ready(function(){
 		var clusters = new ol.layer.Vector({
 	        source: clusterSource,
 	        style: function(feature) {
-	        	console.log(feature);
+
 	            var size = feature.get('features').length;
 	            var style = styleCache[size];
+	        	console.log(size);
+	        	// style applied to cluster points
 	            if (!style) {
-	               	style = new ol.style.Style({
-	                  	image: new ol.style.Circle({
-	                    	radius: 10,
-	                    	stroke: new ol.style.Stroke({
-	                      		color: '#fff'
-	                    	}),
-	                    	fill: new ol.style.Fill({
-	                      		color: '#3399CC'
-	                    	})
-	                  	}),
-	                  	text: new ol.style.Text({
-	                    	text: size.toString(),
-	                    	fill: new ol.style.Fill({
-	                      		color: '#fff'
-	                    	})
-	                  	})
-	                });
-	                styleCache[size] = style;
+	            	// if point merged, apply different style and display number of merged point
+	            	if (size>1) {
+		               	style = new ol.style.Style({
+		                  	image: new ol.style.Circle({
+		                    	radius: 10,
+		                    	stroke: new ol.style.Stroke({
+		                      		color: '#fff'
+		                    	}),
+		                    	fill: new ol.style.Fill({
+		                      		color: '#3399CC'
+		                    	})
+		                  	}),
+		                  	text: new ol.style.Text({
+		                    	text: size.toString(),
+		                    	fill: new ol.style.Fill({
+		                      		color: '#fff'
+		                    	})
+		                  	})
+		                });
+		                styleCache[size] = style;
+	            	} else {
+	            		// apply style for not merged point
+	            		style = style_geo;
+		                styleCache[size] = style;
+		            }
 	            }
 	            return style;
 	        }
@@ -143,7 +155,7 @@ $(document).ready(function(){
     }
 
 
-
+    // get popup div in html
 	var element = $('#popup').get(0);
 
 	var popup = new ol.Overlay({
@@ -151,34 +163,46 @@ $(document).ready(function(){
 		stopEvent: false
 	});
 
+	// add popup to map
 	map.addOverlay(popup);
 
+	// generate popup content to display on click on event point
 	map.on('click', function(evt){
 		console.log("click")
+		// get object cliked
 		var feature = map.forEachFeatureAtPixel(evt.pixel,
 			function(feature){
 				return feature;
 		});
 		
+		
 		if (feature){
 			var event = feature;
+			// if object is cluster
 			if (feature.values_.features){
+				// if no point merge display popup 
+				if (feature.values_.features.length==1){
+					event = feature.values_.features[0];
+					var coordinate = event.getGeometry().getCoordinates();
+					$(element).show();
+					$(element).html(
 
-				event = feature.values_.features[0];
+					"<div style='font-size:.8em'>"+
 
-				var coordinate = event.getGeometry().getCoordinates();
-				$(element).show();
-				$(element).html(
-
-				"<div style='font-size:.8em'>"+
-
-	             	"<font size=\"4\">" + event.get('name') +"</font>"+
-	              	"<br>Organisateur: <a href=\"/users/"+event.get('user')+"\"> "+ event.get('user')+" </a>"+
-	              	"<br>A "+event.get('heure')+ " le " + event.get('date')+
-	              	"<br> <a href=\"/evenement/id/"+event.get('id')+"\"> Plus d'info </a>"+
-	            "</div>");
-				popup.setPosition(coordinate);
+		             	"<font size=\"4\">" + event.get('name') +"</font>"+
+		              	"<br>Organisateur: <a href=\"/users/"+event.get('user')+"\"> "+ event.get('user')+" </a>"+
+		              	"<br>A "+event.get('heure')+ " le " + event.get('date')+
+		              	"<br> <a href=\"/evenement/id/"+event.get('id')+"\"> Plus d'info </a>"+
+		            "</div>");
+					popup.setPosition(coordinate);
+				} else {
+					// if point merge, zoom and center on point cluster cliked
+					view.setCenter(event.getGeometry().getCoordinates());
+					view.setZoom(view.getZoom()+1);
+					$(element).hide();
+				}
 			} else {
+				// display usr location popup (with coordinates)
 				var coordinate = event.getGeometry().getCoordinates();
 				var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326'));
 				$(element).show();
@@ -191,6 +215,7 @@ $(document).ready(function(){
 				popup.setPosition(coordinate);
 			}
 		}else{
+			// else hide all popup
 			$(element).hide();
 		}
 	});
