@@ -51,7 +51,7 @@ $(document).ready(function(){
 		})
 	})
 
-	// Create a point with usr location on click on geolocation button. 
+	// Create a point with usr location on click on geolocation button.
 	$('#geolocation').click(function(){
 		var position = geolocation.getPosition();
 		console.log(position)
@@ -71,16 +71,16 @@ $(document).ready(function(){
 		return false;
 	});
 
-	// query db to get all event then store in features tab 
+	// query db to get all event then store in features tab
 	var features = [];
     $.getJSON("/evenement/all", function(external) {
 		$.each(external, function(i, result) {
-		    
+
 			var position = ol.proj.fromLonLat([result.longitude, result.latitude]);
 			//console.log(result.longitude);
 			//console.log(result.latitude);
 			//console.log(result);
-			
+
 			features[i] = new ol.Feature({
 				geometry: new ol.geom.Point(position),
 				id: result._id,
@@ -88,9 +88,9 @@ $(document).ready(function(){
 				name: result.name,
 				date: result.date,
 				heure: result.heure,
-				address: result.address 
+				address: result.address
 			})
-				
+
 
 		});
 		// call clusterise after features[] is filled
@@ -174,15 +174,16 @@ $(document).ready(function(){
 			function(feature){
 				return feature;
 		});
-		
-		
+
+
 		if (feature){
 			var event = feature;
 			// if object is cluster
-			if (feature.values_.features){
-				// if no point merge display popup 
-				if (feature.values_.features.length==1){
-					event = feature.values_.features[0];
+			console.log(feature.P.features.length)
+			if (feature.P.features){
+				// if no point merge display popup
+				if (feature.P.features.length==1){
+					event = feature.P.features[0];
 					var coordinate = event.getGeometry().getCoordinates();
 					$(element).show();
 					$(element).html(

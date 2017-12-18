@@ -19,18 +19,18 @@
     <script src="js/vendor/jquery.js"></script>
 
     <script src="js/ol/mult-map.js"></script>
-    <script src="js/ol/ol-debug.js"></script>
+    <script src="https://openlayers.org/en/v4.6.4/build/ol.js"></script>
   </head>
   <body>
 
     <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-      <% if(user) { %> 
-        <%- include partials/menu_log.ejs %> 
+      <% if(user) { %>
+        <%- include partials/menu_log.ejs %>
       <% } else { %>
         <%- include partials/menu.ejs %>
       <% } %>
-    </div>      
-    
+    </div>
+
     <div class="off-canvas-content" data-off-canvas-content>
     <!-- Contenu de la page -->
       <div class="title-bar">
@@ -52,10 +52,10 @@
 
             <!-- remplacer par flyer -->
       			<div style="background: url(' /images/rectangle-1.jpg '); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;">
-              
-      			</div>	
+
+      			</div>
       		</div>
-      		
+
       	</div>
 
       	<div class="columns large-8 medium-8">
@@ -74,7 +74,7 @@
       				<a href="/organisme"> Organisme </a>
       			</div>
       			<div class="columns large-6 medium-6">
-      				Lieu 
+      				Lieu
       			</div>
       		</div>
       		<div class="row">
@@ -84,7 +84,7 @@
               <i class="fi-rss"></i>
             </div>
       			<div class="columns large-4 medium-4 small-4">
-      				Date 
+      				Date
       			</div>
       			<div class="columns large-4 medium-4 small-4">
       				heure
@@ -119,13 +119,13 @@
         var distance = 40;
 
         // query db to get all events then store in array
-        var features = [];    
+        var features = [];
         $.getJSON("/evenement/all", function(external) {
           var output = "";
           $.each(external, function(i, result) {
             var pos = ol.proj.fromLonLat([result.longitude, result.latitude]);
             console.log(pos);
-            
+
             features[i] = new ol.Feature(new ol.geom.Point(pos));
           });
           init();
@@ -186,10 +186,10 @@
         }
 
 
-       
+
   	  	// http://harrywood.co.uk/maps/examples/openlayers/marker-array.view.html
 
-        // create map 
+        // create map
         map = new OpenLayers.Map("map",{projection:"EPSG:3857"});
 
         var osm = new OpenLayers.Layer.OSM();
@@ -197,26 +197,26 @@
         // transform coordinates to map coord
         var toMercator = OpenLayers.Projection.transforms['EPSG:4326']['EPSG:3857'];
         var center = toMercator({x:-52.300900,y:4.931609});
-        
+
         // query db to get all events then store in array
-        var features = [];    
+        var features = [];
         $.getJSON("/evenement/all", function(external) {
           var output = "";
           $.each(external, function(i, result) {
-            
+
             features[i] = new OpenLayers.Feature.Vector(
                     toMercator(new OpenLayers.Geometry.Point(
                         result.longitude,
-                        result.latitude )), 
+                        result.latitude )),
                     {
                       user: result.user,
                       name: result.name,
                       date: result.name,
                       heure: result.heure,
-                      address: result.address 
+                      address: result.address
                     }, {
                         fillColor : '#008040',
-                        fillOpacity : 0.8,                    
+                        fillOpacity : 0.8,
                         strokeColor : "#ee9900",
                         strokeOpacity : 1,
                         strokeWidth : 1,
@@ -229,7 +229,7 @@
 
 
         console.log(features);
-            
+
         function diplayMap(){
           // create the layer with listeners to create and destroy popups
           var vector = new OpenLayers.Layer.Vector("Points",{
@@ -264,8 +264,8 @@
           var selector = new OpenLayers.Control.SelectFeature(vector,{
               clickout:true,
               autoActivate:true
-          }); 
-          
+          });
+
           map.addLayers([osm, vector]);
           map.addControl(selector);
           map.setCenter(new OpenLayers.LonLat(center.x,center.y), 13);
@@ -273,7 +273,7 @@
 
 
 */
-        
+
 
 /*
 
@@ -283,20 +283,20 @@
         map = new OpenLayers.Map("mapdiv");
         map.addLayer(markers);
         map.addLayer(new OpenLayers.Layer.OSM());
-        
+
         epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
         projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
-       
+
         var lonlat = new OpenLayers.LonLat(  -52.300900, 4.931609).transform(epsg4326, projectTo);
-        
-        // 
+
+        //
 
 
 
 
-  
+
         // TODO query db to display event data on marker click
-        
+
         // center on last event displayed
         var zoom=14;
         map.setCenter(lonlat, zoom);
@@ -304,16 +304,16 @@
 
 
 */
-        
 
 
 
-  		  //end  
+
+  		  //end
   	  </script>
 
     </div> <!-- of canvas content -->
     <script src="/js/foundation.min.js"></script>
-    
+
     <script>
       $(document).foundation();
     </script>
