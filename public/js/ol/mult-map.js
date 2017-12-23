@@ -175,15 +175,16 @@ $(document).ready(function(){
 				return feature;
 		});
 
-
+		// if we clicked on some point (feature not empty)
 		if (feature){
-			var event = feature;
+			// get cluster
+			var event = feature.get('features');
+			console.log(event)
 			// if object is cluster
-			console.log(feature.P.features.length)
-			if (feature.P.features){
+			if (event){
 				// if no point merge display popup
-				if (feature.P.features.length==1){
-					event = feature.P.features[0];
+				if (event.length==1){
+					event = event[0];
 					var coordinate = event.getGeometry().getCoordinates();
 					$(element).show();
 					$(element).html(
@@ -198,13 +199,13 @@ $(document).ready(function(){
 					popup.setPosition(coordinate);
 				} else {
 					// if point merge, zoom and center on point cluster cliked
-					view.setCenter(event.getGeometry().getCoordinates());
+					view.setCenter(feature.getGeometry().getCoordinates());
 					view.setZoom(view.getZoom()+1);
 					$(element).hide();
 				}
 			} else {
 				// display usr location popup (with coordinates)
-				var coordinate = event.getGeometry().getCoordinates();
+				var coordinate = feature.getGeometry().getCoordinates();
 				var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326'));
 				$(element).show();
 				$(element).html(
