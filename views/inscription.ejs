@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vinila</title>
+    <title>Guyana Party</title>
     <link rel="shortcut icon" href="/images/favicon.ico"/>
     <link rel="stylesheet" href="/stylesheets/foundation.css" />
     <!-- Font Foundation -->
@@ -27,7 +27,7 @@
           <span class="title-bar-title">Menu</span>
         </div>
         <div class="title-bar-title" style="position: absolute; left: 44%;">
-          <span class="title-bar-title">Vinila</span>
+          <span class="title-bar-title">Connection</span>
         </div>
         <!-- <div class="title-bar-right">
           <span class="title-bar-title">Se connecter</span>
@@ -37,12 +37,14 @@
       
       
       <div class="row" style="vertical-align: middle;">
+        
         <div class="large-6 medium-6 small-12 medium-centered large-centered columns">
           <div class="expanded button-group-option" data-grouptype="OU">
-            <button class="button success radius" onclick="connection()">Connexion</button>
-            <button class="button primary radius" onclick="inscription()">Inscription</button>
+            <button id="b_connection" class="button success radius" onclick="connection()">Connection</button>
+            <button id="b_inscription" class="button primary radius" onclick="inscription()">Inscription</button>
           </div>
 
+          <!-- Connection -->
           <form action="/connection" method="post">
             <div class="form-icons" id="connection" style="display: <% if(errorCause == 'user' || errorCause == 'email') { %> none <% } else { %> block <% }%>">
 
@@ -66,13 +68,20 @@
             </div>
           </form>
 
+          <!-- Inscription -->
           <form action="/inscription/ajouter" method="post">
             <div class="form-icons" id="inscription" style="display: <% if(errorCause == 'user' || errorCause == 'email') { %> block <% } else { %> none <% }%>">
               <div class="input-group">
                 <span class="input-group-label" <% if(errorCause == 'user') { %> style="color:red" <% } %> >
                   <i class="fi-torsos-male-female size-36"></i>
                 </span>
-                <input class="input-group-field" type="text" placeholder="Nom du compte" name="newUser">
+                <input class="input-group-field" type="text" placeholder="Nom de l'organisateur" name="newUser">
+              </div>
+
+              <div class="input-group">
+                <input type="radio" name="type_orga" value="Association"><label>Association</label>
+                <input type="radio" name="type_orga" value="Entreprise"><label>Entreprise</label>
+                <input type="radio" name="type_orga" value="Particulier"><label>Particulier</label>
               </div>
 
               <div class="input-group">
@@ -103,6 +112,10 @@
               var y = document.getElementById('inscription');
               x.style.display = 'none';
               y.style.display = 'block';
+              document.getElementById("b_inscription").classList.remove('primary');
+              document.getElementById("b_connection").classList.remove('success');
+              document.getElementById("b_inscription").classList.add('success');
+              document.getElementById("b_connection").classList.add('primary');
             }
 
             function connection(){
@@ -110,6 +123,10 @@
               var y = document.getElementById('inscription');
               x.style.display = 'block';
               y.style.display = 'none';
+              document.getElementById("b_connection").classList.remove('primary');
+              document.getElementById("b_inscription").classList.remove('success');
+              document.getElementById("b_connection").classList.add('success');
+              document.getElementById("b_inscription").classList.add('primary');
             }
 
           </script>
