@@ -34,7 +34,8 @@
     
     <div class="off-canvas-content" data-off-canvas-content>
     <!-- Contenu de la page -->
-      <div class="title-bar">
+    <div data-sticky-container>
+      <div class="title-bar" data-sticky-on="small" data-sticky data-options="marginTop:0;" style="width:100%; z-index: 100000">
         <div class="title-bar-left">
           <button class="menu-icon" type="button" data-open="offCanvas"></button>
           <span class="title-bar-title">Menu</span>
@@ -46,6 +47,7 @@
           <span class="title-bar-title"> <% if(user) { %> Connecté en tant que <%= user %> <% } %></span>
         </div>
       </div>
+    </div>
 
       <div class="hero">
         <div class="column large-centered large-8 hero_content">
@@ -96,6 +98,7 @@
           <div class="row">
             <div class="columns large-8 large-centered medium-8 medium-centered" >
               <p>Pour votre association ou votre entreprise, gérez vos évènements public sur votre page dédié</p>
+              <p> </p>
             </div>
             <div class="columns large-6 medium-6 small-12 large-centered medium-centered">
               <a class="button expanded alert" href="inscription">Connexion / Inscription</a>
