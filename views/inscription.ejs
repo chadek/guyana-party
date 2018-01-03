@@ -20,21 +20,8 @@
     </div>    
 
     <div class="off-canvas-content" data-off-canvas-content>
-    <!-- Contenu de la page -->
-      <div class="title-bar">
-        <div class="title-bar-left">
-          <button class="menu-icon" type="button" data-open="offCanvas"></button>
-          <span class="title-bar-title">Menu</span>
-        </div>
-        <div class="title-bar-title" style="position: absolute; left: 44%;">
-          <span class="title-bar-title">Connection</span>
-        </div>
-        <!-- <div class="title-bar-right">
-          <span class="title-bar-title">Se connecter</span>
-        </div> -->
-      </div>
+        <%- include partials/top-bar.ejs %>
 
-      
       
       <div class="row" style="vertical-align: middle;">
         
@@ -78,7 +65,10 @@
                 <input class="input-group-field" type="text" placeholder="Nom de l'organisateur" name="newUser">
               </div>
 
-              <div class="input-group">
+              <div class="input-group row">
+                <div class="columns ">
+                  
+                </div>
                 <input type="radio" name="type_orga" value="Association"><label>Association</label>
                 <input type="radio" name="type_orga" value="Entreprise"><label>Entreprise</label>
                 <input type="radio" name="type_orga" value="Particulier"><label>Particulier</label>
