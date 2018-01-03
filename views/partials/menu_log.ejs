@@ -1,13 +1,13 @@
 <div class="row">
 	<div class="column">
 		<!-- <img src="/images/rectangle-1.jpg" min-width="100px" min-height="100px"> -->
-		<div onclick="location.href='/organisme'" style="background: url('/images/rectangle-1.jpg'); background-size: cover; background-position: center; height: 20vh; text-align: center; display: flex; align-items: center; justify-content: center;"></div>	
+		<div onclick="location.href='/users/<%= user %>'" style="background: url('/images/rectangle-1.jpg'); background-size: cover; background-position: center; height: 20vh; text-align: center; display: flex; align-items: center; justify-content: center;"></div>
 	</div>
 </div>
 
 <div class="row">
 	<ul class="vertical menu">
-		<li style="text-transform: capitalize"><a href="/organisme"><%= user %></a></li>
+		<li style="text-transform: capitalize"><a href="/users/<%= user %>"><%= user %></a></li>
 		<li><a href="/">Accueil</a></li>
 		<li><a href="/evenement/creation">Créez votre évènement</a></li>
 		<li><a href="/recherche">Recherche</a></li>

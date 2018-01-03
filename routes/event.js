@@ -51,7 +51,7 @@ router.get('/', function(req, res, next) {
 
 // display event from id
 router.get('/id/:eventId', function(req, res, next) {
-  
+
   // TODO get userName by querying mongo
   console.log(req.params.eventId);
   Event.findById(req.params.eventId,function(err, result) {
@@ -78,7 +78,7 @@ router.get('/id/:eventId', function(req, res, next) {
 });
 
 
-// delete event if user log in (delete also flyer) 
+// delete event if user log in (delete also flyer)
 router.get('/id/:eventId/delete', function(req, res, next) {
   if(req.user){
 	  console.log(req.params.eventId);
@@ -112,7 +112,7 @@ router.get('/id/:eventId/delete', function(req, res, next) {
       		} else {
       			console.log('no flyer to remove');
       		}
-      		// remove event 
+      		// remove event
 	      	Event.remove({_id: result._id},function(err, result) {
 	      		if (err) throw err;
 			      res.render('suppr_evenement', {user: req.user, error: req.session.error});
@@ -133,17 +133,17 @@ router.get('/id/:eventId/delete', function(req, res, next) {
 
 
 // return new event page if log else redirect to inscription page
-router.get('/creation', function(req, res, next){ 
+router.get('/creation', function(req, res, next){
   if(req.user){
-    res.render('creation_evenement');
+    res.render('creation_evenement', {user: req.user});
   } else {
     res.redirect('/inscription');
-  } 
+  }
 });
 
 
-// Creat event with data send by user 
-router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, next) { 
+// Creat event with data send by user
+router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, next) {
   console.log("ajout");
   console.log(req.body);
   console.log(req.file);
@@ -155,22 +155,22 @@ router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, nex
       //filename to store in mongodb
       var writestream = gfs.createWriteStream({
           mode: 'w',
-          filename: req.file.originalname 
+          filename: req.file.originalname
       });
       streamifier.createReadStream(req.file.buffer).pipe(writestream);
-      
+
       writestream.on('close', function (file) {
         // do something with `file`
         console.log(file.filename + ' Written To DB');
 
-        console.log("newEvent");    
-        var event = new Event({ user: req.user, 
-                                name: req.body.name, 
-                                date: req.body.date, 
-                                heure: req.body.heure, 
-                                longitude: req.body.longitude, 
-                                latitude: req.body.latitude, 
-                                address: req.body.address, 
+        console.log("newEvent");
+        var event = new Event({ user: req.user,
+                                name: req.body.name,
+                                date: req.body.date,
+                                heure: req.body.heure,
+                                longitude: req.body.longitude,
+                                latitude: req.body.latitude,
+                                address: req.body.address,
                                 flyer: file._id});
         console.log("CREATING EVENT (with flyer) :", req.body.name);
         event.save(function(err, result) {
@@ -181,13 +181,13 @@ router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, nex
       });
     } else {
       // if no flyer, store null in flyer field
-      var event = new Event({ user: req.user, 
-                                name: req.body.name, 
-                                date: req.body.date, 
-                                heure: req.body.heure, 
-                                longitude: req.body.longitude, 
-                                latitude: req.body.latitude, 
-                                address: req.body.address, 
+      var event = new Event({ user: req.user,
+                                name: req.body.name,
+                                date: req.body.date,
+                                heure: req.body.heure,
+                                longitude: req.body.longitude,
+                                latitude: req.body.latitude,
+                                address: req.body.address,
                                 flyer: 'noFlyer'});
       console.log("CREATING EVENT (without flyer) :", req.body.name);
       event.save(function(err, result) {
@@ -198,7 +198,7 @@ router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, nex
     }
   }else {
     res.redirect('/inscription');
-  } 
+  }
 
 });
 
