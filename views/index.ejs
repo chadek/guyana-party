@@ -34,20 +34,7 @@
     
     <div class="off-canvas-content" data-off-canvas-content>
     <!-- Contenu de la page -->
-    <div data-sticky-container>
-      <div class="title-bar" data-sticky-on="small" data-sticky data-options="marginTop:0;" style="width:100%; z-index: 100000">
-        <div class="title-bar-left">
-          <button class="menu-icon" type="button" data-open="offCanvas"></button>
-          <span class="title-bar-title">Menu</span>
-        </div>
-        <div class="title-bar-title" style="position: absolute; left: 44%;">
-          <span class="title-bar-title">EventBook</span>
-        </div>
-        <div class="title-bar-right">
-          <span class="title-bar-title"> <% if(user) { %> Connecté en tant que <%= user %> <% } %></span>
-        </div>
-      </div>
-    </div>
+      <%- include partials/top-bar.ejs %>
 
       <div class="hero">
         <div class="column large-centered large-8 hero_content">
