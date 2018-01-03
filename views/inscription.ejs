@@ -41,7 +41,7 @@
         <div class="large-6 medium-6 small-12 medium-centered large-centered columns">
           <div class="expanded button-group-option" data-grouptype="OU">
             <button id="b_connection" class="button success radius" onclick="connection()">Connection</button>
-            <button id="b_inscription" class="button primary radius" onclick="inscription()">Inscription</button>
+            <button id="b_inscription" class="button secondary radius" onclick="inscription()">Inscription</button>
           </div>
 
           <!-- Connection -->
@@ -61,7 +61,7 @@
                 </span>
                 <input class="input-group-field" type="password" placeholder="Password" name="pwd">
               </div>
-            <button class="button expanded">Sign Up</button>
+            <button class="button expanded success">Sign Up</button>
             <p>
               <%= status %>
             </p>
@@ -97,9 +97,15 @@
                 </span>
                 <input class="input-group-field" type="password" placeholder="Password" name="newPassword">
               </div>
-              <button class="button expanded">Sign In</button>
+              <div class="input-group">
+                <span class="input-group-label">
+                  <i class="fi-key size-36"></i>
+                </span>
+                <input class="input-group-field" type="password" placeholder="Password" name="newPassword">
+              </div>
+              <button class="button expanded success">Sign In</button>
               <p>
-              <%= status %>
+                <%= status %>
               </p>
             </div>
 
@@ -112,10 +118,10 @@
               var y = document.getElementById('inscription');
               x.style.display = 'none';
               y.style.display = 'block';
-              document.getElementById("b_inscription").classList.remove('primary');
+              document.getElementById("b_inscription").classList.remove('secondary');
               document.getElementById("b_connection").classList.remove('success');
               document.getElementById("b_inscription").classList.add('success');
-              document.getElementById("b_connection").classList.add('primary');
+              document.getElementById("b_connection").classList.add('secondary');
             }
 
             function connection(){
@@ -123,10 +129,10 @@
               var y = document.getElementById('inscription');
               x.style.display = 'block';
               y.style.display = 'none';
-              document.getElementById("b_connection").classList.remove('primary');
+              document.getElementById("b_connection").classList.remove('secondary');
               document.getElementById("b_inscription").classList.remove('success');
               document.getElementById("b_connection").classList.add('success');
-              document.getElementById("b_inscription").classList.add('primary');
+              document.getElementById("b_inscription").classList.add('secondary');
             }
 
           </script>
