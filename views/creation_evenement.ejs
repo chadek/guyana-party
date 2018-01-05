@@ -151,24 +151,16 @@
   <body onload="init_maps();">
 
     <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-      <%- include partials/menu_log.ejs %>
-    </div>  
-
+      <% if(user) { %> 
+        <%- include partials/menu_log.ejs %> 
+      <% } else { %>
+        <%- include partials/menu.ejs %>
+      <% } %>
+    </div> 
     
     <div class="off-canvas-content" data-off-canvas-content>
     <!-- Contenu de la page -->
-      <div class="title-bar">
-        <div class="title-bar-left">
-          <button class="menu-icon" type="button" data-open="offCanvas"></button>
-          <span class="title-bar-title">Menu</span>
-        </div>
-        <div class="title-bar-title" style="position: absolute; left: 44%;">
-          <span class="title-bar-title">Et un évènement de plus!</span>
-        </div>
-        <!-- <div class="title-bar-right">
-          <span class="title-bar-title">Se connecter</span>
-        </div> -->
-      </div>
+      <%- include partials/top-bar.ejs %>
 
       <div class="row">
 
@@ -235,11 +227,20 @@
             <!-- MAPS -->
 
             <div class="row">
-              <div class="large-12 columns">
+              <div class="column">
                 <div id="basicMap" ></div>
                 <button onclick="alert(map.getCenter().transform(projmerc, proj4326).toString())">Show position (map center)</button>
               </div>
-            </div>  
+            </div>
+
+            <div class="row">
+              <div class="column">
+                <label>
+                  Que proposez vous ?
+                  <textarea placeholder="Un petit wiki dans un évènement"></textarea>
+                </label>
+              </div>
+            </div> 
           </form>
       </div>
 
