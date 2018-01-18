@@ -5,14 +5,16 @@ $(document).ready(function(){
 	var POS = ol.proj.fromLonLat([-52.300900, 4.931609]) ;
 	console.log(POS);
 	// Cluster distance (max distance between points before merging)
-	var DISTANCE = 10;
+	var DISTANCE = 5;
+	var MAXZOOM = 20;
+	var MINZOOM = 2;
 
 	// View declaration (set max/min zoom and init position)
 	view = new ol.View({
 		center: POS,
 		zoom: 13,
-		maxZoom: 18,
-		minZoom: 2
+		maxZoom: MAXZOOM,
+		minZoom: MINZOOM
 	});
 
 	// set a base layer countaining osm map
@@ -210,6 +212,18 @@ $(document).ready(function(){
 		              	"<br> <a href=\"/evenement/id/"+event.get('id')+"\"> Plus d'info </a>"+
 		            "</div>");
 					popup.setPosition(coordinate);
+				} else if (view.getZoom() == MAXZOOM){
+					console.log("view 1");
+					var html_popup = "<div style='font-size:.8em'>"
+					var coordinate = event[0].getGeometry().getCoordinates();
+					event.forEach(function(element) {
+						html_popup = html_popup + "<a href=\"/evenement/id/"+element.get('id')+"\">"+element.get('name')+"</a> organisé par <a href=\"/users/"+element.get('user')+"\">"+element.get('user')+"</a> <br>";
+					});
+					html_popup = html_popup + "</div>";
+					$(element).show();
+					$(element).html(html_popup);
+					popup.setPosition(coordinate);
+
 				} else {
 					// if point merge, zoom and center on point cluster cliked
 					view.setCenter(feature.getGeometry().getCoordinates());
@@ -233,6 +247,4 @@ $(document).ready(function(){
 			$(element).hide();
 		}
 	});
-
-
 });
