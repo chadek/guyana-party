@@ -18,24 +18,16 @@
 <body>
     
     <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-      <%- include partials/menu_log.ejs %> 
-    </div> 
-
-    <div class="off-canvas-content" data-off-canvas-content>
-    <!-- Contenu de la page -->
-
-    <!-- TITLE -->
-        <div data-sticky-container>
-            <div class="title-bar" data-sticky data-options="marginTop:0;" style="width:100%; z-index: 100000">
-                <div class="title-bar-left">
-                  <button class="menu-icon" type="button" data-open="offCanvas"></button>
-                  <span class="title-bar-title">Menu</span>
-                </div>
-                <div class="title-bar-title" style="position: absolute; left: 44%;">
-                  <span class="title-bar-title">Nom Organisme</span>
-                </div>
-            </div>
-        </div>
+            <% if(user) { %> 
+                <%- include partials/menu_log.ejs %> 
+            <% } else { %>
+                <%- include partials/menu.ejs %>
+            <% } %>
+        </div> 
+        
+        <div class="off-canvas-content" data-off-canvas-content>
+        <!-- Contenu de la page -->
+            <%- include partials/top-bar.ejs %>
 
         <!-- <div class="row">
         	<div class="column large-12 hide-for-medium-only hide-for-small-only">Large</div>
@@ -46,7 +38,7 @@
         <div class="row">
         	<div class="columns large-4">
         		<div class="row">
-                    <div style="background: url('rectangle-1.jpg'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;">
+                    <div style="background: url('/images/rectangle-1.jpg'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;">
                     </div>
             	</div>
            	</div>
