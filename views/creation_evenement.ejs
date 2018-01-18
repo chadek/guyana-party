@@ -8,6 +8,9 @@
     <!-- Foundation -->
     <link rel="stylesheet" href="/stylesheets/foundation.css" />
 
+    <!-- map css -->
+    <link href="/stylesheets/ol.css" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/map.css" />
 
     <!-- Font Foundation -->
     <link href="/foundation-icons/foundation-icons.css" rel="stylesheet">
@@ -22,142 +25,30 @@
 
     <!-- Horloge Picker -->
     <link rel="stylesheet" type="text/css" href="/stylesheets/jquery-clockpicker.min.css">
+
+    <!-- init and check form script -->
+    <script src="/js/views/creat-init.js"></script>
     <!-- MAPS -->
-    <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+    <script src="/js/ol/creat-map.js"></script>
+    <script src="https://openlayers.org/en/v4.6.4/build/ol.js"></script>
     <script>
       function init_focus(){
         document.recherche_evenenement.input_recherche.focus();
       }
     </script>
-    <script>
-
-     
-      projmerc = new OpenLayers.Projection("EPSG:900913");
-      proj4326 = new OpenLayers.Projection("EPSG:4326");    
-     
-
-      function init_maps() {
-        // OpenStreetMap
-        // pour faire du geocoding : http://wiki.openstreetmap.org/wiki/FR:Nominatim
-        // http://nominatim.openstreetmap.org/search?q=address+address&format=jsonv2 ==> renvoie du json avec les coordonné
-        // on peut faire l'inverse : http://nominatim.openstreetmap.org/reverse?
-
-        map = new OpenLayers.Map("basicMap",
-            {
-            projection: projmerc,
-            displayProjection: proj4326,
-            controls:
-                [
-                new OpenLayers.Control.MousePosition(),
-                new OpenLayers.Control.KeyboardDefaults(),
-                new OpenLayers.Control.Navigation(),
-                ],
-            }
-        );
-        var maplayer = new OpenLayers.Layer.OSM("OpenStreetMap");
-        map.addLayer(maplayer);
-        // 4.93291,-52.30087
-        // set coordinate for marker and center
-        var lonlat = new OpenLayers.LonLat(-52.30087, 4.93291);
-        console.log(lonlat.lat);
-
-        var markers = new OpenLayers.Layer.Markers( "Markers" );
-        map.addLayer(markers);
-        markers.addMarker(new OpenLayers.Marker(lonlat));
-      
-        map.setCenter(lonlat.transform(proj4326,projmerc), 14);
-        
-
-        var mappanel = new OpenLayers.Control.Panel();
-        map.addControl(mappanel);
-        
-
-        var events = map.events;
-        events.register("mousedown",map,function(e){
-            console.log("mousedown");
-            return true;
-        },true); 
-
-        events.register('click', map, function(e) {
-            lonlat = map.getLonLatFromPixel(e.xy);
-
-            lonlat = lonlat.transform(projmerc,proj4326);
-
-            // update coordinate fields
-            document.getElementById("latitude").value = lonlat.lat;
-            document.getElementById("longitude").value = lonlat.lon;
-            console.log(lonlat.lat);
-            console.log(lonlat.lon);
-
-            //geocoding from nominatim
-            var str1 = "http://nominatim.openstreetmap.org/reverse?format=json&lat="
-            var str2 = lonlat.lat.toString();
-            var str3 = "&lon=";
-            var str4 = lonlat.lon.toString();
-
-            // get JSON from nominatim
-            var queryUrl = str1.concat(str2, str3, str4);
-            $.getJSON(queryUrl, function(external) {
-                var output = "";
-                console.log(external.address);
-                $.each(external.address, function(i, result) {
-                    output = output.concat(result," - ");
-                });
-                console.log(output);
-                document.getElementById("address").value = output;
-            });
-
-            lonlat.transform(proj4326,projmerc);
-            markers.clearMarkers();
-            markers.addMarker(new OpenLayers.Marker(lonlat));
-            return true;
-        },true); 
-
-        events.register('zoomend', map, function(ev){
-          
-          console.log("zoom");
-          markers.addMarker(new OpenLayers.Marker(lonlat));
-          return true;
-        },true);
-
-      }
-
-      function addNewMarker(pos){
-
-      }
-    </script>
-    <style type="text/css">
-      .olControlPanel{
-          display: block;
-          left: 50%;
-          top: 50%;
-
-          width: 100px;
-          height: 100px;
-          /* CAUTION: you will have to adjust the negative margins left and top to background image width and height */
-          margin: -90px 0px 0px -52px;
-          /*background: url("/foundation-icons/svgs/fi-marker.svg");*/
-
-
-        }
-      #basicMap{
-        height:300px;
-      }
-
-    </style>
 
 
   </head>
-  <body onload="init_maps();">
+  <body>
 
     <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-      <% if(user) { %> 
-        <%- include partials/menu_log.ejs %> 
+      <% if(user) { %>
+        <%- include partials/menu_log.ejs %>
       <% } else { %>
         <%- include partials/menu.ejs %>
       <% } %>
-    </div> 
-    
+    </div>
+
     <div class="off-canvas-content" data-off-canvas-content>
     <!-- Contenu de la page -->
       <%- include partials/top-bar.ejs %>
@@ -198,7 +89,7 @@
                   <span class="input-group-label">
                     <i class="fi-clock size-36"></i>
                   </span>
-                  <input type="text" class="input-group-field" value="12:21" name="heure">
+                  <input type="text" class="input-group-field" value="12:21" name="heure" id="heure">
                 </div>
               </div>
               <div class="large-3 small-3 columns">
@@ -218,7 +109,7 @@
                 </div>
               </div>
               <div class="large-3 small-4 columns">
-                <input type="submit" value="Créer" name="creation_event" class="success button expanded">
+                <input type="submit" value="Créer" class="success button expanded">
                   <!-- <i class="fi-plus size-36"></i> Créer
                 </input> -->
               </div>
@@ -228,8 +119,7 @@
 
             <div class="row">
               <div class="column">
-                <div id="basicMap" ></div>
-                <button onclick="alert(map.getCenter().transform(projmerc, proj4326).toString())">Show position (map center)</button>
+                <div id="map" style="height: 45vh;"></div>
               </div>
             </div>
 
@@ -237,10 +127,10 @@
               <div class="column">
                 <label>
                   Que proposez vous ?
-                  <textarea placeholder="Un petit wiki dans un évènement"></textarea>
                 </label>
+                <input type="text" placeholder="Un petit wiki dans un évènement" name="description"></input>
               </div>
-            </div> 
+            </div>
           </form>
       </div>
 
@@ -248,7 +138,7 @@
     </div>
 
 
-    
+
     <script src="/js/foundation.min.js"></script>
 
     <!-- Clock Picker -->

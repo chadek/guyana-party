@@ -8,6 +8,9 @@
     <!-- Foundation -->
     <link rel="stylesheet" href="/stylesheets/foundation.css" />
 
+    <!-- map css -->
+    <link rel="stylesheet" href="/stylesheets/map.css" />
+    <link href="/stylesheets/ol.css" rel="stylesheet">
 
     <!-- Font Foundation -->
     <link href="/foundation-icons/foundation-icons.css" rel="stylesheet">
@@ -18,13 +21,13 @@
   <body>
 
     <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-      <% if(user) { %> 
-        <%- include partials/menu_log.ejs %> 
+      <% if(user) { %>
+        <%- include partials/menu_log.ejs %>
       <% } else { %>
         <%- include partials/menu.ejs %>
       <% } %>
-    </div>      
-    
+    </div>
+
     <div class="off-canvas-content" data-off-canvas-content>
     <!-- Contenu de la page -->
       <div class="title-bar">
@@ -46,10 +49,10 @@
 
             <!-- remplacer par flyer -->
       			<div style="background: url(' /file/<%= event.flyer %> '); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;">
-              
-      			</div>	
+
+      			</div>
       		</div>
-      		
+
       	</div>
 
       	<div class="columns large-8 medium-8">
@@ -68,7 +71,7 @@
       				<a href="/organisme">Organisme</a>
       			</div>
       			<div class="columns large-6 medium-6">
-      				<%= event.address %> 
+      				<%= event.address %>
       			</div>
       		</div>
       		<div class="row">
@@ -78,15 +81,15 @@
               <i class="fi-rss"></i>
             </div>
       			<div class="columns large-4 medium-4 small-4">
-      				<%= event.date %> 
+      				<%= event.date %>
       			</div>
       			<div class="columns large-4 medium-4 small-4">
-      				<%= event.heure %> 
+      				<%= event.heure %>
       			</div>
       		</div>
       		<div class="row">
       			<div class="column">
-      				Lorsque l'on organise un évènement, il faut faire passer un message clair à propos des activités ou en général de l'information sur le déroulement. il vaut mieux prévenir au maximum !
+      				<%= event.description %>
       			</div>
       		</div>
       	</div>
@@ -94,53 +97,19 @@
       </div>
 
       <!-- CONTENANT DE LA MAPS -->
-      <div id="mapdiv" style="height: 70vh;"></div>
-  	  <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-  	  <script>
-  	  	// http://harrywood.co.uk/maps/examples/openlayers/marker-array.view.html
-
-        var markers = new OpenLayers.Layer.Markers( "Markers" );
-
-        map = new OpenLayers.Map("mapdiv");
-        map.addLayer(markers);
-        map.addLayer(new OpenLayers.Layer.OSM());
-        
-        epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
-        projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
-       
-        var lonlat = new OpenLayers.LonLat( <%= event.longitude %>, <%= event.latitude %> ).transform(epsg4326, projectTo);
-        
-        markers.addMarker(new OpenLayers.Marker(lonlat));
-        
-        var zoom=14;
-        map.setCenter (lonlat, zoom);
-
-        /*
-  	    var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
-    		var markers = [
-      			[ -52.300900, 4.931609],
-      			[ -52.302558, 4.931768],
-      			[ -52.302166, 4.930635]
-    		  ];
-    		for (var i=0; i<markers.length; i++) {
-    			var lon = markers[i][0];
-    			var lat = markers[i][1];
-
-    			var feature = new OpenLayers.Feature.Vector(
-    				new OpenLayers.Geometry.Point( lon, lat ).transform(epsg4326, projectTo),
-    				{description: "marker number " + i} ,
-    				{externalGraphic: '/foundation-icons/svgs/fi-marker.svg', graphicHeight: 60, graphicWidth: 60, graphicXOffset:-30, graphicYOffset:-50  }
-    				);             
-    			vectorLayer.addFeatures(feature);
-    		}
-  		  map.addLayer(vectorLayer);
-        */
-  		  //end  
-  	  </script>
+      <div id="map" style="height: 64vh;"></div>
 
     </div> <!-- of canvas content -->
     <script src="/js/foundation.min.js"></script>
-    
+
+    <!-- Map script -->
+    <script  type="text/javascript" src="/js/ol/id-map.js"></script>
+    <script src="https://openlayers.org/en/v4.6.4/build/ol.js"></script>
+    <script type="text/javascript">
+       PLOTBYID.init([<%= event.longitude %>, <%= event.latitude %>]);
+       PLOTBYID.plotEvent();
+    </script>
+
     <script>
       $(document).foundation();
     </script>

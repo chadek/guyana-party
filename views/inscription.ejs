@@ -9,22 +9,22 @@
     <link rel="stylesheet" href="/stylesheets/foundation.css" />
     <!-- Font Foundation -->
     <link href="/foundation-icons/foundation-icons.css" rel="stylesheet">
-    
+
     <!-- Style pour le OR -->
     <link rel="stylesheet" type="text/css" href="/stylesheets/OR.css">
   </head>
   <body>
-    
+
     <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
         <%- include partials/menu.ejs %>
-    </div>    
+    </div>
 
     <div class="off-canvas-content" data-off-canvas-content>
         <%- include partials/top-bar.ejs %>
 
-      
+
       <div class="row" style="vertical-align: middle;">
-        
+
         <div class="large-6 medium-6 small-12 medium-centered large-centered columns">
           <div class="expanded button-group-option" data-grouptype="OU">
             <button id="b_connection" class="button success radius" onclick="connection()">Connection</button>
@@ -33,7 +33,7 @@
 
           <!-- Connection -->
           <form action="/connection" method="post">
-            <div class="form-icons" id="connection" style="display: <% if(errorCause == 'user' || errorCause == 'email') { %> none <% } else { %> block <% }%>">
+            <div class="form-icons" id="connection" style="display: <% if(errorCause == 'user' || errorCause == 'email' || errorCause == 'password') { %> none <% } else { %> block <% }%>">
 
               <div class="input-group">
                 <span class="input-group-label">
@@ -57,7 +57,7 @@
 
           <!-- Inscription -->
           <form action="/inscription/ajouter" method="post">
-            <div class="form-icons" id="inscription" style="display: <% if(errorCause == 'user' || errorCause == 'email') { %> block <% } else { %> none <% }%>">
+            <div class="form-icons" id="inscription" style="display: <% if(errorCause == 'user' || errorCause == 'email' || errorCause == 'password') { %> block <% } else { %> none <% }%>">
               <div class="input-group">
                 <span class="input-group-label" <% if(errorCause == 'user') { %> style="color:red" <% } %> >
                   <i class="fi-torsos-male-female size-36"></i>
@@ -67,8 +67,8 @@
 
               <div class="input-group row">
                 <div class="columns ">
-                  
-                </div>
+
+              </div>
                 <input type="radio" name="type_orga" value="Association"><label>Association</label>
                 <input type="radio" name="type_orga" value="Entreprise"><label>Entreprise</label>
                 <input type="radio" name="type_orga" value="Particulier"><label>Particulier</label>
@@ -82,13 +82,13 @@
               </div>
 
               <div class="input-group">
-                <span class="input-group-label">
+                <span class="input-group-label" <% if(errorCause == 'password') { %> style="color:red" <% } %>>
                   <i class="fi-key size-36"></i>
                 </span>
                 <input class="input-group-field" type="password" placeholder="Password" name="newPassword">
               </div>
               <div class="input-group">
-                <span class="input-group-label">
+                <span class="input-group-label" <% if(errorCause == 'password') { %> style="color:red" <% } %>>
                   <i class="fi-key size-36"></i>
                 </span>
                 <input class="input-group-field" type="password" placeholder="Password" name="renewPassword">
@@ -99,7 +99,7 @@
               </p>
             </div>
 
-            
+
           </form>
 
           <script type="text/javascript">

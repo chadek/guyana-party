@@ -31,7 +31,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use('local-signin', new LocalStrategy(
   { usernameField: 'login', passwordField: 'pwd',passReqToCallback : true}, //allows us to pass back the request to the callback
   function(req, username, password, done) {
-    
+
     // prevent noSQL injection
     username = sanitize(username);
     password = sanitize(password);
@@ -75,12 +75,20 @@ passport.use('local-signup', new LocalStrategy(
   {usernameField: 'newUser', passwordField: 'newPassword', passReqToCallback : true}, //allows us to pass back the request to the callback
   function(req, username,  password, done) {
 
-    
+
     // prevent noSQL injection
     email = sanitize(req.body.newEmail);
     username = sanitize(username);
     password = sanitize(password);
+    checkPassword = sanitize(req.body.renewPassword)
 
+    if (password != checkPassword){
+      console.log("PASSWORDS DOESN'T MATCH");
+      req.session.error = 'Passwords does not match, please try again'; //inform user could not log them in
+      req.session.errorCause = 'password';
+      done(null, false);
+      return
+    }
 
     console.log("localReg");
     // look for the username
@@ -97,7 +105,7 @@ passport.use('local-signup', new LocalStrategy(
 
             // salt and hash password before sending it to database
             password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-            var user = new User({ user: username, email: email, password: password});
+            var user = new User({ user: username, email: email, password: password, type: req.body.type_orga});
 
             console.log("CREATING USER:", username);
 
@@ -106,7 +114,7 @@ passport.use('local-signup', new LocalStrategy(
               console.log("USER CREATED");
               done(null, user.user);
             });
-            
+
           } else {
             console.log("EMAIL ALREADY EXIST:", result.email);
             req.session.error = 'That email is already in use, please try a different one.'; //inform user could not log them in
@@ -176,7 +184,7 @@ function localReg(newUser, newEmail, newPassword) {
   });
   return deferred.promise;
 }
-  
+
 // authentification d'utilisateur
 function localAuth(login, pwd) {
   // prevent noSQL injection

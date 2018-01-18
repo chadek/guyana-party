@@ -1,11 +1,12 @@
-//====Mongoose model==== 
+//====Mongoose model====
 module.exports = function(mongoose) {
 
 //==Mongoose model==
 	var userSchema = mongoose.Schema({
 	  user: String,
 	  email: String,
-	  password: String
+	  password: String,
+		type: String
 	});
 
 	var eventSchema = mongoose.Schema({
@@ -16,12 +17,13 @@ module.exports = function(mongoose) {
 	  longitude: Number,
 	  latitude: Number,
 	  address: String,
-	  flyer: String 
+		description: String,
+	  flyer: String
 	});
 
     // try to get model, if doesn't exit then init with schema
-    let models 
-    try {
+  let models
+  try {
 	    models = {
 			User: mongoose.model('User'),
 			Event: mongoose.model('Event')

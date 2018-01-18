@@ -5,14 +5,16 @@ $(document).ready(function(){
 	var POS = ol.proj.fromLonLat([-52.300900, 4.931609]) ;
 	console.log(POS);
 	// Cluster distance (max distance between points before merging)
-	var DISTANCE = 10;
+	var DISTANCE = 5;
+	var MAXZOOM = 20;
+	var MINZOOM = 2;
 
 	// View declaration (set max/min zoom and init position)
 	view = new ol.View({
 		center: POS,
 		zoom: 13,
-		maxZoom: 18,
-		minZoom: 2
+		maxZoom: MAXZOOM,
+		minZoom: MINZOOM
 	});
 
 	// set a base layer countaining osm map
@@ -38,7 +40,7 @@ $(document).ready(function(){
 	});
 
 	// style applied to usr location point
-	var style_geo = new ol.style.Style({
+	var style_evt = new ol.style.Style({
 		image: new ol.style.Circle({
 			radius: 7,
 			stroke: new ol.style.Stroke({
@@ -47,6 +49,20 @@ $(document).ready(function(){
 			}),
 			fill: new ol.style.Fill({
 				color: 'rgba(52, 152, 219, 0.5)'
+			})
+		})
+	})
+
+	// style applied to usr location point
+	var style_geo = new ol.style.Style({
+		image: new ol.style.Circle({
+			radius: 7,
+			stroke: new ol.style.Stroke({
+				color: '#339900',
+				width: 2
+			}),
+			fill: new ol.style.Fill({
+				color: '#bbff99'
 			})
 		})
 	})
@@ -98,7 +114,7 @@ $(document).ready(function(){
 	});
 
     // use to wait features array to be filled
-    function clusterise(){
+	function clusterise(){
 
 		var source = new ol.source.Vector({
 			features: features
@@ -143,7 +159,7 @@ $(document).ready(function(){
 		                styleCache[size] = style;
 	            	} else {
 	            		// apply style for not merged point
-	            		style = style_geo;
+	            		style = style_evt;
 		                styleCache[size] = style;
 		            }
 	            }
@@ -152,7 +168,7 @@ $(document).ready(function(){
 	  	});
 
 		map.addLayer(clusters);
-    }
+  }
 
 
     // get popup div in html
@@ -188,7 +204,6 @@ $(document).ready(function(){
 					var coordinate = event.getGeometry().getCoordinates();
 					$(element).show();
 					$(element).html(
-
 					"<div style='font-size:.8em'>"+
 
 		             	"<font size=\"4\">" + event.get('name') +"</font>"+
@@ -197,10 +212,22 @@ $(document).ready(function(){
 		              	"<br> <a href=\"/evenement/id/"+event.get('id')+"\"> Plus d'info </a>"+
 		            "</div>");
 					popup.setPosition(coordinate);
+				} else if (view.getZoom() == MAXZOOM){
+					console.log("view 1");
+					var html_popup = "<div style='font-size:.8em'>"
+					var coordinate = event[0].getGeometry().getCoordinates();
+					event.forEach(function(element) {
+						html_popup = html_popup + "<a href=\"/evenement/id/"+element.get('id')+"\">"+element.get('name')+"</a> organisé par <a href=\"/users/"+element.get('user')+"\">"+element.get('user')+"</a> <br>";
+					});
+					html_popup = html_popup + "</div>";
+					$(element).show();
+					$(element).html(html_popup);
+					popup.setPosition(coordinate);
+
 				} else {
 					// if point merge, zoom and center on point cluster cliked
 					view.setCenter(feature.getGeometry().getCoordinates());
-					view.setZoom(view.getZoom()+1);
+					view.setZoom(view.getZoom()+3);
 					$(element).hide();
 				}
 			} else {
@@ -209,7 +236,6 @@ $(document).ready(function(){
 				var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326'));
 				$(element).show();
 				$(element).html(
-
 				"<div style='font-size:.8em'>"+
 	             	"<font size=\"3\"> Votre localisation (basé sur votre adresse IP)</font>"+
 	              	"<br><code>" + hdms + "</code>"+
@@ -221,6 +247,4 @@ $(document).ready(function(){
 			$(element).hide();
 		}
 	});
-
-
 });
