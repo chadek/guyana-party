@@ -7,18 +7,19 @@
     <title>event page</title>
     <!-- Foundation -->
     <link rel="stylesheet" href="/stylesheets/foundation.css" />
-    <link href="/stylesheets/ol.css" rel="stylesheet">
 
     <!-- map css -->
     <link rel="stylesheet" href="/stylesheets/map.css" />
+    <link href="/stylesheets/ol.css" rel="stylesheet">
+
 
 
     <!-- Font Foundation -->
     <link href="/foundation-icons/foundation-icons.css" rel="stylesheet">
     <!-- JQuery -->
-    <script src="js/vendor/jquery.js"></script>
+    <script src="/js/vendor/jquery.js"></script>
 
-    <script src="js/ol/mult-map.js"></script>
+    <script src="/js/ol/mult-map.js"></script>
     <script src="https://openlayers.org/en/v4.6.4/build/ol.js"></script>
     <!-- <script src="js/ol/ol.js"></script> -->
   </head>
@@ -101,7 +102,7 @@
       </div>
 
       <!-- CONTENANT DE LA MAPS -->
-      <div id="map">
+      <div id="map" style="height: 64vh;">
         <div id="popup" class="ol-popup"></div>
         <nav id="map_menu">
           <button id="geolocation">Géolocalisation</button>
@@ -114,203 +115,6 @@
           </ul>
         </nav>
       </div>
-
-  	  <script>
- /*
-        var distance = 40;
-
-        // query db to get all events then store in array
-        var features = [];
-        $.getJSON("/evenement/all", function(external) {
-          var output = "";
-          $.each(external, function(i, result) {
-            var pos = ol.proj.fromLonLat([result.longitude, result.latitude]);
-            console.log(pos);
-
-            features[i] = new ol.Feature(new ol.geom.Point(pos));
-          });
-          init();
-        });
-
-        function init(){
-          var source = new ol.source.Vector({
-            features: features
-          });
-
-          var clusterSource = new ol.source.Cluster({
-            distance: distance,
-            source: source
-          });
-
-          var styleCache = {};
-          var clusters = new ol.layer.Vector({
-            source: clusterSource,
-            style: function(feature) {
-              var size = feature.get('features').length;
-              var style = styleCache[size];
-              if (!style) {
-                style = new ol.style.Style({
-                  image: new ol.style.Circle({
-                    radius: 10,
-                    stroke: new ol.style.Stroke({
-                      color: '#fff'
-                    }),
-                    fill: new ol.style.Fill({
-                      color: '#3399CC'
-                    })
-                  }),
-                  text: new ol.style.Text({
-                    text: size.toString(),
-                    fill: new ol.style.Fill({
-                      color: '#fff'
-                    })
-                  })
-                });
-                styleCache[size] = style;
-              }
-              return style;
-            }
-          });
-
-          var raster = new ol.layer.Tile({
-            source: new ol.source.OSM()
-          });
-
-          var map = new ol.Map({
-            layers: [raster, clusters],
-            target: 'map',
-            view: new ol.View({
-              center: [0, 0],
-              zoom: 2
-            })
-          });
-        }
-
-
-
-  	  	// http://harrywood.co.uk/maps/examples/openlayers/marker-array.view.html
-
-        // create map
-        map = new OpenLayers.Map("map",{projection:"EPSG:3857"});
-
-        var osm = new OpenLayers.Layer.OSM();
-
-        // transform coordinates to map coord
-        var toMercator = OpenLayers.Projection.transforms['EPSG:4326']['EPSG:3857'];
-        var center = toMercator({x:-52.300900,y:4.931609});
-
-        // query db to get all events then store in array
-        var features = [];
-        $.getJSON("/evenement/all", function(external) {
-          var output = "";
-          $.each(external, function(i, result) {
-
-            features[i] = new OpenLayers.Feature.Vector(
-                    toMercator(new OpenLayers.Geometry.Point(
-                        result.longitude,
-                        result.latitude )),
-                    {
-                      user: result.user,
-                      name: result.name,
-                      date: result.name,
-                      heure: result.heure,
-                      address: result.address
-                    }, {
-                        fillColor : '#008040',
-                        fillOpacity : 0.8,
-                        strokeColor : "#ee9900",
-                        strokeOpacity : 1,
-                        strokeWidth : 1,
-                        pointRadius : 8
-                    });
-          });
-          diplayMap()
-
-        });
-
-
-        console.log(features);
-
-        function diplayMap(){
-          // create the layer with listeners to create and destroy popups
-          var vector = new OpenLayers.Layer.Vector("Points",{
-            eventListeners:{
-                'featureselected':function(evt){
-                    var feature = evt.feature;
-                    var popup = new OpenLayers.Popup.FramedCloud("popup",
-                        OpenLayers.LonLat.fromString(feature.geometry.toShortString()),
-                        null,
-                        "<div style='font-size:.8em'>"+
-
-                           "<font size=\"4\">" + feature.attributes.name +"</font>"+
-                          "<br>Createur: <a href=\"/users/"+feature.attributes.user+"\"> "+ feature.attributes.user+" </a>"+
-                        "</div>",
-                        null,
-                        true
-                    );
-                    feature.popup = popup;
-                    map.addPopup(popup);
-                },
-                'featureunselected':function(evt){
-                    var feature = evt.feature;
-                    map.removePopup(feature.popup);
-                    feature.popup.destroy();
-                    feature.popup = null;
-                }
-            }
-          });
-          vector.addFeatures(features);
-
-          // create the select feature control
-          var selector = new OpenLayers.Control.SelectFeature(vector,{
-              clickout:true,
-              autoActivate:true
-          });
-
-          map.addLayers([osm, vector]);
-          map.addControl(selector);
-          map.setCenter(new OpenLayers.LonLat(center.x,center.y), 13);
-        }
-
-
-*/
-
-
-/*
-
-
-        var markers = new OpenLayers.Layer.Markers( "Markers" );
-
-        map = new OpenLayers.Map("mapdiv");
-        map.addLayer(markers);
-        map.addLayer(new OpenLayers.Layer.OSM());
-
-        epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
-        projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
-
-        var lonlat = new OpenLayers.LonLat(  -52.300900, 4.931609).transform(epsg4326, projectTo);
-
-        //
-
-
-
-
-
-        // TODO query db to display event data on marker click
-
-        // center on last event displayed
-        var zoom=14;
-        map.setCenter(lonlat, zoom);
-
-
-
-*/
-
-
-
-
-  		  //end
-  	  </script>
 
     </div> <!-- of canvas content -->
     <script src="/js/foundation.min.js"></script>

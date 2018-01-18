@@ -38,7 +38,7 @@ $(document).ready(function(){
 	});
 
 	// style applied to usr location point
-	var style_geo = new ol.style.Style({
+	var style_evt = new ol.style.Style({
 		image: new ol.style.Circle({
 			radius: 7,
 			stroke: new ol.style.Stroke({
@@ -47,6 +47,20 @@ $(document).ready(function(){
 			}),
 			fill: new ol.style.Fill({
 				color: 'rgba(52, 152, 219, 0.5)'
+			})
+		})
+	})
+
+	// style applied to usr location point
+	var style_geo = new ol.style.Style({
+		image: new ol.style.Circle({
+			radius: 7,
+			stroke: new ol.style.Stroke({
+				color: '#339900',
+				width: 2
+			}),
+			fill: new ol.style.Fill({
+				color: '#bbff99'
 			})
 		})
 	})
@@ -98,7 +112,7 @@ $(document).ready(function(){
 	});
 
     // use to wait features array to be filled
-    function clusterise(){
+	function clusterise(){
 
 		var source = new ol.source.Vector({
 			features: features
@@ -143,7 +157,7 @@ $(document).ready(function(){
 		                styleCache[size] = style;
 	            	} else {
 	            		// apply style for not merged point
-	            		style = style_geo;
+	            		style = style_evt;
 		                styleCache[size] = style;
 		            }
 	            }
@@ -152,7 +166,7 @@ $(document).ready(function(){
 	  	});
 
 		map.addLayer(clusters);
-    }
+  }
 
 
     // get popup div in html
@@ -188,7 +202,6 @@ $(document).ready(function(){
 					var coordinate = event.getGeometry().getCoordinates();
 					$(element).show();
 					$(element).html(
-
 					"<div style='font-size:.8em'>"+
 
 		             	"<font size=\"4\">" + event.get('name') +"</font>"+
@@ -200,7 +213,7 @@ $(document).ready(function(){
 				} else {
 					// if point merge, zoom and center on point cluster cliked
 					view.setCenter(feature.getGeometry().getCoordinates());
-					view.setZoom(view.getZoom()+1);
+					view.setZoom(view.getZoom()+3);
 					$(element).hide();
 				}
 			} else {
@@ -209,7 +222,6 @@ $(document).ready(function(){
 				var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326'));
 				$(element).show();
 				$(element).html(
-
 				"<div style='font-size:.8em'>"+
 	             	"<font size=\"3\"> Votre localisation (basé sur votre adresse IP)</font>"+
 	              	"<br><code>" + hdms + "</code>"+

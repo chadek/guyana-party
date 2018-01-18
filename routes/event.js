@@ -5,8 +5,6 @@ var streamifier = require('streamifier');
 var fs = require('fs');
 var multer  = require('multer')
 var mongoose = require('mongoose');
-
-
 var Grid = require('gridfs-stream');
 Grid.mongo = mongoose.mongo;
 
@@ -29,8 +27,10 @@ db.once('open',function(){
 var models = require( path.join(__dirname, '../model/models' ))(mongoose);
 var Event = models.Event;
 
+// set destination for uploaded flyer
 var upload = multer({ destination: 'flyers/' })
 
+/*  ---------- JSON REQUEST ----- */
 
 //return all event in json
 router.get('/all', function(req, res, next) {
@@ -42,6 +42,8 @@ router.get('/all', function(req, res, next) {
   });
 });
 
+/*  ---------- GET REQUEST ----- */
+
 // display all event store in db on a map
 router.get('/', function(req, res, next) {
   console.log(req.user);
@@ -49,32 +51,30 @@ router.get('/', function(req, res, next) {
 });
 
 
-// display event from id
+// render event page passing event id and user
+// event id is used by front end js to query server with the event id
 router.get('/id/:eventId', function(req, res, next) {
-
   // TODO get userName by querying mongo
   console.log(req.params.eventId);
   Event.findById(req.params.eventId,function(err, result) {
     if (err) {
       // error raised when id doesn't exist => raise 404 error (else throw exception)
       if (err.name == 'CastError') {
-        var err = new Error('Not Found');
+        var err = new Error('CastError');
         err.status = 404;
         next(err);
       } else {
         throw err;
       }
     } else if (result == null) {
-	    	var err = new Error('Not Found');
+	    	var err = new Error('Result Null');
         err.status = 404;
         next(err);
     } else {
       console.log(result);
       res.render('evenement', {user: req.user, event: result });
     }
-
   });
-
 });
 
 
@@ -128,7 +128,6 @@ router.get('/id/:eventId/delete', function(req, res, next) {
 	} else {
     res.redirect('/inscription');
 	}
-
 });
 
 
@@ -142,6 +141,7 @@ router.get('/creation', function(req, res, next){
 });
 
 
+/*  ---------- POST REQUEST ----- */
 // Creat event with data send by user
 router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, next) {
   console.log("ajout");
@@ -171,6 +171,7 @@ router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, nex
                                 longitude: req.body.longitude,
                                 latitude: req.body.latitude,
                                 address: req.body.address,
+                                description: req.body.description,
                                 flyer: file._id});
         console.log("CREATING EVENT (with flyer) :", req.body.name);
         event.save(function(err, result) {
@@ -188,6 +189,7 @@ router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, nex
                                 longitude: req.body.longitude,
                                 latitude: req.body.latitude,
                                 address: req.body.address,
+                                description: req.body.description,
                                 flyer: 'noFlyer'});
       console.log("CREATING EVENT (without flyer) :", req.body.name);
       event.save(function(err, result) {
@@ -199,9 +201,7 @@ router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, nex
   }else {
     res.redirect('/inscription');
   }
-
 });
-
 
 
 module.exports = router;
