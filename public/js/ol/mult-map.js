@@ -5,7 +5,7 @@ $(document).ready(function(){
 	var POS = ol.proj.fromLonLat([-52.300900, 4.931609]) ;
 	console.log(POS);
 	// Cluster distance (max distance between points before merging)
-	var DISTANCE = 5;
+	var DISTANCE = 10;
 	var MAXZOOM = 20;
 	var MINZOOM = 2;
 

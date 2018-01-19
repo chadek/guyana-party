@@ -17,13 +17,13 @@
   <body>
 
     <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-			<% if(user) { %> 
-				<%- include partials/menu_log.ejs %> 
+			<% if(user) { %>
+				<%- include partials/menu_log.ejs %>
 			<% } else { %>
 				<%- include partials/menu.ejs %>
 			<% } %>
-		</div> 
-		
+		</div>
+
 		<div class="off-canvas-content" data-off-canvas-content>
 		<!-- Contenu de la page -->
 			<%- include partials/top-bar.ejs %>
@@ -42,9 +42,9 @@
 								<h4><%= userProfil.user.charAt(0).toUpperCase() + userProfil.user.slice(1); %></h4></div>
 							</div>
 						</div>
-						
 
-					<%= if(user){%>	
+
+					<% if(user){%>
 					<div class="row">
 						<div class="columns large-6">
 							<div class="input-group">
@@ -59,10 +59,10 @@
 							<a class="button warning" href="organisme.php">Modifier vos informations</a>
 						</div>
 					</div>
-					<=% }else{ %>
+					<% }else{ %>
 
 
-					<=% } %>
+					<% } %>
 				</div>
 			</div>
 
