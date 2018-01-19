@@ -20,9 +20,7 @@ Prérequis:
   * db.user.find().pretty()
 
 
-## Architecture
-
-###MVC (Model Vue Controleur)
+##MVC (Model Vue Controleur)
 
 L'application est construite suivant le modèle MVC:
 
@@ -34,60 +32,60 @@ Les script js et les CSS chargés par les vues sont présent dans /public
 
 Chaque vu contenant une map à un script js qui lui est associé (/public/js/ol)
 
-###Gestion d'utilisateur
+##Gestion d'utilisateur
 
 Authentification et enregistrement d'utilisateur gérer par le module **passport** (/Utils/auth.js) TODO vérification d'email par XXXXXX.
 
 Une fois authentifier on produit un cookie que l'utilisateur transmet pour chaque nouvelle requête lui permettant d'accéder au parties à accès restreint.
 
-###Vues
+##Vues
 
-####Partial
+**Partial**
 
 Définis des éléments partiels intégrés à plusieurs vues : bandeau, menu latéral
 
-####evenement.ejs
+**evenement.ejs**
 
 Affiche un évènement de la base de données avec tout les détails le concernant
 
-####evenement_mult.ejs
+**evenement_mult.ejs**
 
 Affiche tout les événements de la base sur une carte sous forme de points (TODO de couleur différente en fonction de leur type).  
 
-####creation_evenement.ejs
+**creation_evenement.ejs**
 
 Page de création d'événement. Date et heure initialisé avec la date du jour. Adresse rempli automatiquement après un click sur la carte. Possibilité d'uploader une image (flyer). Ajout d'une description.
 
 TODO traitement de l'image pour gérer format taille etc...  
 Script de validation des données avant envoie (date, heure, titre)
 
-####index.ejs
+**index.ejs**
 
 Page d'accueil (A définir)
 
-####inscription.ejs
+**inscription.ejs**
 
 Page d'inscription/authentification de l'utilisateur.
 
 TODO script de vérification des données avant envoie (mdp egaux, email inexistant, user inexistant)
 
-####recherche.ejs
+**recherche.ejs**
 
 Fusionner avec evenement_mult.ejs ?
 
-####organisme.ejs
+**organisme.ejs**
 
 Inutilisé pour l'instant
 
-####suppr_evenement.ejs
+**suppr_evenement.ejs**
 
 Page de confirmation de suppression d'une évènement
 
-####error.ejs
+**error.ejs**
 
 Affiche le code, le type et la trace de l'erreur relevé
 
-###Modèle
+##Modèle
 
 **Objets :**
 * user:
@@ -107,7 +105,7 @@ Affiche le code, le type et la trace de l'erreur relevé
 - description
 - flyer (id du fichier stocké dans la bd)
 
-###Routes
+##Routes
 
 index.js gère les routes sans préfixe
 event.js gère les routes avec le préfixe evenement
