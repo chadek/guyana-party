@@ -97,15 +97,15 @@ Affiche le code, le type et la trace de l'erreur relevé
 - type
 
 * event:
-- user
-- name
-- date
-- heure
-- longitude
-- latitude
-- address
-- description
-- flyer (id du fichier stocké dans la bd)
+ - user
+ - name
+ - date
+ - heure
+ - longitude
+ - latitude
+ - address
+ - description
+ - flyer (id du fichier stocké dans la bd)
 
 ### Routes
 
