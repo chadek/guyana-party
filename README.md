@@ -105,7 +105,7 @@ Affiche le code, le type et la trace de l'erreur relevé
  - latitude
  - address
  - description
- - flyer (id du fichier stocké dans la bd)
+ - flyer (id du fichier stocké dans la bd, url ou chemin)
 
 ### Routes
 
