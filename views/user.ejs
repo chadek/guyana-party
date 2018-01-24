@@ -77,6 +77,12 @@
 
 	    <script src="/js/vendor/jquery.min.js"></script>
 	    <script src="/js/foundation.min.js"></script>
+		<script>
+			$('[data-mobile-app-toggle] .button').click(function () {
+				$(this).siblings().removeClass('is-active');
+				$(this).addClass('is-active');
+			});
+		</script>
     	<script>
 			$(document).foundation();
 		</script>
