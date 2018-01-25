@@ -10,17 +10,21 @@
 		<!-- Font Foundation -->
 		<link href="foundation-icons/foundation-icons.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="/stylesheets/hero.css">
+
+		<!-- Load JS scripts-->
+		<script src="js/vendor/jquery.min.js"></script>
+		<script src="js/foundation.min.js"></script>
 	</head>
 	<body>
 
 		<div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-			<% if(user) { %> 
-				<%- include partials/menu_log.ejs %> 
+			<% if(user) { %>
+				<%- include partials/menu_log.ejs %>
 			<% } else { %>
 				<%- include partials/menu.ejs %>
 			<% } %>
-		</div> 
-		
+		</div>
+
 		<div class="off-canvas-content" data-off-canvas-content>
 		<!-- Contenu de la page -->
 			<%- include partials/top-bar.ejs %>
@@ -55,7 +59,7 @@
 							</form>
 						</div>
 					</div>
-				</div>            
+				</div>
 			</div>
 
 			<div class="row">
@@ -86,8 +90,7 @@
 			</div>
 		</div> <!-- end off-cavenas -->
 
-		<script src="js/vendor/jquery.min.js"></script>
-		<script src="js/foundation.min.js"></script>
+
 		<script>
 			$(document).foundation();
 		</script>
