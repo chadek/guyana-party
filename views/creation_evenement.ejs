@@ -1,166 +1,221 @@
 <!doctype html>
 <html class="no-js" lang="fr">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>One more event</title>
-    <!-- Foundation -->
-    <link rel="stylesheet" href="/stylesheets/foundation.css" />
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>One more event</title>
+		<!-- Foundation -->
+		<link rel="stylesheet" href="/stylesheets/foundation.css" />
 
-    <!-- map css -->
-    <link href="/stylesheets/ol.css" rel="stylesheet">
-    <link rel="stylesheet" href="/stylesheets/map.css" />
+		<!-- map css -->
+		<link href="/stylesheets/ol.css" rel="stylesheet">
+		<link rel="stylesheet" href="/stylesheets/map.css" />
 
-    <!-- Font Foundation -->
-    <link href="/foundation-icons/foundation-icons.css" rel="stylesheet">
-    <!-- JQuery -->
-    <!-- <script src="js/vendor/jquery.min.js"></script> -->
-    <script src="/js/vendor/jquery.js"></script>
+		<!-- Font Foundation -->
+		<link href="/foundation-icons/foundation-icons.css" rel="stylesheet">
+		<!-- JQuery -->
+		<!-- <script src="js/vendor/jquery.min.js"></script> -->
+		<script src="/js/vendor/jquery.js"></script>
 
-    <!-- Date Picker -->
-    <script src="/js/foundation-datepicker.js"></script>
-    <script src="/js/locales/foundation-datepicker.fr.js"></script>
-    <link rel="stylesheet" href="/stylesheets/foundation-datepicker.min.css">
+		<link rel="stylesheet" type="text/css" href="/stylesheets/jquery-tags.css" />
+		<script type="text/javascript" src="/js/jquery-tags.js"></script>
 
-    <!-- Horloge Picker -->
-    <link rel="stylesheet" type="text/css" href="/stylesheets/jquery-clockpicker.min.css">
+		<!-- Date Picker -->
+		<script src="/js/foundation-datepicker.js"></script>
+		<script src="/js/locales/foundation-datepicker.fr.js"></script>
+		<link rel="stylesheet" href="/stylesheets/foundation-datepicker.min.css">
 
-    <!-- init and check form script -->
-    <script src="/js/views/creat-init.js"></script>
-    <!-- MAPS -->
-    <script src="/js/ol/creat-map.js"></script>
-    <script src="https://openlayers.org/en/v4.6.4/build/ol.js"></script>
-    <script>
-      function init_focus(){
-        document.recherche_evenenement.input_recherche.focus();
-      }
-    </script>
+		<!-- Horloge Picker -->
+		<link rel="stylesheet" type="text/css" href="/stylesheets/jquery-clockpicker.min.css">
 
-
-  </head>
-  <body>
-
-    <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-      <% if(user) { %>
-        <%- include partials/menu_log.ejs %>
-      <% } else { %>
-        <%- include partials/menu.ejs %>
-      <% } %>
-    </div>
-
-    <div class="off-canvas-content" data-off-canvas-content>
-    <!-- Contenu de la page -->
-      <%- include partials/top-bar.ejs %>
-
-      <div class="row">
-
-        <div class="large-6 columns large-centered">
-          <form action="/evenement/creation/ajouter" enctype="multipart/form-data" method="post" >
-            <div class="row">
-              <div class="small-12 small-centered columns" style="text-align: center">
-                <h2>Créez votre évènement !</h2>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="large-12 columns input-group">
-                <span class="input-group-label">
-                  <i class="fi-clipboard-pencil size-36"></i>
-                </span>
-                <input class="input-group-field" type="text" placeholder="Nom d'évènement" name="name" id="name">
-                <input type="hidden" name="longitude" value="-52.30087" id="longitude">
-                <input type="hidden" name="latitude" value="4.93291" id="latitude">
-              </div>
-            </div>
-
-            <!-- DATETIME FLYER-->
-            <div class="row">
-              <div class="large-5 small-5 columns">
-                <div class="input-group">
-                  <span class="input-group-label">
-                    <i class="fi-calendar size-36"></i>
-                  </span>
-                  <input type="text" class="input-group-field" value="16-06-2017" id="dp1" name="date">
-                </div>
-              </div>
-              <div class="large-4 small-4 columns">
-                <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
-                  <span class="input-group-label">
-                    <i class="fi-clock size-36"></i>
-                  </span>
-                  <input type="text" class="input-group-field" value="12:21" name="heure" id="heure">
-                </div>
-              </div>
-              <div class="large-3 small-3 columns">
-                <label for="fileUpload" class="button expanded">Flyer</label>
-                <input type="file" id="fileUpload" name="flyer" class="show-for-sr" accept="image/gif, image/jpeg, image/png">
-              </div>
-            </div>
-
-            <!-- LIEU -->
-            <div class="row">
-              <div class="large-9 small-8 columns">
-                <div class="input-group">
-                  <span class="input-group-label">
-                    <i class="fi-marker size-36"></i>
-                  </span>
-                  <input class="input-group-field" type="text" placeholder="Nom du lieu" name="address" id="address">
-                </div>
-              </div>
-              <div class="large-3 small-4 columns">
-                <input type="submit" value="Créer" class="success button expanded">
-                  <!-- <i class="fi-plus size-36"></i> Créer
-                </input> -->
-              </div>
-            </div>
-
-            <!-- MAPS -->
-
-            <div class="row">
-              <div class="column">
-                <div id="map" style="height: 45vh;"></div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="column">
-                <label>
-                  Que proposez vous ?
-                </label>
-                <input type="text" placeholder="Un petit wiki dans un évènement" name="description"></input>
-              </div>
-            </div>
-          </form>
-      </div>
+		<!-- init and check form script -->
+		<script src="/js/views/creat-init.js"></script>
+		<!-- MAPS -->
+		<script src="/js/ol/creat-map.js"></script>
+		<script src="https://openlayers.org/en/v4.6.4/build/ol.js"></script>
+		<script>
+			function init_focus(){
+				document.recherche_evenenement.input_recherche.focus();
+			}
+		</script>
 
 
-    </div>
+	</head>
+	<body>
+
+		<div class="off-canvas position-left" id="offCanvas" data-off-canvas>
+			<% if(user) { %>
+				<%- include partials/menu_log.ejs %>
+			<% } else { %>
+				<%- include partials/menu.ejs %>
+			<% } %>
+		</div>
+
+		<div class="off-canvas-content" data-off-canvas-content>
+		<!-- Contenu de la page -->
+			<%- include partials/top-bar.ejs %>
+
+			<div class="row">
+
+				<div class="large-6 columns large-centered">
+					<form action="/evenement/creation/ajouter" enctype="multipart/form-data" method="post" >
+						<div class="row">
+							<div class="small-12 small-centered columns" style="text-align: center">
+								<h2>Créez votre évènement !</h2>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="large-12 columns input-group">
+								<span class="input-group-label">
+									<i class="fi-clipboard-pencil size-36"></i>
+								</span>
+								<input class="input-group-field" type="text" placeholder="Nom d'évènement" name="name" id="name">
+								<input type="hidden" name="longitude" value="-52.30087" id="longitude">
+								<input type="hidden" name="latitude" value="4.93291" id="latitude">
+							</div>
+						</div>
+
+						<!-- DATETIME FLYER-->
+						<div class="row">
+							<div class="large-5 small-5 columns">
+								<div class="input-group">
+									<span class="input-group-label">
+										<i class="fi-calendar size-36"></i>
+									</span>
+									<input type="text" class="input-group-field" value="16-06-2017" id="dp1" name="date">
+								</div>
+							</div>
+							<div class="large-4 small-4 columns">
+								<div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
+									<span class="input-group-label">
+										<i class="fi-clock size-36"></i>
+									</span>
+									<input type="text" class="input-group-field" value="12:21" name="heure" id="heure">
+								</div>
+							</div>
+							<div class="large-3 small-3 columns">
+								<label for="fileUpload" class="button expanded">Flyer</label>
+								<input type="file" id="fileUpload" name="flyer" class="show-for-sr" accept="image/gif, image/jpeg, image/png">
+							</div>
+						</div>
+
+						<!-- LIEU -->
+						<div class="row">
+							<div class="large-9 small-8 columns">
+								<div class="input-group">
+									<span class="input-group-label">
+										<i class="fi-marker size-36"></i>
+									</span>
+									<input class="input-group-field" type="text" placeholder="Nom du lieu" name="address" id="address">
+								</div>
+							</div>
+							<div class="large-3 small-4 columns">
+								<input type="submit" value="Créer" class="success button expanded">
+									<!-- <i class="fi-plus size-36"></i> Créer
+								</input> -->
+							</div>
+						</div>
+
+						<script type="text/javascript">
+
+							function onAddTag(tag) {
+								alert("Added a tag: " + tag);
+							}
+							function onRemoveTag(tag) {
+								alert("Removed a tag: " + tag);
+							}
+
+							function onChangeTag(input,tag) {
+								alert("Changed a tag: " + tag);
+							}
+
+							$(function() {
+
+								$('#tags_1').tagsInput({width:'auto'});
+								// $('#tags_2').tagsInput({
+								// 	width: 'auto',
+								// 	onChange: function(elem, elem_tags)
+								// 	{
+								// 		var languages = ['php','ruby','javascript'];
+								// 		$('.tag', elem_tags).each(function()
+								// 		{
+								// 			if($(this).text().search(new RegExp('\\b(' + languages.join('|') + ')\\b')) >= 0)
+								// 				$(this).css('background-color', 'yellow');
+								// 		});
+								// 	}
+								// });
+								// $('#tags_3').tagsInput({
+								// 	width: 'auto',
+
+								// 	//autocomplete_url:'test/fake_plaintext_endpoint.html' //jquery.autocomplete (not jquery ui)
+								// 	autocomplete_url:'test/fake_json_endpoint.html' // jquery ui autocomplete requires a json endpoint
+								// });
+
+
+					// Uncomment this line to see the callback functions in action
+					//			$('input.tags').tagsInput({onAddTag:onAddTag,onRemoveTag:onRemoveTag,onChange: onChangeTag});
+
+					// Uncomment this line to see an input with no interface for adding new tags.
+					//			$('input.tags').tagsInput({interactive:false});
+							});
+
+						</script>
+
+						<div class="row">
+							<div class="column">
+								<label>Quelques tags pour décrire votre évènement ?</label>
+								<input type="text" name="tags" id="tags_1">
+							</div>
+						</div>
+
+						<!-- MAPS -->
+
+						<div class="row">
+							<div class="column">
+								<div id="map" style="height: 45vh;"></div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="column">
+								<label>
+									Que proposez vous ?
+								</label>
+								<input type="text" placeholder="Un petit wiki dans un évènement" name="description"></input>
+							</div>
+						</div>
+					</form>
+			</div>
+
+
+		</div>
 
 
 
-    <script src="/js/foundation.min.js"></script>
+		<script src="/js/foundation.min.js"></script>
 
-    <!-- Clock Picker -->
-    <script type="text/javascript" src="/js/jquery-clockpicker.min.js"></script>
-    <script type="text/javascript">
-      // Clock Picker
-      $('.clockpicker').clockpicker()
-        .find('input').change(function(){
-          console.log(this.value);
-        });
+		<!-- Clock Picker -->
+		<script type="text/javascript" src="/js/jquery-clockpicker.min.js"></script>
+		<script type="text/javascript">
+			// Clock Picker
+			$('.clockpicker').clockpicker()
+				.find('input').change(function(){
+					console.log(this.value);
+				});
 
-      //  Date Picker
-      $(document).foundation();
+			//  Date Picker
+			$(document).foundation();
 
-      window.prettyPrint && prettyPrint();
-      $('#dp1').fdatepicker({
-        format: 'dd-mm-yyyy',
-        disableDblClickSelection: true
-      });
+			window.prettyPrint && prettyPrint();
+			$('#dp1').fdatepicker({
+				format: 'dd-mm-yyyy',
+				disableDblClickSelection: true
+			});
 
-    </script>
+		</script>
 
 
-  </body>
+	</body>
 </html>
