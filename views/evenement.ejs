@@ -59,7 +59,7 @@
 
       		<div class="row">
       			<div class="columns large-10 medium-10 small-10" style="text-align: center;">
-      				<h3><%= event.name %> </h3>
+      				<h3 id="name"></h3>
       			</div>
             <div class="columns large-2 medium-2 small-2">
               <a class="button fi-pencil" href="/evenement/id/<%= event._id %>/delete"></a>
@@ -70,26 +70,21 @@
       			<div class="columns large-6 medium-6">
       				<a href="/organisme">Organisme</a>
       			</div>
-      			<div class="columns large-6 medium-6">
-      				<%= event.address %>
+      			<div class="columns large-6 medium-6" id="address">
       			</div>
       		</div>
+          <br>
       		<div class="row">
             <div class="columns large-4 medium-4 small-4">
               <i class="fi-wheelchair"></i>
               <i class="fi-male-female"></i>
               <i class="fi-rss"></i>
             </div>
-      			<div class="columns large-4 medium-4 small-4">
-      				<%= event.date %>
-      			</div>
-      			<div class="columns large-4 medium-4 small-4">
-      				<%= event.heure %>
+      			<div class="columns large-4 medium-4 small-4" id="date">
       			</div>
       		</div>
       		<div class="row">
-      			<div class="column">
-      				<%= event.description %>
+      			<div class="column" id="description">
       			</div>
       		</div>
       	</div>
@@ -97,7 +92,7 @@
       </div>
 
       <!-- CONTENANT DE LA MAPS -->
-      <div id="map" style="height: 64vh;"></div>
+      <div id="map" style="height:64vh;"></div>
 
     </div> <!-- of canvas content -->
     <script src="/js/foundation.min.js"></script>
@@ -106,7 +101,7 @@
     <script  type="text/javascript" src="/js/ol/id-map.js"></script>
     <script src="https://openlayers.org/en/v4.6.4/build/ol.js"></script>
     <script type="text/javascript">
-       PLOTBYID.init([<%= event.longitude %>, <%= event.latitude %>]);
+       PLOTBYID.init(["<%= event %>"]);
        PLOTBYID.plotEvent();
     </script>
 

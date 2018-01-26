@@ -30,7 +30,7 @@ var Event = models.Event;
 // set destination for uploaded flyer
 var upload = multer({ destination: 'flyers/' })
 
-/*  ---------- JSON REQUEST ----- */
+/*  ---------- GET JSON REQUEST ----- */
 
 //return all event in json
 router.get('/all', function(req, res, next) {
@@ -42,18 +42,8 @@ router.get('/all', function(req, res, next) {
   });
 });
 
-/*  ---------- GET REQUEST ----- */
-
-// display all event store in db on a map
-router.get('/', function(req, res, next) {
-  console.log(req.user);
-  res.render('evenement_mult', {user: req.user});
-});
-
-
-// render event page passing event id and user
-// event id is used by front end js to query server with the event id
-router.get('/id/:eventId', function(req, res, next) {
+//send event
+router.get('/id/:eventId/js', function(req, res, next) {
   // TODO get userName by querying mongo
   console.log(req.params.eventId);
   Event.findById(req.params.eventId,function(err, result) {
@@ -72,9 +62,26 @@ router.get('/id/:eventId', function(req, res, next) {
         next(err);
     } else {
       console.log(result);
-      res.render('evenement', {user: req.user, event: result });
+      res.json(result);
     }
   });
+});
+
+/*  ---------- GET REQUEST ----- */
+
+// display all event store in db on a map
+router.get('/', function(req, res, next) {
+  console.log(req.user);
+  res.render('evenement_mult', {user: req.user});
+});
+
+
+// render event page passing event id and user
+// event id is used by front end js to query server with the event id
+router.get('/id/:eventId', function(req, res, next) {
+  // TODO get userName by querying mongo
+  console.log(req.params.eventId);
+  res.render('evenement', {user: req.user, event: req.params.eventId });
 });
 
 
@@ -163,11 +170,15 @@ router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, nex
         // do something with `file`
         console.log(file.filename + ' Written To DB');
 
-        console.log("newEvent");
+
+        var dateStr = req.body.date+"T"+req.body.heure+":00";
+        var dateObj = Date.parse(dateStr);
+        console.log(dateStr);
+        console.log(dateObj);
+
         var event = new Event({ user: req.user,
                                 name: req.body.name,
-                                date: req.body.date,
-                                heure: req.body.heure,
+                                date: dateObj,
                                 longitude: req.body.longitude,
                                 latitude: req.body.latitude,
                                 address: req.body.address,
@@ -181,16 +192,20 @@ router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, nex
         });
       });
     } else {
+
+      var dateStr = req.body.date+"T"+req.body.heure+":00";
+      var dateObj = Date.parse(dateStr);
+      console.log(dateStr);
+      console.log(dateObj);
       // if no flyer, store null in flyer field
       var event = new Event({ user: req.user,
-                                name: req.body.name,
-                                date: req.body.date,
-                                heure: req.body.heure,
-                                longitude: req.body.longitude,
-                                latitude: req.body.latitude,
-                                address: req.body.address,
-                                description: req.body.description,
-                                flyer: 'noFlyer'});
+                              name: req.body.name,
+                              date: dateObj,
+                              longitude: req.body.longitude,
+                              latitude: req.body.latitude,
+                              address: req.body.address,
+                              description: req.body.description,
+                              flyer: 'noFlyer'});
       console.log("CREATING EVENT (without flyer) :", req.body.name);
       event.save(function(err, result) {
         if (err) throw err;
