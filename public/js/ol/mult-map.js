@@ -10,7 +10,7 @@ $(document).ready(function(){
 	var MINZOOM = 2;
 
 	// View declaration (set max/min zoom and init position)
-	view = new ol.View({
+	var view = new ol.View({
 		center: POS,
 		zoom: 13,
 		maxZoom: MAXZOOM,
@@ -39,7 +39,7 @@ $(document).ready(function(){
 		tracking: true
 	});
 
-	// style applied to usr location point
+	// style applied to event point
 	var style_evt = new ol.style.Style({
 		image: new ol.style.Circle({
 			radius: 7,
@@ -52,6 +52,20 @@ $(document).ready(function(){
 			})
 		})
 	})
+
+
+	// style applied to merged event point
+	var style_evt_m = new ol.style.Style({
+			 image: new ol.style.Circle({
+				 radius: 10,
+				 stroke: new ol.style.Stroke({
+						 color: '#fff'
+				 }),
+				 fill: new ol.style.Fill({
+						 color: '#3399CC'
+				 })
+			 })
+	 });
 
 	// style applied to usr location point
 	var style_geo = new ol.style.Style({
@@ -67,113 +81,95 @@ $(document).ready(function(){
 		})
 	})
 
-	// Create a point with usr location on click on geolocation button.
-	$('#geolocation').click(function(){
-		var position = geolocation.getPosition();
-		console.log(position)
-		var point = new ol.layer.Vector({
-			source: new ol.source.Vector({
-				features: [new ol.Feature({
-					geometry: new ol.geom.Point(position),
-					text: 'Votre localisation est <br>'
-				})]
-			}),
-			style: style_geo
-		});
 
-		map.addLayer(point);
-		view.setCenter(position);
-		view.setZoom(13);
-		return false;
-	});
 
 	// query db to get all event then store in features tab
 	var features = [];
-    $.getJSON("/evenement/all", function(external) {
+	var featSport = [];
+	var featCult = [];
+	var featParty = [];
+	var featOld = [];
+  $.getJSON("/evenement/all", function(external) {
 		$.each(external, function(i, result) {
 
 			var position = ol.proj.fromLonLat([result.longitude, result.latitude]);
 			//console.log(result.longitude);
 			//console.log(result.latitude);
 			//console.log(result);
+			var date = new Date();
+			var date 
 
 			features[i] = new ol.Feature({
 				geometry: new ol.geom.Point(position),
 				id: result._id,
-              	user: result.user,
+        user: result.user,
 				name: result.name,
 				date: result.date,
 				heure: result.heure,
 				address: result.address
 			})
-
-
 		});
-		// call clusterise after features[] is filled
-		clusterise();
+		// Init map with events features once they are loaded
+		initMap();
 	});
 
     // use to wait features array to be filled
-	function clusterise(){
+	function initMap(){
 
 		var source = new ol.source.Vector({
 			features: features
 		});
 
-	    console.log(source)
 		var clusterSource = new ol.source.Cluster({
 			distance: DISTANCE,
 			source: source
 		});
 
-
 		var styleCache = {};
 		var clusters = new ol.layer.Vector({
-	        source: clusterSource,
-	        style: function(feature) {
+        source: clusterSource,
+        style: function(feature) {
 
-	            var size = feature.get('features').length;
-	            var style = styleCache[size];
-	        	console.log(size);
-	        	// style applied to cluster points
-	            if (!style) {
-	            	// if point merged, apply different style and display number of merged point
-	            	if (size>1) {
-		               	style = new ol.style.Style({
-		                  	image: new ol.style.Circle({
-		                    	radius: 10,
-		                    	stroke: new ol.style.Stroke({
-		                      		color: '#fff'
-		                    	}),
-		                    	fill: new ol.style.Fill({
-		                      		color: '#3399CC'
-		                    	})
-		                  	}),
-		                  	text: new ol.style.Text({
-		                    	text: size.toString(),
-		                    	fill: new ol.style.Fill({
-		                      		color: '#fff'
-		                    	})
-		                  	})
-		                });
-		                styleCache[size] = style;
-	            	} else {
-	            		// apply style for not merged point
-	            		style = style_evt;
-		                styleCache[size] = style;
-		            }
-	            }
-	            return style;
-	        }
-	  	});
+          var size = feature.get('features').length;
+          var style = styleCache[size];
+        	console.log(size);
+        	// style applied to cluster points
+          if (!style) {
+          	// if point merged, apply different style and display number of merged point
+          	if (size>1) {
+               	style = style_evt_m;
+								style.setText( new ol.style.Text({
+                    	text: size.toString(),
+                    	fill: new ol.style.Fill({
+                      		color: '#fff'
+                    	})
+                  	})
+								);
+                styleCache[size] = style;
+          	} else {
+          		// apply style for not merged point
+          		style = style_evt;
+                styleCache[size] = style;
+            }
+          }
+          return style;
+        }
+  	});
 
 		map.addLayer(clusters);
   }
 
 
-    // get popup div in html
-	var element = $('#popup').get(0);
 
+
+
+/* ------------------------------------- */
+/* ------------Event handler------------ */
+/* ------------------------------------- */
+
+	/* -----Popup----- */
+	// get popup div in html
+	var element = $('#popup').get(0);
 	var popup = new ol.Overlay({
 		element: element,
 		stopEvent: false
@@ -246,5 +242,26 @@ $(document).ready(function(){
 			// else hide all popup
 			$(element).hide();
 		}
+	});
+
+	/* -----Geolocation button-----*/
+	// Create a point with usr location on click on geolocation button.
+	$('#geolocation').click(function(){
+		var position = geolocation.getPosition();
+		console.log(position)
+		var point = new ol.layer.Vector({
+			source: new ol.source.Vector({
+				features: [new ol.Feature({
+					geometry: new ol.geom.Point(position),
+					text: 'Votre localisation est <br>'
+				})]
+			}),
+			style: style_geo
+		});
+
+		map.addLayer(point);
+		view.setCenter(position);
+		view.setZoom(13);
+		return false;
 	});
 });

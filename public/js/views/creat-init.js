@@ -9,9 +9,9 @@ $(document).ready(function(){
   document.getElementById("heure").value = str;
 
   // build date String
-  str =  ('0' + date.getDate()).slice(-2) + "-";
+  str = date.getFullYear() + "-";
   str += ('0' + date.getMonth() + 1).slice(-2) + "-";
-  str += date.getFullYear();
+  str +=  ('0' + date.getDate()).slice(-2);
 
   document.getElementById("dp1").value = str;
 
