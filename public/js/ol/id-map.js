@@ -7,8 +7,13 @@ var PLOTBYID = PLOTBYID || (function(){
     document.getElementById("name").innerHTML = eventData.name;
     document.getElementById("address").innerHTML = eventData.address;
     document.getElementById("description").innerHTML = eventData.description;
+    console.log("/file/"+eventData.flyer);
+    var img = document.createElement("img");
+    img.src = "/file/"+eventData.flyer;
+    img.style = "height: 100%; width: 100%; object-fit: contain"
 
-
+    var src = document.getElementById("flyer");
+    src.appendChild(img);
 
     // build date String
     var dateObj = new Date(eventData.date);

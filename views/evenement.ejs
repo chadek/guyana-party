@@ -44,13 +44,11 @@
       </div>
 
       <div class="row">
-      	<div class="columns large-4 medium-4">
-      		<div class="row">
+      	<div class="columns large-3 medium-4">
+      		<div id="flyer" class="row" style="height: 30vh;">
 
             <!-- remplacer par flyer -->
-      			<div style="background: url(' /file/<%= event.flyer %> '); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;">
 
-      			</div>
       		</div>
 
       	</div>
@@ -62,7 +60,7 @@
       				<h3 id="name"></h3>
       			</div>
             <div class="columns large-2 medium-2 small-2">
-              <a class="button fi-pencil" href="/evenement/id/<%= event._id %>/delete"></a>
+              <a class="button fi-pencil" href="/evenement/id/<%= event %>/delete"></a>
             </div>
       		</div>
 

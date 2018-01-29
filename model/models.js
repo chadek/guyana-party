@@ -6,7 +6,7 @@ module.exports = function(mongoose) {
 	  user: String,
 	  email: String,
 	  password: String,
-		type: String
+		type: String //organisme
 	});
 
 	var eventSchema = mongoose.Schema({
