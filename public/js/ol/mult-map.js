@@ -97,7 +97,7 @@ $(document).ready(function(){
 			//console.log(result.latitude);
 			//console.log(result);
 			var date = new Date();
-			var date 
+			var date
 
 			features[i] = new ol.Feature({
 				geometry: new ol.geom.Point(position),
@@ -134,24 +134,23 @@ $(document).ready(function(){
           var style = styleCache[size];
         	console.log(size);
         	// style applied to cluster points
-          if (!style) {
-          	// if point merged, apply different style and display number of merged point
-          	if (size>1) {
-               	style = style_evt_m;
-								style.setText( new ol.style.Text({
-                    	text: size.toString(),
-                    	fill: new ol.style.Fill({
-                      		color: '#fff'
-                    	})
+        	// if point merged, apply different style and display number of merged point
+        	if (size>1) {
+             	style = style_evt_m;
+							style.setText( new ol.style.Text({
+                  	text: size.toString(),
+                  	fill: new ol.style.Fill({
+                    		color: '#fff'
                   	})
-								);
-                styleCache[size] = style;
-          	} else {
-          		// apply style for not merged point
-          		style = style_evt;
-                styleCache[size] = style;
-            }
+                	})
+							);
+              styleCache[size] = style;
+        	} else {
+        		// apply style for not merged point
+        		style = style_evt;
+              styleCache[size] = style;
           }
+
           return style;
         }
   	});
@@ -209,6 +208,7 @@ $(document).ready(function(){
 		            "</div>");
 					popup.setPosition(coordinate);
 				} else if (view.getZoom() == MAXZOOM){
+					// if max zoom and steal clusterise, display popup with the event list
 					console.log("view 1");
 					var html_popup = "<div style='font-size:.8em'>"
 					var coordinate = event[0].getGeometry().getCoordinates();
