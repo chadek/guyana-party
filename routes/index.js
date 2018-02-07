@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 
-var passport = require( path.join(__dirname, "../Utils/auth" ) ); 
+var passport = require( path.join(__dirname, "../Utils/auth" ) );
 
 
 var mongoose = require('mongoose');
@@ -37,13 +37,7 @@ router.get('/', function(req, res, next) {
   res.render('index', {user: req.user });
 });
 
-// render recherche page
-router.get('/recherche', function(req, res, next) {
-  res.render('recherche', {user: req.user });
-});
-
-
-// get instription page : if user log, redirect to main page, else render template 
+// get instription page : if user log, redirect to main page, else render template
 router.get('/inscription', function(req, res, next) {
   if(req.user){
     res.redirect('/');
@@ -61,7 +55,7 @@ router.get('/organisme', function(req, res, next) {
     res.render('organisme');
   } else {
     res.redirect('/inscription');
-  } 
+  }
 });
 
 
@@ -108,7 +102,7 @@ router.post('/inscription/ajouter', passport.authenticate('local-signup', {
 );
 
 /* connection */
-router.post('/connection', passport.authenticate('local-signin', { 
+router.post('/connection', passport.authenticate('local-signin', {
   successRedirect: '/',
   failureRedirect: '/inscription'
   })
