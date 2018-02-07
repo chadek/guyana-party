@@ -18,7 +18,7 @@ var PLOTBYID = PLOTBYID || (function(){
     // build date String
     var dateObj = new Date(eventData.date);
     strDate =  "Le " + ('0' + dateObj.getDate()).slice(-2) + "-";
-    strDate += ('0' + dateObj.getMonth() + 1).slice(-2) + "-";
+    strDate += ('0' + (dateObj.getMonth()+ 1)).slice(-2) + "-";
     strDate += dateObj.getFullYear();
     strDate += " à "+ ('0' + dateObj.getHours()).slice(-2) + ":";
     strDate += ('0' + dateObj.getMinutes()).slice(-2);

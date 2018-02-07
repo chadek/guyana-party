@@ -197,13 +197,22 @@ $(document).ready(function(){
 				if (event.length==1){
 					event = event[0];
 					var coordinate = event.getGeometry().getCoordinates();
+
+					// build date String
+					var dateObj = new Date(event.get('date'));
+					strDate =  "Le " + ('0' + dateObj.getDate()).slice(-2) + "-";
+					strDate += ('0' + (dateObj.getMonth()+ 1)).slice(-2) + "-";
+					strDate += dateObj.getFullYear();
+					strDate += " à "+ ('0' + dateObj.getHours()).slice(-2) + ":";
+					strDate += ('0' + dateObj.getMinutes()).slice(-2);
+
 					$(element).show();
 					$(element).html(
-					"<div style='font-size:.8em'>"+
 
+					"<div style='font-size:.8em'>"+
 		             	"<font size=\"4\">" + event.get('name') +"</font>"+
 		              	"<br>Organisateur: <a href=\"/users/"+event.get('user')+"\"> "+ event.get('user')+" </a>"+
-		              	"<br>A "+event.get('heure')+ " le " + event.get('date')+
+		              	"<br>" + strDate +
 		              	"<br> <a href=\"/evenement/id/"+event.get('id')+"\"> Plus d'info </a>"+
 		            "</div>");
 					popup.setPosition(coordinate);
