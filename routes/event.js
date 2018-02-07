@@ -42,6 +42,16 @@ router.get('/all', function(req, res, next) {
   });
 });
 
+// search string in event, if match return json
+router.get('/find/:query', function(req, res, next) {
+  console.log(req.user);
+  Event.find( { $text : { $search: req.params.query } }, function(err, result) {
+    if (err) throw err;
+    console.log(result);
+    res.json(result);
+  });
+});
+
 //send event
 router.get('/id/:eventId/js', function(req, res, next) {
   // TODO get userName by querying mongo

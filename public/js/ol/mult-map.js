@@ -81,15 +81,12 @@ $(document).ready(function(){
 		})
 	})
 
+	var clusters = new ol.layer.Vector({});
 
+	// query db to get all event
 
-	// query db to get all event then store in features tab
-	var features = [];
-	var featSport = [];
-	var featCult = [];
-	var featParty = [];
-	var featOld = [];
-  $.getJSON("/evenement/all", function(external) {
+	$.getJSON("/evenement/all", function(external) {
+		var features = [];
 		$.each(external, function(i, result) {
 
 			var position = ol.proj.fromLonLat([result.longitude, result.latitude]);
@@ -110,11 +107,13 @@ $(document).ready(function(){
 			})
 		});
 		// Init map with events features once they are loaded
-		initMap();
+		initMap(features);
 	});
 
-    // use to wait features array to be filled
-	function initMap(){
+  // use to wait features array to be filled
+	function initMap(features){
+
+		map.removeLayer(clusters);
 
 		var source = new ol.source.Vector({
 			features: features
@@ -126,7 +125,7 @@ $(document).ready(function(){
 		});
 
 		var styleCache = {};
-		var clusters = new ol.layer.Vector({
+		clusters = new ol.layer.Vector({
         source: clusterSource,
         style: function(feature) {
 
@@ -272,5 +271,36 @@ $(document).ready(function(){
 		view.setCenter(position);
 		view.setZoom(13);
 		return false;
+	});
+
+	/* --------- Search engine  ---------*/
+	// display event returned by the engine
+	$('#recherche').click(function(){
+		var queryUrl = "/evenement/find/" + document.getElementById("input_recherche").value;
+		console.log(queryUrl);
+		$.getJSON(queryUrl, function(external) {
+			var features = [];
+			$.each(external, function(i, result) {
+
+				var position = ol.proj.fromLonLat([result.longitude, result.latitude]);
+				//console.log(result.longitude);
+				//console.log(result.latitude);
+				//console.log(result);
+				var date = new Date();
+				var date
+
+				features[i] = new ol.Feature({
+					geometry: new ol.geom.Point(position),
+					id: result._id,
+	        user: result.user,
+					name: result.name,
+					date: result.date,
+					heure: result.heure,
+					address: result.address
+				})
+			});
+			// Init map with events features once they are loaded
+			initMap(features);
+		});
 	});
 });
