@@ -10,15 +10,17 @@ module.exports = function(mongoose) {
 	});
 
 	var eventSchema = mongoose.Schema({
-	  user: { type: [String], index: true },
-	  name: { type: [String], index: true },
+	  user: String,
+	  name: String,
 	  date: Date,
 	  longitude: Number,
 	  latitude: Number,
-	  address: { type: [String], index: true },
-		description: { type: [String], index: true },
+	  address: String,
+		description: String,
 	  flyer: String
 	});
+
+	eventSchema.index({ name: 1, type: -1 }, { address: 1, type: -1 }, { description: 1, type: -1 });
 
     // try to get model, if doesn't exit then init with schema
   let models
