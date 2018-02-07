@@ -66,13 +66,12 @@ $(document).ready(function(){
       console.log(coord);
 
       //geocoding from nominatim
-      var str1 = "http://nominatim.openstreetmap.org/reverse?format=json&lat="
-      var str2 =  coord[1].toString();
-      var str3 = "&lon=";
-      var str4 =  coord[0].toString();
+      var queryUrl = "http://nominatim.openstreetmap.org/reverse?format=json&lat="
+          queryUrl +=  coord[1].toString();
+          queryUrl += "&lon=";
+          queryUrl +=  coord[0].toString();
 
       // get JSON from nominatim
-      var queryUrl = str1.concat(str2, str3, str4);
       $.getJSON(queryUrl, function(external) {
           var output = "";
           console.log(external.address);

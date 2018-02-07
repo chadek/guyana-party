@@ -148,7 +148,7 @@ $(document).ready(function(){
         	} else {
         		// apply style for not merged point
         		style = style_evt;
-              styleCache[size] = style;
+            styleCache[size] = style;
           }
 
           return style;
