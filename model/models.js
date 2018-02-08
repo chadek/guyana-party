@@ -20,8 +20,6 @@ module.exports = function(mongoose) {
 	  flyer: String
 	});
 
-	eventSchema.index({ name: 1, type: -1 }, { address: 1, type: -1 }, { description: 1, type: -1 });
-
     // try to get model, if doesn't exit then init with schema
   let models
   try {

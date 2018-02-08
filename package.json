@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "./init/init_dir.sh",
+    "build": "./init/init_db.sh",
     "start": "node ./bin/www"
   },
   "dependencies": {
