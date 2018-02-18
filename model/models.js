@@ -19,8 +19,10 @@ module.exports = function(mongoose) {
 		description: String,
 	  flyer: String
 	});
+	// create index to perform text search on several fields
+	eventSchema.index({user: 'text', name: 'text', description:'text', address: 'text'});
 
-    // try to get model, if doesn't exit then init with schema
+  // try to get model, if doesn't exit then init with schema
   let models
   try {
 	    models = {
