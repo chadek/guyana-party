@@ -3,31 +3,36 @@
 /**
  * Module dependencies.
  */
-
+var fs = require('fs');
 var app = require('../app');
 var debug = require('debug')('guyana-party:server');
 var http = require('http');
+var https = require('https');
+// var privateKey  = fs.readFileSync('key.pem', 'utf8');
+// var certificate = fs.readFileSync('cert.pem', 'utf8');
 
-/**
- * Get port from environment and store in Express.
- */
+// var credentials = {key: privateKey, cert: certificate};
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
 
 /**
  * Create HTTP server.
  */
+var httpServer = http.createServer(app);
+// var httpsServer = https.createServer(credentials, app);
 
-var server = http.createServer(app);
+httpServer.listen(3000);
+// httpsServer.listen(3443);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+
+httpServer.on('error', onError);
+httpServer.on('listening', onListening);
+
+// httpsServer.on('error', onError);
+// httpsServer.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -82,7 +87,15 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
+  var addr = httpServer.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+function onListeningHttps() {
+  var addr = httpsServer.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
