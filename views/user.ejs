@@ -40,18 +40,18 @@
 						<div class="row">
 							<div class="column" style="text-align: center;">
 								<h4><%- userProfil.user.charAt(0).toUpperCase() + userProfil.user.slice(1) %></h4></div>
-							</div>
 						</div>
+					</div>
 
-						<div class="row">
-							<div class="columns shrink">
-								<a class="button success" href="/evenement/creation">Créer un évènement</a>
-								<a class="button warning" href="">Modifier vos informations</a>
-								<a class="button secondary" href="">Créer un organisme</a>
-							</div>
+					<div class="row">
+						<div class="columns shrink">
+							<a class="button success" href="/evenement/creation">Créer un évènement</a>
+							<a class="button warning" href="">Modifier vos informations</a>
+							<a class="button secondary" href="">Créer un organisme</a>
 						</div>
 					</div>
 				</div>
+			</div>
 
 			<div class="row">
 				<div class="column">
@@ -66,6 +66,15 @@
 						<button class="button is-active">Actuellement</button>
 						<button class="button">À venir</button>
 					</div>
+
+					<div class="row">
+						<% for (i = 0 ; i < 7; i++){ %>
+
+							<%- include partials/card_event_user.ejs %>
+
+						<% } %>
+					</div>
+
 				</div>
 			</div>
 
