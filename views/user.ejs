@@ -37,17 +37,26 @@
 
 				<div class="columns large-8">
 					<div class="row">
-						<div class="row">
-							<div class="column" style="text-align: center;">
-								<h4><%- userProfil.user.charAt(0).toUpperCase() + userProfil.user.slice(1) %></h4></div>
+						<div class="column" style="text-align: center;">
+							<h4>
+								<%- userProfil.user.charAt(0).toUpperCase() + userProfil.user.slice(1) %>
+							</h4>
 						</div>
 					</div>
 
 					<div class="row">
-						<div class="columns shrink">
-							<a class="button success" href="/evenement/creation">Créer un évènement</a>
-							<a class="button warning" href="">Modifier vos informations</a>
-							<a class="button secondary" href="">Créer un organisme</a>
+						<div class="columns large-4 medium-6 end">
+							<a class="button success expanded" href="/evenement/creation">Créer un évènement</a>
+						</div>
+						<div class="columns large-4 medium-6 end">
+							<a class="button warning expanded" href="">Modifier vos informations</a>
+						</div>
+						<div class="columns large-4 medium-6 end">
+							<a class="button secondary expanded" href="">Créer un organisme</a>
+						</div>
+						<div class="columns large-4 medium-6 end">
+							<p><%= userProfil.email %></p>
+							<p><%= userProfil.type %></p>
 						</div>
 					</div>
 				</div>
@@ -78,8 +87,33 @@
 				</div>
 			</div>
 
-			<p><%= userProfil.email %></p>
-			<p><%= userProfil.type %></p>
+			<div class="row">
+				<div class="column">
+					<div class="row">
+						<div class="column" style="text-align: center;">
+							<h3>Organismes</h3>
+						</div>
+					</div>
+
+					<div class="row">
+						<% for (i = 0 ; i < 3; i++){ %>
+
+							<div class="columns large-3 medium-6 small-12 end">
+								<div class="card">
+									<img style="width: 100%;" src="/images/rectangle-1.jpg">
+									<div class="card-section">
+										<p>Nom d'un évènement</p>
+									</div>
+								</div>
+							</div>
+
+						<% } %>
+					</div>
+
+				</div>
+			</div>
+
+			
 
 		</div> <!-- end off-cavenas -->
 
