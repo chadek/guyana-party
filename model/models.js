@@ -19,6 +19,19 @@ module.exports = function(mongoose) {
 		description: String,
 	  flyer: String
 	});
+
+/*	var organizSchema = mongoose.Schema({
+		type : String,
+		name : String,
+		location : {
+			longitude: Number, 
+			latitude: Number
+		},
+		users : {
+			administrator : [String],
+			member : [String],
+		}
+	});*/
 	// create index to perform text search on several fields
 	eventSchema.index({user: 'text', name: 'text', description:'text', address: 'text'});
 
