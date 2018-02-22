@@ -1,142 +1,142 @@
 <!doctype html>
 <html class="no-js" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Guyana Party</title>
-    <link rel="shortcut icon" href="/images/favicon.ico"/>
-    <link rel="stylesheet" href="/stylesheets/foundation.css" />
-    <!-- Font Foundation -->
-    <link href="/foundation-icons/foundation-icons.css" rel="stylesheet">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Guyana Party</title>
+		<link rel="shortcut icon" href="/images/favicon.ico"/>
+		<link rel="stylesheet" href="/stylesheets/foundation.css" />
+		<!-- Font Foundation -->
+		<link href="/foundation-icons/foundation-icons.css" rel="stylesheet">
 
-    <!-- Style pour le OR -->
-    <link rel="stylesheet" type="text/css" href="/stylesheets/OR.css">
-  </head>
-  <body>
+		<!-- Style pour le OR -->
+		<link rel="stylesheet" type="text/css" href="/stylesheets/OR.css">
+	</head>
+	<body>
 
-    <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-        <%- include partials/menu.ejs %>
-    </div>
+		<div class="off-canvas position-left" id="offCanvas" data-off-canvas>
+				<%- include partials/menu.ejs %>
+		</div>
 
-    <div class="off-canvas-content" data-off-canvas-content>
-        <%- include partials/top-bar.ejs %>
-
-
-      <div class="row" style="vertical-align: middle;">
-
-        <div class="large-6 medium-6 small-12 medium-centered large-centered columns">
-          <div class="expanded button-group-option" data-grouptype="OU">
-            <button id="b_connection" class="button success radius" onclick="connection()">Connection</button>
-            <button id="b_inscription" class="button secondary radius" onclick="inscription()">Inscription</button>
-          </div>
-
-          <!-- Connection -->
-          <form action="/connection" method="post">
-            <div class="form-icons" id="connection" style="display: <% if(errorCause == 'user' || errorCause == 'email' || errorCause == 'password') { %> none <% } else { %> block <% }%>">
-
-              <div class="input-group">
-                <span class="input-group-label">
-                  <i class="fi-mail size-36"></i>
-                </span>
-                <input class="input-group-field" type="email" placeholder="Email, identifiant" name="login">
-              </div>
-
-              <div class="input-group">
-                <span class="input-group-label">
-                  <i class="fi-key size-36"></i>
-                </span>
-                <input class="input-group-field" type="password" placeholder="Password" name="pwd">
-              </div>
-            <button class="button expanded success">Sign In</button>
-            <p>
-              <%= status %>
-            </p>
-            </div>
-          </form>
-
-          <!-- Inscription -->
-          <form action="/inscription/ajouter" method="post">
-            <div class="form-icons" id="inscription" style="display: <% if(errorCause == 'user' || errorCause == 'email' || errorCause == 'password') { %> block <% } else { %> none <% }%>">
-              <div class="input-group">
-                <span class="input-group-label" <% if(errorCause == 'user') { %> style="color:red" <% } %> >
-                  <i class="fi-torsos-male-female size-36"></i>
-                </span>
-                <input class="input-group-field" type="text" placeholder="Nom de l'organisateur" name="newUser">
-              </div>
-
-              <div class="input-group row">
-                <div class="columns ">
-
-              </div>
-                <input type="radio" name="type_orga" value="Association"><label>Association</label>
-                <input type="radio" name="type_orga" value="Entreprise"><label>Entreprise</label>
-                <input type="radio" name="type_orga" value="Particulier"><label>Particulier</label>
-              </div>
-
-              <div class="input-group">
-                <span class="input-group-label" <% if(errorCause == 'email') { %> style="color:red" <% } %>>
-                  <i class="fi-mail size-36"></i>
-                </span>
-                <input class="input-group-field" type="text" placeholder="Email, identifiant" name="newEmail">
-              </div>
-
-              <div class="input-group">
-                <span class="input-group-label" <% if(errorCause == 'password') { %> style="color:red" <% } %>>
-                  <i class="fi-key size-36"></i>
-                </span>
-                <input class="input-group-field" type="password" placeholder="Password" name="newPassword">
-              </div>
-              <div class="input-group">
-                <span class="input-group-label" <% if(errorCause == 'password') { %> style="color:red" <% } %>>
-                  <i class="fi-key size-36"></i>
-                </span>
-                <input class="input-group-field" type="password" placeholder="Password" name="renewPassword">
-              </div>
-              <button class="button expanded success">Sign Up</button>
-              <p>
-                <%= status %>
-              </p>
-            </div>
+		<div class="off-canvas-content" data-off-canvas-content>
+				<%- include partials/top-bar.ejs %>
 
 
-          </form>
+			<div class="row" style="vertical-align: middle;">
 
-          <script type="text/javascript">
-            function inscription(){
-              var x = document.getElementById('connection');
-              var y = document.getElementById('inscription');
-              x.style.display = 'none';
-              y.style.display = 'block';
-              document.getElementById("b_inscription").classList.remove('secondary');
-              document.getElementById("b_connection").classList.remove('success');
-              document.getElementById("b_inscription").classList.add('success');
-              document.getElementById("b_connection").classList.add('secondary');
-            }
+				<div class="large-6 medium-6 small-12 medium-centered large-centered columns">
+					<div class="expanded button-group-option" data-grouptype="OU">
+						<button id="b_connection" class="button success radius" onclick="connection()">Connection</button>
+						<button id="b_inscription" class="button secondary radius" onclick="inscription()">Inscription</button>
+					</div>
 
-            function connection(){
-              var x = document.getElementById('connection');
-              var y = document.getElementById('inscription');
-              x.style.display = 'block';
-              y.style.display = 'none';
-              document.getElementById("b_connection").classList.remove('secondary');
-              document.getElementById("b_inscription").classList.remove('success');
-              document.getElementById("b_connection").classList.add('success');
-              document.getElementById("b_inscription").classList.add('secondary');
-            }
+					<!-- Connection -->
+					<form action="/connection" method="post">
+						<div class="form-icons" id="connection" style="display: <% if(errorCause == 'user' || errorCause == 'email' || errorCause == 'password') { %> none <% } else { %> block <% }%>">
 
-          </script>
-        </div>
-      </div>
-    </div>
+							<div class="input-group">
+								<span class="input-group-label">
+									<i class="fi-mail size-36"></i>
+								</span>
+								<input class="input-group-field" type="email" placeholder="Email, identifiant" name="login">
+							</div>
+
+							<div class="input-group">
+								<span class="input-group-label">
+									<i class="fi-key size-36"></i>
+								</span>
+								<input class="input-group-field" type="password" placeholder="Password" name="pwd">
+							</div>
+						<button class="button expanded success">Sign In</button>
+						<p>
+							<%= status %>
+						</p>
+						</div>
+					</form>
+
+					<!-- Inscription -->
+					<form action="/inscription/ajouter" method="post">
+						<div class="form-icons" id="inscription" style="display: <% if(errorCause == 'user' || errorCause == 'email' || errorCause == 'password') { %> block <% } else { %> none <% }%>">
+							<div class="input-group">
+								<span class="input-group-label" <% if(errorCause == 'user') { %> style="color:red" <% } %> >
+									<i class="fi-torsos-male-female size-36"></i>
+								</span>
+								<input class="input-group-field" type="text" placeholder="Nom de l'organisateur" name="newUser">
+							</div>
+
+							<div class="input-group row">
+								<div class="columns ">
+
+							<!-- </div>
+								<input type="radio" name="type_orga" value="Association"><label>Association</label>
+								<input type="radio" name="type_orga" value="Entreprise"><label>Entreprise</label>
+								<input type="radio" name="type_orga" value="Particulier"><label>Particulier</label>
+							</div> -->
+
+							<div class="input-group">
+								<span class="input-group-label" <% if(errorCause == 'email') { %> style="color:red" <% } %>>
+									<i class="fi-mail size-36"></i>
+								</span>
+								<input class="input-group-field" type="text" placeholder="Email, identifiant" name="newEmail">
+							</div>
+
+							<div class="input-group">
+								<span class="input-group-label" <% if(errorCause == 'password') { %> style="color:red" <% } %>>
+									<i class="fi-key size-36"></i>
+								</span>
+								<input class="input-group-field" type="password" placeholder="Password" name="newPassword">
+							</div>
+							<div class="input-group">
+								<span class="input-group-label" <% if(errorCause == 'password') { %> style="color:red" <% } %>>
+									<i class="fi-key size-36"></i>
+								</span>
+								<input class="input-group-field" type="password" placeholder="Password" name="renewPassword">
+							</div>
+							<button class="button expanded success">Sign Up</button>
+							<p>
+								<%= status %>
+							</p>
+						</div>
 
 
-    <script src="/js/vendor/jquery.min.js"></script>
-    <!-- <script src="js/vendor/what-input.min.js"></script> -->
-    <script src="/js/foundation.min.js"></script>
-    <script>
-      $(document).foundation();
-    </script>
+					</form>
 
-  </body>
+					<script type="text/javascript">
+						function inscription(){
+							var x = document.getElementById('connection');
+							var y = document.getElementById('inscription');
+							x.style.display = 'none';
+							y.style.display = 'block';
+							document.getElementById("b_inscription").classList.remove('secondary');
+							document.getElementById("b_connection").classList.remove('success');
+							document.getElementById("b_inscription").classList.add('success');
+							document.getElementById("b_connection").classList.add('secondary');
+						}
+
+						function connection(){
+							var x = document.getElementById('connection');
+							var y = document.getElementById('inscription');
+							x.style.display = 'block';
+							y.style.display = 'none';
+							document.getElementById("b_connection").classList.remove('secondary');
+							document.getElementById("b_inscription").classList.remove('success');
+							document.getElementById("b_connection").classList.add('success');
+							document.getElementById("b_inscription").classList.add('secondary');
+						}
+
+					</script>
+				</div>
+			</div>
+		</div>
+
+
+		<script src="/js/vendor/jquery.min.js"></script>
+		<!-- <script src="js/vendor/what-input.min.js"></script> -->
+		<script src="/js/foundation.min.js"></script>
+		<script>
+			$(document).foundation();
+		</script>
+
+	</body>
 </html>
