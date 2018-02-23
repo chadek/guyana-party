@@ -29,7 +29,7 @@
 		<link rel="stylesheet" type="text/css" href="/stylesheets/jquery-clockpicker.min.css">
 
 		<!-- init and check form script -->
-		<script src="/js/views/creat-init.js"></script>
+		<!-- <script src="/js/views/creat-init.js"></script> -->
 		<!-- MAPS -->
 		<script src="/js/ol/creat-map.js"></script>
 		<script src="https://openlayers.org/en/v4.6.4/build/ol.js"></script>
@@ -48,8 +48,79 @@
 		<!-- Contenu de la page -->
 			<%- include partials/top-bar.ejs %>
 
-			<div>
-				<h1>formulaire de création d'un organisme</h1>
+			<div class="row">
+				<div class="column">
+					
+					<div class="row">
+						<div class="small-12 small-centered columns" style="text-align: center">
+							<h2>Création d'un organisme</h2>
+
+							<p>Un organisme permet de regroupe un </p>
+
+						</div>
+					</div>
+
+					<form action="/organization/creation/ajouter" enctype="multipart/form-data" method="post">
+
+						<div class="row">
+							<div class="columns large-5">
+								<div class="row">
+									<div class="column input-group">
+										<span class="input-group-label">
+											<i class="fi-clipboard-pencil size-36"></i>
+										</span>
+										<input class="input-group-field" type="text" placeholder="Nom de votre nouvelle organisation" name="name" id="name">
+										<input type="hidden" name="longitude" value="-52.30087" id="longitude">
+										<input type="hidden" name="latitude" value="4.93291" id="latitude">
+									</div>
+								</div>
+
+								<div class="input-group row">
+									<div class="columns ">
+										<input type="radio" name="type_orga" value="Association"><label>Association</label>
+										<input type="radio" name="type_orga" value="Entreprise"><label>Entreprise</label>
+										<input type="radio" name="type_orga" value="Particulier"><label>Particulier</label>
+									</div>
+								</div>
+
+								<div>
+									
+								</div>
+								
+							</div>
+
+							<div class="columns large-7">
+
+								<div class="row">
+									<div class="column">
+										<label>
+											Où se situe votre siège social ?
+										</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="column">
+										<div id="map" style="height: 45vh;"></div>
+									</div>
+								</div>
+								<!-- NOM DU LIEU -->
+								<div class="row">
+									<div class="column">
+										<div class="input-group">
+											<span class="input-group-label">
+												<i class="fi-marker size-36"></i>
+											</span>
+											<input class="input-group-field" type="text" placeholder="Nom du lieu" name="address" id="address">
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						
+					</form>
+
+				</div>
 			</div>
 
 
