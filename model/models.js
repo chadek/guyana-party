@@ -20,7 +20,7 @@ module.exports = function(mongoose) {
 	  flyer: String
 	});
 
-/*	var organizSchema = mongoose.Schema({
+	var organizSchema = mongoose.Schema({
 		type : String,
 		name : String,
 		location : {
@@ -31,7 +31,7 @@ module.exports = function(mongoose) {
 			administrator : [String],
 			member : [String],
 		}
-	});*/
+	});
 	// create index to perform text search on several fields
 	eventSchema.index({user: 'text', name: 'text', description:'text', address: 'text'});
 
@@ -40,12 +40,14 @@ module.exports = function(mongoose) {
   try {
 	    models = {
 			User: mongoose.model('User'),
-			Event: mongoose.model('Event')
+			Event: mongoose.model('Event'),
+			Organiz: mongoose.model('Organiz')
 	    };
 	} catch (error) {
 		models = {
 			User: mongoose.model('User', userSchema),
-			Event: mongoose.model('Event', eventSchema)
+			Event: mongoose.model('Event', eventSchema),
+			Organiz: mongoose.model('Organiz', organizSchema)
 	    };
 	}
     return models;
