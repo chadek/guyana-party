@@ -29,7 +29,7 @@ module.exports = function(mongoose) {
 		},
 		users : {
 			administrator : [String],
-			member : [String],
+			member : [String]
 		}
 	});
 	// create index to perform text search on several fields
