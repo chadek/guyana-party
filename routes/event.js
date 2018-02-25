@@ -97,7 +97,7 @@ router.get('/id/:eventId', function(req, res, next) {
 
 // delete event if user log in (delete also flyer)
 router.get('/id/:eventId/delete', function(req, res, next) {
-  if(req.user){
+  if(req.isAuthenticated()){
 	  console.log(req.params.eventId);
 	  // look for event to delete
 	  Event.findById(req.params.eventId,function(err, result) {
@@ -150,7 +150,7 @@ router.get('/id/:eventId/delete', function(req, res, next) {
 
 // return new event page if log else redirect to inscription page
 router.get('/creation', function(req, res, next){
-  if(req.user){
+  if(req.isAuthenticated()){
     res.render('creation_evenement', {user: req.user});
   } else {
     res.redirect('/inscription');
@@ -165,7 +165,7 @@ router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, nex
   console.log(req.body);
   console.log(req.file);
   // if user is logged
-  if(req.user){
+  if(req.isAuthenticated()){
     // if user send flyer, store it in db
     if (req.file != undefined){
       // streaming to gridfs

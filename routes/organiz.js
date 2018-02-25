@@ -15,7 +15,7 @@ var Organiz = models.Organiz;
 
 /* GET users listing. */
 router.get('/creation', function(req, res, next){
-  if(req.user){
+  if(req.isAuthenticated()){
     res.render('creation_organization', {user: req.user});
   } else {
     res.redirect('/inscription');
