@@ -1,0 +1,107 @@
+<!doctype html>
+<html class="no-js" lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Guyana-Party</title>
+		<!-- Foundation -->
+		<link rel="stylesheet" href="/stylesheets/foundation.css" />
+		<!-- Font Foundation -->
+		<link href="/foundation-icons/foundation-icons.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="/stylesheets/hero.css">
+
+		<!-- Load JS scripts-->
+		<script src="/js/vendor/jquery.js"></script>
+		<link rel="stylesheet" type="text/css" href="/stylesheets/mobile_toggle.css">
+	</head>
+	<body>
+
+		<div class="off-canvas position-left" id="offCanvas" data-off-canvas>
+			<% if(user) { %>
+				<%- include partials/menu_log.ejs %>
+			<% } else { %>
+				<%- include partials/menu.ejs %>
+			<% } %>
+		</div>
+
+		<div class="off-canvas-content" data-off-canvas-content>
+		<!-- Contenu de la page -->
+			<%- include partials/top-bar.ejs %>
+
+			<div class="row">
+				<div class="columns large-4">
+					<div class="row">
+						<div style="background: url('/images/rectangle-1.jpg'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;">
+						</div>
+					</div>
+				</div>
+
+				<div class="columns large-8">
+					<div class="row">
+						<div class="row">
+							<div class="column" style="text-align: center;"><h4>Nom de l'organisme</h4></div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="columns large-4 medium-6 end">
+							<div class="input-group">
+								<span class="input-group-label">
+									<i class="fi-clipboard-pencil size-36"></i>
+								</span>
+								<label class="input-group-field">Type d'organisme</label>
+							</div>
+						</div>
+						<div class="columns large-4 medium-6 end">
+							<a class="button success expanded" href="/evenement/creation">Créer un évènement</a>
+						</div>
+						<div class="columns large-4 medium-6 end">
+							<a class="button warning expanded" href="/organization/edit">Modifier vos informations</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="column">
+					<div class="row">
+						<div class="column" style="text-align: center;"><h3>Vos évènements</h3></div>
+					</div>
+
+					<div class="mobile-app-toggle" data-mobile-app-toggle>
+					  <button class="button">Passé</button>
+					  <button class="button is-active">Actuellement</button>
+					  <button class="button">À venir</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<% for (i = 0 ; i < 7; i++){ %>
+					<div class="columns large-3 medium-6 small-12 end">
+						<div class="card">
+							<img style="width: 100%;" src="/images/rectangle-1.jpg">
+							<div class="card-section">
+								<a href="/organisme"><p>Évènement</p> </a>
+							</div>
+						</div>
+					</div>
+				<% } %>
+			</div>
+		</div>
+
+		<script src="js/vendor/jquery.min.js"></script>
+		<script src="js/foundation.min.js"></script>
+		<script src="js/index.js"></script>
+		<script>
+			$('[data-mobile-app-toggle] .button').click(function () {
+				$(this).siblings().removeClass('is-active');
+				$(this).addClass('is-active');
+			});
+		</script>
+		<script>
+		  $(document).foundation();
+		</script>
+
+	</body>
+</html>
