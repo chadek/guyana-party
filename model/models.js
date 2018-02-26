@@ -3,27 +3,28 @@ module.exports = function(mongoose) {
 
 //==Mongoose model==
 	var userSchema = mongoose.Schema({
-	  user: String,
-	  email: String,
-	  password: String,
-		type: String //organisme
+		user: String,
+		email: String,
+		password: String
 	});
 
 	var eventSchema = mongoose.Schema({
-	  user: String,
-	  name: String,
-	  date: Date,
-	  longitude: Number,
-	  latitude: Number,
-	  address: String,
+		user: String,
+		name: String,
+		date: Date,
+		longitude: Number,
+		latitude: Number,
+		address: String,
 		description: String,
-	  flyer: String
+		flyer: String
 	});
 
 	var organizSchema = mongoose.Schema({
-		type : String,
 		name : String,
+		logo: String,
+		type : String,
 		location : {
+			adress: String,
 			longitude: Number, 
 			latitude: Number
 		},
@@ -48,7 +49,7 @@ module.exports = function(mongoose) {
 			User: mongoose.model('User', userSchema),
 			Event: mongoose.model('Event', eventSchema),
 			Organiz: mongoose.model('Organiz', organizSchema)
-	    };
+		};
 	}
     return models;
 }
