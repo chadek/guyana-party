@@ -39,7 +39,7 @@ router.get('/', function(req, res, next) {
 
 // get instription page : if user log, redirect to main page, else render template
 router.get('/inscription', function(req, res, next) {
-  if(req.user){
+  if(req.isAuthenticated()){
     res.redirect('/');
   } else{
     // render template with errors throw by bad login/register
@@ -51,7 +51,7 @@ router.get('/inscription', function(req, res, next) {
 
 // render organisme page (redirect to login page if not log)
 router.get('/organisme', function(req, res, next) {
-  if(req.user){
+  if(req.isAuthenticated()){
     res.render('organisme');
   } else {
     res.redirect('/inscription');
@@ -95,17 +95,16 @@ router.get('/deconnexion', function(req, res){
 
 
 /* POST inscription */
-router.post('/inscription/ajouter', passport.authenticate('local-signup', {
-  successRedirect: '/',
-  failureRedirect: '/inscription'
-  })
-);
+router.post('/inscription/ajouter', passport.authenticate('local-signup', { failureRedirect: '/inscription'}),
+  function(req, res) {
+    res.redirect('/users/'+req.user);
+});
 
 /* connection */
-router.post('/connection', passport.authenticate('local-signin', {
-  successRedirect: '/',
-  failureRedirect: '/inscription'
-  })
+router.post('/connection', passport.authenticate('local-signin', { failureRedirect: '/inscription'}),
+  function(req, res) {
+    res.redirect('/users/'+req.user);
+  }
 );
 
 
