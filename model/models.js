@@ -5,7 +5,8 @@ module.exports = function(mongoose) {
 	var userSchema = mongoose.Schema({
 		user: String,
 		email: String,
-		password: String
+		password: String,
+		picture: String
 	});
 
 	var eventSchema = mongoose.Schema({
@@ -23,16 +24,20 @@ module.exports = function(mongoose) {
 		name : String,
 		logo: String,
 		type : String,
-		location : {
-			adress: String,
-			longitude: Number, 
-			latitude: Number
-		},
-		users : {
-			administrator : [String],
-			member : [String]
-		}
+		address: String,
+		longitude: Number, 
+		latitude: Number
 	});
+
+	var administrator = mongoose.Schema({
+		userId: String,
+		organizId: String
+	});
+
+	var member = mongoose.Schema({
+		userId: String,
+		organizId: String 
+	})
 	// create index to perform text search on several fields
 	eventSchema.index({user: 'text', name: 'text', description:'text', address: 'text'});
 
