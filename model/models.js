@@ -6,7 +6,8 @@ module.exports = function(mongoose) {
 		user: String,
 		email: String,
 		password: String,
-		picture: String
+		picture: String,
+		isvalid: Boolean
 	});
 
 	var eventSchema = mongoose.Schema({
@@ -37,7 +38,7 @@ module.exports = function(mongoose) {
 	var member = mongoose.Schema({
 		userId: String,
 		organizId: String 
-	})
+	});
 	// create index to perform text search on several fields
 	eventSchema.index({user: 'text', name: 'text', description:'text', address: 'text'});
 
