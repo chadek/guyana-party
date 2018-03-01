@@ -40,23 +40,22 @@
 				<div class="columns large-8">
 					<div class="row">
 						<div class="row">
-							<div class="column" style="text-align: center;"><h4>Nom de l'organisme</h4></div>
+							<div class="column" style="text-align: center;"><h4><%- organizInfos.name %></h4></div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="columns large-4 medium-6 end">
-							<div class="input-group">
-								<span class="input-group-label">
-									<i class="fi-clipboard-pencil size-36"></i>
-								</span>
-								<label class="input-group-field">Type d'organisme</label>
-							</div>
+							<span class="label info"><i class="fi-torsos-all-female"></i> <%- organizInfos.type %></span>
 						</div>
 						<div class="columns large-4 medium-6 end">
 							<a class="button success expanded" href="/evenement/creation">Créer un évènement</a>
 						</div>
 						<div class="columns large-4 medium-6 end">
 							<a class="button warning expanded" href="/organization/edit">Modifier vos informations</a>
+						</div>
+
+						<div class="columns large-4 medium-6 end">
+							
 						</div>
 					</div>
 				</div>
