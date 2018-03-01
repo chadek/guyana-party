@@ -25,6 +25,7 @@ module.exports = function(mongoose) {
 		name : String,
 		logo: String,
 		type : String,
+		description: String,
 		address: String,
 		longitude: Number, 
 		latitude: Number
@@ -49,7 +50,7 @@ module.exports = function(mongoose) {
 			User: mongoose.model('User'),
 			Event: mongoose.model('Event'),
 			Organiz: mongoose.model('Organiz'),
-			Administrator: mongoose.model('Admin'),
+			Admin: mongoose.model('Admin'),
 			Member: mongoose.model('Member')
 	    };
 	} catch (error) {
@@ -57,7 +58,7 @@ module.exports = function(mongoose) {
 			User: mongoose.model('User', userSchema),
 			Event: mongoose.model('Event', eventSchema),
 			Organiz: mongoose.model('Organiz', organizSchema),
-			Administrator: mongoose.model('Admin', administratorSchema),
+			Admin: mongoose.model('Admin', administratorSchema),
 			Member: mongoose.model('Member', memberSchema)
 		};
 	}
