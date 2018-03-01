@@ -19,7 +19,7 @@ var gfs = "";
 db.on('error', console.error.bind(console, 'error while connecting to DB'));
 db.once('open',function(){
 	gfs = Grid(db.db);
-	console.log("connection to DB OK");
+	console.log("connection organiz to DB OK");
 });
 
 
@@ -30,7 +30,7 @@ var Admin = models.Admin;
 var Member = models.Member;
 
 // set destination for uploaded flyer
-var upload = multer({ destination: '/logos' })
+var upload = multer({ destination: 'logos/' })
 
 
 /* GET users listing. */
@@ -82,7 +82,7 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 	console.log(req.body);
 	console.log(req.file);
 	// if user is logged
-	if(req.user){
+	if(req.isAuthenticated()){
 		// if user send flyer, store it in db
 		if (req.file != undefined){
 			// streaming to gridfs
@@ -100,43 +100,48 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 				var organiz = new Organiz({ 
 					name: req.body.name,
 					logo: file._id,
-					type: req.type_orga,
+					type: req.body.type_orga,
 					description: req.body.description,
 					longitude: req.body.longitude,
 					latitude: req.body.latitude,
 					address: req.body.address
 				});
 
-				
 				console.log("CREATING ORGANIZATION (with logo) :", req.body.name);
+				
 				organiz.save(function(err, result) {
 					if (err) throw err;
 					console.log("ORGANIZATION CREATED");
-					// is a admin too, so
-					var admin = new Admin({
-						userID: req.user,
-						organizId: result._id
-					});
-
-					var membre = new Member({
-						userID: req.user,
-						organizId: result._id
-					});
-
-					console.log("Adding  user right !");
-
-					admin.save(function(err, resulta){
-						if (err) throw err;
-						console.log("Added as administrator");
-					});
-
-					membre.save(function(err, resultm){
-						if (err) throw err;
-						console.log("Added as member too");
-					});
-
 					res.redirect('/organization/id/'+ result._id);
 				});
+
+
+				/*console.log("Adding  user right !");
+
+				var admin = new Admin({
+					userID: req.user,
+					organizId: result._id
+				});
+
+				admin.save(function(erra, resulta){
+					if (erra) throw erra;
+					console.log("Added as administrator");
+				});
+
+				var membre = new Member({
+					userID: req.user,
+					organizId: result._id
+				});
+
+				membre.save(function(errm, resultm){
+					if (errm) throw errm;
+					console.log("Added as member too");
+				});*/
+
+				
+
+				
+				
 			});
 		} else {
 
@@ -145,7 +150,7 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 			var organiz = new Organiz({ 
 				name: req.body.name,
 				logo: 'noLogo',
-				type: req.type_orga,
+				type: req.body.type_orga,
 				description: req.body.description,
 				longitude: req.body.longitude,
 				latitude: req.body.latitude,
@@ -155,32 +160,32 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 			console.log("CREATING ORGANIZ (without logo) :", req.body.name);
 			organiz.save(function(err, result) {
 				if (err) throw err;
-
 				console.log("ORGANIZ CREATED");
 				// is a admin too, so
-				var admin = new Admin({
-					userID: req.user,
-					organizId: result._id
-				});
-
-				var membre = new Member({
-					userID: req.user,
-					organizId: result._id
-				});
-
-				console.log("Adding  user right !");
-				admin.save(function(err, resulta){
-					if (err) throw err;
-					console.log("Added as administrator");
-				});
-
-				
-				membre.save(function(err, resultm){
-					if (err) throw err;
-					console.log("Added as member too");
-				});
 				res.redirect('/organization/id/'+ result._id);
 			});
+
+			/*var admin = new Admin({
+				userID: req.user,
+				organizId: result._id
+			});
+
+			var membre = new Member({
+				userID: req.user,
+				organizId: result._id
+			});
+
+			console.log("Adding  user right !");
+
+			admin.save(function(erra, resulta){
+				if (erra) throw erra;
+				console.log("Added as administrator");
+			});
+
+			membre.save(function(errm, resultm){
+				if (errm) throw errm;
+				console.log("Added as member too");
+			});*/
 		}
 	}else {
 		res.redirect('/inscription');
