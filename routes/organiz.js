@@ -48,7 +48,7 @@ router.get('/id/:organizId', function(req, res, next){
 
 	console.log('ID of ORGANIZATION '+ req.params.organizId);
 
-	Organiz.findOne({_id: req.params._id}, function(err, result){
+	Organiz.findById(req.params._id, function(err, result){
 		if (err) throw err;
 		if(null != result){
 			var organizFound = {
@@ -108,40 +108,35 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 				});
 
 				console.log("CREATING ORGANIZATION (with logo) :", req.body.name);
-				
+
 				organiz.save(function(err, result) {
 					if (err) throw err;
 					console.log("ORGANIZATION CREATED");
+
+					console.log("Adding  user right !");
+
+					var admin = new Admin({
+						userID: req.user,
+						organizId: result._id
+					});
+
+					admin.save(function(err, result){
+						if (erra) throw erra;
+						console.log("Added as administrator");
+					});
+
+					var membre = new Member({
+						userID: req.user,
+						organizId: result._id
+					});
+
+					membre.save(function(err, result){
+						if (errm) throw errm;
+						console.log("Added as member too");
+					});
+
 					res.redirect('/organization/id/'+ result._id);
-				});
-
-
-				/*console.log("Adding  user right !");
-
-				var admin = new Admin({
-					userID: req.user,
-					organizId: result._id
-				});
-
-				admin.save(function(erra, resulta){
-					if (erra) throw erra;
-					console.log("Added as administrator");
-				});
-
-				var membre = new Member({
-					userID: req.user,
-					organizId: result._id
-				});
-
-				membre.save(function(errm, resultm){
-					if (errm) throw errm;
-					console.log("Added as member too");
-				});*/
-
-				
-
-				
-				
+				});	
 			});
 		} else {
 
@@ -162,30 +157,32 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 				if (err) throw err;
 				console.log("ORGANIZ CREATED");
 				// is a admin too, so
+				var admin = new Admin({
+					userID: req.user,
+					organizId: result._id
+				});
+
+				var membre = new Member({
+					userID: req.user,
+					organizId: result._id
+				});
+
+				console.log("Adding  user right !");
+
+				admin.save(function(erra, resulta){
+					if (erra) throw erra;
+					console.log("Added as administrator");
+				});
+
+				membre.save(function(errm, resultm){
+					if (errm) throw errm;
+					console.log("Added as member too");
+				});
+				
 				res.redirect('/organization/id/'+ result._id);
 			});
 
-			/*var admin = new Admin({
-				userID: req.user,
-				organizId: result._id
-			});
 
-			var membre = new Member({
-				userID: req.user,
-				organizId: result._id
-			});
-
-			console.log("Adding  user right !");
-
-			admin.save(function(erra, resulta){
-				if (erra) throw erra;
-				console.log("Added as administrator");
-			});
-
-			membre.save(function(errm, resultm){
-				if (errm) throw errm;
-				console.log("Added as member too");
-			});*/
 		}
 	}else {
 		res.redirect('/inscription');
