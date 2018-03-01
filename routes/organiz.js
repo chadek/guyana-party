@@ -45,9 +45,32 @@ router.get('/creation', function(req, res, next){
 /*----- GET REQUEST -----*/
 
 router.get('/id/:organizId', function(req, res, next){
-	console.log(req.params.organizId);
-	// Organiz.findOne({})
-	res.render('organization', {user: req.user, organiz: req.params.organizId});
+
+	console.log('ID of ORGANIZATION '+ req.params.organizId);
+
+	Organiz.findOne({_id: req.params._id}, function(err, result){
+		if (err) throw err;
+		if(null != result){
+			var organizFound = {
+				name: result.name,
+				logo: result.logo,
+				type: result.type,
+				description: result.description,
+				address: result.address,
+			};
+			console.log('info a afficher', organizFound);
+			res.render('organization', {
+				user: req.user,
+				organizInfos: organizFound
+			});
+		} else {
+			var err= new Error('Not Found');
+			err.status = 404;
+			next(err);
+		}
+	})
+	
+
 });
 
 
@@ -77,7 +100,7 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 				var organiz = new Organiz({ 
 					name: req.body.name,
 					logo: file._id,
-					type: req.type,
+					type: req.type_orga,
 					description: req.body.description,
 					longitude: req.body.longitude,
 					latitude: req.body.latitude,
@@ -94,17 +117,20 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 						userID: req.user,
 						organizId: result._id
 					});
-					console.log("Adding  user right !");
-					admin.save(function(err, result){
-						if (err) throw err;
-						console.log("Added as administrator");
-					});
 
 					var membre = new Member({
 						userID: req.user,
 						organizId: result._id
 					});
-					membre.save(function(err, result){
+
+					console.log("Adding  user right !");
+
+					admin.save(function(err, resulta){
+						if (err) throw err;
+						console.log("Added as administrator");
+					});
+
+					membre.save(function(err, resultm){
 						if (err) throw err;
 						console.log("Added as member too");
 					});
@@ -119,7 +145,7 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 			var organiz = new Organiz({ 
 				name: req.body.name,
 				logo: 'noLogo',
-				type: req.type,
+				type: req.type_orga,
 				description: req.body.description,
 				longitude: req.body.longitude,
 				latitude: req.body.latitude,
@@ -136,17 +162,20 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 					userID: req.user,
 					organizId: result._id
 				});
-				console.log("Adding  user right !");
-				admin.save(function(err, result){
-					if (err) throw err;
-					console.log("Added as administrator");
-				});
 
 				var membre = new Member({
 					userID: req.user,
 					organizId: result._id
 				});
-				membre.save(function(err, result){
+
+				console.log("Adding  user right !");
+				admin.save(function(err, resulta){
+					if (err) throw err;
+					console.log("Added as administrator");
+				});
+
+				
+				membre.save(function(err, resultm){
 					if (err) throw err;
 					console.log("Added as member too");
 				});
