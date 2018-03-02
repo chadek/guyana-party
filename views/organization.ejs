@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="/stylesheets/foundation.css" />
 		<!-- Font Foundation -->
 		<link href="/foundation-icons/foundation-icons.css" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="/stylesheets/hero.css">
+		<!-- <link rel="stylesheet" type="text/css" href="/stylesheets/hero.css"> -->
 
 		<!-- Load JS scripts-->
 		<script src="/js/vendor/jquery.js"></script>
@@ -31,21 +31,22 @@
 
 			<div class="row">
 				<div class="columns large-4">
-					<div class="row">
-						<div style="background: url('/images/rectangle-1.jpg'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;">
-						</div>
+					<div id="logo" class="row">
+						<!-- <div style="background: url('/images/rectangle-1.jpg'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;">
+						</div> -->
 					</div>
 				</div>
 
 				<div class="columns large-8">
 					<div class="row">
 						<div class="row">
-							<div class="column" style="text-align: center;"><h4><%- organizInfos.name %></h4></div>
+							<div class="column" style="text-align: center;"><h4 id="name"></h4></div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="columns large-4 medium-6 end">
-							<span class="label info"><i class="fi-torsos-all-female"></i> <%- organizInfos.type %></span>
+							<span id="type" class="label info">
+							</span>
 						</div>
 						<div class="columns large-4 medium-6 end">
 							<a class="button success expanded" href="/evenement/creation">Créer un évènement</a>
@@ -69,8 +70,7 @@
 
 					<div class="mobile-app-toggle" data-mobile-app-toggle>
 					  <button class="button">Passé</button>
-					  <button class="button is-active">Actuellement</button>
-					  <button class="button">À venir</button>
+					  <button class="button is-active">Prochainement</button>
 					</div>
 				</div>
 			</div>
@@ -96,6 +96,11 @@
 				$(this).siblings().removeClass('is-active');
 				$(this).addClass('is-active');
 			});
+		</script>
+		<script type="text/javascript" src="/js/views/id-organiz.js" ></script>
+		<script type="text/javascript">
+			PLOTBYID.init(["<%= organiz %>"]);
+			PLOTBYID.plotOrganiz();
 		</script>
 		<script>
 		  $(document).foundation();
