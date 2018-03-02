@@ -8,7 +8,7 @@ module.exports = function(mongoose) {
 		password: String,
 		picture: String,
 		isvalid: Boolean,
-		organization: [String]
+		membership: [String]
 	});
 
 	var eventSchema = mongoose.Schema({
