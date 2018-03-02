@@ -7,7 +7,8 @@ module.exports = function(mongoose) {
 		email: String,
 		password: String,
 		picture: String,
-		isvalid: Boolean
+		isvalid: Boolean,
+		organization: [String]
 	});
 
 	var eventSchema = mongoose.Schema({
@@ -29,8 +30,7 @@ module.exports = function(mongoose) {
 		address: String,
 		longitude: Number, 
 		latitude: Number,
-		admin: [String],
-		member:[String]
+		community: [{username: String, isAdmin: Boolean}]
 	});
 
 	// create index to perform text search on several fields
