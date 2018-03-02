@@ -25,9 +25,9 @@ db.once('open',function(){
 
 // require mongoose model (define in /model/models.js)
 var models = require( path.join(__dirname, '../model/models' ))(mongoose);
+var User = models.User;
 var Organiz = models.Organiz;
-var Admin = models.Admin;
-var Member = models.Member;
+
 
 // set destination for uploaded flyer
 var upload = multer({ destination: 'logos/' })
@@ -44,33 +44,53 @@ router.get('/creation', function(req, res, next){
 
 /*----- GET REQUEST -----*/
 
-router.get('/id/:organizId', function(req, res, next){
-
-	console.log('ID of ORGANIZATION '+ req.params.organizId);
-
-	Organiz.findById(req.params._id, function(err, result){
-		if (err) throw err;
-		if(null != result){
-			var organizFound = {
-				name: result.name,
-				logo: result.logo,
-				type: result.type,
-				description: result.description,
-				address: result.address,
-			};
-			console.log('info a afficher', organizFound);
-			res.render('organization', {
-				user: req.user,
-				organizInfos: organizFound
-			});
-		} else {
-			var err= new Error('Not Found');
+router.get('/id/:organizId/js', function(req, res, next){
+	console.log(req.params.organizId);
+	Organiz.findById(req.params.organizId, function(err, result){
+		if (err) {
+			if (err.name == 'CastError') {
+				var err = new Error('CastError');
+				err.status = 404;
+				next(err);
+			} else {
+				throw err;
+			}
+		} else if (result == null){
+			var err = new Error('Result Null');
 			err.status = 404;
 			next(err);
+		} else {
+			console.log(result);
+			res.json(result);
 		}
-	})
-	
+	});
+});
 
+router.get('/id/:organizId', function(req, res, next){
+	console.log('ID of ORGANIZATION '+ req.params.organizId);
+	console.log('Username : ' +  req.user);
+	res.render('organization', {user: req.user, organiz: req.params.organizId});
+	// Organiz.findById(req.params.organizId, function(err, result){
+	// 	if (err) throw err;
+	// 	if(null != result){
+	// 		var organizFound = {
+	// 			name: result.name,
+	// 			logo: result.logo,
+	// 			type: result.type,
+	// 			description: result.description,
+	// 			address: result.address,
+	// 		};
+	// 		console.log('info a afficher', organizFound);
+	// 		res.render('organization', {
+	// 			user: req.user,
+	// 			organizInfos: organizFound
+	// 		});
+	// 	} else {
+	// 		var err = new Error('Not Found');
+	// 		err.status = 404;
+	// 		next(err);
+	// 	}
+	// });
 });
 
 
@@ -81,6 +101,7 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 	console.log("ajout");
 	console.log(req.body);
 	console.log(req.file);
+	console.log(req.user);
 	// if user is logged
 	if(req.isAuthenticated()){
 		// if user send flyer, store it in db
@@ -102,9 +123,10 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 					logo: file._id,
 					type: req.body.type_orga,
 					description: req.body.description,
+					address: req.body.address,
 					longitude: req.body.longitude,
 					latitude: req.body.latitude,
-					address: req.body.address
+					community : [{username: req.user, isAdmin: true}]
 				});
 
 				console.log("CREATING ORGANIZATION (with logo) :", req.body.name);
@@ -114,26 +136,8 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 					console.log("ORGANIZATION CREATED");
 
 					console.log("Adding  user right !");
-
-					var admin = new Admin({
-						userID: req.user,
-						organizId: result._id
-					});
-
-					admin.save(function(err, result){
-						if (erra) throw erra;
-						console.log("Added as administrator");
-					});
-
-					var membre = new Member({
-						userID: req.user,
-						organizId: result._id
-					});
-
-					membre.save(function(err, result){
-						if (errm) throw errm;
-						console.log("Added as member too");
-					});
+					
+					User.findOneAndUpdate({user: req.user},{$push : {membership: result._id}});
 
 					res.redirect('/organization/id/'+ result._id);
 				});	
@@ -147,38 +151,19 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 				logo: 'noLogo',
 				type: req.body.type_orga,
 				description: req.body.description,
+				address: req.body.address,
 				longitude: req.body.longitude,
 				latitude: req.body.latitude,
-				address: req.body.address
+				community : [{username: req.user, isAdmin: true}]
 			});
 
 			console.log("CREATING ORGANIZ (without logo) :", req.body.name);
 			organiz.save(function(err, result) {
 				if (err) throw err;
 				console.log("ORGANIZ CREATED");
-				// is a admin too, so
-				var admin = new Admin({
-					userID: req.user,
-					organizId: result._id
-				});
 
-				var membre = new Member({
-					userID: req.user,
-					organizId: result._id
-				});
+				User.findOneAndUpdate({user: req.user},{$push : {membership: result._id}});
 
-				console.log("Adding  user right !");
-
-				admin.save(function(erra, resulta){
-					if (erra) throw erra;
-					console.log("Added as administrator");
-				});
-
-				membre.save(function(errm, resultm){
-					if (errm) throw errm;
-					console.log("Added as member too");
-				});
-				
 				res.redirect('/organization/id/'+ result._id);
 			});
 
