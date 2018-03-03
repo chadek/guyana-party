@@ -116,7 +116,10 @@ router.post('/creation/ajouter', upload.single('logo') ,function (req, res, next
 
 					console.log("Adding  user right !");
 					
-					User.findOneAndUpdate({user: req.user},{$push : {membership: result._id}});
+					User.updateOne({user: req.user},{$push : {membership: result._id}}, function(err, res) {
+						if (err) throw err;
+						console.log("1 document updated");
+					});
 
 					res.redirect('/organization/id/'+ result._id);
 				});	
