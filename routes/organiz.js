@@ -70,27 +70,6 @@ router.get('/id/:organizId', function(req, res, next){
 	console.log('ID of ORGANIZATION '+ req.params.organizId);
 	console.log('Username : ' +  req.user);
 	res.render('organization', {user: req.user, organiz: req.params.organizId});
-	// Organiz.findById(req.params.organizId, function(err, result){
-	// 	if (err) throw err;
-	// 	if(null != result){
-	// 		var organizFound = {
-	// 			name: result.name,
-	// 			logo: result.logo,
-	// 			type: result.type,
-	// 			description: result.description,
-	// 			address: result.address,
-	// 		};
-	// 		console.log('info a afficher', organizFound);
-	// 		res.render('organization', {
-	// 			user: req.user,
-	// 			organizInfos: organizFound
-	// 		});
-	// 	} else {
-	// 		var err = new Error('Not Found');
-	// 		err.status = 404;
-	// 		next(err);
-	// 	}
-	// });
 });
 
 
