@@ -105,7 +105,7 @@ passport.use('local-signup', new LocalStrategy(
 
             // salt and hash password before sending it to database
             password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-            var user = new User({ user: username, email: email, password: password, type: req.body.type_orga});
+            var user = new User({ user: username, email: email, password: password, isvalid: false, membership: []});
 
             console.log("CREATING USER:", username);
 
