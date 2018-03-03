@@ -5,15 +5,16 @@ var PLOTBYID = PLOTBYID || (function(){
 	function loadInfo(organizData){
 
 		console.log("/file/"+organizData.logo);
-		var div =document.createElementById("div");
+		var div =document.createElement("div");
 		div.style = "background: url('/file/"+ organizData.logo +"'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;"
 		var src = document.getElementById("logo");
 		src.appendChild(div);
 
 		document.getElementById("name").innerHTML = organizData.name;
 
-		var typeOrga = '<i class="fi-torsos-all-female"></i>';
-		document.getElementById("type") = typeOrga + organizData.type;
+		var type = document.getElementById("type");
+		var texttype = document.createTextNode(organizData.type);
+		type.appendChild(texttype);
 	}
 
 	return {
