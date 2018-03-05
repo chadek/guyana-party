@@ -15,6 +15,8 @@ var PLOTBYID = PLOTBYID || (function(){
 		var type = document.getElementById("type");
 		var texttype = document.createTextNode(organizData.type);
 		type.appendChild(texttype);
+
+		document.getElementById("description").innerHTML = organizData.description;
 	}
 
 	return {
