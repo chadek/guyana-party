@@ -1,12 +1,12 @@
-$(document).ready(function(){
+ $(document).ready(function(){
   //get current date
   var date = new Date();
-
   //build hours string
   //add 0 before first digit wheras time could look like this 17:1
   var str = ('0' + date.getHours()).slice(-2) + ":";
      str += ('0' + date.getMinutes()).slice(-2);
-  document.getElementById("heure").value = str;
+  document.getElementById("starttime").value = str;
+  document.getElementById("endtime").value = str;
 
   // build date String
   str = date.getFullYear() + "-";
@@ -14,6 +14,7 @@ $(document).ready(function(){
   str +=  ('0' + date.getDate()).slice(-2);
 
   document.getElementById("dp1").value = str;
+  document.getElementById("dp2").value = str;
 
   /*TODO verifier les champs remplis par l'utilisateur avant
   envoie vers DB*/
