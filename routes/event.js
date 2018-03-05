@@ -181,14 +181,20 @@ router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, nex
         console.log(file.filename + ' Written To DB');
 
 
-        var dateStr = req.body.date+"T"+req.body.heure+":00";
-        var dateObj = Date.parse(dateStr);
-        console.log(dateStr);
-        console.log(dateObj);
+        var startdateStr = req.body.startdate+"T"+req.body.starttime+":00";
+        var startdateObj = Date.parse(startdateStr);
+        console.log(startdateStr);
+        console.log(startdateObj);
+
+        var enddateStr = req.body.enddate+"T"+req.body.endtime+":00";
+        var enddateObj = Date.parse(enddateStr);
+        console.log(enddateStr);
+        console.log(enddateObj);
 
         var event = new Event({ user: req.user,
                                 name: req.body.name,
-                                date: dateObj,
+                                startdate: startdateObj,
+                                enddate: enddateObj,
                                 longitude: req.body.longitude,
                                 latitude: req.body.latitude,
                                 address: req.body.address,
@@ -203,14 +209,20 @@ router.post('/creation/ajouter', upload.single('flyer') ,function (req, res, nex
       });
     } else {
 
-      var dateStr = req.body.date+"T"+req.body.heure+":00";
-      var dateObj = Date.parse(dateStr);
-      console.log(dateStr);
-      console.log(dateObj);
+      var startdateStr = req.body.startdate+"T"+req.body.starttime+":00";
+      var startdateObj = Date.parse(startdateStr);
+      console.log(startdateStr);
+      console.log(startdateObj);
+
+      var enddateStr = req.body.enddate+"T"+req.body.endtime+":00";
+      var enddateObj = Date.parse(enddateStr);
+      console.log(enddateStr);
+      console.log(enddateObj);
       // if no flyer, store null in flyer field
       var event = new Event({ user: req.user,
                               name: req.body.name,
-                              date: dateObj,
+                              startdate: startdateObj,
+                              enddate: enddateObj,
                               longitude: req.body.longitude,
                               latitude: req.body.latitude,
                               address: req.body.address,
