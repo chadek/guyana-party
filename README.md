@@ -42,6 +42,10 @@ Une fois authentifier on produit un cookie que l'utilisateur transmet pour chaqu
 
 ### Vues
 
+Design du calendrier et de l'horloge :
+http://foundation-datepicker.peterbeno.com/example.html
+https://weareoutman.github.io/clockpicker/
+
 #### Partial
 
 Définis des éléments partiels intégrés à plusieurs vues : bandeau, menu latéral
