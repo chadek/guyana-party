@@ -14,7 +14,8 @@ module.exports = function(mongoose) {
 	var eventSchema = mongoose.Schema({
 		user: String,
 		name: String,
-		date: Date,
+		startdate: Date,
+		enddate: Date,
 		longitude: Number,
 		latitude: Number,
 		address: String,
