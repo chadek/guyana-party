@@ -14,13 +14,26 @@ var PLOTBYID = PLOTBYID || (function(){
 		var src = document.getElementById("flyer");
 		src.appendChild(div);
 
+		console.log("Avant QUAND");
+
 		// build date String
-		var dateObj = new Date(eventData.date);
-		strDate =  "Le " + ('0' + dateObj.getDate()).slice(-2) + "-";
-		strDate += ('0' + (dateObj.getMonth()+ 1)).slice(-2) + "-";
-		strDate += dateObj.getFullYear();
-		strDate += " à "+ ('0' + dateObj.getHours()).slice(-2) + ":";
-		strDate += ('0' + dateObj.getMinutes()).slice(-2);
+		var startdateObj = new Date(eventData.startdate);
+		var enddateObj = new Date(eventData.enddate);
+
+		var strDate =  "Le " + ('0' + startdateObj.getDate()).slice(-2) + "-";
+		strDate += ('0' + (startdateObj.getMonth()+ 1)).slice(-2) + "-";
+		strDate += startdateObj.getFullYear();
+		strDate += " à "+ ('0' + startdateObj.getHours()).slice(-2) + ":";
+		strDate += ('0' + startdateObj.getMinutes()).slice(-2);
+		
+		strDate += " jusqu au " + ('0' + enddateObj.getDate()).slice(-2) + "-";
+		strDate += ('0' + (enddateObj.getMonth()+ 1)).slice(-2) + "-";
+		strDate += enddateObj.getFullYear();
+		strDate += " à "+ ('0' + enddateObj.getHours()).slice(-2) + ":";
+		strDate += ('0' + enddateObj.getMinutes()).slice(-2);
+
+		console.log("QUAND ? " + strDate);
+
 
 		document.getElementById("date").innerHTML = strDate;
 
