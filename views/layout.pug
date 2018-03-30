@@ -1,3 +1,6 @@
+include mixins/_sideMenu
+include mixins/_topMenu
+
 doctype html
 html.no-js
   head
@@ -22,7 +25,11 @@ html.no-js
                 p.flash__text!= message
                 button.flash__remove(onClick="this.parentElement.remove()") &times;
     .content
-      block content
+      .off-canvas.position-left#offCanvas(data-off-canvas)
+        +sideMenu()
+      .off-canvas-content(data-off-canvas-content)
+        +topMenu()
+        block content
 
     block scripts
       script(src="/vendor/jquery.min.js")
