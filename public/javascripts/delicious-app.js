@@ -1,5 +1,8 @@
 import "../sass/style.scss";
 
-//import { $, $$ } from "./modules/bling";
+import { S, SS } from "./modules/bling";
+import loginForm from "./modules/loginForm";
 
 $(document).foundation();
+
+loginForm();

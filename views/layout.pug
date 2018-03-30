@@ -1,9 +1,10 @@
 doctype html
-html
+html.no-js
   head
     title= `${title} | ${h.siteName}`
-    link(rel='stylesheet', href='/dist/vendor/foundation.min.css')
-    link(rel='stylesheet', href='/dist/style.css')
+    block style
+      link(rel='stylesheet', href='/vendor/foundation.min.css')
+      link(rel='stylesheet', href='/dist/style.css')
     link(rel="shortcut icon" type="image/png" href="/images/icons/favicon.ico")
     meta(charset="utf-8")
     meta(http-equiv="x-ua-compatible" content="ie=edge")
@@ -24,6 +25,6 @@ html
       block content
 
     block scripts
-      script(src="/dist/vendor/jquery.min.js")
-      script(src="/dist/vendor/foundation.min.js")
+      script(src="/vendor/jquery.min.js")
+      script(src="/vendor/foundation.min.js")
       script(src="/dist/App.bundle.js")

@@ -1,0 +1,64 @@
+extends layout
+
+block style
+  link(rel="stylesheet", href="/vendor/foundation.min.css")
+  link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
+  link(rel="stylesheet", href="/vendor/OR.css")
+
+block content
+  .off-canvas.position-left#offCanvas(data-off-canvas)
+    ul
+      li: a(href="/") Accueil
+      li: a(href="/connexion") Connexion/Inscription
+      li: a(href="/evenement") Tous les évènements
+      li: a(href="/evenement/creation") Créez votre évènement
+      li: a(href="#") Condition général d'utilisation
+  .off-canvas-content(data-off-canvas-content)
+    //- Menu bar
+    div(data-sticky-container)
+      .title-bar(data-sticky-on="small" data-sticky data-options="marginTop:0;" style="width:100%; z-index: 100000; text-align: center;")
+        .title-bar-left(data-open="offCanvas")
+          button.menu-icon(type="button")
+          span.title-bar-title Menu
+        .title-bar-title(onclick="location.href='/'" style="display: inline-block; position: relative; left:-37px;")
+          img(src="/images/rectangle-1.jpg" width="60px")
+    //- Content
+    .row(style="vertical-align: middle;")
+      .large-6.medium-6.small-12.medium-centered.large-centered.columns
+        .expanded.button-group-option(data-grouptype="OU")
+          button.button.success.radius#b_connection Connexion
+          button.button.secondary.radius#b_inscription Inscription
+        //- Connection
+        form(action="/connection" method="POST")
+          .form-icons#connection
+            .input-group
+              span.input-group-label: i.fi-mail.size-36
+              input.input-group-field(type="email" name="email" placeholder="Email, identifiant")
+            .input-group
+              span.input-group-label: i.fi-key.size-36
+              input.input-group-field(type="password" name="password" placeholder="Mot de passe")
+            .input-group
+              a.forgot-link(href="/account/forgot") Mot de passe oublié
+            button.button.expanded.success Connexion
+            p= status
+        //- Inscription
+        form(action="/inscription" method="POST")
+          .form-icons#inscription
+            .input-group
+              span.input-group-label: i.fi-torsos-male-female.size-36
+              input.input-group-field(type="text" name="name" placeholder="Nom de l'organisateur")
+            .row
+              .large-6.medium-8.small-10.columns.small-centered
+                label.button.expanded(for="fileUpload") Représentation visuelle
+                input.show-for-sr#fileUpload(type="file" name="picture" accept="image/gif, image/jpeg, image/png")
+            .input-group
+              span.input-group-label: i.fi-mail.size-36
+              input.input-group-field(type="text" name="email" placeholder="Email, identifiant")
+            .input-group
+              span.input-group-label: i.fi-key.size-36
+              input.input-group-field(type="password" name="password" placeholder="Mot de passe")
+            .input-group
+              span.input-group-label: i.fi-key.size-36
+              input.input-group-field(type="password" name="password-confirm" placeholder="Mot de passe")
+            button.button.expanded.success Enregistrer
+            p= status

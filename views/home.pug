@@ -6,7 +6,7 @@ block content
   .off-canvas.position-left#offCanvas(data-off-canvas)
     ul
       li: a(href="/") Accueil
-      li: a(href="/inscription") Inscription/Connexion
+      li: a(href="/connexion") Connexion/Inscription
       li: a(href="/evenement") Tous les évènements
       li: a(href="/evenement/creation") Créez votre évènement
       li: a(href="#") Condition général d'utilisation
@@ -28,7 +28,7 @@ block content
             p
               | L'essentiel pour faire des rencontres c'est de savoir où et quand se retrouver. Déterminer vos thèmes et publiez.
           .columns.large-6.medium-6.small-12.large-centered.medium-centered
-            a.button.expanded.success(href='/evenement/creation') Créez un évènement
+            a.button.expanded.success(href="/evenement/creation") Créez un évènement
           hr.hide-for-large
 
       if user
@@ -44,4 +44,4 @@ block content
                 | Pour votre association ou votre entreprise, gérez vos évènements public sur votre page dédié
               p
             .columns.large-6.medium-6.small-12.large-centered.medium-centered
-              a.button.expanded.alert(href='/inscription') Connexion / Inscription
+              a.button.expanded.alert(href="/connexion") Connexion / Inscription

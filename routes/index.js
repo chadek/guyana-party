@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mainController = require("../controllers/mainController");
+const userController = require("../controllers/userController");
 const { catchErrors } = require("../handlers/errorHandlers");
 
 //var path = require('path');
@@ -94,5 +95,6 @@ const { catchErrors } = require("../handlers/errorHandlers");
 // );
 
 router.get("/", mainController.homePage);
+router.get("/connexion", userController.connexionForm);
 
 module.exports = router;

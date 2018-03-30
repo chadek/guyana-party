@@ -25,11 +25,15 @@
     "express-session": "^1.15.6",
     "express-validator": "^5.0.3",
     "foundation-sites": "^6.4.4-rc1",
+    "md5": "^2.2.1",
     "moment": "^2.21.0",
     "mongoose": "^5.0.12",
     "mongoose-mongodb-errors": "^0.0.2",
     "passport": "^0.4.0",
-    "pug": "^2.0.3"
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^5.0.0",
+    "pug": "^2.0.3",
+    "validator": "^9.4.1"
   },
   "devDependencies": {
     "autoprefixer": "^8.2.0",
