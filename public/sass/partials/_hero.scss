@@ -1,0 +1,73 @@
+
+.hero {
+  background: url("/images/ile.jpg") top right no-repeat;
+  /*height: 65vh;*/
+  background-size: cover;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+@media screen and (min-width: 370px) {
+  .hero {
+    height: 65vh;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .hero {
+    height: 80vh;
+  }
+}
+
+.hero_content h1 {
+  font-size: 32px;
+  color: #fefefe;
+  text-shadow: 1px 1px 2px #0a0a0a;
+  text-align: center;
+}
+
+blockquote, cite {
+  color: #fefefe;
+  text-shadow: 1px 1px 2px #0a0a0a;
+  font-size: 18px;
+}
+
+/*@media screen and (min-width: 40em) {
+  .hero {
+    background-position: center center;
+  }
+}
+
+.hero_content {
+  max-width: 75rem;
+  margin: 0 auto;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+
+
+
+
+.hero_content .button.round {
+  border-radius: 5000px;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: white;
+  margin-bottom: 0;
+}
+
+@media screen and (min-width: 40em) {
+  .hero_content {
+    padding-left: 50%;
+  }
+}
+
+*/
