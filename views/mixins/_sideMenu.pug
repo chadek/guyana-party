@@ -1,7 +1,14 @@
 mixin sideMenu()
+  if user
+    .menu-avatar
+      a(href="/account"): img.avatar(src=(user.picture ? user.picture : user.gravatar + '&d=retro') title="Votre compte")
   ul
     li: a(href="/") Accueil
-    li: a(href="/connexion") Connexion/Inscription
-    li: a(href="/evenement") Tous les évènements
-    li: a(href="/evenement/creation") Créez votre évènement
-    li: a(href="#") Condition général d'utilisation
+    if !user
+      li: a(href="/login") Connexion/Inscription
+    li: a(href="/events") Tous les évènements
+    li: a(href="/events/new") Créez votre évènement
+    if user
+      li: a(href="/logout") Déconnexion
+    else
+      li: a(href="#") Condition général d'utilisation

@@ -76,13 +76,9 @@ var _bling = __webpack_require__(2);
 
 var _loginForm = __webpack_require__(3);
 
-var _loginForm2 = _interopRequireDefault(_loginForm);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 $(document).foundation();
 
-(0, _loginForm2.default)();
+(0, _loginForm.loginForm)();
 
 /***/ }),
 /* 1 */
@@ -131,25 +127,25 @@ exports.SS = SS;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-function showConnection(conn, insc, b_conn, b_insc) {
+var showConnection = function showConnection(conn, insc, b_conn, b_insc) {
   conn.style.display = "block";
   insc.style.display = "none";
   b_conn.classList.remove("secondary");
   b_insc.classList.remove("success");
   b_conn.classList.add("success");
   b_insc.classList.add("secondary");
-}
+};
 
-function showInscription(conn, insc, b_conn, b_insc) {
+var showInscription = function showInscription(conn, insc, b_conn, b_insc) {
   conn.style.display = "none";
   insc.style.display = "block";
   b_conn.classList.remove("success");
   b_insc.classList.remove("secondary");
   b_conn.classList.add("secondary");
   b_insc.classList.add("success");
-}
+};
 
-function loginForm() {
+var loginForm = function loginForm() {
   var conn = document.getElementById("connection");
   var insc = document.getElementById("inscription");
 
@@ -166,9 +162,11 @@ function loginForm() {
   b_insc.on("click", function () {
     return showInscription(conn, insc, b_conn, b_insc);
   });
-}
+};
 
-exports.default = loginForm;
+exports.showConnection = showConnection;
+exports.showInscription = showInscription;
+exports.loginForm = loginForm;
 
 /***/ })
 /******/ ]);

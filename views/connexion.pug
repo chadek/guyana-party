@@ -4,6 +4,7 @@ block style
   link(rel="stylesheet", href="/vendor/foundation.min.css")
   link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
   link(rel="stylesheet", href="/vendor/OR.css")
+  link(rel='stylesheet', href='/dist/style.css')
 
 block content
   .row(style="vertical-align: middle;")
@@ -12,7 +13,7 @@ block content
         button.button.success.radius#b_connection Connexion
         button.button.secondary.radius#b_inscription Inscription
       //- Connection
-      form(action="/connection" method="POST")
+      form(action="/login" method="POST")
         .form-icons#connection
           .input-group
             span.input-group-label: i.fi-mail.size-36
@@ -25,7 +26,7 @@ block content
           button.button.expanded.success Connexion
           p= status
       //- Inscription
-      form(action="/inscription" method="POST")
+      form(action="/register" method="POST")
         .form-icons#inscription
           .input-group
             span.input-group-label: i.fi-torsos-male-female.size-36

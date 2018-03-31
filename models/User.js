@@ -20,9 +20,9 @@ const userSchema = new Schema({
     require: "Please supply a name",
     trim: true
   },
-  picture: String,
-  isvalid: Boolean,
-  membership: [String],
+  //picture: String,
+  //isvalid: Boolean,
+  //membership: [String],
   resetPasswordToken: String,
   resetPasswordExpires: Date
 });

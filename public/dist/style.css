@@ -453,6 +453,9 @@ cite {
   text-shadow: 1px 1px 2px #0a0a0a;
   font-size: 18px; }
 
+.title-bar-title {
+  cursor: pointer; }
+
 .hide {
   text-indent: -999999px;
   font-size: 0; }

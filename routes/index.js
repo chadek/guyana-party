@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mainController = require("../controllers/mainController");
 const userController = require("../controllers/userController");
+const authController = require("../controllers/authController");
 const { catchErrors } = require("../handlers/errorHandlers");
 
 //var path = require('path');
@@ -95,6 +96,14 @@ const { catchErrors } = require("../handlers/errorHandlers");
 // );
 
 router.get("/", mainController.homePage);
-router.get("/connexion", userController.connexionForm);
+router.get("/login", userController.connectionForm);
+router.get("/logout", authController.logout);
+router.post("/login", authController.login);
+router.post(
+  "/register",
+  userController.validateRegister,
+  catchErrors(userController.register),
+  authController.login
+);
 
 module.exports = router;
