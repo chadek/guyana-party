@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const User = mongoose.model("User");
 const { promisify } = require("es6-promisify");
 
-exports.connectionForm = (req, res) => {
-  res.render("connexion", { title: "Connexion/Inscription" });
+exports.loginForm = (req, res) => {
+  res.render("login", { title: "Connexion/Inscription" });
 };
 
 exports.validateRegister = (req, res, next) => {

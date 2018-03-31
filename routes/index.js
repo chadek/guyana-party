@@ -96,7 +96,7 @@ const { catchErrors } = require("../handlers/errorHandlers");
 // );
 
 router.get("/", mainController.homePage);
-router.get("/login", userController.connectionForm);
+router.get("/login", userController.loginForm);
 router.get("/logout", authController.logout);
 router.post("/login", authController.login);
 router.post(

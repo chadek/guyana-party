@@ -1,7 +1,7 @@
 const passport = require("passport");
 
 exports.login = passport.authenticate("local", {
-  failureRedirect: "/connexion",
+  failureRedirect: "/login",
   failureFlash: "Connexion échouée",
   successRedirect: "/",
   successFlash: "Connexion réussie"
