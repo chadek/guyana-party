@@ -106,4 +106,6 @@ router.post(
   authController.login
 );
 
+router.get("/account", authController.isLoggedIn, userController.account);
+
 module.exports = router;

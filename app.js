@@ -12,7 +12,7 @@ const helpers = require("./helpers");
 const { promisify } = require("es6-promisify");
 const index = require("./routes/index");
 //const users = require("./routes/users");
-//const events = require("./routes/events");
+const events = require("./routes/events");
 //const organiz = require("./routes/organiz");
 const errorHandlers = require("./handlers/errorHandlers");
 require("./handlers/passport");
@@ -76,7 +76,7 @@ app.use((req, res, next) => {
 // After allllll that above middleware, we finally handle our own routes!
 app.use("/", index);
 // app.use("/users", users);
-// app.use("/evenement", events);
+app.use("/events", events);
 // app.use("/organization", organiz);
 
 // If that above routes didnt work, we 404 them and forward to error handler

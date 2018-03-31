@@ -18,13 +18,22 @@ exports.validateRegister = (req, res, next) => {
   // TODO: validate picture
   // ...
   req.checkBody("password", "Password Cannot be Blank!").notEmpty();
-  req.checkBody("password-confirm", "Confirmed Password Cannot be Blank!").notEmpty();
-  req.checkBody("password-confirm", "Oops! Your passwords do not match").equals(req.body.password);
+  req
+    .checkBody("password-confirm", "Confirmed Password Cannot be Blank!")
+    .notEmpty();
+  req
+    .checkBody("password-confirm", "Oops! Your passwords do not match")
+    .equals(req.body.password);
 
   const errors = req.validationErrors();
-  if(errors) {
+  if (errors) {
     req.flash("error", errors.map(err => err.msg));
-    res.render("login", { title: "Connexion/Inscription", body: req.body, flashes: req.flash(), isRegisterForm: true });
+    res.render("login", {
+      title: "Connexion/Inscription",
+      body: req.body,
+      flashes: req.flash(),
+      isRegisterForm: true
+    });
     return; // stop the fn from running
   }
   next(); // there were no errors!
@@ -35,4 +44,8 @@ exports.register = async (req, res, next) => {
   const register = promisify(User.register.bind(User));
   await register(user, req.body.password);
   next(); // pass to authController.login
+};
+
+exports.account = (req, res) => {
+  res.render("account", { title: "Gestion de votre compte" });
 };

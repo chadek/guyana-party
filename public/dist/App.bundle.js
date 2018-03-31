@@ -76,9 +76,16 @@ var _bling = __webpack_require__(2);
 
 var _loginForm = __webpack_require__(3);
 
+var _accountForm = __webpack_require__(4);
+
+var _accountForm2 = _interopRequireDefault(_accountForm);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 $(document).foundation();
 
 (0, _loginForm.loginForm)();
+(0, _accountForm2.default)();
 
 /***/ }),
 /* 1 */
@@ -167,6 +174,24 @@ var loginForm = function loginForm() {
 exports.showConnection = showConnection;
 exports.showInscription = showInscription;
 exports.loginForm = loginForm;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function accountForm() {
+  $("[data-mobile-app-toggle] .button").click(function () {
+    $(this).siblings().removeClass("is-active");
+    $(this).addClass("is-active");
+  });
+}
+exports.default = accountForm;
 
 /***/ })
 /******/ ]);

@@ -7,7 +7,7 @@ mixin sideMenu()
     if !user
       li: a(href="/login") Connexion/Inscription
     li: a(href="/events") Tous les évènements
-    li: a(href="/events/new") Créez votre évènement
+    li: a(href="/events/add") Créez votre évènement
     if user
       li: a(href="/logout") Déconnexion
     else

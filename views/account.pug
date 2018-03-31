@@ -1,0 +1,51 @@
+extends layout
+
+include mixins/_userEventCard
+
+block content
+  .row
+    .columns.large-4
+      .row
+        div(style="background: url('/images/rectangle-1.jpg'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;")
+    .columns.large-8
+      .row
+        .column(style="text-align: center;")
+          a(href="/#"): img.avatar(src=(user.picture ? user.picture : user.gravatar + '&d=retro') title="Votre compte")
+          h4= user.name
+      .row
+        .columns.large-4.medium-6.end
+          a.button.success.expanded(href="/events/add") Créer un évènement
+        .columns.large-4.medium-6.end
+          a.button.warning.expanded(href="#") Modifier vos informations
+        .columns.large-4.medium-6.end
+          a.button.secondary.expanded(href="/organizations/add") Créer un organisme
+        .columns.large-4.medium-6.end
+          p= user.email
+      .row
+        .column
+          .row
+            .column(style="text-align: center;")
+              h3 Vos évènements
+          .mobile-app-toggle(data-mobile-app-toggle)
+            button.button Passé
+            button.button.is-active Prochainement
+          .row
+            - const events = [{name: "Evènement 1"},{name: "Evènement 2"},{name: "Evènement 3"},{name: "Evènement 4"}]
+            each event in events
+              +userEventCard(event.name)
+            else
+              p Vous n'avez pas d'évènement
+      .row
+        .column
+          .row
+            .column(style="text-align: center;")
+              h3 Organismes
+          .row
+            - const organismes = [{name: "Organisme 1"},{name: "Organisme 2"},{name: "Organisme 3"},{name: "Organisme 4"}]
+            each orga in organismes
+              .columns.large-3.medium-6.small-12.end
+                .card
+                  img(style="width: 100%;" src="/images/rectangle-1.jpg")
+                  .card-section
+                    a(href=`/organismes/${orga.name}`)
+                      p= orga.name
