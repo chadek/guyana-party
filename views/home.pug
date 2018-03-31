@@ -8,10 +8,9 @@ block content
     mixin creationEventBlock()
       .row
         .columns.large-8.large-centered.medium-8.medium-centered
-          p
-            | L'essentiel pour faire des rencontres c'est de savoir où et quand se retrouver. Déterminer vos thèmes et publiez.
+          p L'essentiel pour faire des rencontres c'est de savoir où et quand se retrouver. Déterminer vos thèmes et publiez.
         .columns.large-6.medium-6.small-12.large-centered.medium-centered
-          a.button.expanded.success(href="/evenement/creation") Créez un évènement
+          a.button.expanded.success(href="/events/new") Créez un évènement
         hr.hide-for-large
 
     if user
@@ -23,8 +22,6 @@ block content
       .columns.large-6
         .row
           .columns.large-8.large-centered.medium-8.medium-centered
-            p
-              | Pour votre association ou votre entreprise, gérez vos évènements public sur votre page dédié
-            p
+            p Pour votre association ou votre entreprise, gérez vos évènements public sur votre page dédié
           .columns.large-6.medium-6.small-12.large-centered.medium-centered
-            a.button.expanded.alert(href="/connexion") Connexion / Inscription
+            a.button.expanded.alert(href="/login") Connexion / Inscription
