@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 const md5 = require("md5");
 const validator = require("validator");
 const mongodbErrorHandler = require("mongoose-mongodb-errors");
 const passportLocalMongoose = require("passport-local-mongoose");
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
@@ -20,9 +19,12 @@ const userSchema = new Schema({
     require: "Please supply a name",
     trim: true
   },
-  //picture: String,
-  //isvalid: Boolean,
-  //membership: [String],
+  photo: String,
+  isValid: {
+    type: Boolean,
+    default: true
+  },
+  membership: [String],
   resetPasswordToken: String,
   resetPasswordExpires: Date
 });
@@ -31,6 +33,14 @@ userSchema.virtual("gravatar").get(function() {
   const hash = md5(this.email);
   return `https://gravatar.com/avatar/${hash}?s=200`;
 });
+
+userSchema.statics.getMembershipList = function() {
+  return this.aggregate([
+    { $unwind: "$membership" },
+    { $group: { _id: "$membership", count: { $sum: 1 } } },
+    { $sort: { count: -1 } }
+  ]);
+};
 
 userSchema.plugin(passportLocalMongoose, { usernameField: "email" });
 userSchema.plugin(mongodbErrorHandler);
