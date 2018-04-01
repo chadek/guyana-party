@@ -1,4 +1,29 @@
 extends layout
 
 block content
-  h3 Tous les évènements
+  .row
+    .column
+      .row
+        .div(style="text-align: center;")
+          h3 Tous les futurs événements
+        .input-group
+          span.input-group-label: i.fi-magnifying-glass.size-36
+          input.input-group-field#input_recherche(name="search" type="text" placeholder="Ville, tags…" autofocus="")
+          .input-group-button
+            input.button#search(type="submit" value="Rechercher")
+
+  #map(style="height: 77vh;")
+    .ol-popup#popup/
+    nav#map_menu
+      button#geolocation Géolocalisation
+      ul.no_list
+        form
+          li:input#party(type="checkbox" name="eventLayer" checked) Festif
+          li:input#sport(type="checkbox" name="eventLayer" checked) Sportif
+          li:input#culture(type="checkbox" name="eventLayer" checked) Culturel
+
+block scripts
+  script(src="/vendor/jquery.min.js")
+  script(src="/vendor/foundation.min.js")
+  script(src="/vendor/ol.min.js")
+  script(src="/dist/App.bundle.js")
