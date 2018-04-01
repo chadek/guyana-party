@@ -4,5 +4,7 @@ _DS_Store
 *.log
 .idea
 .vscode
-haters/
 variables.env
+haters/
+dist/*
+!dist/.gitkeep
