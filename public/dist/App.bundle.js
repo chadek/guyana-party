@@ -1074,11 +1074,6 @@ var _bling = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapOptions = {
-  center: { lat: 43.2, lng: -79.8 },
-  zoom: 10
-};
-
 function loadEvents() {}
 
 function makeMap(mapDiv) {
