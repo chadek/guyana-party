@@ -10,7 +10,7 @@ block content
     .columns.large-8
       .row
         .column(style="text-align: center;")
-          a(href="/#"): img.avatar(src=(user.picture ? user.picture : user.gravatar + '&d=retro') title="Votre compte")
+          a(href="/#"): img.avatar(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro') title="Votre compte")
           h4= user.name
       .row
         .columns.large-4.medium-6.end

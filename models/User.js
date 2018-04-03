@@ -11,12 +11,12 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    valdidate: [validator.isEmail, "Invalid Email Address"],
-    require: "Please supply an email address"
+    valdidate: [validator.isEmail, "Email Invalide"],
+    require: "L'email est requis"
   },
   name: {
     type: String,
-    require: "Please supply a name",
+    require: "Le nom est requis",
     trim: true
   },
   photo: String,

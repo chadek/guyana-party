@@ -7,6 +7,6 @@ import makeMap from "./modules/map";
 
 $(document).foundation();
 
-loginForm();
+loginForm(S(".forgot-link"));
 accountForm();
-makeMap($("#map"));
+makeMap(S("#map"));

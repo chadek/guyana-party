@@ -101,11 +101,17 @@ router.get("/logout", authController.logout);
 router.post("/login", authController.login);
 router.post(
   "/register",
+  userController.upload,
+  catchErrors(userController.resize),
   userController.validateRegister,
   catchErrors(userController.register),
   authController.login
 );
 
 router.get("/account", authController.isLoggedIn, userController.account);
+//router.post("/account", catchErrors(userController.updateAccount));
+router.post("/account/forgot", catchErrors(authController.forgot));
+router.get("/account/reset/:token", catchErrors(authController.reset));
+router.post("/account/reset/:token", authController.confirmedPasswords, catchErrors(authController.update));
 
 module.exports = router;

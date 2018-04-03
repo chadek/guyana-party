@@ -1,5 +1,7 @@
 extends layout
 
+include mixins/_forgot
+
 block style
   link(rel="stylesheet", href="/vendor/foundation.min.css")
   link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
@@ -22,11 +24,13 @@ block content
             span.input-group-label: i.fi-key.size-36
             input.input-group-field(type="password" name="password" placeholder="Mot de passe")
           .input-group
-            a.forgot-link(href="/account/forgot") Mot de passe oublié
+            a.forgot-link(href="#") Mot de passe oublié ?
           button.button.expanded.success Connexion
-          p= status
+      //- Forgot form
+      .forgotForm
+        +forgotForm()
       //- Inscription
-      form(action="/register" method="POST")
+      form(action="/register" method="POST" enctype="multipart/form-data")
         .form-icons#inscription
           .input-group
             span.input-group-label: i.fi-torsos-male-female.size-36
@@ -34,7 +38,8 @@ block content
           .row
             .large-6.medium-8.small-10.columns.small-centered
               label.button.expanded(for="fileUpload") Représentation visuelle
-              input.show-for-sr#fileUpload(type="file" name="picture" accept="image/gif, image/jpeg, image/png")
+              input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
+              .file-upload-filename
           .input-group
             span.input-group-label: i.fi-mail.size-36
             input.input-group-field(type="text" name="email" placeholder="Email, identifiant")
@@ -45,4 +50,3 @@ block content
             span.input-group-label: i.fi-key.size-36
             input.input-group-field(type="password" name="password-confirm" placeholder="Mot de passe")
           button.button.expanded.success Enregistrer
-          p= status

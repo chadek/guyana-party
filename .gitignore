@@ -7,6 +7,6 @@ _DS_Store
 variables.env
 haters/
 public/dist/*
-public/upload/*
+public/uploads/*
 !public/dist/.gitkeep
-!public/upload/.gitkeep
+!public/uploads/.gitkeep

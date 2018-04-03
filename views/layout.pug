@@ -14,23 +14,19 @@ html.no-js
     meta(http-equiv="x-ua-compatible" content="ie=edge")
     meta(name="viewport" content="width=device-width, initial-scale=1")
   body
-    block header
-
-    block messages
-      //-
+    .content
+      .off-canvas.position-left#offCanvas(data-off-canvas)
+        +sideMenu()
+      .off-canvas-content(data-off-canvas-content)
+        +topMenu()
         if locals.flashes
-          .flash-messages
+          .row.flash-messages
             - const categories = Object.keys(locals.flashes)
             each category in categories
               each message in flashes[category]
                 .flash(class=`flash--${category}`)
                   p.flash__text!= message
                   button.flash__remove(onClick="this.parentElement.remove()") &times;
-    .content
-      .off-canvas.position-left#offCanvas(data-off-canvas)
-        +sideMenu()
-      .off-canvas-content(data-off-canvas-content)
-        +topMenu()
         block content
 
     block scripts
