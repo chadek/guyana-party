@@ -4,14 +4,14 @@ include mixins/_userEventCard
 
 block content
   .row
-    .columns.large-4
+    .columns.large-2
       .row
-        div(style="background: url('/images/rectangle-1.jpg'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;")
-    .columns.large-8
-      .row
-        .column(style="text-align: center;")
-          a(href="/#"): img.avatar(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro') title="Votre compte")
-          h4= user.name
+        //-div(style="background: url('/images/rectangle-1.jpg'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;")
+        a(href="/account"): img(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro'))
+        h4= user.name
+        p= user.email
+
+    .columns.large-10
       .row
         .columns.large-4.medium-6.end
           a.button.success.expanded(href="/events/add") Créer un évènement
@@ -19,13 +19,11 @@ block content
           a.button.warning.expanded(href="#") Modifier vos informations
         .columns.large-4.medium-6.end
           a.button.secondary.expanded(href="/organizations/add") Créer un organisme
-        .columns.large-4.medium-6.end
-          p= user.email
       .row
         .column
           .row
             .column(style="text-align: center;")
-              h3 Vos évènements
+              h3 Mes évènements
           .mobile-app-toggle(data-mobile-app-toggle)
             button.button Passé
             button.button.is-active Prochainement
@@ -39,7 +37,7 @@ block content
         .column
           .row
             .column(style="text-align: center;")
-              h3 Organismes
+              h3 Mes organismes
           .row
             - const organismes = [{name: "Organisme 1"},{name: "Organisme 2"},{name: "Organisme 3"},{name: "Organisme 4"}]
             each orga in organismes
