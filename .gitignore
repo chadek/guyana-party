@@ -6,5 +6,7 @@ _DS_Store
 .vscode
 variables.env
 haters/
-dist/*
-!dist/.gitkeep
+public/dist/*
+public/upload/*
+!public/dist/.gitkeep
+!public/upload/.gitkeep
