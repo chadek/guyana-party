@@ -14,7 +14,7 @@ exports.createEvent = async (req, res) => {
   req.body.author = req.user._id;
   const event = await new Event(req.body).save();
   req.flash("success", `Evènement "${event.name}" créé avec succès !`);
-  res.redirect(`/events/${event.slug}`);
+  res.redirect(`/event/${event.slug}`);
 };
 
 exports.getEventBySlug = async (req, res, next) => {
