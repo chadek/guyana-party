@@ -7,7 +7,7 @@ block content
     .columns.large-2
       .row
         //-div(style="background: url('/images/rectangle-1.jpg'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;")
-        a(href="/account"): img(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro'))
+        a(href="/account"): img(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro') alt="photo de profile")
         h4= user.name
         p= user.email
 
