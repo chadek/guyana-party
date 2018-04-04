@@ -3,5 +3,14 @@ extends layout
 block content
   .row
     .column
-        != h.dump(event)
-        
+      .columns.large-3.medium-4
+        .row#flyer
+          img(src=`/uploads/${event.photo}` alt="flyer de l'évènement")
+        .row
+          h4= event.name
+        .row
+          h4 Présentation
+          p= event.description
+  .row
+    .column
+      != h.dump(event)
