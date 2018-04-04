@@ -1,15 +1,13 @@
 extends layout
 
-include mixins/_forgot
-
 block style
   link(rel="stylesheet", href="/vendor/foundation.min.css")
   link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
   link(rel="stylesheet", href="/vendor/OR.css")
-  link(rel='stylesheet', href='/dist/style.css')
+  link(rel="stylesheet", href="/dist/style.css")
 
 block content
-  .row(style="vertical-align: middle;")
+  .row
     .large-6.medium-6.small-12.medium-centered.large-centered.columns
       .expanded.button-group-option(data-grouptype="OU")
         button.button.success.radius#b_connection Connexion
@@ -28,7 +26,12 @@ block content
           button.button.expanded.success Connexion
       //- Forgot form
       .forgotForm
-        +forgotForm()
+        form(action="/account/forgot" method="POST")
+          p Mot de passe oublié ?
+          .input-group
+            span.input-group-label: i.fi-mail.size-36
+            input.input-group-field(type="email" name="email" placeholder="Email, identifiant")
+          button.button.expanded.success Envoyer
       //- Inscription
       form(action="/register" method="POST" enctype="multipart/form-data")
         .form-icons#inscription

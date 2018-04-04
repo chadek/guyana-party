@@ -21,7 +21,7 @@ mongoose.connection.on("error", err => {
 
 // import all of our models
 require("./models/User");
-//require("./models/Event");
+require("./models/Event");
 //require("./models/Organiz");
 
 // Start our app!

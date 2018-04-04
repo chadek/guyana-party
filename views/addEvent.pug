@@ -1,4 +1,77 @@
 extends layout
 
+block style
+  link(rel="stylesheet", href="/vendor/foundation.min.css")
+  link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
+  link(rel="stylesheet", href="/vendor/foundation-datepicker.min.css")
+  link(rel="stylesheet", href="/vendor/jquery-clockpicker.min.css")
+  link(rel="stylesheet", href="/dist/style.css")
+
 block content
-  h3 Créer un évènement
+  .row
+    .column
+      form(action="/add" method="POST" enctype="multipart/form-data")
+        .row
+          .small-12.small-centered.columns.text-center
+            h2 Créer l'évènement !
+        .row
+          .columns.large-6
+            .row
+              .column.input-group
+                span.input-group-label: i.fi-clipboard-pencil.size-36
+                input.input-group-field(type="text" placeholder="Nom de l'évènement" name="name")
+                input#longitude(type="hidden" name="location[coordinates][0]" value=(event.location && event.location.coordinates[0]))
+                input#latitude(type="hidden" name="location[coordinates][1]" value=(event.location && event.location.coordinates[1]))
+            .row
+              .columns.large-2.medium-2.small-2: label Début
+              .large-6.medium-6.small-6.columns
+                .input-group
+                  span.input-group-label: i.fi-calendar.size-36
+                  input.input-group-field#dp1(type="text" name="startdate")
+              .large-4.medium-4.small-4.columns
+                .input-group.clockpicker(data-placement="left" data-align="top" data-autoclose="true")
+                  span.input-group-label: i.fi-clock.size-36
+                  input.input-group-field#starttime(type="text" name="starttime")
+                  input(type="hidden" name="start")
+              .columns.large-2.medium-2.small-2: label Fin
+              .large-6.medium-6.small-6.columns
+                .input-group
+                  .input-group-label: i.fi-calendar.size-36
+                  input.input-group-field#dp2(type="text" name="enddate")
+              .large-4.medium-4.small-4.columns
+                .input-group.clockpicker(data-placement="left" data-align="top" data-autoclose="true")
+                  span.input-group-label: i.fi-clock.size-36
+                  input.input-group-field#endtime(type="text" name="endtime")
+                  input(type="hidden" name="end" value="")
+            .row
+              .columns.large-6.medium-6.small-12.small-centered
+                label.button.expanded(for="fileUpload") Flyer de l'évènement
+                input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
+                .file-upload-filename
+            .row
+              .column
+                label Que proposez vous ?
+                textarea(name="description" placeholder="Un petit wiki pour décrire proprement l'évènement")
+            .columns.large-6
+              //-- MAPS --
+              //-.row
+                .column
+                  #map(style="height: 45vh;")
+              //-- NOM DU LIEU --
+              .row
+                .column
+                  .input-group
+                    span.input-group-label: i.fi-marker.size-36
+                    input.input-group-field#address(type="text" placeholder="Adresse" name="location[address]" value=(event.location && event.location.address))
+        .row
+          .column.large-3.small-centered
+            input.success.button.expanded(type="submit" value="Créer")
+
+block scripts
+  script(src="/vendor/jquery.min.js")
+  script(src="/vendor/jquery-clockpicker.min.js")
+  script(src="/vendor/foundation.min.js")
+  script(src="/vendor/foundation-datepicker.min.js")
+  script(src="/vendor/foundation-datepicker.fr.js")
+  script(src="/vendor/ol.min.js")
+  script(src="/dist/App.bundle.js")

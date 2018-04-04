@@ -7,7 +7,7 @@ const eventSchema = new mongoose.Schema(
     name: {
       type: String,
       trim: true,
-      required: "Please enter a store name!"
+      required: "Please enter a event name!"
     },
     slug: String,
     description: {
@@ -21,7 +21,7 @@ const eventSchema = new mongoose.Schema(
     },
     start: Date,
     end: Date,
-    location: {
+    /*location: {
       type: {
         type: String,
         default: "Point"
@@ -36,9 +36,8 @@ const eventSchema = new mongoose.Schema(
         type: String,
         required: "You must supply an adress!"
       }
-    },
+    },*/
     photo: String,
-    flyer: String,
     author: {
       type: mongoose.Schema.ObjectId,
       ref: "User",

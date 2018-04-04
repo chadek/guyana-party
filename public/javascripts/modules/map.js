@@ -1,5 +1,5 @@
 import axios from "axios";
-import { $ } from "./bling";
+import { B } from "./bling";
 
 function loadEvents() {
 
