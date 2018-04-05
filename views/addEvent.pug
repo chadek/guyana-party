@@ -10,7 +10,7 @@ block style
 block content
   .row
     .column
-      form(action="/add" method="POST" enctype="multipart/form-data")
+      form(action="/events/add" method="POST" enctype="multipart/form-data")
         .row
           .small-12.small-centered.columns.text-center
             h2 Créer l'évènement !
@@ -32,7 +32,7 @@ block content
                 .input-group.clockpicker(data-placement="left" data-align="top" data-autoclose="true")
                   span.input-group-label: i.fi-clock.size-36
                   input.input-group-field#starttime(type="text" name="starttime")
-                  input(type="hidden" name="start")
+                  input#start(type="hidden" name="start")
               .columns.large-2.medium-2.small-2: label Fin
               .large-6.medium-6.small-6.columns
                 .input-group
@@ -42,7 +42,7 @@ block content
                 .input-group.clockpicker(data-placement="left" data-align="top" data-autoclose="true")
                   span.input-group-label: i.fi-clock.size-36
                   input.input-group-field#endtime(type="text" name="endtime")
-                  input(type="hidden" name="end" value="")
+                  input#end(type="hidden" name="end")
             .row
               .columns.large-6.medium-6.small-12.small-centered
                 label.button.expanded(for="fileUpload") Flyer de l'évènement

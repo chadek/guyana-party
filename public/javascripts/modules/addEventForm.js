@@ -15,10 +15,10 @@ function init(dp1, dp2) {
 
 function initClockPicker(clockPicker) {
     if (!clockPicker) return;
-    clockPicker.clockpicker()
-    .find('input').change(function(){
-        console.log(this.value);
-    });
+    clockPicker.clockpicker();
+    //.find('input').change(function(){
+    //    console.log(this.value);
+    //});
 }
 
 function initDatePicker(dp1, dp2) {
