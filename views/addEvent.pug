@@ -15,13 +15,11 @@ block content
           .small-12.small-centered.columns.text-center
             h2 Créer l'évènement !
         .row
-          .columns.large-6
+          .columns.large-6.large-centered
             .row
               .column.input-group
                 span.input-group-label: i.fi-clipboard-pencil.size-36
                 input.input-group-field(type="text" placeholder="Nom de l'évènement" name="name")
-                input#longitude(type="hidden" name="location[coordinates][0]" value=(event.location && event.location.coordinates[0]))
-                input#latitude(type="hidden" name="location[coordinates][1]" value=(event.location && event.location.coordinates[1]))
             .row
               .columns.large-2.medium-2.small-2: label Début
               .large-6.medium-6.small-6.columns
@@ -52,17 +50,17 @@ block content
               .column
                 label Que proposez vous ?
                 textarea(name="description" placeholder="Un petit wiki pour décrire proprement l'évènement")
-            .columns.large-6
-              //-- MAPS --
-              //-.row
-                .column
-                  #map(style="height: 45vh;")
-              //-- NOM DU LIEU --
-              .row
-                .column
-                  .input-group
-                    span.input-group-label: i.fi-marker.size-36
-                    input.input-group-field#address(type="text" placeholder="Adresse" name="location[address]" value=(event.location && event.location.address))
+            .row.top-space
+              .column
+                label Sélectionnez le lieu de l'évènement sur la carte :
+                #map.no-events
+            .row
+              .column
+                .input-group
+                  span.input-group-label: i.fi-marker.size-36
+                  input.input-group-field#address(type="text" placeholder="Adresse" name="location[address]" value=(event.location && event.location.address))
+                  input#longitude(type="hidden" name="location[coordinates][0]" value=(event.location && event.location.coordinates[0]))
+                  input#latitude(type="hidden" name="location[coordinates][1]" value=(event.location && event.location.coordinates[1]))
         .row
           .column.large-3.small-centered
             input.success.button.expanded(type="submit" value="Créer")

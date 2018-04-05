@@ -8,7 +8,7 @@ import addEventForm from "./modules/addEventForm";
 
 $(document).foundation();
 
-B("#fileUpload").on("change", function(e) {
+B("#fileUpload") && B("#fileUpload").on("change", function(e) {
     e = e || window.event;
     this.nextSibling.textContent = `Fichier : ${(e.target || e.srcElement).files[0].name}`;
 });

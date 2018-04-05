@@ -7,7 +7,7 @@ const eventSchema = new mongoose.Schema(
     name: {
       type: String,
       trim: true,
-      required: "Please enter a event name!"
+      required: "Veuillez saisir le nom de l'évènement."
     },
     slug: String,
     description: {
@@ -21,27 +21,22 @@ const eventSchema = new mongoose.Schema(
     },
     start: Date,
     end: Date,
-    /*location: {
+    location: {
       type: {
         type: String,
         default: "Point"
       },
-      coordinates: [
-        {
-          type: Number,
-          required: "You must supply coordinates!"
-        }
-      ],
+      coordinates: [Number],
       address: {
         type: String,
-        required: "You must supply an adress!"
+        required: "Veuillez sélectionner le lieu de l'évènement sur la carte, ou saisir une adresse."
       }
-    },*/
+    },
     photo: String,
     author: {
       type: mongoose.Schema.ObjectId,
       ref: "User",
-      required: "You must supply an author"
+      required: "L'auteur de l'évènement est requis."
     }
   },
   {
