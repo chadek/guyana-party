@@ -5,7 +5,7 @@
 */
 
 const path = require("path");
-const webpack = require("webpack");
+// const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const autoprefixer = require("autoprefixer");
 
@@ -24,15 +24,15 @@ const javascript = {
   This is our postCSS loader which gets fed into the next loader. I'm setting it up in it's own variable because its a didgeridog
 */
 
-const postcss = {
-  loader: "postcss-loader",
-  options: {
-    sourceMap: true,
-    plugins() {
-      return [autoprefixer({ browsers: "last 3 versions" })];
-    }
-  }
-};
+// const postcss = {
+//   loader: "postcss-loader",
+//   options: {
+//     sourceMap: true,
+//     plugins() {
+//       return [autoprefixer({ browsers: "last 3 versions" })];
+//     }
+//   }
+// };
 
 // this is our sass/css loader. It handles files that are require('something.scss')
 const styles = {
@@ -40,11 +40,35 @@ const styles = {
   // here we pass the options as query params b/c it's short.
   // remember above we used an object for each loader instead of just a string?
   // We don't just pass an array of loaders, we run them through the extract plugin so they can be outputted to their own .css file
-  use: ExtractTextPlugin.extract([
-    "css-loader?sourceMap",
-    postcss,
-    "sass-loader?sourceMap"
-  ])
+  //use: ExtractTextPlugin.extract(["css-loader?sourceMap", postcss, "sass-loader?sourceMap"])
+  use: ExtractTextPlugin.extract({
+    //fallback: "style-loader",
+    use: [
+      {
+        loader: "css-loader",
+        options: {
+          minimize: true,
+          sourceMap: true
+        }
+      },
+      {
+        loader: "postcss-loader",
+        options: {
+          sourceMap: true,
+          plugins() {
+            return [autoprefixer({ browsers: "last 3 versions" })];
+          }
+        }
+      },
+      {
+        loader: "sass-loader",
+        options: {
+          minimize: true,
+          sourceMap: true
+        }
+      }
+    ]
+  })
 };
 
 // We can also use plugins - this one will compress the crap out of our JS
