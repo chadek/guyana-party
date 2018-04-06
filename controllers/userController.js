@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const User = mongoose.model("User");
+const Organism = mongoose.model("Organism");
 const { promisify } = require("es6-promisify");
-const orgaController = require("../controllers/orgaController");
 
 exports.loginForm = (req, res) => {
   res.render("login", { title: "Connexion/Inscription" });
@@ -44,6 +44,15 @@ exports.register = async (req, res, next) => {
 };
 
 exports.account = async (req, res) => {
-  //const pagedOrgas = await orgaController.getOrganisms({ author: req.user._id });
   res.render("account", { title: "Gestion de votre compte" });
+};
+
+exports.hasOrganism = async (req, res, next) => {
+  const orga = await Organism.findOne({ author: req.user._id });
+  if (!orga) {
+    req.flash("error", "Vous devez ajouter un organisme avant de créer un évènement !");
+    res.render("addOrganism", { orga: {}, title: "Création d'un organisme" });
+    return;
+  }
+  next();
 };

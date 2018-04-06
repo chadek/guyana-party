@@ -16,3 +16,9 @@ exports.getPagedItems = async (model, page, limit, find, projection, sort) => {
     isErrorPage: !items.length && skip
   };
 };
+
+exports.confirmOwner = (model, user) => {
+  if (!model.author.equals(user._id)) {
+    throw Error("Vous ne pouvez pas effectuer cet action !");
+  }
+};

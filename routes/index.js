@@ -45,7 +45,7 @@ router.get("/organism/:slug", catchErrors(orgaController.getOrgaBySlug));
 /* Events */
 
 router.get("/events/", eventController.eventsPage);
-router.get("/events/add", authController.isLoggedIn, eventController.addEventPage);
+router.get("/events/add", authController.isLoggedIn, catchErrors(userController.hasOrganism), eventController.addEventPage);
 router.post(
   "/events/add",
   authController.isLoggedIn,

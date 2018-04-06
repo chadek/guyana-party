@@ -22,6 +22,17 @@ block content
                 span.input-group-label: i.fi-clipboard-pencil.size-36
                 input.input-group-field(type="text" placeholder="Nom de l'évènement" name="name")
             .row
+              .column.input-group
+                button.button(type="button" data-toggle="example-dropdown") Sélectionner un organisme
+                .dropdown-pane#example-dropdown.orga-content(data-dropdown data-auto-focus="true")
+                //-
+                  <select>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                  </select>
+            .row
               .columns.large-2.medium-2.small-2: label Début
               .large-6.medium-6.small-6.columns
                 .input-group
