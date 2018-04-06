@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  .row
+    .column
+      .columns.large-3.medium-4
+        .row#flyer
+          img(src=`/uploads/${orga.photo}` alt="Logo de l'organisme")
+        .row
+          h4= orga.name
+        .row
+          h4 Présentation
+          p= orga.description
+  .row
+    .column
+      != h.dump(orga)

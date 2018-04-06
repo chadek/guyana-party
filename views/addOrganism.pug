@@ -1,0 +1,62 @@
+extends layout
+
+block style
+  link(rel="stylesheet", href="/vendor/foundation.min.css")
+  link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
+  link(rel="stylesheet", href="/vendor/ol.css")
+  link(rel="stylesheet", href="/dist/style.css")
+
+block content
+  .row
+    .column
+      .row
+        .small-12.small-centered.columns.text-center
+          h2= title
+          p Un organisme permet de créer des évènements pour le compte d'une association ou d'une entreprise ayant besoin de communiquer publiquement ses évènements.
+      .separator
+      form.top-space(action="/organisms/add" method="POST" enctype="multipart/form-data")
+        .row
+          .columns.large-6.large-centered
+            .row
+              .columns.input-group
+                span.input-group-label: i.fi-clipboard-pencil.size-36
+                input.input-group-field(type="text" placeholder="Nom de votre nouvelle organisation" name="name")
+            .row
+              .columns.large-6.medium-6.small-12.small-centered
+                label.button.expanded(for="fileUpload") Logo de votre organisme
+                input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
+                .file-upload-filename
+            .row.input-group.top-space
+              .column
+                input#association(type="radio" name="type" value="association" checked="checked")
+                label(for="association") Association
+                input#entreprise(type="radio" name="type" value="entreprise")
+                label(for="entreprise") Entreprise
+                input#ong(type="radio" name="type" value="ong")
+                label(for="ong") ONG
+                input#collectivite(type="radio" name="type" value="collectivite")
+                label(for="collectivite") Collectivité
+            .row
+              .column
+                label Description de votre organisme et de vos actions
+                textarea(name="description" placeholder="Donnez envie !")
+            .row.top-space
+              .column
+                label Où se situe votre siège social ?
+                #map.no-events
+            .row
+              .column
+                .input-group
+                  span.input-group-label: i.fi-marker.size-36
+                  input.input-group-field#address(type="text" placeholder="Adresse" name="location[address]" value=(orga.location && orga.location.address))
+                  input#longitude(type="hidden" name="location[coordinates][0]" value=(orga.location && orga.location.coordinates[0]))
+                  input#latitude(type="hidden" name="location[coordinates][1]" value=(orga.location && orga.location.coordinates[1]))
+        .row
+          .column.large-3.small-centered
+            input.success.button.expanded(type="submit" value="Créer")
+
+block scripts
+  script(src="/vendor/jquery.min.js")
+  script(src="/vendor/foundation.min.js")
+  script(src="/vendor/ol.min.js")
+  script(src="/dist/App.bundle.js")

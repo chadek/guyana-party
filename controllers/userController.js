@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const User = mongoose.model("User");
 const { promisify } = require("es6-promisify");
+const orgaController = require("../controllers/orgaController");
 
 exports.loginForm = (req, res) => {
   res.render("login", { title: "Connexion/Inscription" });
@@ -42,6 +43,7 @@ exports.register = async (req, res, next) => {
   next(); // pass to authController.login
 };
 
-exports.account = (req, res) => {
+exports.account = async (req, res) => {
+  //const pagedOrgas = await orgaController.getOrganisms({ author: req.user._id });
   res.render("account", { title: "Gestion de votre compte" });
 };

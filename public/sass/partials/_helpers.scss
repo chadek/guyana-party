@@ -7,25 +7,32 @@
   text-align: center;
 }
 
-// .button {
-//   border: 0;
-//   background: $yellow;
-//   color: $black;
-//   font-family: 'Panama';
-//   font-weight: 600;
-// }
-
 .avatar {
- min-width: 50px;
- height: 50px;
- border-radius: 50%;
- align-self: center;
+  min-width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  align-self: center;
 }
 
 .card {
   background: white;
-  padding: 5rem;
-  box-shadow: 0 1px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
+  width: 220px;
+  height: 210px;
+  &__new {
+    cursor: pointer;
+    &:after {
+      content: "+";
+      display: block;
+      position: relative;
+      //width: 10px;
+      //height: 10px;
+      left: calc(50% - 10px);
+      top: calc(50% - 40px);
+      font-size: 40px;
+      color: grey;
+    }
+  }
 }
 
 pre.error {
@@ -41,4 +48,8 @@ pre.error {
 
 .top-space {
   margin-top: 20px;
+}
+
+.separator {
+  border-top: 1px solid rgba(46, 62, 72, 0.12);
 }

@@ -5,10 +5,10 @@ mixin sideMenu()
   ul
     li: a(href="/") Accueil
     if !user
-      li: a(href="/login") Connexion/Inscription
+      li: a(href="/login") Connexion / Inscription
     li: a(href="/events") Tous les évènements
-    li: a(href="/events/add") Créez votre évènement
     if user
+      li: a(href="/organisms/add") Créer un organisme
       li: a(href="/logout") Déconnexion
     else
-      li: a(href="#") Condition général d'utilisation
+      li: a(href="#") Conditions générales d'utilisation

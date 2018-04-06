@@ -1,49 +1,47 @@
 extends layout
 
-include mixins/_userEventCard
-
 block content
   .row
     .columns.large-2
       .row
-        //-div(style="background: url('/images/rectangle-1.jpg'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;")
+        //-div(style="background: url('/images/default.jpg'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;")
         a(href="/account"): img(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro') alt="photo de profile")
         h4= user.name
         p= user.email
 
     .columns.large-10
-      .row
-        .columns.large-4.medium-6.end
-          a.button.success.expanded(href="/events/add") Créer un évènement
-        .columns.large-4.medium-6.end
-          a.button.warning.expanded(href="#") Modifier vos informations
-        .columns.large-4.medium-6.end
-          a.button.secondary.expanded(href="/organizations/add") Créer un organisme
-      .row
+      //- .row
+      //-   .columns.large-4.medium-6.end
+      //-     a.button.success.expanded(href="/events/add") Créer un évènement
+      //-   .columns.large-4.medium-6.end
+      //-     a.button.warning.expanded(href="#") Modifier vos informations
+      //-   .columns.large-4.medium-6.end
+      //-     a.button.secondary.expanded(href="/organizations/add") Créer un organisme
+      .row.top-space
         .column
           .row
-            .column(style="text-align: center;")
+            .column.text-center
               h3 Mes évènements
-          .mobile-app-toggle(data-mobile-app-toggle)
-            button.button Passé
-            button.button.is-active Prochainement
+          //- .mobile-app-toggle(data-mobile-app-toggle)
+          //-   button.button Passé
+          //-   button.button.is-active Prochainement
           .row
-            - const events = [{name: "Evènement 1"},{name: "Evènement 2"},{name: "Evènement 3"},{name: "Evènement 4"}]
-            each event in events
-              +userEventCard(event.name)
-            else
-              p Vous n'avez pas d'évènement
-      .row
+            .events.top-space
+              p.top-space.text-center Chargement...
+              //- - const events = [{name: "Evènement 1"},{name: "Evènement 2"},{name: "Evènement 3"},{name: "Evènement 4"}]
+              //- each event in events
+              //-   .columns.large-3.medium-6.small-12.end
+              //-     .card
+              //-       img(style="width: 100%;" src="/images/default.jpg")
+              //-       .card-section
+              //-         p= event.name
+              //- else
+              //-   p Vous n'avez pas d'évènement
+      .row.top-space
         .column
           .row
-            .column(style="text-align: center;")
+            .column.text-center
               h3 Mes organismes
           .row
-            - const organismes = [{name: "Organisme 1"},{name: "Organisme 2"},{name: "Organisme 3"},{name: "Organisme 4"}]
-            each orga in organismes
-              .columns.large-3.medium-6.small-12.end
-                .card
-                  img(style="width: 100%;" src="/images/rectangle-1.jpg")
-                  .card-section
-                    a(href=`/organismes/${orga.name}`)
-                      p= orga.name
+            .orgas.top-space
+              p.top-space.text-center Chargement...

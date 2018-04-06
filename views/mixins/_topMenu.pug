@@ -1,8 +1,11 @@
 mixin topMenu()
   div(data-sticky-container)
-    .title-bar(data-sticky-on="small" data-sticky data-options="marginTop:0;" style="width:100%; z-index: 100000; text-align: center;")
+    .title-bar(data-sticky-on="small" data-sticky data-options="marginTop:0;")
       .title-bar-left(data-open="offCanvas")
         button.menu-icon(type="button")
-        span.title-bar-title Menu
-      .title-bar-title(onclick="location.href='/'" style="display: inline-block; position: relative; left:-37px;")
-        img(src="/images/rectangle-1.jpg" width="60px" title="Accueil")
+        span.title-bar-title__menu Menu
+      .title-bar-title(onclick="location.href='/'")
+        img(src="/images/default.jpg" width="60px" title="Accueil")
+      unless user
+        .title-bar-right
+          a(href="/login") Connexion / Inscription

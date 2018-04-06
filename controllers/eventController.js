@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Event = mongoose.model("Event");
 const { promisify } = require("es6-promisify");
+const { getPagedItems } = require("../handlers/tools");
 
 exports.eventsPage = (req, res) => {
   res.render("events", { title: "Tous les évènements sur la carte" });
@@ -10,7 +11,7 @@ exports.addEventPage = (req, res) => {
   res.render("addEvent", { event: {}, title: "Créer un évènement public" });
 };
 
-exports.createEvent = async (req, res) => {
+exports.create = async (req, res) => {
   req.body.author = req.user._id;
   const startDate = req.body.startdate;
   const startTime = req.body.starttime;
@@ -38,4 +39,11 @@ exports.getEventBySlug = async (req, res, next) => {
   const event = await Event.findOne({ slug: req.params.slug }).populate("author");
   if (!event) return next();
   res.render("event", { event, title: event.name });
+};
+
+exports.getEvents = async (req, res) => {
+  const page = req.query.page || 1;
+  const limit = req.query.limit || 4;
+  const result = await getPagedItems(Event, page, limit, { author: req.user._id }, {}, { created: "desc" });
+  res.json(result);
 };

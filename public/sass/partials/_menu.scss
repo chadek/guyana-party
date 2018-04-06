@@ -1,3 +1,27 @@
+.title-bar {
+  text-align: center;
+  width:100%;
+  z-index: 100000;
+}
+
 .title-bar-title {
+  // display: inline-block;
+  // position: relative;
+  // left:-37px;
   cursor: pointer;
+  &__menu {
+    cursor: pointer;
+  }
+}
+
+.title-bar-right {
+  margin-top: 2px;
+  a {
+    font-weight: 600;
+    color: #fefefe;
+  }
+}
+
+.off-canvas.position-left {
+  width: 330px;
 }

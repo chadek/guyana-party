@@ -5,6 +5,7 @@ block style
   link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
   link(rel="stylesheet", href="/vendor/foundation-datepicker.min.css")
   link(rel="stylesheet", href="/vendor/jquery-clockpicker.min.css")
+  link(rel="stylesheet", href="/vendor/ol.css")
   link(rel="stylesheet", href="/dist/style.css")
 
 block content
@@ -13,7 +14,7 @@ block content
       form(action="/events/add" method="POST" enctype="multipart/form-data")
         .row
           .small-12.small-centered.columns.text-center
-            h2 Créer l'évènement !
+            h2= title
         .row
           .columns.large-6.large-centered
             .row

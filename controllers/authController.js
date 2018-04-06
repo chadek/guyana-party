@@ -7,7 +7,7 @@ const mail = require("../handlers/mail");
 exports.login = passport.authenticate("local", {
   failureRedirect: "/login",
   failureFlash: "Connexion échouée !",
-  successRedirect: "/",
+  successRedirect: "/account",
   successFlash: "Connexion réussie !"
 });
 
