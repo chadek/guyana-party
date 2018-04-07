@@ -16,8 +16,6 @@ exports.validateRegister = (req, res, next) => {
     remove_extension: false,
     gmail_remove_subaddress: false
   });
-  // TODO: validate picture
-  // ...
   req.checkBody("password", "Password Cannot be Blank!").notEmpty();
   req.checkBody("password-confirm", "Confirmed Password Cannot be Blank!").notEmpty();
   req.checkBody("password-confirm", "Oops! Your passwords do not match").equals(req.body.password);
@@ -43,8 +41,8 @@ exports.register = async (req, res, next) => {
   next(); // pass to authController.login
 };
 
-exports.account = async (req, res) => {
-  res.render("account", { title: "Gestion de votre compte" });
+exports.account = (req, res) => {
+  res.render("account", { title: "Votre compte" });
 };
 
 exports.hasOrganism = async (req, res, next) => {
@@ -55,4 +53,23 @@ exports.hasOrganism = async (req, res, next) => {
     return;
   }
   next();
+};
+
+exports.editAccount = (req, res) => {
+  res.render("editAccount", { title: "Edition de votre compte" });
+};
+
+exports.updateAccount = async (req, res) => {
+  const updates = {
+    name: req.body.name,
+    email: req.body.email,
+    photo: req.body.photo
+  };
+  const user = await User.findOneAndUpdate(
+    { _id: req.user._id },
+    { $set: updates },
+    { new: true, runValidators: true, context: "query" }
+  );
+  req.flash("success", "Compte mis à jour !")
+  res.redirect("back");
 };

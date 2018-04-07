@@ -24,11 +24,18 @@ router.post(
 
 /* Account */
 
-router.get("/account", authController.isLoggedIn, catchErrors(userController.account));
-//router.post("/account", catchErrors(userController.updateAccount));
+router.get("/account", authController.isLoggedIn, userController.account);
 router.post("/account/forgot", catchErrors(authController.forgot));
 router.get("/account/reset/:token", catchErrors(authController.reset));
 router.post("/account/reset/:token", authController.confirmedPasswords, catchErrors(authController.update));
+router.get("/account/edit", authController.isLoggedIn, userController.editAccount);
+router.post(
+  "/account/edit",
+  authController.isLoggedIn,
+  mainController.upload,
+  catchErrors(mainController.resize),
+  catchErrors(userController.updateAccount)
+);
 
 /* Organisms */
 
@@ -45,7 +52,12 @@ router.get("/organism/:slug", catchErrors(orgaController.getOrgaBySlug));
 /* Events */
 
 router.get("/events/", eventController.eventsPage);
-router.get("/events/add", authController.isLoggedIn, catchErrors(userController.hasOrganism), eventController.addEventPage);
+router.get(
+  "/events/add",
+  authController.isLoggedIn,
+  catchErrors(userController.hasOrganism),
+  eventController.addEventPage
+);
 router.post(
   "/events/add",
   authController.isLoggedIn,

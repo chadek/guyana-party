@@ -1,3 +1,5 @@
+/* Tools for controllers */
+
 exports.getPagedItems = async (model, page, limit, find, projection, sort) => {
   page = parseInt(page);
   limit = parseInt(limit);
@@ -17,7 +19,7 @@ exports.getPagedItems = async (model, page, limit, find, projection, sort) => {
   };
 };
 
-exports.confirmOwner = (model, user) => {
+exports.confirmOwner = function (model, user) {
   if (!model.author.equals(user._id)) {
     throw Error("Vous ne pouvez pas effectuer cet action !");
   }

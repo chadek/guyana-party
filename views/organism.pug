@@ -7,21 +7,10 @@ block style
   link(rel="stylesheet", href="/dist/style.css")
 
 block content
-  //-.row
-    .column
-      .columns.large-3.medium-4
-        .row#flyer
-          img(src=`/uploads/${orga.photo}` alt="Logo de l'organisme")
-        .row
-          h4= orga.name
-        .row
-          h4 Présentation
-          p= orga.description
-
   .row
-    .column.large-8.large-centered
-      .row#flyer
-        .column.large-8.large-centered
+    .column
+      .row
+        .column.photo-orga-event
           img(src=`/uploads/${orga.photo}` alt="Logo de l'organisme")
       .row.top-space.text-center
         h4= orga.name
@@ -29,24 +18,21 @@ block content
         //-span#type.label.info: i.fi-torsos-all-female
       .row.top-space.text-center
         p= orga.description
+      .separator
       .row.top-space
-        #map.no-events
-      .row.top-space
-        p= `Adresse : ${orga.location.address}`
-      //-.row.top-space
-        .column.large-4.medium-6.end
-          a.button.success.expanded(href="/events/add") Créer un évènement
-        .column.large-4.medium-6.end
-          a.button.warning.expanded(href=`organism/${orga._id}/edit`) Modifier vos informations
+        .column.large-6.large-centered
+          label L'adresse du siège social :
+          #map.no-events.no-click
+          p.text-center= orga.location.address
+      .separator
       .row.top-space.text-center
         h4 Mes évènements
-      .row
-        .orga-events.top-space
+      .row.top-space
+        .column.top-space.small-12.orga-events
           p.top-space.text-center Chargement...
       input#orga-id(type="hidden" value=`${orga._id}`)
-  .row.top-space
-    .column
-      != h.dump(orga)
+      input#longitude(type="hidden" value=(orga.location && orga.location.coordinates[0]))
+      input#latitude(type="hidden" value=(orga.location && orga.location.coordinates[1]))
 
 block scripts
   script(src="/vendor/jquery.min.js")

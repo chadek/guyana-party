@@ -17,16 +17,24 @@
 .card {
   background: white;
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
-  width: 220px;
+  max-width: 220px;
   height: 210px;
+  margin-left: auto;
+  margin-right: auto;
+  &__header {
+    height: 152px;
+    text-align: center;
+    border-bottom: 1px solid rgba(46, 62, 72, 0.12);
+    img {
+      height: 100%;
+    }
+  }
   &__new {
     cursor: pointer;
     &:after {
       content: "+";
       display: block;
       position: relative;
-      //width: 10px;
-      //height: 10px;
       left: calc(50% - 10px);
       top: calc(50% - 40px);
       font-size: 40px;
@@ -52,4 +60,20 @@ pre.error {
 
 .separator {
   border-top: 1px solid rgba(46, 62, 72, 0.12);
+}
+
+.photo-profile {
+  text-align: center;
+  height: 192px;
+  img {
+    max-height: 192px;
+  }
+}
+
+.photo-orga-event {
+  text-align: center;
+  height: 250px;
+  img {
+    max-height: 250px;
+  }
 }

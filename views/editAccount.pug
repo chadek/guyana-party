@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  .row
+    .large-6.medium-8.small-12.medium-centered.large-centered.column
+      .row.column.top-space.text-center
+          h3= title
+      form(method="POST" enctype="multipart/form-data")
+        .form-icons
+          .row
+            .column.large-6.medium-8.small-8.columns.small-centered
+              .photo-profile
+                img(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro') alt="photo de profile")
+              label.button.expanded(for="fileUpload") Représentation visuelle
+              input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
+              .file-upload-filename
+          .input-group
+            span.input-group-label: i.fi-torsos-male-female.size-36
+            input.input-group-field(type="text" name="name" placeholder="Nom de l'organisateur" value=`${user.name}`)
+          .input-group
+            span.input-group-label: i.fi-mail.size-36
+            input.input-group-field(type="text" name="email" placeholder="Email, identifiant" value=`${user.email}`)
+          .separator.top-space
+          button.button.expanded.success.top-space Enregistrer

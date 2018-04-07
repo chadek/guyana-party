@@ -2,46 +2,22 @@ extends layout
 
 block content
   .row
-    .columns.large-2
-      .row
-        //-div(style="background: url('/images/default.jpg'); background-size: cover; background-position: center; height: 30vh; text-align: center; display: flex; align-items: center; justify-content: center;")
-        a(href="/account"): img(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro') alt="photo de profile")
-        h4= user.name
-        p= user.email
-
-    .columns.large-10
-      //- .row
-      //-   .columns.large-4.medium-6.end
-      //-     a.button.success.expanded(href="/events/add") Créer un évènement
-      //-   .columns.large-4.medium-6.end
-      //-     a.button.warning.expanded(href="#") Modifier vos informations
-      //-   .columns.large-4.medium-6.end
-      //-     a.button.secondary.expanded(href="/organizations/add") Créer un organisme
+    .column.large-2.medium-6.small-12.photo-profile
+      a(href="/account"): img(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro') alt="photo de profile")
+      h4= user.name
+      p= user.email
+      a(href="/account/edit") Edition du compte
+    .column.large-10.small-12
       .row.top-space
-        .column
-          .row
-            .column.text-center
-              h3 Mes évènements
-          //- .mobile-app-toggle(data-mobile-app-toggle)
-          //-   button.button Passé
-          //-   button.button.is-active Prochainement
-          .row
-            .events.top-space
-              p.top-space.text-center Chargement...
-              //- - const events = [{name: "Evènement 1"},{name: "Evènement 2"},{name: "Evènement 3"},{name: "Evènement 4"}]
-              //- each event in events
-              //-   .columns.large-3.medium-6.small-12.end
-              //-     .card
-              //-       img(style="width: 100%;" src="/images/default.jpg")
-              //-       .card-section
-              //-         p= event.name
-              //- else
-              //-   p Vous n'avez pas d'évènement
+        .column.text-center
+          h3 Mes évènements
       .row.top-space
-        .column
-          .row
-            .column.text-center
-              h3 Mes organismes
-          .row
-            .orgas.top-space
-              p.top-space.text-center Chargement...
+        .column.top-space.small-12.events
+          p.top-space.text-center Chargement...
+      .separator.top-space
+      .row.top-space
+        .column.text-center
+          h3 Mes organismes
+      .row.top-space
+        .column.top-space.small-12.orgas
+          p.top-space.text-center Chargement...
