@@ -1,7 +1,13 @@
 extends layout
 
+block style
+  link(rel="stylesheet", href="/vendor/foundation.min.css")
+  link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
+  link(rel="stylesheet", href="/vendor/ol.css")
+  link(rel="stylesheet", href="/dist/style.css")
+
 block content
-  .row
+  //-.row
     .column
       .columns.large-3.medium-4
         .row#flyer
@@ -11,6 +17,39 @@ block content
         .row
           h4 Présentation
           p= orga.description
+
   .row
+    .column.large-8.large-centered
+      .row#flyer
+        .column.large-8.large-centered
+          img(src=`/uploads/${orga.photo}` alt="Logo de l'organisme")
+      .row.top-space.text-center
+        h4= orga.name
+        p= `(${orga.type})`
+        //-span#type.label.info: i.fi-torsos-all-female
+      .row.top-space.text-center
+        p= orga.description
+      .row.top-space
+        #map.no-events
+      .row.top-space
+        p= `Adresse : ${orga.location.address}`
+      //-.row.top-space
+        .column.large-4.medium-6.end
+          a.button.success.expanded(href="/events/add") Créer un évènement
+        .column.large-4.medium-6.end
+          a.button.warning.expanded(href=`organism/${orga._id}/edit`) Modifier vos informations
+      .row.top-space.text-center
+        h4 Mes évènements
+      .row
+        .orga-events.top-space
+          p.top-space.text-center Chargement...
+      input#orga-id(type="hidden" value=`${orga._id}`)
+  .row.top-space
     .column
       != h.dump(orga)
+
+block scripts
+  script(src="/vendor/jquery.min.js")
+  script(src="/vendor/foundation.min.js")
+  script(src="/vendor/ol.min.js")
+  script(src="/dist/App.bundle.js")

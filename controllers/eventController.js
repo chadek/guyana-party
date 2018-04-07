@@ -8,7 +8,8 @@ exports.eventsPage = (req, res) => {
 };
 
 exports.addEventPage = (req, res) => {
-  res.render("addEvent", { event: {}, title: "Créer un évènement public" });
+  const orga = req.query.orga;
+  res.render("addEvent", { event: {}, orga, title: "Créer un évènement public" });
 };
 
 exports.create = async (req, res) => {
@@ -44,6 +45,11 @@ exports.getEventBySlug = async (req, res, next) => {
 exports.getEvents = async (req, res) => {
   const page = req.query.page || 1;
   const limit = req.query.limit || 4;
-  const result = await getPagedItems(Event, page, limit, { author: req.user._id }, {}, { created: "desc" });
+  const orga = req.query.orga;
+  let find = { author: req.user._id };
+  if(orga) {
+    find = { organism : orga };
+  }
+  const result = await getPagedItems(Event, page, limit, find, {}, { created: "desc" });
   res.json(result);
 };

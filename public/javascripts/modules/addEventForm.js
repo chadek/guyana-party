@@ -1,4 +1,6 @@
 import axios from "axios";
+import dompurify from "dompurify";
+import { B } from "./bling";
 
 function init(dp1, dp2) {
   // get current date
@@ -34,16 +36,35 @@ function initDatePicker(dp1, dp2) {
   $(dp2).fdatepicker(options);
 }
 
-function initOrgaDropdown(orgasDiv) {
-  if(!orgasDiv) return;
+function data2HTML(data, id) {
+  return data.items
+    .map(item => {
+      if(id && item._id === id)
+        return `<option value="${item._id}" selected>${item.name}</option>`;
+      return `<option value="${item._id}">${item.name}</option>`;
+    }).join('');
 }
 
-function addEventForm(clockPicker, dp1, dp2, orgasDiv) {
+function initOrgaDropdown(orgasSelect) {
+  if(!orgasSelect) return;
+  axios
+    .get(`/api/organisms`)
+    .then(res => {
+      if (res.data) {
+        orgasSelect.innerHTML = dompurify.sanitize(data2HTML(res.data, B("#orga-id").value));
+      }
+    })
+    .catch(err => {
+      console.error(err);
+    });
+}
+
+function addEventForm(clockPicker, dp1, dp2, orgasSelect) {
   if (!dp1 || !dp2) return;
   init(dp1, dp2);
   initClockPicker(clockPicker);
   initDatePicker(dp1, dp2);
-  initOrgaDropdown(orgasDiv);
+  initOrgaDropdown(orgasSelect);
 }
 
 export default addEventForm;
