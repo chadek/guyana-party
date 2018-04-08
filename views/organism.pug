@@ -7,32 +7,32 @@ block style
   link(rel="stylesheet", href="/dist/style.css")
 
 block content
-  .row
-    .column
-      .row
-        .column.photo-orga-event
-          img(src=`/uploads/${orga.photo}` alt="Logo de l'organisme")
-      .row.top-space.text-center
+  .grid-container.fluid
+    .grid-x.grid-margin-x
+      .cell.photo-orga-event
+        img(src=`/uploads/${orga.photo}` alt="Logo de l'organisme")
+    .grid-x.grid-margin-x.top-space
+      .cell.text-center
         h4= orga.name
         p= `(${orga.type})`
-        //-span#type.label.info: i.fi-torsos-all-female
-      .row.top-space.text-center
+    .grid-x.grid-margin-x.top-space
+      .cell.text-center
         p= orga.description
-      .separator
-      .row.top-space
-        .column.large-6.large-centered
-          label L'adresse du siège social :
-          #map.no-events.no-click
-          p.text-center= orga.location.address
-      .separator
-      .row.top-space.text-center
-        h4 Mes évènements
-      .row.top-space
-        .column.top-space.small-12.orga-events
-          p.top-space.text-center Chargement...
-      input#orga-id(type="hidden" value=`${orga._id}`)
-      input#longitude(type="hidden" value=(orga.location && orga.location.coordinates[0]))
-      input#latitude(type="hidden" value=(orga.location && orga.location.coordinates[1]))
+    .separator
+    .grid-x.grid-margin-x.top-space
+      .cell.large-6.large-offset-3
+        label L'adresse du siège social :
+        #map.no-events.no-click
+        p.text-center= orga.location.address
+    .separator
+    .grid-x.grid-margin-x
+      .cell.text-center.top-space
+        h3 Mes évènements
+    .grid-x.top-space.orga-events
+      p.cell.top-space.text-center Chargement...
+    input#orga-id(type="hidden" value=`${orga._id}`)
+    input#longitude(type="hidden" value=(orga.location && orga.location.coordinates[0]))
+    input#latitude(type="hidden" value=(orga.location && orga.location.coordinates[1]))
 
 block scripts
   script(src="/vendor/jquery.min.js")

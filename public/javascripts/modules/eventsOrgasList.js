@@ -7,7 +7,7 @@ function getEventsList(eventsDiv) {
     if (data) {
       const format = item => {
         const imgSrc = item.photo ? `/uploads/${item.photo}` : `/images/default.jpg`;
-        return `<div class="columns large-3 small-6">
+        return `<div class="cell large-3 medium-4 small-6">
           <div class="card">
             <div class="card__header">
               <img src="${imgSrc}" alt="photo event">
@@ -18,7 +18,7 @@ function getEventsList(eventsDiv) {
           </div>
         </div>`;
       };
-      const concat = `<div class="columns large-3 small-6 end">
+      const concat = `<div class="cell large-3 medium-4 small-6 end">
         <div class="card card__new card__new--event" title="Ajouter un évènement"></div>
       </div>`;
       eventsDiv.innerHTML = data2HTML(data, format, concat);
@@ -33,7 +33,7 @@ function getOrgasList(orgasDiv) {
     if (data) {
       const format = item => {
         const imgSrc = item.photo ? `/uploads/${item.photo}` : `/images/default.jpg`;
-        return `<div class="column large-3 small-6">
+        return `<div class="cell large-3 medium-4 small-6">
           <div class="card">
             <div class="card__header">
               <img src="${imgSrc}" alt="photo organisme">
@@ -44,7 +44,7 @@ function getOrgasList(orgasDiv) {
           </div>
         </div>`;
       };
-      const concat = `<div class="column large-3 small-6 end">
+      const concat = `<div class="cell large-3 medium-4 small-6 end">
         <div class="card card__new card__new--organism" title="Ajouter un organisme"></div>
       </div>`;
       orgasDiv.innerHTML = data2HTML(data, format, concat);
@@ -61,7 +61,7 @@ function getEventsFromOrga(orgaEventsDiv) {
     if (data) {
       const format = item => {
         const imgSrc = item.photo ? `/uploads/${item.photo}` : `/images/default.jpg`;
-        return `<div class="columns large-3 small-6">
+        return `<div class="cell large-3 small-6">
           <div class="card">
             <div class="card__header">
               <img src="${imgSrc}" alt="photo event">
@@ -72,7 +72,7 @@ function getEventsFromOrga(orgaEventsDiv) {
           </div>
         </div>`;
       };
-      const concat = `<div class="columns large-3 small-6 end">
+      const concat = `<div class="cell large-3 small-6 end">
         <div class="card card__new card__new--event" title="Ajouter un évènement"></div>
       </div>`;
       orgaEventsDiv.innerHTML = data2HTML(data, format, concat);

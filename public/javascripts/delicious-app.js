@@ -17,5 +17,5 @@ B("#fileUpload") && B("#fileUpload").on("change", function(e) {
 loginForm(B(".forgot-link"));
 makeMap(B("#map"));
 loadEventsOrgasList(B(".events"), B(".orga-events"), B(".orgas"), B("#orga-select"));
-initDates(B("#start"), B("#end"));
+initDates(B("#event-start"), B("#event-end"));
 addEventForm($(".clockpicker"), B("#dp1"), B("#dp2"));

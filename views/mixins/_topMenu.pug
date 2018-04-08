@@ -1,11 +1,66 @@
 mixin topMenu()
-  div(data-sticky-container)
-    .title-bar(data-sticky-on="small" data-sticky data-options="marginTop:0;")
+    //div(data-sticky-container)
+    //-.title-bar(data-sticky-on="small" data-sticky data-options="marginTop:0;")
       .title-bar-left(data-open="offCanvas")
         button.menu-icon(type="button")
         span.title-bar-title__menu Menu
       .title-bar-title(onclick="location.href='/'")
         img(src="/images/default.jpg" width="60px" title="Accueil")
+      //-.title-bar-title
       unless user
         .title-bar-right
           a(href="/login") Connexion / Inscription
+
+    //- .title-bar(data-sticky-on="small" data-sticky data-options="marginTop:0;")
+    //-   .column.large-2.medium-2.small-4.title-bar-left(data-open="offCanvas")
+    //-     button.menu-icon(type="button")
+    //-     span.title-bar-title__menu Menu
+    //-   unless user
+    //-     .column.small-8.show-for-small-only.title-bar-right
+    //-       a(href="/login") Connexion / Inscription
+    //-   unless isHome
+    //-     .column.large-7.medium-6.end
+    //-       form(action="/search" method="POST")
+    //-         .search.menu-separator
+    //-           input.search__input--nav(type="text" placeholder="Chercher par thème ou par lieu..." name="search")
+    //-   unless user
+    //-     .column.large-3.medium-4.hide-for-small-only.title-bar-right
+    //-       a(href="/login") Connexion / Inscription
+    .top-bar
+      .top-bar-left
+        ul.menu
+          li.menu-text(data-toggle="offCanvas")
+            button.menu-icon(type="button")
+            span.top-bar__menu Menu
+          li
+            unless isHome
+              .search
+                input(type='search', placeholder='Chercher par thème ou par lieu...')
+      .top-bar-right
+        ul.menu
+          //- li
+          //-   .search
+          //-     input(type='search', placeholder='Chercher par thème ou par lieu...')
+          li
+            unless user
+              unless isLogin
+                a(href="/login") Connexion / Inscription
+
+    //- nav.top-bar(data-topbar role="navigation")
+    //-   ul.title-area
+    //-     li.name
+    //-       h1: a(href="#") My Site
+    //-     //- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone
+    //-     li.toggle-topbar.menu-icon: a(href="#"): span Menu
+    //-   section.top-bar-section
+    //-     //- Right Nav Section
+    //-     ul.right
+    //-       li.active: a(href="#") Right Button Active
+    //-       li.has-dropdown
+    //-         a(href="#") Right Button Dropdown
+    //-         ul.dropdown
+    //-           li: a(href="#") First link in dropdown
+    //-           li.active: a(href="#") Active link in dropdown
+    //-     //- Left Nav Section
+    //-     ul.left
+    //-       li: a(href="#") Left Nav Button

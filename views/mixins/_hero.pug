@@ -1,6 +1,12 @@
 mixin hero()
   .hero
-    .column.large-centered.large-8.hero_content
+    .hero__details
+      .grid-container
+        form(action="/search" method="POST")
+          .search
+            input.search__input(type="text" placeholder="Chercher par thème ou par lieu..." name="search")
+
+    //-.column.large-centered.large-8.hero_content
       .row
         .large-12.columns
           h1 La connaissance est indispensable

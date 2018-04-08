@@ -2,7 +2,7 @@ mixin sideMenu()
   if user
     .menu-avatar.top-space
       a(href="/account"): img.avatar(src=`${h.profilePhotoSrc(user)}` alt="photo de profile" title="Mon compte")
-  ul.top-space
+  ul.top-space.vertical.menu.drilldown(data-drilldown)
     li: a(href="/") Accueil
     if !user
       li: a(href="/login") Connexion / Inscription
@@ -11,5 +11,5 @@ mixin sideMenu()
       li: a(href="/organisms/add") Créer un organisme
       li: a(href="/events/add") Créer un évènement
       li: a(href="/logout") Déconnexion
-    else
+    //-else
       li: a(href="#") Conditions générales d'utilisation

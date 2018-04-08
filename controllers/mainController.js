@@ -15,7 +15,7 @@ const multerOptions = {
 };
 
 exports.homePage = (req, res) => {
-  res.render("home", { title: "Liberté Humaine", user: req.user });
+  res.render("home", { title: "Liberté Humaine", user: req.user, isHome: true });
 };
 
 exports.upload = multer(multerOptions).single("photo");

@@ -4,7 +4,7 @@ const Organism = mongoose.model("Organism");
 const { promisify } = require("es6-promisify");
 
 exports.loginForm = (req, res) => {
-  res.render("login", { title: "Connexion/Inscription" });
+  res.render("login", { title: "Connexion/Inscription", isLogin: true });
 };
 
 exports.validateRegister = (req, res, next) => {
