@@ -1,8 +1,8 @@
 mixin sideMenu()
   if user
-    .menu-avatar
-      a(href="/account"): img.avatar(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro') alt="photo de profile" title="Mon compte")
-  ul
+    .menu-avatar.top-space
+      a(href="/account"): img.avatar(src=`${h.profilePhotoSrc(user)}` alt="photo de profile" title="Mon compte")
+  ul.top-space
     li: a(href="/") Accueil
     if !user
       li: a(href="/login") Connexion / Inscription

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Event = mongoose.model("Event");
+const Organism = mongoose.model("Organism");
 const { promisify } = require("es6-promisify");
 const { getPagedItems } = require("../handlers/tools");
 
@@ -9,7 +10,7 @@ exports.eventsPage = (req, res) => {
 
 exports.addEventPage = (req, res) => {
   const orga = req.query.orga;
-  res.render("addEvent", { event: {}, orga, title: "Créer un évènement public" });
+  res.render("addEvent", { event: {}, orga, title: "Création d'un évènement public" });
 };
 
 exports.create = async (req, res) => {
@@ -39,7 +40,9 @@ exports.create = async (req, res) => {
 exports.getEventBySlug = async (req, res, next) => {
   const event = await Event.findOne({ slug: req.params.slug }).populate("author");
   if (!event) return next();
-  res.render("event", { event, title: event.name });
+  const orga = await Organism.findOne({ _id: event.organism });
+  if (!orga) return next();
+  res.render("event", { event, orga, title: event.name });
 };
 
 exports.getEvents = async (req, res) => {

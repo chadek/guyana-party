@@ -17,11 +17,11 @@ block content
       form.top-space(action="/organisms/add" method="POST" enctype="multipart/form-data")
         .row
           .columns.large-6.large-centered
-            .row
+            .row.top-space
               .columns.input-group
                 span.input-group-label: i.fi-clipboard-pencil.size-36
                 input.input-group-field(type="text" placeholder="Nom de votre nouvelle organisation" name="name")
-            .row
+            .row.top-space
               .columns.large-6.medium-6.small-12.small-centered
                 label.button.expanded(for="fileUpload") Logo de votre organisme
                 input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
@@ -51,7 +51,7 @@ block content
                   input.input-group-field#address(type="text" placeholder="Adresse" name="location[address]" value=(orga.location && orga.location.address))
                   input#longitude(type="hidden" name="location[coordinates][0]" value=(orga.location && orga.location.coordinates[0]))
                   input#latitude(type="hidden" name="location[coordinates][1]" value=(orga.location && orga.location.coordinates[1]))
-        .row
+        .row.top-space
           .column.large-3.small-centered
             input.success.button.expanded(type="submit" value="Créer")
 

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { B } from "./bling";
 import { axiosGet } from "./utils";
 
@@ -79,7 +78,7 @@ function makeMap(mapDiv) {
     const lonlat = e.coordinate;
     const coord = ol.proj.transform(lonlat, "EPSG:3857", "EPSG:4326");
 
-    // remove all point
+    // remove old point
     map.removeLayer(point);
 
     point = new ol.layer.Vector({

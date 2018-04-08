@@ -63,8 +63,7 @@ pre.error {
 }
 
 .photo-profile {
-  text-align: center;
-  height: 192px;
+  max-height: 192px;
   img {
     max-height: 192px;
   }

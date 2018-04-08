@@ -2,11 +2,14 @@ extends layout
 
 block content
   .row
-    .column.large-2.medium-6.small-12.photo-profile
-      a(href="/account"): img(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro') alt="photo de profile")
-      h4= user.name
-      p= user.email
-      a(href="/account/edit") Edition du compte
+    .column.large-2.small-12
+      .column.large-12.small-6.small-centered.photo-profile
+          a(href="/account"): img(src=`${h.profilePhotoSrc(user)}` alt="photo de profile")
+      .column.large-12.small-6.small-centered.top-space
+          h4= user.name
+          p= user.email
+          a(href="/account/edit") Edition du compte
+      .separator.top-space.hide-for-large
     .column.large-10.small-12
       .row.top-space
         .column.text-center

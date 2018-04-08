@@ -14,6 +14,9 @@ exports.dump = obj => JSON.stringify(obj, null, 2);
 // inserting an SVG
 exports.icon = name => fs.readFileSync(`./public/images/icons/${name}.svg`);
 
+// profile photo
+exports.profilePhotoSrc = user => (user.photo ? `/uploads/${user.photo}` : `${user.gravatar}&d=retro`);
+
 // Some details about the site
 exports.siteName = `Guyana Party`;
 
