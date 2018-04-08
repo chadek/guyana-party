@@ -61,6 +61,7 @@ router.get(
 router.post(
   "/events/add",
   authController.isLoggedIn,
+  catchErrors(userController.hasOrganism),
   mainController.upload,
   catchErrors(mainController.resize),
   catchErrors(eventController.create)

@@ -9,7 +9,9 @@ function getEventsList(eventsDiv) {
         const imgSrc = item.photo ? `/uploads/${item.photo}` : `/images/default.jpg`;
         return `<div class="columns large-3 small-6">
           <div class="card">
-            <img src="${imgSrc}" alt="photo">
+            <div class="card__header">
+              <img src="${imgSrc}" alt="photo event">
+            </div>
             <div class="card-section">
               <p><a href="/event/${item.slug}">${item.name}</a></p>
             </div>
@@ -34,7 +36,7 @@ function getOrgasList(orgasDiv) {
         return `<div class="column large-3 small-6">
           <div class="card">
             <div class="card__header">
-              <img src="${imgSrc}" alt="photo">
+              <img src="${imgSrc}" alt="photo organisme">
             </div>
             <div class="card-section">
               <p><a href="/organism/${item.slug}">${item.name}</a></p>
@@ -61,7 +63,9 @@ function getEventsFromOrga(orgaEventsDiv) {
         const imgSrc = item.photo ? `/uploads/${item.photo}` : `/images/default.jpg`;
         return `<div class="columns large-3 small-6">
           <div class="card">
-            <img src="${imgSrc}" alt="photo">
+            <div class="card__header">
+              <img src="${imgSrc}" alt="photo event">
+            </div>
             <div class="card-section">
               <p><a href="/event/${item.slug}">${item.name}</a></p>
             </div>

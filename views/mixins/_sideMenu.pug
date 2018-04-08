@@ -9,6 +9,7 @@ mixin sideMenu()
     li: a(href="/events") Tous les évènements
     if user
       li: a(href="/organisms/add") Créer un organisme
+      li: a(href="/events/add") Créer un évènement
       li: a(href="/logout") Déconnexion
     else
       li: a(href="#") Conditions générales d'utilisation

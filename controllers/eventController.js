@@ -19,18 +19,18 @@ exports.create = async (req, res) => {
   const startTime = req.body.starttime;
   const endDate = req.body.enddate;
   const endTime = req.body.endtime;
-  req.body.start = new Date(Date.UTC(
+  req.body.start = new Date(
     startDate.split('/')[2],
     startDate.split('/')[1],
     startDate.split('/')[0],
     startTime.split(':')[0],
-    startTime.split(':')[1],0,0));
-  req.body.end = new Date(Date.UTC(
+    startTime.split(':')[1],0,0);
+  req.body.end = new Date(
     endDate.split('/')[2],
     endDate.split('/')[1],
     endDate.split('/')[0],
     endTime.split(':')[0],
-    endTime.split(':')[1],0,0));
+    endTime.split(':')[1],0,0);
   //res.json(req.body);return;
   const event = await new Event(req.body).save();
   req.flash("success", `Evènement "${event.name}" créé avec succès !`);

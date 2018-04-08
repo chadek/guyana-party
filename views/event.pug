@@ -6,24 +6,12 @@ block style
   link(rel="stylesheet", href="/vendor/ol.css")
   link(rel="stylesheet", href="/dist/style.css")
 
-//-block content
-  .row
-    .column
-      .columns.large-3.medium-4
-        .row#flyer
-          img(src=`/uploads/${event.photo}` alt="flyer de l'évènement")
-        .row
-          h4= event.name
-        .row
-          h4 Présentation
-          p= event.description
-
 block content
   .row
     .column
       .row
         .column.photo-orga-event
-          img(src=`/uploads/${event.photo}` alt="Logo de l'évènement")
+          img(src=`/uploads/${event.photo}` alt="flyer de l'évènement")
       .row.top-space.text-center
         h4= event.name
         p Organisateur :
@@ -31,6 +19,29 @@ block content
         //-span#type.label.info: i.fi-torsos-all-female
       .row.top-space.text-center
         p= event.description
+      .separator
+      .row.top-space
+        .columns.large-8.large-centered
+          .columns.large-2.medium-2.small-2: label Début
+          .large-6.medium-6.small-6.columns
+            .input-group
+              span.input-group-label: i.fi-calendar.size-36
+              input.input-group-field#startdate(type="text" readonly)
+          .large-4.medium-4.small-4.columns
+            .input-group
+              span.input-group-label: i.fi-clock.size-36
+              input.input-group-field#starttime(type="text" readonly)
+          .columns.large-2.medium-2.small-2: label Fin
+          .large-6.medium-6.small-6.columns
+            .input-group
+              .input-group-label: i.fi-calendar.size-36
+              input.input-group-field#enddate(type="text" readonly)
+          .large-4.medium-4.small-4.columns
+            .input-group
+              span.input-group-label: i.fi-clock.size-36
+              input.input-group-field#endtime(type="text" readonly)
+          input#start(type="hidden" value=`${event.start}`)
+          input#end(type="hidden" value=`${event.end}`)
       .separator
       .row.top-space
         .column.large-6.large-centered
