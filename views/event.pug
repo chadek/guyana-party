@@ -47,7 +47,7 @@ block content
     .grid-x.grid-margin-x.top-space
       .cell.large-6.large-offset-3
         label Le lieu de l'évènement :
-        #map.no-events.no-click
+        #map.no-events.readonly
         p.text-center= event.location.address
     input#longitude(type="hidden" value=(event.location && event.location.coordinates[0]))
     input#latitude(type="hidden" value=(event.location && event.location.coordinates[1]))

@@ -5,7 +5,8 @@ const { promisify } = require("es6-promisify");
 const { getPagedItems } = require("../handlers/tools");
 
 exports.eventsPage = (req, res) => {
-  res.render("events", { title: "Tous les évènements sur la carte" });
+  const search = req.body.search || req.query.q || "";
+  res.render("events", { title: "Les évènements sur la carte", search });
 };
 
 exports.addEventPage = (req, res) => {
@@ -20,17 +21,23 @@ exports.create = async (req, res) => {
   const endDate = req.body.enddate;
   const endTime = req.body.endtime;
   req.body.start = new Date(
-    startDate.split('/')[2],
-    startDate.split('/')[1],
-    startDate.split('/')[0],
-    startTime.split(':')[0],
-    startTime.split(':')[1],0,0);
+    startDate.split("/")[2],
+    startDate.split("/")[1],
+    startDate.split("/")[0],
+    startTime.split(":")[0],
+    startTime.split(":")[1],
+    0,
+    0
+  );
   req.body.end = new Date(
-    endDate.split('/')[2],
-    endDate.split('/')[1],
-    endDate.split('/')[0],
-    endTime.split(':')[0],
-    endTime.split(':')[1],0,0);
+    endDate.split("/")[2],
+    endDate.split("/")[1],
+    endDate.split("/")[0],
+    endTime.split(":")[0],
+    endTime.split(":")[1],
+    0,
+    0
+  );
   //res.json(req.body);return;
   const event = await new Event(req.body).save();
   req.flash("success", `Evènement "${event.name}" créé avec succès !`);
@@ -50,9 +57,41 @@ exports.getEvents = async (req, res) => {
   const limit = req.query.limit || 4;
   const orga = req.query.orga;
   let find = { author: req.user._id };
-  if(orga) {
-    find = { organism : orga };
+  if (orga) {
+    find = { organism: orga };
   }
   const result = await getPagedItems(Event, page, limit, find, {}, { created: "desc" });
   res.json(result);
+};
+
+exports.getSearchResult = async (req, res) => {
+  const search = req.body.search || req.query.q;
+  const page = req.params.page || 1;
+  const pagedEvents = await getPagedItems(
+    Event,
+    page,
+    10,
+    {
+      $text: {
+        $search: search
+      }
+    },
+    {
+      score: { $meta: "textScore" }
+    },
+    {
+      score: { $meta: "textScore" }
+    }
+  );
+
+  if (pagedEvents.isErrorPage) {
+    req.flash(
+      "info",
+      `Hey! You asked for page ${pagedEvents.page}. But that doesn't exist. So I put you on page ${pagedEvents.pages}`
+    );
+    res.redirect(`/recherche/page/${pagedEvents.pages}?q="${search}"`);
+    return;
+  }
+  res.render("events", { title: "Les évènements sur la carte", search, pagedEvents });
+  //res.json(pagedEvents);
 };

@@ -32,10 +32,11 @@ mixin topMenu()
           li.menu-text(data-toggle="offCanvas")
             button.menu-icon(type="button")
             span.top-bar__menu Menu
-          li
-            unless isHome
+          li.search
+            unless currentPath == "/" || currentPath == "/events"
               .search
-                input(type='search', placeholder='Chercher par thème ou par lieu...')
+                form(action="/events" method="POST")
+                  input.search__input.nav(type="text" placeholder="Chercher par thème ou par lieu..." name="search" )
       .top-bar-right
         ul.menu
           //- li

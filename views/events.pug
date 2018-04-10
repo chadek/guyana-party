@@ -1,7 +1,27 @@
 extends layout
 
+block style
+  link(rel="stylesheet", href="/vendor/foundation.min.css")
+  link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
+  link(rel="stylesheet", href="/vendor/ol.css")
+  link(rel="stylesheet", href="/dist/style.css")
+
 block content
-  .row
+  .grid-container.fluid
+    .grid-x.grid-margin-x
+      .cell.text-center
+        h3= title
+    .grid-x.grid-margin-x
+      .cell
+        form(action="/recherche" method="POST")
+          .search
+            input.search__input(type="text" placeholder="Chercher par thème ou par lieu..." name="search" value=`${search?search:''}`)
+    .grid-x.grid-margin-x
+      .cell.events-list.large-4
+        p Aucun résultat
+      .cell.events-map.large-8
+        #map.readonly
+  //-.row
     .column
       .row
         .div(style="text-align: center;")
@@ -12,7 +32,7 @@ block content
           .input-group-button
             input.button#search(type="submit" value="Rechercher")
 
-  #map(style="height: 77vh;")
+  //-#map(style="height: 77vh;")
     .ol-popup#popup/
     nav#map_menu
       button#geolocation Géolocalisation
