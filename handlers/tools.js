@@ -5,7 +5,8 @@ exports.getPagedItems = async (model, page, limit, find, projection, sort) => {
   limit = parseInt(limit);
   if (!page || !limit) return { isErrorPage: true, error: "page and limit parameters must be integers" };
   const skip = page * limit - limit;
-  const itemsPromise = model.find(find, projection)
+  const itemsPromise = model
+    .find(find, projection)
     .skip(skip)
     .limit(limit)
     .sort(sort);
@@ -19,7 +20,7 @@ exports.getPagedItems = async (model, page, limit, find, projection, sort) => {
   };
 };
 
-exports.confirmOwner = function (model, user) {
+exports.confirmOwner = function(model, user) {
   if (!model.author.equals(user._id)) {
     throw Error("Vous ne pouvez pas effectuer cet action !");
   }
