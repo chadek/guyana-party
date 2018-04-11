@@ -81,4 +81,12 @@ eventSchema.statics.getTagsList = function() {
   ]);
 };
 
+function autopopulate(next) {
+  this.populate("organism");
+  next();
+}
+
+eventSchema.pre("find", autopopulate);
+eventSchema.pre("findOne", autopopulate);
+
 module.exports = mongoose.model("Event", eventSchema);

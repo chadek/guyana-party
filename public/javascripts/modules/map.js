@@ -144,57 +144,51 @@ function makeMap(mapDiv) {
     console.log(events);
     const features = [];
     for (let i = 0, len = events.length; i < len; i++) {
-      console.log(events[i]);
-      axiosGet(`/api/search/orga/${events[i].organism}`, data => {
-        if (data) {
-          features[i] = new ol.Feature({
-            geometry: new ol.geom.Point(
-              ol.proj.fromLonLat([events[i].location.coordinates[0], events[i].location.coordinates[1]])
-            ),
-            slug: events[i].slug,
-            name: events[i].name,
-            author: {
-              name: data.name,
-              slug: data.slug
-            },
-            start: events[i].start,
-            end: events[i].end,
-            photo: events[i].photo
-          });
-        }
-        map.removeLayer(clusters);
-        const styleCache = {};
-        clusters = new ol.layer.Vector({
-          source: new ol.source.Cluster({
-            distance: DISTANCE,
-            source: new ol.source.Vector({ features: features })
-          }),
-          style: feature => {
-            const size = feature.get("features").length;
-            let style = styleCache[size];
-            console.log(size);
-            // if point merged, apply different style and display number of merged point
-            if (size > 1) {
-              style = getMarkerStyle(10, { color: "#fff" }, { color: "#3399CC" });
-              style.setText(
-                new ol.style.Text({
-                  text: size.toString(),
-                  fill: new ol.style.Fill({
-                    color: "#fff"
-                  })
-                })
-              );
-              styleCache[size] = style;
-            } else {
-              // apply style for not merged point
-              style = defaultStyleMark;
-              styleCache[size] = style;
-            }
-            return style;
-          }
-        });
-        map.addLayer(clusters);
+      features[i] = new ol.Feature({
+        geometry: new ol.geom.Point(
+          ol.proj.fromLonLat([events[i].location.coordinates[0], events[i].location.coordinates[1]])
+        ),
+        slug: events[i].slug,
+        name: events[i].name,
+        author: {
+          name: events[i].organism.name,
+          slug: events[i].organism.slug
+        },
+        start: events[i].start,
+        photo: events[i].photo
       });
+      map.removeLayer(clusters);
+      const styleCache = {};
+      clusters = new ol.layer.Vector({
+        source: new ol.source.Cluster({
+          distance: DISTANCE,
+          source: new ol.source.Vector({ features: features })
+        }),
+        style: feature => {
+          const size = feature.get("features").length;
+          let style = styleCache[size];
+          console.log("features:"+size);
+          // if point merged, apply different style and display number of merged point
+          if (size > 1) {
+            style = getMarkerStyle(10, { color: "#fff" }, { color: "#3399CC" });
+            style.setText(
+              new ol.style.Text({
+                text: size.toString(),
+                fill: new ol.style.Fill({
+                  color: "#fff"
+                })
+              })
+            );
+            styleCache[size] = style;
+          } else {
+            // apply style for not merged point
+            style = defaultStyleMark;
+            styleCache[size] = style;
+          }
+          return style;
+        }
+      });
+      map.addLayer(clusters);
     }
   };
 
@@ -233,26 +227,56 @@ function makeMap(mapDiv) {
     // if we clicked on some point (feature not empty)
     if (feature) {
       // get cluster
-      let event = feature.get("features");
+      let events = feature.get("features");
       // if object is cluster
-      if (event) {
+      if (events) {
         // if no point merge display popup
-        if (event.length == 1) {
-          event = event[0];
-
-          // dateObj = new Date(event.get('date'));
-          // console.log(dateObj)
-
-          popup.setPosition(event.getGeometry().getCoordinates());
+        if (events.length == 1) {
+          // start date format
+          let start = new Date(events[0].get("start"));
+          start = `Le ${("0" + start.getDate()).slice(-2)}/${("0" + start.getMonth()).slice(
+            -2
+          )}/${start.getFullYear()} à ${("0" + start.getHours()).slice(-2)}:${("0" + start.getMinutes()).slice(-2)}`;
+          // show popup
+          popup.setPosition(events[0].getGeometry().getCoordinates());
           popupDiv.innerHTML = dompurify.sanitize(`
             <div style="font-size:.8em">
-              <font size="4">${event.get("name")}</font>
-              <br>Organisateur: <a href="/organism/${event.get("author").slug}">${event.get("author").name}</a>
-              <br> date
-              <br><a href="/event/${event.get("slug")}">Plus d'info</a>
+              <font size="4">${events[0].get("name")}</font>
+              <br>Organisateur: <a href="/organism/${events[0].get("author").slug}">${events[0].get("author").name}</a>
+              <br>${start}
+              <br><a href="/event/${events[0].get("slug")}">Plus d'info</a>
             </div>`);
           popupDiv.style.display = "block";
+        } else if (view.getZoom() == MAXZOOM) {
+          // if max zoom and steal clusterise, display popup with the event list
+          let content = '<div style="font-size:.8em">';
+          for (let i = 0, len = events.length; i < len; i++) {
+            content += `<a href="/event/${event[i].get("slug")}">${event[i].get(
+              "name"
+            )}</a> organisé par <a href="/organism/${event[i].get("author").slug}">${
+              event[i].get("author").name
+            }</a><br>`;
+          }
+          popup.setPosition(event[0].getGeometry().getCoordinates());
+          popupDiv.innerHTML = dompurify.sanitize(content + "</div>");
+          popupDiv.style.display = "block";
+        } else {
+          // if point merge, zoom and center on point cluster cliked
+          view.setCenter(feature.getGeometry().getCoordinates());
+          view.setZoom(view.getZoom() + 3);
+          popupDiv.style.display = "none";
         }
+      } else {
+        // display usr location popup (with coordinates)
+        const coordinate = feature.getGeometry().getCoordinates();
+        const hdms = ol.coordinate.toStringHDMS(ol.proj.transform(coordinate, "EPSG:3857", "EPSG:4326"));
+        popup.setPosition(coordinate);
+        popupDiv.innerHTML = dompurify.sanitize(`
+          <div style="font-size:.8em">
+            <font size="3">Votre localisation (basé sur votre adresse IP)</font>
+            <br><code>${hdms}</code>
+          </div>`);
+        popupDiv.style.display = "block";
       }
     }
   });

@@ -20,11 +20,11 @@ exports.getOrgaBySlug = async (req, res, next) => {
   res.render("organism", { orga, title: orga.name });
 };
 
-exports.getOrgaById = async (req, res) => {
-  const orga = await Organism.findOne({ _id: req.params.id }).populate("author");
-  if (!orga) return res.json({});
-  res.json(orga);
-};
+// exports.getOrgaById = async (req, res) => {
+//   const orga = await Organism.findOne({ _id: req.params.id }).populate("author");
+//   if (!orga) return res.json({});
+//   res.json(orga);
+// };
 
 exports.getOrganisms = async (req, res) => {
   const page = req.query.page || 1;

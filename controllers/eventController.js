@@ -68,7 +68,7 @@ exports.getSearchResult = async (req, res) => {
   const page = req.queryInt("page") || 1;
   const limit = req.queryInt("limit") || 10;
   const search = req.queryString("q");
-  //const orga = req.queryString("orga");
+  const orga = req.queryString("orga");
   let pagedEvents = await getPagedItems(
     Event,
     page,
