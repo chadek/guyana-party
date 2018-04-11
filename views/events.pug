@@ -13,14 +13,23 @@ block content
         h3= title
     .grid-x.grid-margin-x
       .cell
-        form(action="/recherche" method="POST")
+        form(action="/events" method="POST")
           .search
             input.search__input(type="text" placeholder="Chercher par thème ou par lieu..." name="search" value=`${search?search:''}`)
     .grid-x.grid-margin-x
       .cell.events-list.large-4
         p Aucun résultat
       .cell.events-map.large-8
-        #map.readonly
+        #map
+          .ol-popup#popup
+          nav#map_menu
+            button#geolocation Géolocalisation
+            ul.no_list
+              form
+                li:input#party(type="checkbox" name="eventLayer" checked) Festif
+                li:input#sport(type="checkbox" name="eventLayer" checked) Sportif
+                li:input#culture(type="checkbox" name="eventLayer" checked) Culturel
+
   //-.row
     .column
       .row

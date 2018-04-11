@@ -53,9 +53,9 @@ exports.getEventBySlug = async (req, res, next) => {
 };
 
 exports.getEvents = async (req, res) => {
-  const page = req.query.page || 1;
-  const limit = req.query.limit || 4;
-  const orga = req.query.orga;
+  const page = req.queryInt("page") || 1;
+  const limit = req.queryInt("limit") || 4;
+  const orga = req.queryString("orga");
   let find = { author: req.user._id };
   if (orga) {
     find = { organism: orga };
@@ -65,33 +65,17 @@ exports.getEvents = async (req, res) => {
 };
 
 exports.getSearchResult = async (req, res) => {
-  const search = req.body.search || req.query.q;
-  const page = req.params.page || 1;
-  const pagedEvents = await getPagedItems(
+  const page = req.queryInt("page") || 1;
+  const limit = req.queryInt("limit") || 10;
+  const search = req.queryString("q");
+  //const orga = req.queryString("orga");
+  let pagedEvents = await getPagedItems(
     Event,
     page,
-    10,
-    {
-      $text: {
-        $search: search
-      }
-    },
-    {
-      score: { $meta: "textScore" }
-    },
-    {
-      score: { $meta: "textScore" }
-    }
+    limit,
+    search ? { $text: { $search: search } } : {},
+    { score: { $meta: "textScore" } },
+    { score: { $meta: "textScore" } }
   );
-
-  if (pagedEvents.isErrorPage) {
-    req.flash(
-      "info",
-      `Hey! You asked for page ${pagedEvents.page}. But that doesn't exist. So I put you on page ${pagedEvents.pages}`
-    );
-    res.redirect(`/recherche/page/${pagedEvents.pages}?q="${search}"`);
-    return;
-  }
-  res.render("events", { title: "Les évènements sur la carte", search, pagedEvents });
-  //res.json(pagedEvents);
+  res.json(pagedEvents);
 };

@@ -48,6 +48,7 @@ router.post(
   catchErrors(orgaController.create)
 );
 router.get("/organism/:slug", catchErrors(orgaController.getOrgaBySlug));
+router.get("/organism/id/:id", catchErrors(orgaController.getOrgaById));
 
 /* Events */
 
@@ -78,5 +79,7 @@ router.get("/event/:slug", catchErrors(eventController.getEventBySlug));
 
 router.get("/api/organisms", authController.isLoggedIn, catchErrors(orgaController.getOrganisms));
 router.get("/api/events", authController.isLoggedIn, catchErrors(eventController.getEvents));
+router.get("/api/search", catchErrors(eventController.getSearchResult));
+router.get("/api/search/orga/:id", catchErrors(orgaController.getOrgaById));
 
 module.exports = router;
