@@ -38,8 +38,12 @@ const OrganismSchema = new mongoose.Schema(
     },
     community: [
       {
-        username: String,
-        isAdmin: Boolean
+        user: {
+          type: mongoose.Schema.ObjectId,
+          ref: "User",
+          required: "La référence de l'utilisateur est requise."
+        },
+        admin: Boolean
       }
     ]
   },
