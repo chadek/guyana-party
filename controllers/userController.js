@@ -18,7 +18,7 @@ exports.validateRegister = (req, res, next) => {
   });
   req.checkBody("password", "Password Cannot be Blank!").notEmpty();
   req.checkBody("password-confirm", "Confirmed Password Cannot be Blank!").notEmpty();
-  req.checkBody("password-confirm", "Oops! Your passwords do not match").equals(req.body.password);
+  req.checkBody("password-confirm", "Oops! Your passwords do not match").equals(req.bodyString("password"));
 
   const errors = req.validationErrors();
   if (errors) {
@@ -35,9 +35,13 @@ exports.validateRegister = (req, res, next) => {
 };
 
 exports.register = async (req, res, next) => {
-  const user = new User({ email: req.body.email, name: req.body.name, photo: req.body.photo });
+  const user = new User({
+    email: req.bodyEmail("email"),
+    name: req.bodyString("name"),
+    photo: req.bodyString("photo")
+  });
   const register = promisify(User.register.bind(User));
-  await register(user, req.body.password);
+  await register(user, req.bodyString("password"));
   next(); // pass to authController.login
 };
 
@@ -49,7 +53,21 @@ exports.hasOrganism = async (req, res, next) => {
   const orga = await Organism.findOne({ author: req.user._id });
   if (!orga) {
     req.flash("error", "Vous devez ajouter un organisme avant de créer un évènement !");
-    res.render("addOrganism", { orga: {}, title: "Création d'un organisme" });
+    res.redirect("/organisms/add");
+    return;
+  }
+  next();
+};
+
+exports.hasSubscription = async (req, res, next) => {
+  const user = await User.findOne({
+    _id: req.user._id,
+    $where: function() {
+      return ["free", "asso", "pro", "complete"].includes(this.subscription);
+    }
+  });
+  if (!user) {
+    res.redirect("/souscriptions");
     return;
   }
   next();
@@ -61,15 +79,15 @@ exports.editAccount = (req, res) => {
 
 exports.updateAccount = async (req, res) => {
   const updates = {
-    name: req.body.name,
-    email: req.body.email,
-    photo: req.body.photo
+    name: req.bodyString("name"),
+    email: req.bodyEmail("email"),
+    photo: req.bodyString("photo")
   };
   const user = await User.findOneAndUpdate(
     { _id: req.user._id },
     { $set: updates },
     { new: true, runValidators: true, context: "query" }
   );
-  req.flash("success", "Compte mis à jour !")
+  req.flash("success", "Compte mis à jour !");
   res.redirect("back");
 };

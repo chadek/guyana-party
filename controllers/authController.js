@@ -28,14 +28,14 @@ exports.isLoggedIn = (req, res, next) => {
 
 exports.forgot = async (req, res) => {
   // 1. See if a user with that email exists
-  const user = await User.findOne({ email: req.body.email });
+  const user = await User.findOne({ email: req.bodyEmail("email") });
   if (user) {
     // 2. Set reset tokens and expiry on their account
     user.resetPasswordToken = crypto.randomBytes(20).toString("hex");
     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour from now
     await user.save();
     // 3. Send them an email with the token
-    const resetURL = `http://${req.headers.host}/account/reset/${user.resetPasswordToken}`;
+    const resetURL = `http://${req.headerString("host")}/account/reset/${user.resetPasswordToken}`;
     await mail.send({
       user,
       subject: "Réinitialisation de votre mot de passe",
@@ -46,9 +46,9 @@ exports.forgot = async (req, res) => {
   // 4. flash the message
   req.flash(
     "success",
-    `Un email vient de vous être envoyé à ${
-      req.body.email
-    }. Cet email contient un lien vous permettant de récupérer votre mot de passe.`
+    `Un email vient de vous être envoyé à ${req.bodyEmail(
+      "email"
+    )}. Cet email contient un lien vous permettant de récupérer votre mot de passe.`
   );
   // 5. redirect to login page
   res.redirect("/login");
@@ -56,7 +56,7 @@ exports.forgot = async (req, res) => {
 
 exports.reset = async (req, res) => {
   const user = await User.findOne({
-    resetPasswordToken: req.params.token,
+    resetPasswordToken: req.paramString("token"),
     resetPasswordExpires: { $gt: Date.now() }
   });
   if (!user) {
@@ -68,7 +68,7 @@ exports.reset = async (req, res) => {
 };
 
 exports.confirmedPasswords = (req, res, next) => {
-  if (req.body.password === req.body["password-confirm"]) {
+  if (req.body.password === req.bodyString("password-confirm")) {
     next(); // keepit going!
     return;
   }
@@ -78,14 +78,14 @@ exports.confirmedPasswords = (req, res, next) => {
 
 exports.update = async (req, res) => {
   const user = await User.findOne({
-    resetPasswordToken: req.params.token,
+    resetPasswordToken: req.paramString("token"),
     resetPasswordExpires: { $gt: Date.now() }
   });
   if (!user) {
     req.flash("error", "Le lien de récupération du mot de passe est invalide ou a expiré.");
     return res.redirect("/login");
   }
-  await user.setPassword(req.body.password);
+  await user.setPassword(req.bodyString("password"));
   user.resetPasswordToken = undefined;
   user.resetPasswordExpires = undefined;
   const updatedUser = await user.save();

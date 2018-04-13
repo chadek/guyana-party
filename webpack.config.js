@@ -20,20 +20,6 @@ const javascript = {
   ]
 };
 
-/*
-  This is our postCSS loader which gets fed into the next loader. I'm setting it up in it's own variable because its a didgeridog
-*/
-
-// const postcss = {
-//   loader: "postcss-loader",
-//   options: {
-//     sourceMap: true,
-//     plugins() {
-//       return [autoprefixer({ browsers: "last 3 versions" })];
-//     }
-//   }
-// };
-
 // this is our sass/css loader. It handles files that are require('something.scss')
 const styles = {
   test: /\.(scss)$/,
@@ -42,7 +28,6 @@ const styles = {
   // We don't just pass an array of loaders, we run them through the extract plugin so they can be outputted to their own .css file
   //use: ExtractTextPlugin.extract(["css-loader?sourceMap", postcss, "sass-loader?sourceMap"])
   use: ExtractTextPlugin.extract({
-    //fallback: "style-loader",
     use: [
       {
         loader: "css-loader",
@@ -104,7 +89,10 @@ const config = {
   plugins: [
     // here is where we tell it to output our css to a separate file
     new ExtractTextPlugin("style.css")
-  ]
+  ],
+  node: {
+    fs: "empty"
+  }
 };
 // webpack is cranky about some packages using a soon to be deprecated API. shhhhhhh
 process.noDeprecation = true;

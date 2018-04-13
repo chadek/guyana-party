@@ -22,9 +22,9 @@ const userSchema = new mongoose.Schema({
   photo: String,
   isValid: {
     type: Boolean,
-    default: true
+    default: false
   },
-  membership: [String],
+  subscription: String, // free < asso < pro < complete
   resetPasswordToken: String,
   resetPasswordExpires: Date
 });

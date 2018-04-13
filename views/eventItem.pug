@@ -1,0 +1,8 @@
+.cell.large-3.medium-4.small-6
+  .card
+    .card__header
+      - const imgSrc = item.photo ? `/uploads/${item.photo}` : `/images/default.jpg`
+      img(src=`${imgSrc}`, alt="photo de l'évènement")
+    .card-section
+      p
+        a(href=`/event/${item.slug}`) item.name

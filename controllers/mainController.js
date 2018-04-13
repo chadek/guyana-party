@@ -31,7 +31,11 @@ exports.resize = async (req, res, next) => {
   // now we resize
   const photo = await jimp.read(req.file.buffer);
   await photo.resize(800, jimp.AUTO);
-  await photo.write(`./public/uploads/${req.body.photo}`);
+  await photo.write(`./public/uploads/${req.bodyString("photo")}`);
   // once we have written the photo to our filesystem, keep going!
   next();
+};
+
+exports.subscriptions = (req, res) => {
+  res.render("subscriptions", { title: "Choisissez une souscription" });
 };

@@ -82,13 +82,13 @@ function getEventsFromOrga(orgaEventsDiv) {
 }
 
 function initOrgaDropdown(orgasSelect) {
-  if(!orgasSelect) return;
+  if (!orgasSelect) return;
   const orgaId = B("#orga-id");
   if (!orgaId || !orgaId.value) return;
   axiosGet("/api/organisms", data => {
     if (data) {
       const format = item => {
-        if(orgaId.value && item._id === orgaId.value)
+        if (orgaId.value && item._id === orgaId.value)
           return `<option value="${item._id}" selected>${item.name}</option>`;
         return `<option value="${item._id}">${item.name}</option>`;
       };

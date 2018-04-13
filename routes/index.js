@@ -21,6 +21,7 @@ router.post(
   catchErrors(userController.register),
   authController.login
 );
+router.get("/souscriptions", mainController.subscriptions);
 
 /* Account */
 
@@ -39,10 +40,16 @@ router.post(
 
 /* Organisms */
 
-router.get("/organisms/add", authController.isLoggedIn, orgaController.addPage);
+router.get(
+  "/organisms/add",
+  authController.isLoggedIn,
+  catchErrors(userController.hasSubscription),
+  orgaController.addPage
+);
 router.post(
   "/organisms/add",
   authController.isLoggedIn,
+  catchErrors(userController.hasSubscription),
   mainController.upload,
   catchErrors(mainController.resize),
   catchErrors(orgaController.create)
