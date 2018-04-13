@@ -16,7 +16,7 @@ block content
         form(action="/events" method="POST")
           .search
             input.search__input(type="text" placeholder="Chercher par thème ou par lieu..." name="search" value=`${search?search:''}`)
-            input#around-value(type="hidden" name="aroundValue")
+            input#around-value(type="hidden" name="aroundValue" value=`${around}`)
     .grid-x.grid-margin-x
       .cell.events-list.large-4
         p Aucun résultat
@@ -24,7 +24,8 @@ block content
         .around
           if around
             input#around-check(type="checkbox" name="around" value="around" checked)
-            label#around-label(for="around-check")!= around
+            label#around-label(for="around-check")
+            //-!= around.text
           else
             input#around-check(type="checkbox" name="around" value="around")
             label#around-label(for="around-check") Autour de moi

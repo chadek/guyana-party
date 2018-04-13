@@ -5,23 +5,22 @@ const { promisify } = require("es6-promisify");
 const { getPagedItems } = require("../handlers/tools");
 
 exports.eventsPage = (req, res) => {
-  const search = req.body.search || req.query.q || "";
-  const around = req.body.aroundValue;
-  console.log("toto",around);
+  const search = req.bodyString("search") || req.queryString("q") || "";
+  let around = req.bodyString("aroundValue") || "";
   res.render("events", { title: "Les évènements sur la carte", search, around });
 };
 
 exports.addEventPage = (req, res) => {
-  const orga = req.query.orga;
+  const orga = req.queryString("orga");
   res.render("addEvent", { event: {}, orga, title: "Création d'un évènement public" });
 };
 
 exports.create = async (req, res) => {
   req.body.author = req.user._id;
-  const startDate = req.body.startdate;
-  const startTime = req.body.starttime;
-  const endDate = req.body.enddate;
-  const endTime = req.body.endtime;
+  const startDate = req.bodyString("startdate");
+  const startTime = req.bodyString("starttime");
+  const endDate = req.bodyString("enddate");
+  const endTime = req.bodyString("endtime");
   req.body.start = new Date(
     startDate.split("/")[2],
     startDate.split("/")[1],
@@ -40,14 +39,13 @@ exports.create = async (req, res) => {
     0,
     0
   );
-  //res.json(req.body);return;
   const event = await new Event(req.body).save();
   req.flash("success", `Evènement "${event.name}" créé avec succès !`);
   res.redirect(`/event/${event.slug}`);
 };
 
 exports.getEventBySlug = async (req, res, next) => {
-  const event = await Event.findOne({ slug: req.params.slug }).populate("author");
+  const event = await Event.findOne({ slug: req.paramString("slug") }).populate("author");
   if (!event) return next();
   const orga = await Organism.findOne({ _id: event.organism });
   if (!orga) return next();
@@ -58,10 +56,7 @@ exports.getEvents = async (req, res) => {
   const page = req.queryInt("page") || 1;
   const limit = req.queryInt("limit") || 4;
   const orga = req.queryString("orga");
-  let find = { author: req.user._id };
-  if (orga) {
-    find = { organism: orga };
-  }
+  let find = orga ? { organism: orga } : { author: req.user._id };
   const result = await getPagedItems(Event, page, limit, find, {}, { created: "desc" });
   res.json(result);
 };
@@ -70,13 +65,37 @@ exports.getSearchResult = async (req, res) => {
   const page = req.queryInt("page") || 1;
   const limit = req.queryInt("limit") || 10;
   const search = req.queryString("q");
-  const orga = req.queryString("orga");
-  let pagedEvents = await getPagedItems(
+  const lon = req.queryString("lon");
+  const lat = req.queryString("lat");
+  const maxDistance = req.queryInt("maxdistance") || 10000; // 10km
+  let find = { $or: [{ name: { $regex: search, $options: "i" } }, { description: { $regex: search, $options: "i" } }] };
+  if (lon && lat) {
+    find = {
+      location: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [lon, lat].map(parseFloat)
+          },
+          $maxDistance: maxDistance
+        }
+      },
+      $or: [{ name: { $regex: search, $options: "i" } }, { description: { $regex: search, $options: "i" } }]
+    };
+  }
+  const pagedEvents = await getPagedItems(
     Event,
     page,
     limit,
-    search ? { $text: { $search: search } } : {},
-    { score: { $meta: "textScore" } },
+    find,
+    {
+      score: { $meta: "textScore" },
+      _id: false,
+      slug: 1,
+      name: 1,
+      start: 1,
+      "location.coordinates": 1
+    },
     { score: { $meta: "textScore" } }
   );
   res.json(pagedEvents);

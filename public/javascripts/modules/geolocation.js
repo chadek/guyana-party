@@ -12,9 +12,12 @@ function geolocate() {
           `Autour de <strong style='color:#527fdc;'>${data.address.town} ${data.address.postcode}</strong>`
         );
         B("#around-label").innerHTML = text;
-        B("#around-value").value = text;
-        console.log("PASSE")
-        //console.log(JSON.stringify({ text, lon: pos.coords.longitude, lat: pos.coords.latitude }));
+        B("#around-value").value = JSON.stringify({
+          text: text,
+          lon: pos.coords.longitude,
+          lat: pos.coords.latitude,
+          location: `${data.address.town} ${data.address.postcode}`
+        });
       }
     );
   });

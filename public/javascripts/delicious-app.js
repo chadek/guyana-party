@@ -11,16 +11,20 @@ import geolocate from "./modules/geolocation";
 
 $(document).foundation();
 
+// managing file uploads when needed
 B("#fileUpload") &&
   B("#fileUpload").on("change", function(e) {
     e = e || window.event;
     this.nextSibling.textContent = `Fichier : ${(e.target || e.srcElement).files[0].name}`;
   });
 
+// geolocation for home and events pages
 const aroundCheck = B("#around-check");
 if (aroundCheck) {
-  //B("#around-value").value = "";
-  B("#around-value").value = B("#around-label").innerHTML;
+  if (aroundCheck.checked) {
+    B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
+    geolocate();
+  }
   aroundCheck.on("click", function() {
     if (this.checked) {
       B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
