@@ -41,12 +41,63 @@ function makeMap(mapDiv) {
   // Events are managed
   if (!B(".no-events")) {
     defaultInteractions = { mouseWheelZoom: true };
-
     // init geolocation (ask permission to usr)
-    geolocation = new ol.Geolocation({
-      projection: view.getProjection(),
-      tracking: true
+    // geolocation = new ol.Geolocation({
+    //   projection: view.getProjection(),
+    //   tracking: true
+    // });
+    const check = B("#around-check");
+    if(check && check.checked) {
+      geolocate();
+    }
+    check.on("click", function() {
+      if (this.checked) {
+        geolocate();
+      } else {
+        B("#around-label").innerHTML = "Autour de moi";
+        map.removeLayer(point);
+      }
     });
+  }
+
+  // Default Point
+  let point = null;
+
+  function geolocate() {
+    navigator.geolocation.getCurrentPosition(pos => {
+      pos = ol.proj.fromLonLat([pos.coords.longitude, pos.coords.latitude]);
+      point = new ol.layer.Vector({
+        source: new ol.source.Vector({
+          features: [
+            new ol.Feature({
+              geometry: new ol.geom.Point(pos),
+              text: "Votre localisation est <br>"
+            })
+          ]
+        }),
+        style: getMarkerStyle(7, { color: "#339900", width: 2 }, { color: "#bbff99" })
+      });
+      map.addLayer(point);
+      view.setCenter(pos);
+    });
+    //const position = geolocation.getPosition();
+    //console.log("POS", position);
+    //if (!position) return;
+    //map.removeLayer(point);
+    // point = new ol.layer.Vector({
+    //   source: new ol.source.Vector({
+    //     features: [
+    //       new ol.Feature({
+    //         geometry: new ol.geom.Point(position),
+    //         text: "Votre localisation est <br>"
+    //       })
+    //     ]
+    //   }),
+    //   style: getMarkerStyle(7, { color: "#339900", width: 2 }, { color: "#bbff99" })
+    // });
+    // map.addLayer(point);
+    // view.setCenter(position);
+    //view.setZoom(13);
   }
 
   // init map with view, layer. Add scale line at left and scale line at bottom left. Target: map div
@@ -70,9 +121,6 @@ function makeMap(mapDiv) {
 
   // default marker style (blue circle)
   const defaultStyleMark = getMarkerStyle(7, { color: "#2980b9", width: 2 }, { color: "rgba(52, 152, 219, 0.5)" });
-
-  // Default Point
-  let point = null;
 
   if (showDefaultPoint) {
     // Create point on map
@@ -167,7 +215,7 @@ function makeMap(mapDiv) {
         style: feature => {
           const size = feature.get("features").length;
           let style = styleCache[size];
-          console.log("features:"+size);
+          console.log("features:" + size);
           // if point merged, apply different style and display number of merged point
           if (size > 1) {
             style = getMarkerStyle(10, { color: "#fff" }, { color: "#3399CC" });
@@ -197,26 +245,21 @@ function makeMap(mapDiv) {
   const popup = new ol.Overlay({ element: popupDiv, stopEvent: false });
   map.addOverlay(popup);
 
+  // listen to changes in position
+  //geolocation.on("change", () => geolocate());
+
   /* -----Geolocation button-----*/
   // Create a point with usr location on click on geolocation button.
-  B("#geolocation").on("click", () => {
-    const position = geolocation.getPosition();
-    if (!position) return;
-    const point = new ol.layer.Vector({
-      source: new ol.source.Vector({
-        features: [
-          new ol.Feature({
-            geometry: new ol.geom.Point(position),
-            text: "Votre localisation est <br>"
-          })
-        ]
-      }),
-      style: getMarkerStyle(7, { color: "#339900", width: 2 }, { color: "#bbff99" })
-    });
-    map.addLayer(point);
-    view.setCenter(position);
-    view.setZoom(13);
-  });
+  // B("#geolocation").on("click", () => {
+  //   // geolocation = null;
+  //   // // init geolocation (ask permission to usr)
+  //   // geolocation = new ol.Geolocation({
+  //   //   projection: view.getProjection(),
+  //   //   tracking: true
+  //   // });
+  //   // geolocation.on('change', () => geolocate());
+  //   // //geolocate();
+  // });
 
   // generate popup content to display on click on event point
   map.on("click", e => {

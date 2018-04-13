@@ -39,19 +39,66 @@
 //   font-size: 18px;
 // }
 
-.hero {
+// .hero {
+//   background-image: url("/images/hero.jpg");
+//   height: 720px;
+//   background-position: center;
+//   background-repeat: no-repeat;
+//   background-size: cover;
+//   position: relative;
+//   &__details {
+//     text-align: center;
+//     position: absolute;
+//     width: 100%;
+//     top: 50%;
+//     left: 50%;
+//     transform: translate(-50%, -50%);
+//   }
+// }
+
+.hero-container {
   background-image: url("/images/hero.jpg");
-  height: 720px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  position: relative;
-  &__details {
-    text-align: center;
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  z-index: 1;
+  overflow: hidden;
+  /* The following styles are required for the "scroll-over" effect */
+  width: 100%;
+  //height: 88%;
+  height: 88%;
+  //top: 0;
+  left: 0;
+  position: fixed !important;
+}
+
+.hero {
+  width: 80%;
+  height: 50%;
+  margin: auto;
+  position: absolute;
+  top: 100px; left: 0; bottom: 0; right: 0;
+  text-align: center;
+  //text-transform: uppercase;
+}
+
+.hero-head {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  border: 3px solid white;
+  padding: 3em 1.6em;
+  font-weight: 100;
+  border-radius: 5px;
+  line-height: 1em;
+}
+
+.hero-subhead {
+  color: white;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}
+
+.hero-content {
+  margin-top: 10%;
 }

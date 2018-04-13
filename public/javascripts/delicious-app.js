@@ -7,6 +7,7 @@ import loadEventsOrgasList from "./modules/eventsOrgasList";
 import initDates from "./modules/date";
 import addEventForm from "./modules/addEventForm";
 import accountForm from "./modules/accountForm";
+import geolocate from "./modules/geolocation";
 
 $(document).foundation();
 
@@ -15,6 +16,21 @@ B("#fileUpload") &&
     e = e || window.event;
     this.nextSibling.textContent = `Fichier : ${(e.target || e.srcElement).files[0].name}`;
   });
+
+const aroundCheck = B("#around-check");
+if (aroundCheck) {
+  //B("#around-value").value = "";
+  B("#around-value").value = B("#around-label").innerHTML;
+  aroundCheck.on("click", function() {
+    if (this.checked) {
+      B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
+      geolocate();
+    } else {
+      B("#around-label").innerHTML = "Autour de moi";
+      B("#around-value").value = "";
+    }
+  });
+}
 
 loginForm(B(".forgot-link"));
 accountForm(B(".btn-old"), B(".btn-new"));

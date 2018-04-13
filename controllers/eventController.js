@@ -6,7 +6,9 @@ const { getPagedItems } = require("../handlers/tools");
 
 exports.eventsPage = (req, res) => {
   const search = req.body.search || req.query.q || "";
-  res.render("events", { title: "Les évènements sur la carte", search });
+  const around = req.body.aroundValue;
+  console.log("toto",around);
+  res.render("events", { title: "Les évènements sur la carte", search, around });
 };
 
 exports.addEventPage = (req, res) => {
