@@ -18,9 +18,9 @@ mixin sideMenu()
   #menu
     .pure-menu
       a.pure-menu-heading(href="/")= h.siteName
-      if user
-        a.pure-menu-heading(href='/account'): img.avatar(src=`${h.profilePhotoSrc(user)}` alt="photo de profile" title="Mon compte")
       ul.pure-menu-list
+        if user
+          li.pure-menu-item: a.pure-menu-link(href='/account'): img.avatar(src=`${h.profilePhotoSrc(user)}` alt="photo de profile" title="Mon compte")
         li.pure-menu-item: a.pure-menu-link(href='/') Accueil
         if !user
           li.pure-menu-item: a.pure-menu-link(href='/login') Connexion / Inscription
@@ -28,4 +28,4 @@ mixin sideMenu()
         if user
           li.pure-menu-item: a.pure-menu-link(href='/organisms/add') Créer un organisme
           li.pure-menu-item: a.pure-menu-link(href='/events/add') Créer un évènement
-          li.pure-menu-item: a.pure-menu-link(href='/logout') Créer Déconnexion
+          li.pure-menu-item: a.pure-menu-link(href='/logout') Déconnexion
