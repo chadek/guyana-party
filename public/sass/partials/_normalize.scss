@@ -1,5 +1,11 @@
 html {
   box-sizing: border-box;
+  font-size: 10px;
+}
+
+html,
+body {
+  height: 100%;
 }
 
 *,
@@ -386,6 +392,8 @@ textarea {
 [type="radio"] {
   box-sizing: border-box; /* 1 */
   padding: 0; /* 2 */
+  width: auto; /* custom */
+  cursor: pointer; /* custom */
 }
 
 /**
@@ -475,4 +483,17 @@ template {
 
 [hidden] {
   display: none;
+}
+
+/**
+ * Applying Padding and Borders to Grid Units
+ */
+
+.pure-g > div {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.l-box {
+  padding: 1em;
 }

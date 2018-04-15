@@ -5,21 +5,35 @@ doctype html
 html.no-js
   head
     title= `${title} | ${h.siteName}`
-    block style
-      link(rel="stylesheet", href="/vendor/foundation.min.css")
-      link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
-      link(rel="stylesheet", href="/dist/style.css")
+    block customStyle
+      //- link(rel="stylesheet", href="/vendor/foundation.min.css")
+      //- link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
+    link(rel="stylesheet", href="/vendor/pure/base-min.css")
+    link(rel="stylesheet", href="/vendor/pure/menus-min.css")
+    link(rel='stylesheet', href='/vendor/pure/grids-responsive-min.css')
+    link(rel="stylesheet", href="/dist/style.css")
     link(rel="shortcut icon" type="image/png" href="/images/icons/favicon.ico")
     meta(charset="utf-8")
     meta(http-equiv="x-ua-compatible" content="ie=edge")
     meta(name="viewport" content="width=device-width, initial-scale=1")
   body
-    .content
-      .off-canvas.position-left#offCanvas(data-off-canvas)
-        +sideMenu()
-      .off-canvas-content(data-off-canvas-content)
-        +topMenu()
-      if locals.flashes
+    //-.content
+    #layout
+      //- Menu toggle
+      a.menu-link.active#menuLink(href='#menu')
+        //- Hamburger icon
+        span
+      +sideMenu()
+      +topMenu()
+
+      #content
+        block content
+
+      //- .off-canvas.position-left#offCanvas(data-off-canvas)
+      //-   +sideMenu()
+      //- .off-canvas-content(data-off-canvas-content)
+      //-   +topMenu()
+      //-if locals.flashes
         .row.flash-messages
           - const categories = Object.keys(locals.flashes)
           each category in categories
@@ -27,9 +41,9 @@ html.no-js
               .flash(class=`flash--${category}`)
                 p.flash__text!= message
                 button.flash__remove(onClick="this.parentElement.remove()") &times;
-      block content
+      //- block content
 
-    block scripts
-      script(src="/vendor/jquery.min.js")
-      script(src="/vendor/foundation.min.js")
-      script(src="/dist/App.bundle.js")
+block scripts
+  //-script(src="/vendor/jquery.min.js")
+  //-script(src="/vendor/foundation.min.js")
+  script(src="/dist/App.bundle.js")

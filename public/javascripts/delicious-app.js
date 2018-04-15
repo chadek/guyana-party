@@ -1,6 +1,7 @@
 import "../sass/style.scss";
 
 import { B, BB } from "./modules/bling";
+import "./modules/menu";
 import { loginForm } from "./modules/loginForm";
 import makeMap from "./modules/map";
 import loadEventsOrgasList from "./modules/eventsOrgasList";
@@ -9,7 +10,7 @@ import addEventForm from "./modules/addEventForm";
 import accountForm from "./modules/accountForm";
 import geolocate from "./modules/geolocation";
 
-$(document).foundation();
+//$(document).foundation();
 
 // managing file uploads when needed
 B("#fileUpload") &&
@@ -41,4 +42,4 @@ accountForm(B(".btn-old"), B(".btn-new"));
 makeMap(B("#map"));
 loadEventsOrgasList(B(".events"), B(".orga-events"), B(".orgas"), B("#orga-select"));
 initDates(B("#event-start"), B("#event-end"));
-addEventForm($(".clockpicker"), B("#dp1"), B("#dp2"));
+addEventForm(B(".clockpicker"), B("#dp1"), B("#dp2"));

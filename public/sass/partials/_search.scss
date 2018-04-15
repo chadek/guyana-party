@@ -1,29 +1,29 @@
-li.search {
-  width: 500px;
-}
-.search input::-webkit-input-placeholder {
-  color: $placeHolderColor;
-}
-.search input:-moz-placeholder {
-  /* Firefox 18- */
-  color: $placeHolderColor;
-}
-.search input::-moz-placeholder {
-  /* Firefox 19+ */
-  color: $placeHolderColor;
-}
-.search input:-ms-input-placeholder {
-  /* IE 10+ */
-  color: $placeHolderColor;
-}
-.search input::-ms-input-placeholder {
-  /* Edge */
-  color: $placeHolderColor;
-}
-.search input:placeholder-shown {
-  /* Standard one last! */
-  border: 0;
-}
+// li.search {
+//   width: 500px;
+// }
+// .search input::-webkit-input-placeholder {
+//   color: $placeHolderColor;
+// }
+// .search input:-moz-placeholder {
+//   /* Firefox 18- */
+//   color: $placeHolderColor;
+// }
+// .search input::-moz-placeholder {
+//   /* Firefox 19+ */
+//   color: $placeHolderColor;
+// }
+// .search input:-ms-input-placeholder {
+//   /* IE 10+ */
+//   color: $placeHolderColor;
+// }
+// .search input::-ms-input-placeholder {
+//   /* Edge */
+//   color: $placeHolderColor;
+// }
+// .search input:placeholder-shown {
+//   /* Standard one last! */
+//   border: 0;
+// }
 .search {
   position: relative;
   width: 100%;
@@ -35,8 +35,6 @@ li.search {
     font-size: 25px;
     outline: 0;
     border: 0;
-    //border-radius: 2px;
-    height: 48px;
   }
   .nav {
     font-size: 25px;
@@ -52,16 +50,16 @@ li.search {
   }
   .around {
     position: absolute;
-    margin-top: 55px;
-  }
-  .around label {
-    color: white;
-  }
-  .button {
-    height: 48px;
+    margin-top: 60px;
+    label {
+      color: white;
+    }
   }
 }
-// .search [type=text]:focus {
-//   //background-color: black;
-//   border: 0;
-// }
+.around {
+  label {
+    display: inline;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+}
