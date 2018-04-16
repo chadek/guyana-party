@@ -20,7 +20,7 @@ mixin sideMenu()
       a.pure-menu-heading(href="/")= h.siteName
       ul.pure-menu-list
         if user
-          li.pure-menu-item: a.pure-menu-link(href='/account'): img.avatar(src=`${h.profilePhotoSrc(user)}` alt="photo de profile" title="Mon compte")
+          li.pure-menu-item: a.pure-menu-link(href='/account'): img.avatar(src=`${h.profilePhotoSrc(user)}` alt="Mon compte" title="Mon compte")
         li.pure-menu-item: a.pure-menu-link(href='/') Accueil
         if !user
           li.pure-menu-item: a.pure-menu-link(href='/login') Connexion / Inscription
