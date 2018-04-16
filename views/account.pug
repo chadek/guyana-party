@@ -1,31 +1,33 @@
 extends layout
 
 block content
-  .grid-container.fluid
-    .grid-x.grid-margin-x
-      .cell.large-2.small-12
-        .grid-x.grid-margin-x
-          .cell.large-12.small-6.photo-profile
+  .pure-g
+    .pure-u-1
+      .pure-u-1.pure-u-lg-1-6
+        //-.cell.large-2.small-12
+        .pure-u-1
+          .pure-u-1.pure-u-sm-1-2
+            //-.cell.large-12.small-6.photo-profile
             a(href="/account"): img(src=`${h.profilePhotoSrc(user)}` alt="photo de profile")
-          .cell.large-12.small-6.top-space
+          .pure-u-1.pure-u-sm-1-2.top-space
+            //-.cell.large-12.small-6.top-space
             h4= user.name
             p= user.email
             a(href="/account/edit") Edition du compte
         .separator.top-space.hide-for-large
-      .cell.large-10.small-12
-        .grid-x.grid-margin-x
-          .cell.text-center.top-space
-            h3 Mes évènements
-        .grid-x.grid-margin-x
-          .cell.text-center
-            .mobile-app-toggle(data-mobile-app-toggle)
-              button.button.btn-old Passés
-              button.button.btn-new.is-active À venir
-        .grid-x.top-space.events
-          p.cell.top-space.text-center Chargement...
+      .pure-u-1.pure-u-lg-5-6
+        //.cell.large-10.small-12
+        .pure-u-1.text-center.top-space
+          //-.cell.text-center.top-space
+          h3 Mes évènements
+        .pure-u-1.text-center
+          .mobile-app-toggle(data-mobile-app-toggle)
+            button.button.btn-old Passés
+            button.button.btn-new.is-active À venir
+        .pure-u-1.top-space.events
+          p.top-space.text-center Chargement...
         .separator.top-space
-        .grid-x.grid-margin-x
-          .cell.text-center.top-space
-            h3 Mes organismes
-        .grid-x.top-space.orgas
-          p.cell.top-space.text-center Chargement...
+        .pure-u-1.text-center.top-space
+          h3 Mes organismes
+        .pure-u-1.top-space.orgas
+          p.top-space.text-center Chargement...

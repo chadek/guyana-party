@@ -7,7 +7,7 @@ function getEventsList(eventsDiv) {
     if (data) {
       const format = item => {
         const imgSrc = item.photo ? `/uploads/${item.photo}` : `/images/default.jpg`;
-        return `<div class="cell large-3 medium-4 small-6">
+        return `<div class="pure-u-1 pure-u-lg-1-3 pure-u-md-1-4 pure-u-sm-1-2 cell large-3 medium-4 small-6">
           <div class="card">
             <div class="card__header">
               <img src="${imgSrc}" alt="photo event">
@@ -18,7 +18,7 @@ function getEventsList(eventsDiv) {
           </div>
         </div>`;
       };
-      const concat = `<div class="cell large-3 medium-4 small-6 end">
+      const concat = `<div class="pure-u-1 pure-u-lg-1-3" pure-u-md-1-4 pure-u-sm-1-2 cell large-3 medium-4 small-6 end">
         <div class="card card__new card__new--event" title="Ajouter un évènement"></div>
       </div>`;
       eventsDiv.innerHTML = data2HTML(data, format, concat);

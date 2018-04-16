@@ -21,11 +21,14 @@ mixin topMenu()
               a(href="/login") Connexion / Inscription
 
   .pure-menu.pure-menu-horizontal.pure-menu-fixed
-    unless user
-      unless isLogin
-        ul.pure-menu-list
-          li.pure-menu-item
-            a.pure-menu-link(href="/login") Connexion / Inscription
+    unless currentPath == "/" || currentPath == "/events"
+      .search
+        form(action="/events" method="POST")
+          input.search__input.nav(type="text" placeholder="Chercher par thème ou par lieu..." name="search" )
+    unless user || isLogin
+      ul.pure-menu-list
+        li.pure-menu-item
+          a.pure-menu-link(href="/login") Connexion / Inscription
 
 
 

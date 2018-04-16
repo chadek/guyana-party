@@ -1,14 +1,15 @@
 extends layout
 
-//-block customStyle
+block customStyle
   link(rel="stylesheet", href="/vendor/foundation.min.css")
   link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
   link(rel="stylesheet", href="/vendor/OR.css")
 
 block content
-  .grid-container.fluid
-    .grid-x.grid-margin-x
-      .cell.large-6.medium-8.small-12.medium-offset-2.large-offset-3
+  .pure-g
+    .pure-u-1
+      .pure-u-1.pure-u-md-1-2
+        //-.cell.large-6.medium-8.small-12.medium-offset-2.large-offset-3
         .expanded.button-group-option(data-grouptype="OU")
           button.button.success.radius#b_connection Connexion
           button.button.secondary.radius#b_inscription Inscription
@@ -38,8 +39,9 @@ block content
             .input-group
               span.input-group-label: i.fi-torsos-male-female.size-36
               input.input-group-field(type="text" name="name" placeholder="Nom de l'organisateur")
-            .grid-x.grid-margin-x
-              .cell.large-6.medium-8.small-10.columns.large-offset-3.medium-offset-2.small-offset-1
+            .pure-u-1.text-center
+              .pure-u-1.pure-u-md-1-2
+                //-.cell.large-6.medium-8.small-10.columns.large-offset-3.medium-offset-2.small-offset-1
                 label.button.expanded(for="fileUpload") Représentation visuelle
                 input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
                 .file-upload-filename
