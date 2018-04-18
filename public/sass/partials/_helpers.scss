@@ -19,7 +19,6 @@
   svg {
     width: 25px;
     height: 25px;
-    //fill: white
   }
 }
 
@@ -43,12 +42,12 @@
   &__header {
     position: relative;
     height: 185px;
-    text-align: center;
     border-bottom: 1px solid rgba(46, 62, 72, 0.12);
     img {
       position: absolute;
-      left: 0;
       height: 100%;
+      width: 100%;
+      object-fit: cover;
       z-index: 2;
       &.open {
         animation: card_open 1s 1 ease-out;
@@ -58,6 +57,10 @@
       position: absolute;
       padding: 0.5em;
       z-index: 1;
+      p {
+        margin-top: 0;
+        font-size: 1.1rem
+      }
     }
   }
   &__section {
@@ -104,6 +107,7 @@ pre.error {
   text-align: center;
   height: 250px;
   img {
+    object-fit: cover;
     max-height: 250px;
   }
 }

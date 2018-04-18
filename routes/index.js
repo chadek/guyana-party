@@ -5,6 +5,7 @@ const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
 const orgaController = require("../controllers/orgaController");
 const eventController = require("../controllers/eventController");
+const subscriptionController = require("../controllers/subscriptionController");
 const { catchErrors } = require("../handlers/errorHandlers");
 
 /* Main */
@@ -21,7 +22,20 @@ router.post(
   catchErrors(userController.register),
   authController.login
 );
-router.get("/souscriptions", mainController.subscriptions);
+
+/* Subscriptions */
+
+router.get("/souscriptions", subscriptionController.subscriptionsPage);
+router.get(
+  "/souscriptions/free",
+  authController.isLoggedIn,
+  catchErrors(subscriptionController.selectFreeSubscription)
+);
+router.get(
+  "/souscriptions/payment/:subscription",
+  authController.isLoggedIn,
+  subscriptionController.subscriptionPaymentPage
+);
 
 /* Account */
 
@@ -65,12 +79,14 @@ router.get(
   "/events/add",
   authController.isLoggedIn,
   catchErrors(userController.hasOrganism),
+  catchErrors(eventController.canCreate),
   eventController.addPage
 );
 router.post(
   "/events/add",
   authController.isLoggedIn,
   catchErrors(userController.hasOrganism),
+  catchErrors(eventController.canCreate),
   mainController.upload,
   catchErrors(mainController.resize),
   catchErrors(eventController.create)

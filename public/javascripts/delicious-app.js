@@ -9,6 +9,7 @@ import initDates from "./modules/date";
 import addEventForm from "./modules/addEventForm";
 import accountForm from "./modules/accountForm";
 import geolocate from "./modules/geolocation";
+import subscriptions from "./modules/subscriptions";
 
 //$(document).foundation();
 
@@ -39,6 +40,7 @@ if (aroundCheck) {
 
 loginForm(B(".forgot-link"));
 accountForm(B(".btn-old"), B(".btn-new"));
+subscriptions(B(".freeSubsBtn"), B(".assoSubsBtn"));
 makeMap(B("#map"));
 loadEventsOrgasList(B(".events"), B(".orga-events"), B(".orgas"), B("#orga-select"));
 initDates(B("#event-start"), B("#event-end"));

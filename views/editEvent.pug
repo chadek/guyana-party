@@ -1,5 +1,7 @@
 extends layout
 
+include mixins/_footer
+
 block customStyle
   //- link(rel="stylesheet", href="/vendor/foundation.min.css")
   //- link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
@@ -60,6 +62,8 @@ block content
           .pure-u-1.top-space
             //-.cell.large-8.medium-8.large-offset-2.medium-offset-2
             input.pure-button.success.button.expanded(type="submit" value="Créer")
+
+  +footer()
 
 block customScripts
   script(src="/vendor/jquery.min.js")

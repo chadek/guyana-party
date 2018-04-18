@@ -17,6 +17,11 @@ exports.icon = name => fs.readFileSync(`./public/images/icons/${name}.svg`);
 // profile photo
 exports.profilePhotoSrc = user => (user.photo ? `/uploads/${user.photo}` : `${user.gravatar}&d=retro`);
 
+exports.translateSubs = subscription => {
+  if(subscription == "free") return "Gratuite";
+  if(subscription == "asso") return "Association";
+};
+
 // Some details about the site
 exports.siteName = `Guyana Party`;
 

@@ -25,6 +25,7 @@ mixin sideMenu()
         if !user
           li.pure-menu-item: a.pure-menu-link(href='/login') Connexion / Inscription
         li.pure-menu-item: a.pure-menu-link(href='/events') Tous les évènements
+        li.pure-menu-item: a.pure-menu-link(href='/souscriptions') Choisir une souscription
         if user
           li.pure-menu-item: a.pure-menu-link(href='/organisms/add') Créer un organisme
           li.pure-menu-item: a.pure-menu-link(href='/events/add') Créer un évènement

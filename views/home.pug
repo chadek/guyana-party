@@ -1,6 +1,7 @@
 extends layout
 
 include mixins/_hero
+include mixins/_footer
 
 block content
   .hero-container
@@ -14,6 +15,8 @@ block content
     p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
     p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
     p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+
+    +footer()
 
   //-.row.home
     //- mixin creationEventBlock()

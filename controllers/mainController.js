@@ -35,7 +35,3 @@ exports.resize = async (req, res, next) => {
   // once we have written the photo to our filesystem, keep going!
   next();
 };
-
-exports.subscriptions = (req, res) => {
-  res.render("subscriptions", { title: "Choisissez une souscription" });
-};

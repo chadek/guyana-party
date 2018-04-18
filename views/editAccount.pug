@@ -17,7 +17,15 @@ block content
             span: i.fi-torsos-male-female.size-36
             input(type="text" name="name" placeholder="Nom de l'organisateur" value=`${user.name}`)
           .pure-u-1.top-space
-              span: i.fi-mail.size-36
-              input(type="text" name="email" placeholder="Email, identifiant" value=`${user.email}`)
+            span: i.fi-mail.size-36
+            input(type="text" name="email" placeholder="Email, identifiant" value=`${user.email}`)
+          if user.subscription
+            .pure-u-1.top-space
+              p
+                | Souscription :
+                strong  #{h.translateSubs(user.subscription)}
+                |  (
+                a(href="/souscriptions") Faire évoluer
+                |)
           .pure-u-1.top-space
               button.pure-button.success.button.expanded Enregistrer

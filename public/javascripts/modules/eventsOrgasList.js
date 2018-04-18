@@ -1,5 +1,5 @@
 import { B, BB } from "./bling";
-import { axiosGet, data2HTML } from "./utils";
+import { axiosGet, data2HTML, formatDateTime } from "./utils";
 
 function openCard() {
   const cardHeader = BB(".card__header");
@@ -9,7 +9,7 @@ function openCard() {
       if (this.children[0].classList.contains("open")) {
         this.children[0].classList.add("hidden");
       }
-    }, 1000);
+    }, 500);
   });
   cardHeader.on("mouseleave", function() {
     this.children[0].classList.remove("open");
@@ -23,12 +23,19 @@ function getEventsList(eventsDiv) {
     if (data) {
       const format = item => {
         const imgSrc = item.photo ? `/uploads/${item.photo}` : `/images/default.jpg`;
+        let start = formatDateTime(item.start);
+        let end = formatDateTime(item.end);
+        start = `${start.date} à ${start.time}`;
+        end = `${end.date} à ${end.time}`;
         return `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content">
           <div class="card">
             <div class="card__header">
-              <img src="${imgSrc}" alt="photo event">
+              <img src="${imgSrc}" alt="photo évènement">
               <div class="card__header--content">
-                HIDDEN CONTENT
+                <p><strong>Organisateur :</strong> <a href="/organism/${item.organism.slug}">${item.organism.name}</a>
+                <br><strong>Début :</strong> ${start}
+                <br><strong>Fin :</strong> ${end}
+                <br><strong>Adresse :</strong> ${item.location.address}</p>
               </div>
             </div>
             <div class="card__section">
@@ -58,7 +65,12 @@ function getOrgasList(orgasDiv) {
             <div class="card__header">
               <img src="${imgSrc}" alt="photo organisme">
               <div class="card__header--content">
-                HIDDEN CONTENT
+                <p><strong>Type d'organisme :</strong> ${item.type}
+                <br><a href="/organism/${item.slug}">Voir évènements associés</a>
+                <br><a href="/organism/${item.slug}">Voir communauté</a>
+                <br><strong>Adresse :</strong> ${item.location.address}
+                <br><strong>Souscription :</strong> ${item.subscription ? item.subscription : "free"}
+                <br>(<a href="/souscriptions">Passer en PRO !</a>)</p>
               </div>
             </div>
             <div class="card__section">
@@ -85,12 +97,19 @@ function getEventsFromOrga(orgaEventsDiv) {
     if (data) {
       const format = item => {
         const imgSrc = item.photo ? `/uploads/${item.photo}` : `/images/default.jpg`;
+        let start = formatDateTime(item.start);
+        let end = formatDateTime(item.end);
+        start = `${start.date} à ${start.time}`;
+        end = `${end.date} à ${end.time}`;
         return `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content">
           <div class="card">
             <div class="card__header">
-              <img src="${imgSrc}" alt="photo event">
+              <img src="${imgSrc}" alt="photo évènement">
               <div class="card__header--content">
-                HIDDEN CONTENT
+                <p><strong>Organisateur :</strong> <a href="/organism/${item.organism.slug}">${item.organism.name}</a>
+                <br><strong>Début :</strong> ${start}
+                <br><strong>Fin :</strong> ${end}
+                <br><strong>Adresse :</strong> ${item.location.address}</p>
               </div>
             </div>
             <div class="card__section">

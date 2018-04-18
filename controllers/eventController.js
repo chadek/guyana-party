@@ -15,6 +15,10 @@ exports.addPage = (req, res) => {
   res.render("editEvent", { event: {}, orga, title: "Création d'un évènement public" });
 };
 
+exports.canCreate = async (req, res, next) => {
+  next();
+};
+
 exports.create = async (req, res) => {
   req.body.author = req.user._id;
   const startDate = req.bodyString("startdate");

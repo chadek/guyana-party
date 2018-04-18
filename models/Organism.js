@@ -14,7 +14,7 @@ const OrganismSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
-    type: String,
+    type: String, // association | ong | entreprise | collectivité
     created: {
       type: Date,
       default: Date.now

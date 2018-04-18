@@ -1,5 +1,7 @@
 extends layout
 
+include mixins/_footer
+
 block customStyle
   //- link(rel="stylesheet", href="/vendor/foundation.min.css")
   //- link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
@@ -42,6 +44,8 @@ block content
       p.text-center= event.location.address
     input#longitude(type="hidden" value=(event.location && event.location.coordinates[0]))
     input#latitude(type="hidden" value=(event.location && event.location.coordinates[1]))
+
+  +footer()
 
 block customScripts
   //- script(src="/vendor/jquery.min.js")

@@ -52,7 +52,7 @@ exports.account = (req, res) => {
 exports.hasOrganism = async (req, res, next) => {
   const orga = await Organism.findOne({ author: req.user._id });
   if (!orga) {
-    req.flash("error", "Vous devez ajouter un organisme avant de créer un évènement !");
+    req.flash("error", "Vous devez créer un organisme avant de créer votre évènement.");
     res.redirect("/organisms/add");
     return;
   }
@@ -67,6 +67,7 @@ exports.hasSubscription = async (req, res, next) => {
     }
   });
   if (!user) {
+    req.flash("error", "Choisissez une souscription pour la création de votre organisme.");
     res.redirect("/souscriptions");
     return;
   }
