@@ -1,41 +1,35 @@
 extends layout
 
-block style
-  link(rel="stylesheet", href="/vendor/foundation.min.css")
-  link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
+block customStyle
+  //- link(rel="stylesheet", href="/vendor/foundation.min.css")
+  //- link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
   link(rel="stylesheet", href="/vendor/ol.css")
-  link(rel="stylesheet", href="/dist/style.css")
 
 block content
-  .grid-container.fluid
-    .grid-x.grid-margin-x
-      .cell.photo-orga-event
+  .pure-g
+    .pure-u-1.content
+      .pure-u-1.photo-orga-event
         img(src=`/uploads/${orga.photo}` alt="Logo de l'organisme")
-    .grid-x.grid-margin-x.top-space
-      .cell.text-center
+      .pure-u-1.top-space.text-center
         h4= orga.name
         p= `(${orga.type})`
-    .grid-x.grid-margin-x.top-space
-      .cell.text-center
+      .pure-u-1.top-space.text-center
         p= orga.description
-    .separator
-    .grid-x.grid-margin-x.top-space
-      .cell.large-6.large-offset-3
+      .separator
+      .pure-u-1.top-space
         label L'adresse du siège social :
         #map.no-events.readonly
         p.text-center= orga.location.address
     .separator
-    .grid-x.grid-margin-x
-      .cell.text-center.top-space
-        h3 Mes évènements
-    .grid-x.top-space.orga-events
+    .pure-u-1.top-space.text-center
+      h3 Mes évènements
+    .pure-u-1.top-space.orga-events
       p.cell.top-space.text-center Chargement...
     input#orga-id(type="hidden" value=`${orga._id}`)
     input#longitude(type="hidden" value=(orga.location && orga.location.coordinates[0]))
     input#latitude(type="hidden" value=(orga.location && orga.location.coordinates[1]))
 
-block scripts
-  script(src="/vendor/jquery.min.js")
-  script(src="/vendor/foundation.min.js")
+block customScripts
+  //- script(src="/vendor/jquery.min.js")
+  //- script(src="/vendor/foundation.min.js")
   script(src="/vendor/ol.min.js")
-  script(src="/dist/App.bundle.js")

@@ -12,7 +12,7 @@ mixin hero()
     form.hero-content(action="/events" method="POST")
       .search
         input.search__input(type="text" placeholder="Chercher par thème ou par lieu..." name="search")
-        button.button Trouver
+        button.pure-button.pure-button-primary Trouver
         .around
           input#around-check(type="checkbox" name="around" value="test")
           label#around-label(for="around-check") Autour de moi

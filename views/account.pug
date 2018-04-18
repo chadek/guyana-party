@@ -3,29 +3,28 @@ extends layout
 block content
   .pure-g
     .pure-u-1
-      .pure-u-1.pure-u-lg-1-6
-        .pure-u-1
-          .pure-u-1.pure-u-lg-1.pure-u-sm-1-2.photo-profile
-            a(href="/account"): img(src=`${h.profilePhotoSrc(user)}` alt="photo de profile")
-          .pure-u-1.pure-u-lg-1.pure-u-sm-1-2.top-space
+      .pure-u-1.u-lg-1-6
+        .pure-u-1.l-wrap
+          .pure-u-1.u-lg-1.u-sm-1-2.l-content.photo-profile
+            img.pure-img(src=`${h.profilePhotoSrc(user)}` alt="photo de profile")
+          .pure-u-1.u-lg-1.u-sm-1-2.l-content.top-space
             h4= user.name
             p= user.email
             p: a(href="/account/edit") Edition du compte
         .separator.top-space.lg-hide
-      .pure-u-1.pure-u-lg-5-6
-        //.cell.large-10.small-12
+      .pure-u-1.u-lg-5-6
         .pure-u-1.text-center.top-space
-          h3 Mes évènements
+          h2 Mes évènements
         .pure-u-1.text-center
           .mobile-app-toggle(data-mobile-app-toggle)
-            button.button.btn-old Passés
-            button.button.btn-new.is-active À venir
+            button.button.pure-button.btn-old Passés
+            button.button.pure-button.btn-new.is-active À venir
         //- events list
-        .pure-u-1.top-space.events
+        .pure-u-1.l-wrap.top-space.events
           p.top-space.text-center Chargement...
         .separator.top-space
         .pure-u-1.text-center.top-space
-          h3 Mes organismes
+          h2 Mes organismes
         //- organisms list
-        .pure-u-1.top-space.orgas
+        .pure-u-1.l-wrap.top-space.orgas
           p.top-space.text-center Chargement...

@@ -10,9 +10,9 @@ exports.eventsPage = (req, res) => {
   res.render("events", { title: "Les évènements sur la carte", search, around });
 };
 
-exports.addEventPage = (req, res) => {
+exports.addPage = (req, res) => {
   const orga = req.queryString("orga");
-  res.render("addEvent", { event: {}, orga, title: "Création d'un évènement public" });
+  res.render("editEvent", { event: {}, orga, title: "Création d'un évènement public" });
 };
 
 exports.create = async (req, res) => {

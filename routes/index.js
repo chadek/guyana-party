@@ -65,7 +65,7 @@ router.get(
   "/events/add",
   authController.isLoggedIn,
   catchErrors(userController.hasOrganism),
-  eventController.addEventPage
+  eventController.addPage
 );
 router.post(
   "/events/add",

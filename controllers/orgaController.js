@@ -4,7 +4,7 @@ const { promisify } = require("es6-promisify");
 const { getPagedItems } = require("../handlers/tools");
 
 exports.addPage = (req, res) => {
-  res.render("addOrganism", { orga: {}, title: "Création d'un organisme" });
+  res.render("editOrganism", { orga: {}, title: "Création d'un organisme" });
 };
 
 exports.create = async (req, res) => {

@@ -23,10 +23,10 @@ function toggleClass(element, className) {
 function toggleAll(e) {
   const active = "active";
   e.preventDefault();
+  toggleClass(document.getElementById("menu-overlay"), active);
   toggleClass(layout, active);
   toggleClass(menu, active);
   toggleClass(menuLink, active);
-  toggleClass(document.getElementById("menu-overlay"), active);
 }
 
 menuLink.onclick = function(e) {

@@ -8,35 +8,35 @@ function init(dp1, dp2) {
   // build date String
   const day = ("0" + date.getDate()).slice(-2);
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
-  str = `${day}/${month}/${date.getFullYear()}`;
+  str = `${date.getFullYear()}-${month}-${day}`;
   dp1.value = str;
   dp2.value = str;
 }
 
-function initClockPicker(clockPicker) {
-  if (!clockPicker) return;
-  clockPicker.clockpicker();
-  //.find('input').change(function(){
-  //    console.log(this.value);
-  //});
-}
+// function initClockPicker(clockPicker) {
+//   if (!clockPicker) return;
+//   clockPicker.clockpicker();
+//   //.find('input').change(function(){
+//   //    console.log(this.value);
+//   //});
+// }
 
-function initDatePicker(dp1, dp2) {
-  window.prettyPrint && prettyPrint();
-  const options = {
-    format: "dd/mm/yyyy",
-    disableDblClickSelection: true,
-    language: "fr"
-  };
-  $(dp1).fdatepicker(options);
-  $(dp2).fdatepicker(options);
-}
+// function initDatePicker(dp1, dp2) {
+//   window.prettyPrint && prettyPrint();
+//   const options = {
+//     format: "dd/mm/yyyy",
+//     disableDblClickSelection: true,
+//     language: "fr"
+//   };
+//   $(dp1).fdatepicker(options);
+//   $(dp2).fdatepicker(options);
+// }
 
-function addEventForm(clockPicker, dp1, dp2) {
+function addEventForm(dp1, dp2) {
   if (!dp1 || !dp2) return;
   init(dp1, dp2);
-  initClockPicker(clockPicker);
-  initDatePicker(dp1, dp2);
+  //initClockPicker(clockPicker);
+  //initDatePicker(dp1, dp2);
 }
 
 export default addEventForm;

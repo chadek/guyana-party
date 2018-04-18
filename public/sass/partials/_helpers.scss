@@ -3,10 +3,6 @@
 //   font-size: 0;
 // }
 
-.text-center {
-  text-align: center;
-}
-
 // .img-responsive {
 //   max-width: 100%;
 //   height: auto;
@@ -27,13 +23,15 @@
   }
 }
 
-.button {
-  border: 0;
-  background: $blue;
-  color: white;
-  font-family: "Panama";
-  font-weight: 600;
-  cursor: pointer;
+@keyframes card_open {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-192px);
+    opacity: 0;
+  }
 }
 
 .card {
@@ -41,14 +39,33 @@
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
   max-width: 220px;
   height: 225px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0.5em auto;
   &__header {
-    height: 152px;
+    position: relative;
+    height: 185px;
     text-align: center;
     border-bottom: 1px solid rgba(46, 62, 72, 0.12);
     img {
+      position: absolute;
+      left: 0;
       height: 100%;
+      z-index: 2;
+      &.open {
+        animation: card_open 1s 1 ease-out;
+      }
+    }
+    &--content {
+      position: absolute;
+      padding: 0.5em;
+      z-index: 1;
+    }
+  }
+  &__section {
+    flex: 1 0 auto;
+    padding: 0.5rem;
+    p {
+      padding: 0;
+      margin: 0;
     }
   }
   &__new {
@@ -58,7 +75,7 @@
       display: block;
       position: relative;
       left: calc(50% - 10px);
-      top: calc(50% - 40px);
+      top: calc(50% - 30px);
       font-size: 40px;
       color: grey;
     }
@@ -76,14 +93,6 @@ pre.error {
   text-align: center;
 }
 
-.top-space {
-  margin-top: 20px;
-}
-
-.separator {
-  border-top: 1px solid rgba(46, 62, 72, 0.12);
-}
-
 .photo-profile {
   max-height: 192px;
   img {
@@ -97,4 +106,12 @@ pre.error {
   img {
     max-height: 250px;
   }
+}
+
+.show-for-sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
 }

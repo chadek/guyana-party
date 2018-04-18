@@ -1,7 +1,55 @@
+/* This is the parent `<div>` that contains the menu and the content area. */
+#layout {
+  position: relative;
+  left: 0;
+  padding-left: 0;
+  height: 100%;
+}
+#layout.active #menu {
+  left: $menuWidth;
+  width: $menuWidth;
+}
+#layout.active .menu-link {
+  left: $menuWidth;
+}
+
+/* Content area */
+#content {
+  padding-top: $menuHeight;
+}
+
 .inner {
-  max-width:900px;
+  max-width: 900px;
   margin: 0 auto;
   @media all and (max-width: 900px) {
     padding: 2rem;
   }
+}
+
+// .content {
+//   margin-left: auto;
+//   margin-right: auto;
+//   padding-left: 1em;
+//   padding-right: 1em;
+//   max-width: 768px;
+// }
+
+.content {
+  margin: 0 auto;
+  padding: 0 2em;
+  max-width: 800px;
+  margin-bottom: 50px;
+  //line-height: 1.6em;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.top-space {
+  margin-top: 20px;
+}
+
+.separator {
+  border-top: 1px solid rgba(46, 62, 72, 0.12);
 }

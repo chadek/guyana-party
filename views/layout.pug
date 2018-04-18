@@ -2,16 +2,12 @@ include mixins/_sideMenu
 include mixins/_topMenu
 
 doctype html
-html.no-js
+html
   head
     title= `${title} | ${h.siteName}`
     block customStyle
-      //- link(rel="stylesheet", href="/vendor/foundation.min.css")
-      //- link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
-    link(rel="stylesheet", href="/vendor/pure/base-min.css")
-    link(rel="stylesheet", href="/vendor/pure/menus-min.css")
-    link(rel="stylesheet", href="/vendor/pure/grids-min.css")
-    link(rel="stylesheet", href="/vendor/pure/grids-responsive-min.css")
+    link(rel="stylesheet", href="/vendor/pure/pure-min.css")
+    link(rel="stylesheet", href="/vendor/pure/grid.css")
     link(rel="stylesheet", href="/dist/style.css")
     link(rel="shortcut icon" type="image/png" href="/images/icons/favicon.ico")
     meta(charset="utf-8")
@@ -44,6 +40,4 @@ html.no-js
       //- block content
 
 block customScripts
-  //-script(src="/vendor/jquery.min.js")
-  //-script(src="/vendor/foundation.min.js")
 script(src="/dist/App.bundle.js")

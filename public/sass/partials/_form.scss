@@ -10,24 +10,73 @@ textarea {
   }
 }
 
-label {
-  padding: 10px 0;
-  display: block;
+// label {
+//   padding: 10px 0;
+//   display: block;
+// }
+
+// .form {
+//   background: white;
+//   padding: 2rem;
+//   box-shadow: $grad;
+//   & + .form {
+//     margin-top: 4rem;
+//   }
+//   // I know this isn't bem but meh
+//   h2 {
+//     margin: 0;
+//     font-size: 2rem;
+//     padding-bottom: 2rem;
+//     margin-bottom: 2rem;
+//     border-bottom: 1px solid $grey;
+//   }
+// }
+
+// .button {
+//   border: 0;
+//   background: $blue;
+//   color: white;
+//   font-family: "Panama";
+//   font-weight: 600;
+//   cursor: pointer;
+// }
+
+.pure-button {
+  //font-family: "Panama";
+  border-radius: 0;
+  &.success,
+  &.error,
+  &.warning,
+  &.secondary {
+    color: white;
+    //text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  }
+  &.success {
+    //font-size: 125%;
+    //background: rgb(28, 184, 65);
+    background-color: #3adb76;
+    color: #0a0a0a;
+  }
+  &.secondary {
+    background-color: #767676;
+  }
+  &.expanded {
+    display: block;
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
 }
 
-.form {
-  background: white;
-  padding: 2rem;
-  box-shadow: $grad;
-  & + .form {
-    margin-top: 4rem;
-  }
-  // I know this isn't bem but meh
-  h2 {
-    margin: 0;
-    font-size: 2rem;
-    padding-bottom: 2rem;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid $grey;
-  }
-}
+// .button-success {
+//   background: rgb(28, 184, 65); /* this is a green */
+// }
+// .button-error {
+//   background: rgb(202, 60, 60); /* this is a maroon */
+// }
+// .button-warning {
+//   background: rgb(223, 117, 20); /* this is an orange */
+// }
+// .button-secondary {
+//   background: rgb(66, 184, 221); /* this is a light blue */
+// }

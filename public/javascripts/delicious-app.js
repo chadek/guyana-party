@@ -42,4 +42,4 @@ accountForm(B(".btn-old"), B(".btn-new"));
 makeMap(B("#map"));
 loadEventsOrgasList(B(".events"), B(".orga-events"), B(".orgas"), B("#orga-select"));
 initDates(B("#event-start"), B("#event-end"));
-addEventForm(B(".clockpicker"), B("#dp1"), B("#dp2"));
+addEventForm(B("#dp1"), B("#dp2"));

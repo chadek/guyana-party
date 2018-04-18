@@ -6,7 +6,7 @@ block customStyle
   link(rel="stylesheet", href="/vendor/ol.css")
 
 block content
-  .pure-g
+  .pure-g.content
     .pure-u-1.photo-orga-event
       img(src=`/uploads/${event.photo}` alt="flyer de l'évènement")
     .pure-u-1.top-space.text-center
@@ -17,31 +17,29 @@ block content
       p= event.description
     .separator
     .pure-u-1.top-space
-      .pure-u-lg-1-2.inner
-        .pure-u-sm-1-12: label Début
-        .pure-u-sm-5-12
+      .pure-u-1.l-wrap
+        .u-sm-1-12: label Début
+        .u-sm-5-12.l-content
           span.pure-u-1-8.icon!= h.icon("calendar")
-          //-i.fi-calendar.size-36
           input.pure-u-7-8#startdate(type="text" readonly)
-        .pure-u-sm-5-12
-          span.pure-u-1-8: i.fi-clock.size-36
+        .u-sm-5-12.l-content
+          span.pure-u-1-8.icon!= h.icon("clock")
           input.pure-u-7-8#starttime(type="text" readonly)
-        .pure-u-sm-1-5: label Fin
-        .pure-u-sm-1-2
-          span.pure-u-1-8: i.fi-calendar.size-36
+      .pure-u-1.l-wrap
+        .u-sm-1-12: label Fin
+        .u-sm-5-12.l-content
+          span.pure-u-1-8.icon!= h.icon("calendar")
           input.pure-u-7-8#enddate(type="text" readonly)
-        .pure-u-sm-1-2
-          span.pure-u-1-8: i.fi-clock.size-36
+        .u-sm-5-12.l-content
+          span.pure-u-1-8.icon!= h.icon("clock")
           input.pure-u-7-8#endtime(type="text" readonly)
         input#event-start(type="hidden" value=`${event.start}`)
         input#event-end(type="hidden" value=`${event.end}`)
     .separator
     .pure-u-1.top-space
-      .pure-u-lg-1-2.inner
-        //- .cell.large-6.large-offset-3
-        label Le lieu de l'évènement :
-        #map.no-events.readonly
-        p.text-center= event.location.address
+      label Le lieu de l'évènement :
+      #map.no-events.readonly
+      p.text-center= event.location.address
     input#longitude(type="hidden" value=(event.location && event.location.coordinates[0]))
     input#latitude(type="hidden" value=(event.location && event.location.coordinates[1]))
 

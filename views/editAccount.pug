@@ -1,29 +1,23 @@
 extends layout
 
 block content
-  .grid-container.fluid
-    .grid-x.grid-margin-x
-      .cell.large-6.medium-8.small-12.large-offset-3.medium-offset-2
-        .grid-x.grid-margin-x
-          .cell.top-space.text-center
-            h3= title
-        .grid-x.grid-margin-x
-          form.cell(method="POST" enctype="multipart/form-data")
-            .grid-x.grid-margin-x
-              .cell.large-6.medium-8.small-8.large-offset-3.small-offset-2
-                .photo-profile.text-center
-                  img(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro') alt="photo de profile")
-                label.button.expanded(for="fileUpload") Représentation visuelle
-                input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
-                .file-upload-filename
-            .grid-x.grid-margin-x
-              .cell.input-group
-                span.input-group-label: i.fi-torsos-male-female.size-36
-                input.input-group-field(type="text" name="name" placeholder="Nom de l'organisateur" value=`${user.name}`)
-            .grid-x.grid-margin-x
-              .cell.input-group
-                span.input-group-label: i.fi-mail.size-36
-                input.input-group-field(type="text" name="email" placeholder="Email, identifiant" value=`${user.email}`)
-            .grid-x.grid-margin-x
-              .cell.input-group
-                button.button.expanded.success Enregistrer
+  .pure-g
+    .pure-u-1.content
+      .pure-u-1.text-center
+        h3= title
+        .separator
+        form.pure-u-1(method="POST" enctype="multipart/form-data")
+          .pure-u-1
+            .photo-profile.text-center
+              img(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro') alt="photo de profile")
+            label.pure-button.pure-button-primary.top-space(for="fileUpload") Représentation visuelle
+            input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
+            .file-upload-filename
+          .pure-u-1.top-space
+            span: i.fi-torsos-male-female.size-36
+            input(type="text" name="name" placeholder="Nom de l'organisateur" value=`${user.name}`)
+          .pure-u-1.top-space
+              span: i.fi-mail.size-36
+              input(type="text" name="email" placeholder="Email, identifiant" value=`${user.email}`)
+          .pure-u-1.top-space
+              button.pure-button.success.button.expanded Enregistrer
