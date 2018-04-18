@@ -1,30 +1,9 @@
 mixin topMenu()
-  //-.top-bar
-    .top-bar-left
-      ul.menu
-        li.menu-text(data-toggle="offCanvas")
-          button.menu-icon(type="button")
-          span.top-bar__menu Menu
-        li.search
-          unless currentPath == "/" || currentPath == "/events"
-            .search
-              form(action="/events" method="POST")
-                input.search__input.nav(type="text" placeholder="Chercher par thème ou par lieu..." name="search" )
-    .top-bar-right
-      ul.menu
-        //- li
-        //-   .search
-        //-     input(type='search', placeholder='Chercher par thème ou par lieu...')
-        li
-          unless user
-            unless isLogin
-              a(href="/login") Connexion / Inscription
-
   .pure-menu.pure-menu-horizontal.pure-menu-fixed
-    unless currentPath == "/" || currentPath == "/events"
-      .search
+    unless currentPath == "/" || currentPath == "/events" || currentPath == "/login"
+      .search.search__nav
         form(action="/events" method="POST")
-          input.search__input.nav(type="text" placeholder="Chercher par thème ou par lieu..." name="search" )
+          input.search__input--nav(type="text" placeholder="Chercher par thème ou par lieu..." name="search" )
     unless user || isLogin
       ul.pure-menu-list
         li.pure-menu-item
