@@ -1,0 +1,138 @@
+/* This is the parent `<div>` that contains the menu and the content area. */
+#layout {
+  position: relative;
+  left: 0;
+  padding-left: 0;
+  height: 100%;
+}
+#layout.active #menu {
+  left: $menuWidth;
+  width: $menuWidth;
+}
+#layout.active .menu-link {
+  left: $menuWidth;
+}
+
+/* Content area */
+#content {
+  padding-top: $menuHeight;
+}
+
+.inner {
+  max-width: 900px;
+  margin: 0 auto;
+  @media all and (max-width: 900px) {
+    padding: 2rem;
+  }
+}
+
+.content {
+  margin: 0 auto;
+  padding: 0 2em;
+  max-width: 800px;
+  margin-bottom: 50px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.top-space {
+  margin-top: 20px;
+}
+
+.separator {
+  border-top: 1px solid rgba(46, 62, 72, 0.12);
+}
+
+/* ---- Grids ------ */
+
+/* Applying Padding and Borders to Grid Units */
+.pure-g > div {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.l-box {
+  padding: 1em;
+}
+
+/* hide large unit */
+@media print, screen and (min-width: 64em) {
+  .lg-hide {
+    display: none !important;
+  }
+}
+
+.l-wrap,
+.l-wrap .l-content {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+.l-wrap {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.l-content {
+  margin: 0 auto;
+}
+
+/*
+ * -- BANNER --
+ * The top banner with the headings. By using a combination
+ * of `display: table;` and `display: table-cell;`, we can
+ * vertically center the text.
+ */
+.banner {
+  // background: transparent
+  //   url("http://24.media.tumblr.com/ccb268832580ac12951828a1c179de69/tumblr_mo2xbk8JUK1st5lhmo1_1280.jpg")
+  //   0 0 no-repeat fixed;
+  background: transparent
+    url("/images/subscriptions.jpg")
+    0 0 no-repeat fixed;
+  text-align: center;
+  background-size: cover;
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/subscriptions.jpg', sizingMethod='scale');
+  height: 200px;
+  width: 100%;
+  margin-bottom: 3em;
+  display: table;
+  &__head {
+    display: table-cell;
+    vertical-align: middle;
+    margin-bottom: 0;
+    font-size: 2em;
+    color: white;
+    font-weight: 500;
+    text-shadow: 0 1px 1px black;
+  }
+}
+@media (min-width: 767px) {
+  .banner__head {
+    font-size: 4em;
+  }
+}
+@media (min-width: 480px) {
+  .banner {
+    height: 400px;
+  }
+  .banner__head {
+    font-size: 3em;
+  }
+}
+
+.footer {
+  margin-top: 50px;
+  background: #111;
+  color: #888;
+  text-align: center;
+  &--fixed {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+  }
+}
+.footer a {
+  color: #ddd;
+}

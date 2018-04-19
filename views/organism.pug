@@ -1,0 +1,39 @@
+extends layout
+
+include mixins/_footer
+
+block customStyle
+  //- link(rel="stylesheet", href="/vendor/foundation.min.css")
+  //- link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
+  link(rel="stylesheet", href="/vendor/ol.css")
+
+block content
+  .pure-g
+    .pure-u-1.content
+      .pure-u-1.photo-orga-event
+        img(src=`/uploads/${orga.photo}` alt="Logo de l'organisme")
+      .pure-u-1.top-space.text-center
+        h4= orga.name
+        p= `(${orga.type})`
+      .pure-u-1.top-space.text-center
+        p= orga.description
+      .separator
+      .pure-u-1.top-space
+        label L'adresse du siège social :
+        #map.no-events.readonly
+        p.text-center= orga.location.address
+    .separator
+    .pure-u-1.top-space.text-center
+      h3 Mes évènements
+    .pure-u-1.top-space.orga-events
+      p.cell.top-space.text-center Chargement...
+    input#orga-id(type="hidden" value=`${orga._id}`)
+    input#longitude(type="hidden" value=(orga.location && orga.location.coordinates[0]))
+    input#latitude(type="hidden" value=(orga.location && orga.location.coordinates[1]))
+
+  +footer()
+
+block customScripts
+  //- script(src="/vendor/jquery.min.js")
+  //- script(src="/vendor/foundation.min.js")
+  script(src="/vendor/ol.min.js")

@@ -1,0 +1,34 @@
+extends layout
+
+include mixins/_footer
+
+block content
+  .pure-g
+    .pure-u-1.content
+      .pure-u-1.text-center
+        h3= title
+        .separator
+        form.pure-u-1(action=`/account/edit?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
+          .pure-u-1
+            .photo-profile.text-center
+              img(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro') alt="photo de profile")
+            label.pure-button.pure-button-primary.top-space(for="fileUpload") Représentation visuelle
+            input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
+            .file-upload-filename
+          .pure-u-1.top-space
+            span: i.fi-torsos-male-female.size-36
+            input(type="text" name="name" placeholder="Nom de l'organisateur" value=`${user.name}`)
+          .pure-u-1.top-space
+            span: i.fi-mail.size-36
+            input(type="text" name="email" placeholder="Email, identifiant" value=`${user.email}`)
+          if user.subscription
+            .pure-u-1.top-space
+              p
+                | Souscription :
+                strong  #{h.translateSubs(user.subscription)}
+                |  (
+                a(href="/souscriptions") Faire évoluer
+                |)
+          .pure-u-1.top-space
+            button.pure-button.success.button.expanded Enregistrer
+  +footer(true)

@@ -1,0 +1,38 @@
+mixin hero()
+  //-.hero
+    .hero__details
+      .grid-container
+        form(action="/events" method="POST")
+          .search
+            input.search__input(type="text" placeholder="Chercher par thème ou par lieu..." name="search")
+
+  //-.cc
+
+  .hero
+    form.hero-content(action="/events" method="POST")
+      .search
+        input.search__input(type="text" placeholder="Chercher par thème ou par lieu..." name="search")
+        button.pure-button.pure-button-primary Trouver
+        .around
+          input#around-check(type="checkbox" name="around" value="test")
+          label#around-label(for="around-check") Autour de moi
+          input#around-value(type="hidden" name="aroundValue" value="")
+
+    //-.column.large-centered.large-8.hero_content
+      .row
+        .large-12.columns
+          h1 La connaissance est indispensable
+      .row
+        .small-12.columns
+          blockquote
+            | On dit qu'une chose est libre quand elle existe par la seule néccessité de sa nature et quand c'est par soit seule qu'elle est déterminée à agir. Mais on dit néccessaire ou plutôt contrainte la chose qui est déterminée par une autre à exister et à agir selon une loi particulière et déterminée.
+            cite Ethique, Spinoza
+      .row
+        .large-12.columns
+          form(action='recherche', name='recherche_evenenement', method='post')
+            .input-group
+              span.input-group-label
+                i.fi-magnifying-glass.size-36
+              input.input-group-field(name='input_recherche', type='text', placeholder='Chercher par lieu ou par thèmes', autofocus='')
+              .input-group-button
+                input.button(type='submit', value='Rechercher')

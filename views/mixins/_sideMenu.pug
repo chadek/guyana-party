@@ -1,0 +1,32 @@
+mixin sideMenu()
+  //-
+    if user
+      .menu-avatar.top-space
+        a(href="/account"): img.avatar(src=`${h.profilePhotoSrc(user)}` alt="photo de profile" title="Mon compte")
+    ul.top-space.vertical.menu.drilldown(data-drilldown)
+      li: a(href="/") Accueil
+      if !user
+        li: a(href="/login") Connexion / Inscription
+      li: a(href="/events") Tous les évènements
+      if user
+        li: a(href="/organisms/add") Créer un organisme
+        li: a(href="/events/add") Créer un évènement
+        li: a(href="/logout") Déconnexion
+      //-else
+        li: a(href="#") Conditions générales d'utilisation
+
+  #menu
+    .pure-menu
+      a.pure-menu-heading(href="/")= h.siteName
+      ul.pure-menu-list
+        if user
+          li.pure-menu-item: a.pure-menu-link(href='/account'): img.avatar(src=`${h.profilePhotoSrc(user)}` alt="Mon compte" title="Mon compte")
+        li.pure-menu-item: a.pure-menu-link(href='/') Accueil
+        if !user
+          li.pure-menu-item: a.pure-menu-link(href='/login') Connexion / Inscription
+        li.pure-menu-item: a.pure-menu-link(href='/events') Tous les évènements
+        li.pure-menu-item: a.pure-menu-link(href='/souscriptions') Choisir une souscription
+        if user
+          li.pure-menu-item: a.pure-menu-link(href='/organisms/add') Créer un organisme
+          li.pure-menu-item: a.pure-menu-link(href='/events/add') Créer un évènement
+          li.pure-menu-item: a.pure-menu-link(href='/logout') Déconnexion

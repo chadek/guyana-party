@@ -1,112 +1,102 @@
-var express = require('express');
-var router = express.Router();
-var path = require('path');
+const express = require("express");
+const router = express.Router();
+const mainController = require("../controllers/mainController");
+const userController = require("../controllers/userController");
+const authController = require("../controllers/authController");
+const orgaController = require("../controllers/orgaController");
+const eventController = require("../controllers/eventController");
+const subscriptionController = require("../controllers/subscriptionController");
+const { catchErrors } = require("../handlers/errorHandlers");
 
-var passport = require( path.join(__dirname, "../Utils/auth" ) );
+/* Main */
 
-
-var mongoose = require('mongoose');
-var url = "mongodb://localhost:27017/guyana-party";
-
-var Grid = require('gridfs-stream');
-Grid.mongo = mongoose.mongo;
-
-
-mongoose.connect(url, { useMongoClient: true });
-
-var db = mongoose.connection;
-var gfs = "";
-
-db.on('error', console.error.bind(console, 'error while connecting to DB'));
-db.once('open',function(){
-  gfs = Grid(db.db);
-  console.log("connection to DB OK");
-});
-
-
-// require mongoose model (define in /model/models.js)
-var models = require( path.join(__dirname, '../model/models' ))(mongoose);
-var Event = models.Event;
-
-
-
-
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', {user: req.user });
-});
-
-// get instription page : if user log, redirect to main page, else render template
-router.get('/inscription', function(req, res, next) {
-  if(req.isAuthenticated()){
-    res.redirect('/');
-  } else{
-    // render template with errors throw by bad login/register
-    res.render('inscription', {status: req.session.error || [], errorCause: req.session.errorCause });
-    req.session.destroy();
-  }
-});
-
-
-// render organisme page (redirect to login page if not log)
-router.get('/organisme', function(req, res, next) {
-  if(req.isAuthenticated()){
-    res.render('organisme');
-  } else {
-    res.redirect('/inscription');
-  }
-});
-
-
-
-
-// get file from id (streaming)
-router.get('/file/:fileId', function(req, res, next) {
-  //read from mongodb
-  console.log("get file");
-  var readStream = gfs.createReadStream({
-       _id: req.params.fileId
-  });
-
-  readStream.on('open', function () {
-    // This just pipes the read stream to the response object (which goes to the client)
-    readStream.pipe(res);
-  });
-
-  // This catches any errors that happen while creating the readable stream (usually invalid names) and raise 404 error
-  readStream.on('error', function(err) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-  });
-});
-
-
-
-// deconnexion de l'utilisateur
-router.get('/deconnexion', function(req, res){
-  var name = req.user;
-  console.log("LOGGIN OUT " + req.user)
-  req.logout();
-  res.redirect('/');
-  req.session.notice = "You have successfully been logged out " + name + "!";
-});
-
-
-/* POST inscription */
-router.post('/inscription/ajouter', passport.authenticate('local-signup', { failureRedirect: '/inscription'}),
-  function(req, res) {
-    res.redirect('/users/'+req.user);
-});
-
-/* connection */
-router.post('/connection', passport.authenticate('local-signin', { failureRedirect: '/inscription'}),
-  function(req, res) {
-    res.redirect('/users/'+req.user);
-  }
+router.get("/", mainController.homePage);
+router.get("/login", userController.loginForm);
+router.get("/logout", authController.logout);
+router.post("/login", authController.login);
+router.post(
+  "/register",
+  mainController.upload,
+  catchErrors(mainController.resize),
+  userController.validateRegister,
+  catchErrors(userController.register),
+  authController.login
 );
 
+/* Subscriptions */
 
+router.get("/souscriptions", subscriptionController.subscriptionsPage);
+router.get(
+  "/souscriptions/free",
+  authController.isLoggedIn,
+  catchErrors(subscriptionController.selectFreeSubscription)
+);
+router.get(
+  "/souscriptions/payment/:subscription",
+  authController.isLoggedIn,
+  subscriptionController.subscriptionPaymentPage
+);
+
+/* Account */
+
+router.get("/account", authController.isLoggedIn, userController.account);
+router.post("/account/forgot", catchErrors(authController.forgot));
+router.get("/account/reset/:token", catchErrors(authController.reset));
+router.post("/account/reset/:token", authController.confirmedPasswords, catchErrors(authController.update));
+router.get("/account/edit", authController.isLoggedIn, userController.editAccount);
+router.post(
+  "/account/edit",
+  authController.isLoggedIn,
+  mainController.upload,
+  catchErrors(mainController.resize),
+  catchErrors(userController.updateAccount)
+);
+
+/* Organisms */
+
+router.get(
+  "/organisms/add",
+  authController.isLoggedIn,
+  catchErrors(userController.hasSubscription),
+  orgaController.addPage
+);
+router.post(
+  "/organisms/add",
+  authController.isLoggedIn,
+  catchErrors(userController.hasSubscription),
+  mainController.upload,
+  catchErrors(mainController.resize),
+  catchErrors(orgaController.create)
+);
+router.get("/organism/:slug", catchErrors(orgaController.getOrgaBySlug));
+router.get("/organism/id/:id", catchErrors(orgaController.getOrgaById));
+
+/* Events */
+
+router.get("/events", eventController.eventsPage);
+router.post("/events", eventController.eventsPage);
+router.get(
+  "/events/add",
+  authController.isLoggedIn,
+  catchErrors(userController.hasOrganism),
+  catchErrors(eventController.canCreate),
+  eventController.addPage
+);
+router.post(
+  "/events/add",
+  authController.isLoggedIn,
+  catchErrors(userController.hasOrganism),
+  catchErrors(eventController.canCreate),
+  mainController.upload,
+  catchErrors(mainController.resize),
+  catchErrors(eventController.create)
+);
+router.get("/event/:slug", catchErrors(eventController.getEventBySlug));
+
+/* API */
+
+router.get("/api/organisms", authController.isLoggedIn, catchErrors(orgaController.getOrganisms));
+router.get("/api/events", authController.isLoggedIn, catchErrors(eventController.getEvents));
+router.get("/api/search", catchErrors(eventController.getSearchResult));
 
 module.exports = router;

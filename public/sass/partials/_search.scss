@@ -1,0 +1,43 @@
+.search {
+  position: relative;
+  display: flex;
+  form {
+    width: 100%;
+  }
+  &__input {
+    font-size: 25px;
+    outline: 0;
+    border: 0;
+    &--nav {
+      font-size: 25px;
+      background: none;
+      color: white;
+      border: 0;
+      outline: 0;
+      height: 100%;
+      margin-left: 50px;
+      :focus {
+        background-color: black;
+        border: 0;
+      }
+    }
+  }
+  &__nav {
+    float: left;
+    width: 50%;
+  }
+  .around {
+    position: absolute;
+    margin-top: 60px;
+    label {
+      color: white;
+    }
+  }
+}
+.around {
+  label {
+    display: inline;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,79 @@
+extends layout
+
+include mixins/_footer
+
+block customStyle
+  //- link(rel="stylesheet", href="/vendor/foundation.min.css")
+  //- link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
+  //- link(rel="stylesheet", href="/vendor/foundation-datepicker.min.css")
+  link(rel="stylesheet", href="/vendor/jquery-clockpicker.min.css")
+  link(rel="stylesheet", href="/vendor/ol.css")
+
+block content
+  .pure-g
+    .pure-u-1.content
+      .pure-u-1.text-center
+        h2= title
+      .separator
+      form.pure-u-1(action=`/events/add?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
+        .pure-u-1
+          .pure-u-1.top-space
+            span.pure-u-1-8.icon!= h.icon("clipboard-pencil")
+            input.pure-u-7-8(type="text" placeholder="Nom de l'évènement" name="name")
+          .pure-u-1.top-space.text-center
+            label.pure-button.pure-button-primary(for="fileUpload") Flyer de l'évènement
+            input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
+            .file-upload-filename
+          .pure-u-1.top-space
+            label: strong Organisme créateur de l'évènement :
+          .pure-u-1
+            select#orga-select(name="organism")
+            input#orga-id(type="hidden" value=`${orga}`)
+          .pure-u-1.l-wrap.top-space
+            .pure-u-1: label Début :
+            .u-sm-5-12.l-content
+              span.pure-u-1-8.icon!= h.icon("calendar")
+              input.pure-u-7-8#dp1(type="date" name="startdate")
+            .u-sm-5-12.l-content
+              .clockpicker(data-placement="bottom" data-align="top" data-autoclose="true")
+                span.pure-u-1-8.icon!= h.icon("clock")
+                input.pure-u-7-8#starttime(type="text" name="starttime")
+                input#start(type="hidden" name="start")
+            .pure-u-1: label Fin :
+            .u-sm-5-12.l-content
+              span.pure-u-1-8.icon!= h.icon("calendar")
+              input.pure-u-7-8#dp2(type="date" name="enddate")
+            .u-sm-5-12.l-content
+              .clockpicker(data-placement="bottom" data-align="top" data-autoclose="true")
+                span.pure-u-1-8.icon!= h.icon("clock")
+                input.pure-u-7-8#endtime(type="text" name="endtime")
+                input#end(type="hidden" name="end")
+          .pure-u-1.top-space
+            label Que proposez vous ?
+            textarea(name="description" placeholder="Un petit wiki pour décrire proprement l'évènement")
+          .pure-u-1.top-space
+            label Sélectionnez le lieu de l'évènement sur la carte :
+            #map.no-events
+            //-.pure-u-1.top-space
+            span.input-group-label: i.fi-marker.size-36
+            input.input-group-field#address(type="text" placeholder="Adresse" name="location[address]" value=(event.location && event.location.address))
+            input#longitude(type="hidden" name="location[coordinates][0]" value=(event.location && event.location.coordinates[0]))
+            input#latitude(type="hidden" name="location[coordinates][1]" value=(event.location && event.location.coordinates[1]))
+          .pure-u-1.top-space
+            //-.cell.large-8.medium-8.large-offset-2.medium-offset-2
+            input.pure-button.success.button.expanded(type="submit" value="Créer")
+
+  +footer()
+
+block customScripts
+  script(src="/vendor/jquery.min.js")
+  script(src="/vendor/jquery-clockpicker.min.js")
+  //- script(src="/vendor/foundation.min.js")
+  //- script(src="/vendor/foundation-datepicker.min.js")
+  //- script(src="/vendor/foundation-datepicker.fr.js")
+  script(src="/vendor/ol.min.js")
+  script(type="text/javascript").
+    $(document).ready(function() {
+      $(".clockpicker").clockpicker();
+    });
+

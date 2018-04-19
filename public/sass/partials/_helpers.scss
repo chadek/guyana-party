@@ -1,0 +1,121 @@
+// .hide {
+//   text-indent: -999999px;
+//   font-size: 0;
+// }
+
+// .img-responsive {
+//   max-width: 100%;
+//   height: auto;
+// }
+
+.avatar {
+  min-width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  align-self: center;
+}
+
+.icon {
+  svg {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+@keyframes card_open {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-192px);
+    opacity: 0;
+  }
+}
+
+.card {
+  background: white;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
+  max-width: 220px;
+  height: 225px;
+  margin: 0.5em auto;
+  &__header {
+    position: relative;
+    height: 185px;
+    border-bottom: 1px solid rgba(46, 62, 72, 0.12);
+    img {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      z-index: 2;
+      &.open {
+        animation: card_open 1s 1 ease-out;
+      }
+    }
+    &--content {
+      position: absolute;
+      padding: 0.5em;
+      z-index: 1;
+      p {
+        margin-top: 0;
+        font-size: 1.1rem
+      }
+    }
+  }
+  &__section {
+    flex: 1 0 auto;
+    padding: 0.5rem;
+    p {
+      padding: 0;
+      margin: 0;
+    }
+  }
+  &__new {
+    cursor: pointer;
+    &:after {
+      content: "+";
+      display: block;
+      position: relative;
+      left: calc(50% - 10px);
+      top: calc(50% - 30px);
+      font-size: 40px;
+      color: grey;
+    }
+  }
+}
+
+pre.error {
+  padding: 5rem;
+  background: white;
+  line-height: 3;
+  white-space: pre-line;
+}
+
+.file-upload-filename {
+  text-align: center;
+}
+
+.photo-profile {
+  max-height: 192px;
+  img {
+    max-height: 192px;
+  }
+}
+
+.photo-orga-event {
+  text-align: center;
+  height: 250px;
+  img {
+    object-fit: cover;
+    max-height: 250px;
+  }
+}
+
+.show-for-sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}

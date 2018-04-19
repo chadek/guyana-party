@@ -1,0 +1,57 @@
+extends layout
+
+block customStyle
+  link(rel="stylesheet", href="/vendor/foundation.min.css")
+  link(rel="stylesheet", href="/vendor/OR.css")
+
+block content
+  .pure-g.content.l-wrap
+    .pure-u-1
+      //-.cell.large-6.medium-8.small-12.medium-offset-2.large-offset-3
+      .expanded.button-group-option(data-grouptype="OU")
+        button.button.success.radius#b_connection Connexion
+        button.button.secondary.radius#b_inscription Inscription
+      //- Connection
+      form(action="/login" method="POST")
+        .form-icons#connection
+          .input-group
+            span.input-group-label: i.fi-mail.size-36
+            input.input-group-field(type="email" name="email" placeholder="Email, identifiant")
+          .input-group
+            span.input-group-label: i.fi-key.size-36
+            input.input-group-field(type="password" name="password" placeholder="Mot de passe")
+          .input-group
+            a.forgot-link(href="#") Mot de passe oublié ?
+          input(type="hidden" name="_csrf" value=`${csrfToken}`)
+          button.button.expanded.success Connexion
+      //- Forgot form
+      .forgotForm
+        form(action="/account/forgot" method="POST")
+          p Mot de passe oublié ?
+          .input-group
+            span.input-group-label: i.fi-mail.size-36
+            input.input-group-field(type="email" name="email" placeholder="Email, identifiant")
+          input(type="hidden" name="_csrf" value=`${csrfToken}`)
+          button.button.expanded.success Envoyer
+      //- Inscription
+      form(action=`/register?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
+        .form-icons#inscription
+          .input-group
+            span.input-group-label: i.fi-torsos-male-female.size-36
+            input.input-group-field(type="text" name="name" placeholder="Nom de l'organisateur")
+          .pure-u-1.text-center
+            .pure-u-1.pure-u-md-1-2
+              //-.cell.large-6.medium-8.small-10.columns.large-offset-3.medium-offset-2.small-offset-1
+              label.button.expanded(for="fileUpload") Représentation visuelle
+              input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
+              .file-upload-filename
+          .input-group
+            span.input-group-label: i.fi-mail.size-36
+            input.input-group-field(type="text" name="email" placeholder="Email, identifiant")
+          .input-group
+            span.input-group-label: i.fi-key.size-36
+            input.input-group-field(type="password" name="password" placeholder="Mot de passe")
+          .input-group
+            span.input-group-label: i.fi-key.size-36
+            input.input-group-field(type="password" name="password-confirm" placeholder="Mot de passe")
+          button.button.expanded.success Enregistrer

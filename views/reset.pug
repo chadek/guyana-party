@@ -1,0 +1,22 @@
+extends layout
+
+block style
+  link(rel="stylesheet", href="/vendor/foundation.min.css")
+  link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
+  link(rel="stylesheet", href="/vendor/OR.css")
+  link(rel='stylesheet', href='/dist/style.css')
+
+block content
+  .row(style="vertical-align: middle;")
+    .large-6.medium-6.small-12.medium-centered.large-centered.columns
+      button.button.expanded.success= title
+      form(method="POST")
+        .form-icons
+          .input-group
+            span.input-group-label: i.fi-key.size-36
+            input.input-group-field(type="password" name="password" placeholder="Mot de passe")
+          .input-group
+            span.input-group-label: i.fi-key.size-36
+            input.input-group-field(type="password" name="password-confirm" placeholder="Mot de passe")
+          button.button.expanded.success Valider
+          p= status

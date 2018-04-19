@@ -1,0 +1,36 @@
+include mixins/_sideMenu
+include mixins/_topMenu
+
+doctype html
+html
+  head
+    title= `${title} | ${h.siteName}`
+    block customStyle
+    link(rel="stylesheet", href="/vendor/pure/pure-min.css")
+    link(rel="stylesheet", href="/vendor/pure/grid.css")
+    link(rel="stylesheet", href="/dist/style.css")
+    link(rel="shortcut icon" type="image/png" href="/images/icons/favicon.ico")
+    meta(charset="utf-8")
+    meta(http-equiv="x-ua-compatible" content="ie=edge")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+  body
+    #layout
+      //- Menu toggle
+      a.menu-link.active#menuLink(href="#menu")
+        //- Hamburger icon
+        span
+      +sideMenu()
+      +topMenu()
+      #content
+        if locals.flashes
+          .row.flash-messages
+            - const categories = Object.keys(locals.flashes)
+            each category in categories
+              each message in flashes[category]
+                .flash(class=`flash--${category}`)
+                  p.flash__text!= message
+                  button.flash__remove(onClick="this.parentElement.remove()") &times;
+        block content
+
+block customScripts
+script(src="/dist/App.bundle.js")

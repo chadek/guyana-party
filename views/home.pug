@@ -1,0 +1,43 @@
+extends layout
+
+include mixins/_hero
+include mixins/_footer
+
+block content
+  .hero-container
+    +hero()
+  .content-wrapper
+    .pure-g.content
+      .pure-u-1.top-space
+        h2.content-head.text-center Excepteur sint occaecat cupidatat.
+        p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+        p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+        p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+        p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+        p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+        p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+        p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+
+    +footer()
+
+  //-.row.home
+    //- mixin creationEventBlock()
+    //-   .row
+    //-     .columns.large-9.large-centered.medium-8.medium-centered
+    //-       p L'essentiel pour faire des rencontres c'est de savoir où et quand se retrouver. Déterminez vos thèmes et publiez.
+    //-     .columns.large-6.medium-6.small-12.large-centered.medium-centered
+    //-       a.button.expanded.success(href="/events/add") Créez un évènement
+    //-     hr.hide-for-large
+
+    //- if user
+    //-   .column
+    //-     +creationEventBlock
+    //- else
+    //-   .columns.large-6
+    //-     +creationEventBlock
+    //-   .columns.large-6
+    //-     .row
+    //-       .columns.large-8.large-centered.medium-8.medium-centered
+    //-         p Pour votre association ou votre entreprise, gérez vos évènements public sur votre page dédiée
+    //-       .columns.large-6.medium-6.small-12.large-centered.medium-centered
+    //-         a.button.expanded.alert(href="/login") Connexion / Inscription
