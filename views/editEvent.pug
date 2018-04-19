@@ -15,7 +15,7 @@ block content
       .pure-u-1.text-center
         h2= title
       .separator
-      form.pure-u-1(action="/events/add" method="POST" enctype="multipart/form-data")
+      form.pure-u-1(action=`/events/add?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
         .pure-u-1
           .pure-u-1.top-space
             span.pure-u-1-8.icon!= h.icon("clipboard-pencil")

@@ -1,12 +1,14 @@
 extends layout
 
+include mixins/_footer
+
 block content
   .pure-g
     .pure-u-1.content
       .pure-u-1.text-center
         h3= title
         .separator
-        form.pure-u-1(method="POST" enctype="multipart/form-data")
+        form.pure-u-1(action=`/account/edit?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
           .pure-u-1
             .photo-profile.text-center
               img(src=(user.photo ? `/uploads/${user.photo}` : user.gravatar + '&d=retro') alt="photo de profile")
@@ -28,4 +30,5 @@ block content
                 a(href="/souscriptions") Faire évoluer
                 |)
           .pure-u-1.top-space
-              button.pure-button.success.button.expanded Enregistrer
+            button.pure-button.success.button.expanded Enregistrer
+  +footer(true)

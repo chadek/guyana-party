@@ -13,6 +13,15 @@ exports.catchErrors = fn => {
 };
 
 /*
+  Handle CSRF token errors
+*/
+exports.csrfErrors = (err, req, res, next) => {
+  if (err.code !== "EBADCSRFTOKEN") return next(err);
+  req.flash("error", "Action non autorisée !");
+  res.redirect("back");
+};
+
+/*
   Not Found Error Handler
 
   If we hit a route that is not found, we mark it as 404 and pass it along to the next error handler to display
@@ -41,15 +50,13 @@ exports.flashValidationErrors = (err, req, res, next) => {
 
   In development we show good error messages so if we hit a syntax error or any other previously un-handled error, we can show good info on what happened
 */
-exports.developmentErrors = (err, req, res) => {
+exports.developmentErrors = (err, req, res, next) => {
+  if (!err) return next(err);
   err.stack = err.stack || "";
   const errorDetails = {
     message: err.message,
     status: err.status,
-    stackHighlighted: err.stack.replace(
-      /[a-z_-\d]+.js:\d+:\d+/gi,
-      "<mark>$&</mark>"
-    )
+    stackHighlighted: err.stack.replace(/[a-z_-\d]+.js:\d+:\d+/gi, "<mark>$&</mark>")
   };
   res.status(err.status || 500);
   res.format({
@@ -66,7 +73,8 @@ exports.developmentErrors = (err, req, res) => {
 
   No stacktraces are leaked to user
 */
-exports.productionErrors = (err, req, res) => {
+exports.productionErrors = (err, req, res, next) => {
+  if (!err) return next(err);
   res.status(err.status || 500);
   res.render("error", {
     message: err.message,

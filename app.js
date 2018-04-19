@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const expressValidator = require("express-validator");
 const cookieParser = require("cookie-parser");
+const csrf = require("csurf");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const mongoose = require("mongoose");
@@ -13,8 +14,6 @@ const { promisify } = require("es6-promisify");
 const routes = require("./routes/index");
 const errorHandlers = require("./handlers/errorHandlers");
 require("./handlers/passport");
-
-// const logger = require('morgan');
 
 const app = express();
 
@@ -72,8 +71,14 @@ app.use((req, res, next) => {
   next();
 });
 
+// Add protection against CSRF attacks
+app.use(csrf({ cookie: true }));
+
 // After allllll that above middleware, we finally handle our own routes!
 app.use("/", routes);
+
+// CSRF token validation error handler
+app.use(errorHandlers.csrfErrors);
 
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(errorHandlers.notFound);
@@ -89,46 +94,6 @@ if (app.get("env") === "development") {
 
 // production error handler
 app.use(errorHandlers.productionErrors);
-
-//--------------------------
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-// app.use(session({
-//   secret: 'keyboard cat',
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: { }
-// }));
-
-// app.use(passport.initialize());
-// app.use(passport.session());
-// app.use(logger('dev'));
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(express.static(path.join(__dirname, 'public')));
-
-// app.use('/', index);
-// app.use('/users', users);
-// app.use('/evenement', event);
-// app.use('/organization', organiz);
-
-// // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   var err = new Error('Not Found');
-//   err.status = 404;
-//   next(err);
-// });
-
-// // error handler
-// app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
 
 // done! we export it so we can start the site in start.js
 module.exports = app;

@@ -12,7 +12,7 @@ exports.eventsPage = (req, res) => {
 
 exports.addPage = (req, res) => {
   const orga = req.queryString("orga");
-  res.render("editEvent", { event: {}, orga, title: "Création d'un évènement public" });
+  res.render("editEvent", { event: {}, orga, title: "Création d'un évènement public", csrfToken: req.csrfToken() });
 };
 
 exports.canCreate = async (req, res, next) => {

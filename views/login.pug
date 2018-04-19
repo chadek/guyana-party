@@ -2,7 +2,6 @@ extends layout
 
 block customStyle
   link(rel="stylesheet", href="/vendor/foundation.min.css")
-  link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
   link(rel="stylesheet", href="/vendor/OR.css")
 
 block content
@@ -23,6 +22,7 @@ block content
             input.input-group-field(type="password" name="password" placeholder="Mot de passe")
           .input-group
             a.forgot-link(href="#") Mot de passe oublié ?
+          input(type="hidden" name="_csrf" value=`${csrfToken}`)
           button.button.expanded.success Connexion
       //- Forgot form
       .forgotForm
@@ -31,9 +31,10 @@ block content
           .input-group
             span.input-group-label: i.fi-mail.size-36
             input.input-group-field(type="email" name="email" placeholder="Email, identifiant")
+          input(type="hidden" name="_csrf" value=`${csrfToken}`)
           button.button.expanded.success Envoyer
       //- Inscription
-      form(action="/register" method="POST" enctype="multipart/form-data")
+      form(action=`/register?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
         .form-icons#inscription
           .input-group
             span.input-group-label: i.fi-torsos-male-female.size-36

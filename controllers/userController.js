@@ -4,7 +4,7 @@ const Organism = mongoose.model("Organism");
 const { promisify } = require("es6-promisify");
 
 exports.loginForm = (req, res) => {
-  res.render("login", { title: "Connexion/Inscription", isLogin: true });
+  res.render("login", { title: "Connexion/Inscription", csrfToken: req.csrfToken() });
 };
 
 exports.validateRegister = (req, res, next) => {
@@ -75,7 +75,7 @@ exports.hasSubscription = async (req, res, next) => {
 };
 
 exports.editAccount = (req, res) => {
-  res.render("editAccount", { title: "Edition de votre compte" });
+  res.render("editAccount", { title: "Edition de votre compte", csrfToken: req.csrfToken() });
 };
 
 exports.updateAccount = async (req, res) => {
