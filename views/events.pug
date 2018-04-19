@@ -14,6 +14,7 @@ block content
         .search
           input.search__input(type="text" placeholder="Restaurant Cayenne, pizzeria, plombier..." name="search" value=`${search?search:''}`)
           input#around-value(type="hidden" name="aroundValue" value=`${around}`)
+          input(type="hidden" name="_csrf" value=`${csrfToken}`)
     .pure-u-1
       .pure-u-1.u-sm-2-5.l-box
         .result

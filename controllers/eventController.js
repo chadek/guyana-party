@@ -7,7 +7,7 @@ const { getPagedItems } = require("../handlers/tools");
 exports.eventsPage = (req, res) => {
   const search = req.bodyString("search") || req.queryString("q") || "";
   let around = req.bodyString("aroundValue") || "";
-  res.render("events", { title: "Les évènements sur la carte", search, around });
+  res.render("events", { title: "Les évènements sur la carte", search, around, csrfToken: req.csrfToken() });
 };
 
 exports.addPage = (req, res) => {
