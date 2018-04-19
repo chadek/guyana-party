@@ -17,7 +17,7 @@ exports.create = async (req, res) => {
 exports.getOrgaBySlug = async (req, res, next) => {
   const orga = await Organism.findOne({ slug: req.paramString("slug") }).populate("author");
   if (!orga) return next();
-  res.render("organism", { orga, title: orga.name });
+  res.render("organism", { orga, title: orga.name, csrfToken: req.csrfToken() });
 };
 
 exports.getOrganisms = async (req, res) => {

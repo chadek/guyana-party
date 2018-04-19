@@ -3,7 +3,7 @@ const User = mongoose.model("User");
 const { promisify } = require("es6-promisify");
 
 exports.subscriptionsPage = (req, res) => {
-  res.render("subscriptions", { title: "Choisissez une souscription" });
+  res.render("subscriptions", { title: "Choisissez une souscription", csrfToken: req.csrfToken() });
 };
 
 exports.selectFreeSubscription = async (req, res) => {
@@ -18,5 +18,5 @@ exports.selectFreeSubscription = async (req, res) => {
 
 exports.subscriptionPaymentPage = (req, res) => {
   const subscription = req.paramString("subscription");
-  res.render("payment", { title: "Paiement de votre souscription", subscription });
+  res.render("payment", { title: "Paiement de votre souscription", subscription, csrfToken: req.csrfToken() });
 };

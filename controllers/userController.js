@@ -46,7 +46,7 @@ exports.register = async (req, res, next) => {
 };
 
 exports.account = (req, res) => {
-  res.render("account", { title: "Votre compte" });
+  res.render("account", { title: "Votre compte", csrfToken: req.csrfToken() });
 };
 
 exports.hasOrganism = async (req, res, next) => {

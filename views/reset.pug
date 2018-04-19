@@ -18,5 +18,6 @@ block content
           .input-group
             span.input-group-label: i.fi-key.size-36
             input.input-group-field(type="password" name="password-confirm" placeholder="Mot de passe")
+          input(type="hidden" name="_csrf" value=`${csrfToken}`)
           button.button.expanded.success Valider
           p= status

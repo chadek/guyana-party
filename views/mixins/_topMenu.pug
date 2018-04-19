@@ -4,6 +4,7 @@ mixin topMenu()
       .search.search__nav
         form(action="/events" method="POST")
           input.search__input--nav(type="text" placeholder="Chercher par thème ou par lieu..." name="search" )
+          input(type="hidden" name="_csrf" value=`${csrfToken}`)
     unless user || isLogin
       ul.pure-menu-list
         li.pure-menu-item

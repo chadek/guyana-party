@@ -53,7 +53,7 @@ exports.getEventBySlug = async (req, res, next) => {
   if (!event) return next();
   const orga = await Organism.findOne({ _id: event.organism });
   if (!orga) return next();
-  res.render("event", { event, orga, title: event.name });
+  res.render("event", { event, orga, title: event.name, csrfToken: req.csrfToken() });
 };
 
 exports.getEvents = async (req, res) => {
