@@ -5,6 +5,7 @@ _DS_Store
 .idea
 .vscode
 variables.env
+package-lock.json
 haters/
 public/dist/*
 public/uploads/*
