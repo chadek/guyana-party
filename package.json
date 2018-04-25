@@ -6,7 +6,7 @@
     "node": ">= 7.6.0"
   },
   "scripts": {
-    "build": "./init/init_db.sh",
+    "build": "webpack",
     "start": "node ./start.js",
     "updates": "npm-check-updates -u",
     "watch": "nodemon ./start.js --ignore public/",
