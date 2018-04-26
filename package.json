@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "start": "node ./start.js",
+    "start": "webpack -p --progress && node ./start.js",
     "updates": "npm-check-updates -u",
     "watch": "nodemon ./start.js --ignore public/",
     "dev": "concurrently \"npm run watch\" \"npm run assets\" --names \"💻,📦\" --prefix name",
