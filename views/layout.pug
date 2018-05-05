@@ -23,7 +23,7 @@ html
       +topMenu()
       #content
         if locals.flashes
-          .row.flash-messages
+          .row.flash-messages.inner
             - const categories = Object.keys(locals.flashes)
             each category in categories
               each message in flashes[category]

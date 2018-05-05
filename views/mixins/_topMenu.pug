@@ -5,10 +5,10 @@ mixin topMenu()
         form(action="/events" method="POST")
           input.search__input--nav(type="text" placeholder="Chercher par thème ou par lieu..." name="search" )
           input(type="hidden" name="_csrf" value=`${csrfToken}`)
-    unless user || isLogin
+    unless user || isLogin || (currentPath == "/login" || currentPath == "/signup" || currentPath == "/forgot")
       ul.pure-menu-list
         li.pure-menu-item
-          a.pure-menu-link(href="/login") Connexion / Inscription
-
-
-
+          a.pure-menu-link(href="/login") Se connecter
+        li.pure-menu-separator
+        li.pure-menu-item
+          a.pure-menu-link(href="/signup") Créer un compte

@@ -14,14 +14,19 @@ router.get("/", mainController.homePage);
 router.get("/login", userController.loginForm);
 router.get("/logout", authController.logout);
 router.post("/login", authController.login);
+router.get("/signup", userController.signupForm);
 router.post(
-  "/register",
+  "/signup",
   mainController.upload,
   catchErrors(mainController.resize),
   userController.validateRegister,
   catchErrors(userController.register),
   authController.login
 );
+router.get("/forgot", userController.forgotForm);
+router.post("/forgot", catchErrors(authController.forgot));
+router.get("/reset/:token", catchErrors(authController.reset));
+router.post("/reset/:token", authController.confirmedPasswords, catchErrors(authController.update));
 
 /* Subscriptions */
 
@@ -40,9 +45,6 @@ router.get(
 /* Account */
 
 router.get("/account", authController.isLoggedIn, userController.account);
-router.post("/account/forgot", catchErrors(authController.forgot));
-router.get("/account/reset/:token", catchErrors(authController.reset));
-router.post("/account/reset/:token", authController.confirmedPasswords, catchErrors(authController.update));
 router.get("/account/edit", authController.isLoggedIn, userController.editAccount);
 router.post(
   "/account/edit",

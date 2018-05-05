@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  .pure-g.small-form-inner.l-wrap.top-space
+    .pure-u-1
+      .text-center
+        h1= title
+        span.quiet ou
+          a(href="/login")  se connecter à votre compte
+      .login-container
+        form(action=`/signup?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
+          label(for="name") Nom de l'organisateur
+          input#name(type="text" name="name" value=`${body ? body.name : ""}` required)
+          .top-space
+            label.pure-button.pure-button-primary.expanded(for="fileUpload") Représentation visuelle
+            input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
+            .file-upload-filename
+          label.top-space(for="email") Email
+            span.quiet  (ou identifiant)
+          input#email(type="email" name="email" value=`${body ? body.email : ""}` required)
+          label(for="password") Mot de passe
+          input#password(type="password" name="password" required)
+          label(for="password-confirm") Confirmer mot de passe
+          input#password-confirm(type="password" name="password-confirm" required)
+          input(type="hidden" name="_csrf" value=`${csrfToken}`)
+          button.pure-button.success.expanded.top-space Créer un nouveau compte
+          p.quiet En créant un compte, vous acceptez nos
+            a(href="#")  Conditions de Service
+            |  et notre
+            a(href="#")  Politique de Confidentialité
+            | .

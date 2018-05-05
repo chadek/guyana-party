@@ -4,7 +4,15 @@ const Organism = mongoose.model("Organism");
 const { promisify } = require("es6-promisify");
 
 exports.loginForm = (req, res) => {
-  res.render("login", { title: "Connexion/Inscription", csrfToken: req.csrfToken() });
+  res.render("login", { title: "Se connecter", csrfToken: req.csrfToken() });
+};
+
+exports.signupForm = (req, res) => {
+  res.render("signup", { title: "Créer un compte", csrfToken: req.csrfToken() });
+};
+
+exports.forgotForm = (req, res) => {
+  res.render("forgot", { title: "Réinitialiser votre mot de passe", csrfToken: req.csrfToken() });
 };
 
 exports.validateRegister = (req, res, next) => {
@@ -23,11 +31,11 @@ exports.validateRegister = (req, res, next) => {
   const errors = req.validationErrors();
   if (errors) {
     req.flash("error", errors.map(err => err.msg));
-    res.render("login", {
-      title: "Connexion/Inscription",
+    res.render("signup", {
+      title: "Créer un compte",
       body: req.body,
       flashes: req.flash(),
-      isRegisterForm: true
+      csrfToken: req.csrfToken()
     });
     return; // stop the fn from running
   }
@@ -81,9 +89,12 @@ exports.editAccount = (req, res) => {
 exports.updateAccount = async (req, res) => {
   const updates = {
     name: req.bodyString("name"),
-    email: req.bodyEmail("email"),
-    photo: req.bodyString("photo")
+    email: req.bodyEmail("email")
   };
+  const photo = req.bodyString("photo");
+  if(photo) {
+    updates.photo = photo;
+  }
   const user = await User.findOneAndUpdate(
     { _id: req.user._id },
     { $set: updates },

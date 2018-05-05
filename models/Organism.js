@@ -45,7 +45,8 @@ const OrganismSchema = new mongoose.Schema(
         },
         admin: Boolean
       }
-    ]
+    ],
+    subscription: String, // free < asso < pro < complete
   },
   {
     toJSON: { virtuals: true },

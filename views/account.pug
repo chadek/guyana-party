@@ -13,25 +13,25 @@ block content
             h4= user.name
             p
               = user.email
-              if user.subscription
+              //- if user.subscription
                 br
                 | Souscription :
                 strong  #{h.translateSubs(user.subscription)}
             p: a(href="/account/edit") Edition du compte
         .separator.top-space.lg-hide
       .pure-u-1.u-lg-5-6
-        if user.subscription
-          .pure-u-1.text-center.top-space
-            h2 Mes évènements
-          .pure-u-1.text-center
-            .mobile-app-toggle(data-mobile-app-toggle)
-              button.button.pure-button.btn-old Archivés
-              button.button.pure-button.btn-new.is-active À venir
-          //- events list
-          .pure-u-1.l-wrap.top-space.events
-            p.top-space.text-center Chargement...
-          .separator.top-space
-        else
+        //- if user.subscription
+        .pure-u-1.text-center.top-space
+          h2 Mes évènements
+        .pure-u-1.text-center
+          .mobile-app-toggle(data-mobile-app-toggle)
+            button.button.pure-button.btn-old Archivés
+            button.button.pure-button.btn-new.is-active À venir
+        //- events list
+        .pure-u-1.l-wrap.top-space.events
+          p.top-space.text-center Chargement...
+        .separator.top-space
+        //- else
           .pure-u-1.text-center.top-space
             p Vous n'avez actuellement souscrit à aucune offre, veuillez cliquer sur le bouton ci-dessous pour accéder à la page des souscriptions :
           .pure-u-1.text-center.top-space

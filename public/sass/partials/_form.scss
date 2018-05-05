@@ -80,3 +80,17 @@ textarea {
 // .button-secondary {
 //   background: rgb(66, 184, 221); /* this is a light blue */
 // }
+
+.small-form-inner {
+  max-width: 430px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.login-container {
+  margin-top: 2em;
+  label {
+    padding: 10px 0;
+    display: block;
+  }
+}

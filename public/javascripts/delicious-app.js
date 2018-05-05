@@ -1,15 +1,14 @@
 import "../sass/style.scss";
-
-import { B, BB } from "./modules/bling";
-import "./modules/menu";
-import { loginForm } from "./modules/loginForm";
-import makeMap from "./modules/map";
-import loadEventsOrgasList from "./modules/eventsOrgasList";
-import initDates from "./modules/date";
-import addEventForm from "./modules/addEventForm";
 import accountForm from "./modules/accountForm";
+import addEventForm from "./modules/addEventForm";
+import { B } from "./modules/bling";
+import initDates from "./modules/date";
+import loadEventsOrgasList from "./modules/eventsOrgasList";
 import geolocate from "./modules/geolocation";
+import makeMap from "./modules/map";
+import "./modules/menu";
 import subscriptions from "./modules/subscriptions";
+
 
 //$(document).foundation();
 
@@ -17,6 +16,7 @@ import subscriptions from "./modules/subscriptions";
 B("#fileUpload") &&
   B("#fileUpload").on("change", function(e) {
     e = e || window.event;
+    console.log("PASSE")
     this.nextSibling.textContent = `Fichier : ${(e.target || e.srcElement).files[0].name}`;
   });
 
@@ -38,7 +38,7 @@ if (aroundCheck) {
   });
 }
 
-loginForm(B(".forgot-link"));
+//loginForm(B(".forgot-link"));
 accountForm(B(".btn-old"), B(".btn-new"));
 subscriptions(B(".freeSubsBtn"), B(".assoSubsBtn"));
 makeMap(B("#map"));

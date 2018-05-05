@@ -24,7 +24,6 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  subscription: String, // free < asso < pro < complete
   resetPasswordToken: String,
   resetPasswordExpires: Date
 });
