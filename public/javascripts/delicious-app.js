@@ -38,7 +38,6 @@ if (aroundCheck) {
   });
 }
 
-//loginForm(B(".forgot-link"));
 accountForm(B(".btn-old"), B(".btn-new"));
 subscriptions(B(".freeSubsBtn"), B(".assoSubsBtn"));
 makeMap(B("#map"));
