@@ -3,9 +3,7 @@ extends layout
 include mixins/_footer
 
 block customStyle
-  //- link(rel="stylesheet", href="/vendor/foundation.min.css")
-  //- link(rel="stylesheet", href="/vendor/foundation-icons/foundation-icons.css")
-  link(rel="stylesheet", href="/vendor/ol.css")
+  link(rel="stylesheet", href="/vendor/ol/ol.css")
 
 block content
   .pure-g
@@ -34,6 +32,4 @@ block content
   +footer()
 
 block customScripts
-  //- script(src="/vendor/jquery.min.js")
-  //- script(src="/vendor/foundation.min.js")
-  script(src="/vendor/ol.min.js")
+  script(src="/vendor/ol/ol.min.js")
