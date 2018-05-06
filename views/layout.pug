@@ -28,10 +28,14 @@ html
           .row.flash-messages.inner
             - const categories = Object.keys(locals.flashes)
             each category in categories
-              each message in flashes[category]
-                .flash(class=`flash--${category}`)
-                  p.flash__text!= message
-                  button.flash__remove(onClick="this.parentElement.remove()") &times;
+              .flash(class=`flash--${category}`)
+                p.flash__text
+                  each message, i in flashes[category]
+                    != message
+                    if i > 0
+                      br
+                button.flash__remove(onClick="this.parentElement.remove()") &times;
+
         block content
 
       +footer()
