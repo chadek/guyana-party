@@ -67,20 +67,20 @@ exports.hasOrganism = async (req, res, next) => {
   next();
 };
 
-exports.hasSubscription = async (req, res, next) => {
-  const user = await User.findOne({
-    _id: req.user._id,
-    $where: function() {
-      return ["free", "asso", "pro", "complete"].includes(this.subscription);
-    }
-  });
-  if (!user) {
-    req.flash("error", "Choisissez une souscription pour la création de votre organisme.");
-    res.redirect("/souscriptions");
-    return;
-  }
-  next();
-};
+// exports.hasSubscription = async (req, res, next) => {
+//   const user = await User.findOne({
+//     _id: req.user._id,
+//     $where: function() {
+//       return ["free", "asso", "pro", "complete"].includes(this.subscription);
+//     }
+//   });
+//   if (!user) {
+//     req.flash("error", "Choisissez une souscription pour la création de votre organisme.");
+//     res.redirect("/souscriptions");
+//     return;
+//   }
+//   next();
+// };
 
 exports.editAccount = (req, res) => {
   res.render("editAccount", { title: "Edition de votre compte", csrfToken: req.csrfToken() });

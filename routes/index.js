@@ -59,13 +59,11 @@ router.post(
 router.get(
   "/organisms/add",
   authController.isLoggedIn,
-  catchErrors(userController.hasSubscription),
   orgaController.addPage
 );
 router.post(
   "/organisms/add",
   authController.isLoggedIn,
-  catchErrors(userController.hasSubscription),
   mainController.upload,
   catchErrors(mainController.resize),
   catchErrors(orgaController.create)
