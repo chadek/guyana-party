@@ -22,9 +22,9 @@
 .inner {
   max-width: 900px;
   margin: 0 auto;
-  @media all and (max-width: 900px) {
-    padding: 2rem;
-  }
+  // @media all and (max-width: 900px) {
+  //   padding: 2rem;
+  // }
 }
 
 .content {
@@ -119,6 +119,13 @@
   .banner__head {
     font-size: 3em;
   }
+}
+
+.home-link {
+  position: absolute;
+  width: 100%;
+  float: right;
+  text-align: right;
 }
 
 .footer {

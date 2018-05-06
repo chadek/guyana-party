@@ -258,41 +258,41 @@ small screens.
 /*
 Hides the menu at `48em`, but modify this based on your app's needs.
 */
-@media (min-width: 48em) {
-  // .header,
-  // .content {
-  //   padding-left: 2em;
-  //   padding-right: 2em;
-  // }
-  // #layout {
-  //   padding-left: 150px; /* left col width "#menu" */
-  //   left: 0;
-  // }
-  // #menu {
-  //   left: 150px;
-  // }
-  // .menu-link {
-  //   position: fixed;
-  //   //left: 150px;
-  //   //display: none;
-  // }
-  // #layout.active .menu-link {
-  //   left: 150px;
-  // }
-}
+// @media (min-width: 48em) {
+//   .header,
+//   .content {
+//     padding-left: 2em;
+//     padding-right: 2em;
+//   }
+//   #layout {
+//     padding-left: 150px; /* left col width "#menu" */
+//     left: 0;
+//   }
+//   #menu {
+//     left: 150px;
+//   }
+//   .menu-link {
+//     position: fixed;
+//     //left: 150px;
+//     //display: none;
+//   }
+//   #layout.active .menu-link {
+//     left: 150px;
+//   }
+// }
 
-@media (max-width: 48em) {
-  /* Only apply this when the window is small. Otherwise, the following
-  case results in extra padding on the left:
-      * Make the window small.
-      * Tap the menu to trigger the active state.
-      * Make the window large again.
-  */
-  // #layout.active {
-  //   position: relative;
-  //   left: 150px;
-  // }
-}
+// @media (max-width: 48em) {
+//   /* Only apply this when the window is small. Otherwise, the following
+//   case results in extra padding on the left:
+//       * Make the window small.
+//       * Tap the menu to trigger the active state.
+//       * Make the window large again.
+//   */
+//   #layout.active {
+//     position: relative;
+//     left: 150px;
+//   }
+// }
 
 #menu-overlay {
   position: absolute;
@@ -305,19 +305,10 @@ Hides the menu at `48em`, but modify this based on your app's needs.
   opacity: 0;
   cursor: pointer;
   visibility: hidden;
-  overflow: hidden;
+
 }
 #menu-overlay.active {
   opacity: 1;
   visibility: visible;
   z-index: 999;
 }
-// .menu-overlay.is-closable {
-//   cursor: pointer;
-// }
-// .menu-overlay.is-overlay-absolute {
-//   position: absolute;
-// }
-// .menu-overlay.is-overlay-fixed {
-//   /*! position: fixed; */
-// }

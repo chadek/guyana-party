@@ -24,6 +24,10 @@ html
       +topMenu()
 
       #content
+        unless currentPath == "/"
+          .home-link.l-box
+            a(href="/") ← accueil
+
         if locals.flashes
           .row.flash-messages.inner
             - const categories = Object.keys(locals.flashes)

@@ -16,7 +16,6 @@ import subscriptions from "./modules/subscriptions";
 B("#fileUpload") &&
   B("#fileUpload").on("change", function(e) {
     e = e || window.event;
-    console.log("PASSE")
     this.nextSibling.textContent = `Fichier : ${(e.target || e.srcElement).files[0].name}`;
   });
 
