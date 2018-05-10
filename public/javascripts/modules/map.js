@@ -25,7 +25,7 @@ function makeMap(mapDiv) {
   // View declaration (set max/min zoom and init position)
   const view = new ol.View({
     center: pos,
-    zoom: 14,
+    zoom: 6,
     maxZoom: MAXZOOM,
     minZoom: MINZOOM
   });
@@ -36,6 +36,7 @@ function makeMap(mapDiv) {
   });
 
   let point = null; // Default Point
+  let pointGMT = null;
   let defaultInteractions = { mouseWheelZoom: false };
 
   // Events are managed, we can scroll the map
@@ -44,10 +45,20 @@ function makeMap(mapDiv) {
   }
 
   // init map with view, layer. Add scale line at left and scale line at bottom left. Target: map div
+
+  var timezones = new ol.layer.Vector({
+    source: new ol.source.Vector({
+      url: 'https://openlayers.org/en/v4.6.5/examples/data/kml/timezones.kml',
+      format: new ol.format.KML({
+        extractStyles: false
+      })
+    })
+  });
+
   const map = new ol.Map({
     target: "map",
     controls: ol.control.defaults().extend([new ol.control.ScaleLine(), new ol.control.ZoomSlider()]),
-    layers: [baseLayer],
+    layers: [baseLayer,timezones],
     view: view,
     interactions: ol.interaction.defaults(defaultInteractions)
   });
@@ -101,10 +112,26 @@ function makeMap(mapDiv) {
         style: defaultStyleMark
       });
       map.addLayer(point);
-      // update coordinate fields
+
       document.getElementById("longitude").value = coord[0];
       document.getElementById("latitude").value = coord[1];
-      console.log(coord);
+
+      const feature = map.forEachFeatureAtPixel(map.getEventPixel(e.originalEvent), function(feature) {
+        return feature;
+      });
+      if (feature) {
+        console.log("LOGGG OK",feature.get("name"));
+        const GMT = feature.get("name").match(/([\-+]\d{2}:\d{2})$/);
+        const timezone = document.getElementById("timezone");
+        if(timezone) timezone.value = GMT[1];
+      }
+      
+
+      
+      // update coordinate fields
+      
+
+      // console.log(coord);
       // get Address from nominatim & update the value
       axiosGet(
         `https://nominatim.openstreetmap.org/reverse?format=json&lon=${coord[0].toString()}&lat=${coord[1].toString()}`,
