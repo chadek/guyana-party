@@ -27,6 +27,7 @@ const eventSchema = new mongoose.Schema(
         default: "Point"
       },
       coordinates: [Number],
+      timezone: String,
       address: {
         type: String,
         required: "Veuillez sélectionner le lieu de l'évènement sur la carte, ou saisir une adresse."
