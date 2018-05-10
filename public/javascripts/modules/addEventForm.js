@@ -1,6 +1,7 @@
 function init(dp1, dp2) {
   // get current date
   const date = new Date();
+  // Date client
   // Thu May 10 2018 18:26:52 GMT-0300 (-03)
   console.log("Date de MERDE! ",date);
   // build hours string
