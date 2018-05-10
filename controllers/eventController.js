@@ -38,8 +38,8 @@ exports.create = async (req, res) => {
   //   req.body.start = new Date(startDate+"T"+startTime+"Z") - timezonesec;
   //   req.body.end = new Date(endDate+"T"+endTime+"Z") - timezonesec;
   // }
-  req.body.start = new Date(startDate+"T"+startTime+"Z");
-  req.body.end = new Date(endDate+"T"+endTime+"Z");
+  req.body.start = new Date(startDate+"T"+startTime);
+  req.body.end = new Date(endDate+"T"+endTime);
 
 
   console.log("Début ",req.body.start);
