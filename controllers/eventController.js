@@ -32,11 +32,11 @@ exports.create = async (req, res) => {
   let endTime = req.bodyString("endtime");
 
   if (timezone[1] == "+") {
-    req.body.start = new Date(startDate+"T"+startTime) + timezonesec;
-    req.body.end = new Date(endDate+"T"+endTime) + timezonesec;
+    req.body.start = new Date(startDate+"T"+startTime+"Z") + timezonesec;
+    req.body.end = new Date(endDate+"T"+endTime+"Z") + timezonesec;
   }else{
-    req.body.start = new Date(startDate+"T"+startTime) - timezonesec;
-    req.body.end = new Date(endDate+"T"+endTime) - timezonesec;
+    req.body.start = new Date(startDate+"T"+startTime+"Z") - timezonesec;
+    req.body.end = new Date(endDate+"T"+endTime+"Z") - timezonesec;
   }
 
   console.log("Début ",req.body.start);
