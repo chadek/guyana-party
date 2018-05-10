@@ -1,6 +1,8 @@
 function init(dp1, dp2) {
   // get current date
   const date = new Date();
+  // Thu May 10 2018 18:26:52 GMT-0300 (-03)
+  console.log("Date de MERDE! ",date);
   // build hours string
   let str = ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
   document.getElementById("starttime").value = str;
