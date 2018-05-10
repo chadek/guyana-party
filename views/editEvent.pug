@@ -54,6 +54,7 @@ block content
             input.input-group-field#address(type="text" placeholder="Adresse" name="location[address]" value=(event.location && event.location.address))
             input#longitude(type="hidden" name="location[coordinates][0]" value=(event.location && event.location.coordinates[0]))
             input#latitude(type="hidden" name="location[coordinates][1]" value=(event.location && event.location.coordinates[1]))
+            input#timezone(type="hidden" name="timezone")
           .pure-u-1.top-space
             //-.cell.large-8.medium-8.large-offset-2.medium-offset-2
             input.pure-button.success.button.expanded(type="submit" value="Créer")
