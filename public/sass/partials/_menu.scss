@@ -61,7 +61,6 @@
   background-color: black;
   .pure-menu-list {
     float: right;
-    margin-top: 5px;
   }
 }
 .pure-menu-horizontal .pure-menu-link {
@@ -399,4 +398,12 @@ Hides the menu at `48em`, but modify this based on your app's needs.
   &:hover {
     background-color: $lightGray;
   }
+}
+
+.menu-item-avatar .pure-menu-link {
+  height: 44px
+}
+
+.pure-menu-list.connection {
+  margin-top: 5px;
 }
