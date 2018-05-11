@@ -12,3 +12,9 @@ mixin topMenu()
         li.pure-menu-separator
         li.pure-menu-item
           a.pure-menu-link(href="/signup") Créer un compte
+    else
+      if user
+        ul.pure-menu-list
+          li.pure-menu-item.menu-item-avatar
+            span.pure-menu-link
+              img.avatar(src=`${h.profilePhotoSrc(user)}` alt="Mon compte")

@@ -9,8 +9,14 @@ import makeMap from "./modules/map";
 import "./modules/menu";
 import subscriptions from "./modules/subscriptions";
 
-
-//$(document).foundation();
+// open popup on click on avatar nav
+B(".menu-item-avatar").on("click", () => {
+  const popOver = B(".pop-over");
+  popOver.classList.toggle("pop-over--visible");
+  B(".pop-over-header-close-btn").on("click", () => {
+    popOver.classList.remove("pop-over--visible");
+  });
+});
 
 // managing file uploads when needed
 B("#fileUpload") &&
