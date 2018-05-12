@@ -6,7 +6,7 @@ import initDates from "./modules/date";
 import loadEventsOrgasList from "./modules/eventsOrgasList";
 import geolocate from "./modules/geolocation";
 import makeMap from "./modules/map";
-import "./modules/menu";
+// import "./modules/menu";
 import subscriptions from "./modules/subscriptions";
 
 // open popup on click on avatar nav

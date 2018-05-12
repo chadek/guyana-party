@@ -1,4 +1,4 @@
-include mixins/_sideMenu
+//- include mixins/_sideMenu
 include mixins/_topMenu
 include mixins/_footer
 
@@ -17,10 +17,10 @@ html
   body
     #layout
       //- Menu toggle
-      a.menu-link.active#menuLink(href="#menu")
+      //- a.menu-link.active#menuLink(href="#menu")
         //- Hamburger icon
-        span
-      +sideMenu()
+        //- span
+      //- +sideMenu()
       +topMenu()
 
       if user

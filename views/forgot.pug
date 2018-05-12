@@ -10,7 +10,7 @@ block content
         p Saisir votre adresse email et un lien permettant la réinitialisation de votre mot de passe vous sera envoyé.
       .login-container.small-form-inner
         form(action="/forgot" method="POST")
-          label(for="email") Email
+          label(for="email") E-mail
           input#email(type="email" name="email" required)
           input(type="hidden" name="_csrf" value=`${csrfToken}`)
           button.pure-button.success.expanded.top-space Envoyer

@@ -401,7 +401,8 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 }
 
 .menu-item-avatar .pure-menu-link {
-  height: 44px
+  height: 44px;
+  cursor: pointer;
 }
 
 .pure-menu-list.connection {
