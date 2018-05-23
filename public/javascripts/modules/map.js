@@ -134,7 +134,7 @@ function makeMap(mapDiv) {
       // console.log(coord);
       // get Address from nominatim & update the value
       axiosGet(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lon=${coord[0].toString()}&lat=${coord[1].toString()}`,
+        `http://nominatim.openstreetmap.org/reverse?format=json&lon=${coord[0].toString()}&lat=${coord[1].toString()}`,
         data => (document.getElementById("address").value = data.display_name)
       );
     });
