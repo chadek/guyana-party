@@ -18,29 +18,26 @@ function init(dp1, dp2) {
   dp1.value = str;
   dp2.value = str;
 
+  // const tz = date.getTimezoneOffset();
+  // const tzm = tz % 60;
+  // const tzh = tz / 60;
 
-  const tz = date.getTimezoneOffset();
-  const tzm = tz % 60;
-  const tzh = tz / 60;
+  // timezoneh=document.getElementById("timezoneh");
+  // timezonem=document.getElementById("timezonem");
+  // if (tzh < 0) {
+  //   if (tzh > -10){
+  //     timezoneh.value = "+0"+tzm;
+  //   }
+  //   timezoneh.value = "+"+tzm;
 
-  timezoneh=document.getElementById("timezoneh");
-  timezonem=document.getElementById("timezonem");
-  if (tzh < 0) {
-    if (tzh > -10){
-      timezoneh.value = "+0"+tzm;
-    }
-    timezoneh.value = "+"+tzm;
-    
-  } else {
-    if (tzh < 10) {
-      timezoneh.value = `-0${-tzm}`;
-    } else {
-      timezoneh.value = `-${-tzm}`;
-    }
-    
-  }
+  // } else {
+  //   if (tzh < 10) {
+  //     timezoneh.value = `-0${-tzm}`;
+  //   } else {
+  //     timezoneh.value = `-${-tzm}`;
+  //   }
 
-
+  // }
 }
 
 // function initClockPicker(clockPicker) {

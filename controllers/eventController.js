@@ -12,7 +12,26 @@ exports.eventsPage = (req, res) => {
 
 exports.addPage = (req, res) => {
   const orga = req.queryString("orga");
-  res.render("editEvent", { event: {}, orga, title: "Création d'un évènement public", csrfToken: req.csrfToken() });
+  const time = Date.now();
+  const moment = require("moment-timezone");
+  const tzNamesList = moment.tz.names();
+  let tzList = [];
+  for (let i = 0; i < tzNamesList.length; i++) {
+    const zone = moment.tz.zone(tzNamesList[i]);
+    const tzValue = moment.tz(time, zone.name).format("Z");
+    const selected = moment.tz.guess() == zone.name;
+    tzList.push({ id: zone.utcOffset(time), label: `(UTC${tzValue}) ${zone.name}`, value: zone.name, selected });
+  }
+  tzList.sort((a, b) => b.id - a.id);
+  // TODO: filter the values to remove bad ones
+  // ...
+  res.render("editEvent", {
+    event: {},
+    orga,
+    tzList,
+    title: "Création d'un évènement public",
+    csrfToken: req.csrfToken()
+  });
 };
 
 exports.canCreate = async (req, res, next) => {
@@ -25,8 +44,11 @@ exports.create = async (req, res) => {
   const startTime = req.bodyString("starttime");
   const endDate = req.bodyString("enddate");
   const endTime = req.bodyString("endtime");
-  req.body.start = new Date( startDate+"T"+startTime  );
-  req.body.end = new Date(endDate+"T"+endTime );
+  const tz = req.bodyString("tz");
+  const moment = require("moment-timezone");
+  req.body.start = moment.tz(`${startDate} ${startTime}`, tz).format();
+  req.body.end = moment.tz(`${endDate} ${endTime}`, tz).format();
+  req.body.timezone = `(UTC${moment.tz(Date.now(), tz).format("Z")}) ${tz}`;
   const event = await new Event(req.body).save();
   req.flash("success", `Evènement "${event.name}" créé avec succès !`);
   res.redirect(`/event/${event.slug}`);
