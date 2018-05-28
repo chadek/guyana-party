@@ -48,7 +48,7 @@ exports.create = async (req, res) => {
   const moment = require("moment-timezone");
   req.body.start = moment.tz(`${startDate} ${startTime}`, tz).format();
   req.body.end = moment.tz(`${endDate} ${endTime}`, tz).format();
-  req.body.timezone = `(UTC${moment.tz(Date.now(), tz).format("Z")}) ${tz}`;
+  req.body.timezone = `(UTC${moment.tz(`${startDate} ${startTime}`, tz).format("Z")}) ${tz}`;
   const event = await new Event(req.body).save();
   req.flash("success", `Evènement "${event.name}" créé avec succès !`);
   res.redirect(`/event/${event.slug}`);
