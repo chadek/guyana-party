@@ -7,7 +7,6 @@ _DS_Store
 variables.env
 package-lock.json
 haters/
-public/dist/*
+public/dist/
 public/uploads/*
-!public/dist/.gitkeep
 !public/uploads/.gitkeep
