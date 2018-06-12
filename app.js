@@ -43,7 +43,7 @@ const sess = {
   resave: false,
   saveUninitialized: false,
   store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  cookie: {}
+  cookie: { maxAge: 3600000 } // one hour
 };
 if (!devMode) {
   app.set("trust proxy", 1); // trust first proxy

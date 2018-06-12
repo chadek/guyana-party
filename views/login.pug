@@ -9,9 +9,12 @@ block content
           a(href="/signup")  créer un compte
       .login-container
         form(action="/login" method="POST")
+          - const savedData = h.store.get("login-form-data")
+          - const errorData = h.store.get("form-errors")
+          - h.store.remove("form-errors")
           label(for="email") E-mail
             span.quiet  (ou identifiant)
-          input#email(type="email" name="email" required)
+          input#email(type="email" name="email" value=`${savedData?savedData.email:""}` class=`${errorData && errorData.includes("email")?"error":""}` required)
           label(for="password") Mot de passe
           input#password(type="password" name="password" required)
           label

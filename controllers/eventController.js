@@ -3,6 +3,7 @@ const Event = mongoose.model("Event");
 const Organism = mongoose.model("Organism");
 const { promisify } = require("es6-promisify");
 const { getPagedItems } = require("../handlers/tools");
+const store = require("store");
 
 exports.eventsPage = (req, res) => {
   const search = req.bodyString("search") || req.queryString("q") || "";
@@ -25,7 +26,7 @@ exports.addPage = (req, res) => {
   tzList.sort((a, b) => b.id - a.id);
   // TODO: filter the values to remove bad ones
   // ...
-  res.render("editEvent", {
+  res.render("addEvent", {
     event: {},
     orga,
     tzList,
@@ -39,6 +40,23 @@ exports.canCreate = async (req, res, next) => {
 };
 
 exports.create = async (req, res) => {
+  store.set("addevents-form-data", req.body); // store body to prefill the register form
+
+  req.sanitizeBody("name");
+  req.sanitizeBody("description");
+  req.sanitizeBody("location[address]");
+  req.sanitizeBody("location[coordinates][0]");
+  req.sanitizeBody("location[coordinates][1]");
+  req.checkBody("name", "Vous devez saisir le nom de l'évènement.").notEmpty();
+  req.checkBody("location[address]", "Veuillez sélectionner le lieu de l'évènement sur la carte.").notEmpty();
+  req.checkBody("description", "Veuillez saisir une description de l'évènement.").notEmpty();
+  const errors = req.validationErrors();
+  if (errors) {
+    store.set("form-errors", errors.map(err => err.param));
+    req.flash("error", errors.map(err => err.msg));
+    return res.redirect("/events/add");
+  }
+
   req.body.author = req.user._id;
   const startDate = req.bodyString("startdate");
   const startTime = req.bodyString("starttime");
@@ -64,7 +82,7 @@ exports.getEventBySlug = async (req, res, next) => {
 
 exports.getEvents = async (req, res) => {
   const page = req.queryInt("page") || 1;
-  const limit = req.queryInt("limit") || 4;
+  const limit = req.queryInt("limit") || 7;
   const orga = req.queryString("orga");
   let find = orga ? { organism: orga } : { author: req.user._id };
   const result = await getPagedItems(Event, page, limit, find, {}, { created: "desc" });

@@ -9,22 +9,25 @@ block content
           a(href="/login")  se connecter à votre compte
       .login-container
         form(action=`/signup?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
-          label(for="name") Nom de l'organisateur
-          input#name(type="text" name="name" value=`${body ? body.name : ""}` required)
+          - const savedData = h.store.get("signup-form-data")
+          - const errorData = h.store.get("form-errors")
+          - h.store.remove("form-errors")
+          label(for="name") Nom
+          input#name(type="text" name="name" value=`${savedData?savedData.name:""}` class=`${errorData && errorData.includes("name")?"error":""}` required)
           .top-space
             label.pure-button.pure-button-primary.expanded(for="fileUpload") Représentation visuelle
             input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
             .file-upload-filename
           label.top-space(for="email") E-mail
             span.quiet  (ou identifiant)
-          input#email(type="email" name="email" value=`${body ? body.email : ""}` required)
+          input#email(type="email" name="email" value=`${savedData?savedData.email:""}` class=`${errorData && errorData.includes("email")?"error":""}` required)
           label(for="password") Mot de passe
-          input#password(type="password" name="password" required)
+          input#password(type="password" name="password" class=`${errorData && errorData.includes("password")?"error":""}` required)
           label(for="password-confirm") Confirmer mot de passe
-          input#password-confirm(type="password" name="password-confirm" required)
+          input#password-confirm(type="password" name="password-confirm" class=`${errorData && errorData.includes("password-confirm")?"error":""}` required)
           button.pure-button.success.expanded.top-space Créer un nouveau compte
           p.quiet En créant un compte, vous acceptez nos
-            a(href="#")  Conditions de Service
+            a(href="/cgu")  Conditions de Service
             |  et notre
-            a(href="#")  Politique de Confidentialité
+            a(href="/privacy")  Politique de Confidentialité
             | .

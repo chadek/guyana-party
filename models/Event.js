@@ -12,7 +12,8 @@ const eventSchema = new mongoose.Schema(
     slug: String,
     description: {
       type: String,
-      trim: true
+      trim: true,
+      required: "Veuillez saisir une description de l'évènement."
     },
     tags: [String],
     created: {
@@ -30,7 +31,7 @@ const eventSchema = new mongoose.Schema(
       timezone: String,
       address: {
         type: String,
-        required: "Veuillez sélectionner le lieu de l'évènement sur la carte, ou saisir une adresse."
+        required: "Veuillez sélectionner le lieu de l'évènement sur la carte."
       }
     },
     photo: String,

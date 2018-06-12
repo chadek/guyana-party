@@ -15,6 +15,7 @@ const multerOptions = {
 };
 
 exports.homePage = (req, res) => {
+  require("store").clearAll(); // clear all data stored
   res.render("home", { title: "Liberté Humaine", csrfToken: req.csrfToken() });
 };
 
