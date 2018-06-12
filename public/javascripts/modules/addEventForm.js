@@ -2,8 +2,11 @@ function init(dp1, dp2) {
   // get current date
   const date = new Date();
   // Date client
-  // Thu May 10 2018 18:26:52 GMT-0300 (-03)
-  console.log("Date de MERDE! ",date);
+  // d = new Date()
+  // Thu May 10 2018 18:41:41 GMT-0300 (-03)
+  // n = d.toUTCString();
+  // "Thu, 10 May 2018 21:41:41 GMT"
+  //console.log("Date de MERDE! ",date);
   // build hours string
   let str = ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
   document.getElementById("starttime").value = str;
@@ -14,6 +17,27 @@ function init(dp1, dp2) {
   str = `${date.getFullYear()}-${month}-${day}`;
   dp1.value = str;
   dp2.value = str;
+
+  // const tz = date.getTimezoneOffset();
+  // const tzm = tz % 60;
+  // const tzh = tz / 60;
+
+  // timezoneh=document.getElementById("timezoneh");
+  // timezonem=document.getElementById("timezonem");
+  // if (tzh < 0) {
+  //   if (tzh > -10){
+  //     timezoneh.value = "+0"+tzm;
+  //   }
+  //   timezoneh.value = "+"+tzm;
+
+  // } else {
+  //   if (tzh < 10) {
+  //     timezoneh.value = `-0${-tzm}`;
+  //   } else {
+  //     timezoneh.value = `-${-tzm}`;
+  //   }
+
+  // }
 }
 
 // function initClockPicker(clockPicker) {

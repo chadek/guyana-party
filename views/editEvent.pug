@@ -25,7 +25,12 @@ block content
             select#orga-select(name="organism")
             input#orga-id(type="hidden" value=`${orga}`)
           .pure-u-1.l-wrap.top-space
-            .pure-u-1: label Début :
+            .pure-u-1.top-space: label
+              | Fuseau horaire&nbsp;:&nbsp;
+              select#tz-select(name="tz")
+                each tz in tzList
+                  option(value=tz.value selected=tz.selected)= tz.label
+            .pure-u-1.top-space: label Début :
             .u-sm-5-12.l-content
               span.pure-u-1-8.icon!= h.icon("calendar")
               input.pure-u-7-8#dp1(type="date" name="startdate")
@@ -43,6 +48,17 @@ block content
                 span.pure-u-1-8.icon!= h.icon("clock")
                 input.pure-u-7-8#endtime(type="text" name="endtime")
                 input#end(type="hidden" name="end")
+            //-.pure-u-1.top-space: label Fuseau horaire :
+              .pure-u-1: label GTM
+                - const valuesTZH = ["+12","+11","+10","+09","+08","+07","+06","+05","+04","+03","+02","+01","+00","-01","-02","-03","-04","-05","-06","-07","-08","-09","-10","-11"]
+                - const valuesTZM = ["00","15","30","45"]
+                select#timezoneh(name="timezoneh")
+                  each TZH in valuesTZH
+                    option(value=TZH)= TZH
+                select#timezonem(name="timezonem")
+                  each TZM in valuesTZM
+                    option(value=TZM)= TZM
+
           .pure-u-1.top-space
             label Que proposez vous ?
             textarea(name="description" placeholder="Un petit wiki pour décrire proprement l'évènement")
@@ -54,7 +70,7 @@ block content
             input.input-group-field#address(type="text" placeholder="Adresse" name="location[address]" value=(event.location && event.location.address))
             input#longitude(type="hidden" name="location[coordinates][0]" value=(event.location && event.location.coordinates[0]))
             input#latitude(type="hidden" name="location[coordinates][1]" value=(event.location && event.location.coordinates[1]))
-            input#timezone(type="hidden" name="timezone")
+            //- input#timezone(type="hidden" name="timezone")
           .pure-u-1.top-space
             //-.cell.large-8.medium-8.large-offset-2.medium-offset-2
             input.pure-button.success.button.expanded(type="submit" value="Créer")

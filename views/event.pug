@@ -35,6 +35,8 @@ block content
           input.pure-u-7-8#endtime(type="text" readonly)
         input#event-start(type="hidden" value=`${event.start}`)
         input#event-end(type="hidden" value=`${event.end}`)
+      .pure-u-1.l-wrap.top-space
+        .u-sm-1: label= `Fuseau horaire : ${event.timezone}`
     .separator
     .pure-u-1.top-space
       label Le lieu de l'évènement :
