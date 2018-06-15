@@ -1,5 +1,5 @@
 import { B, BB } from "./bling";
-import { axiosGet, data2HTML, formatDateTime } from "./utils";
+import { axiosGet, data2HTML, formatDateTime, sliceStr } from "./utils";
 
 function openCard() {
   const cardHeader = BB(".card__header");
@@ -32,14 +32,16 @@ function getEventsList(eventsDiv) {
             <div class="card__header">
               <img src="${imgSrc}" alt="photo évènement">
               <div class="card__header--content">
-                <p><strong>Organisateur :</strong> <a href="/organism/${item.organism.slug}">${item.organism.name}</a>
+                <p><strong>Organisateur :</strong> <a href="/organism/${item.organism.slug}">${sliceStr(
+          item.organism.name
+        )}</a>
                 <br><strong>Début :</strong> ${start}
                 <br><strong>Fin :</strong> ${end}
                 <br><strong>Adresse :</strong> ${item.location.address}</p>
               </div>
             </div>
             <div class="card__section">
-              <p><a href="/event/${item.slug}">${item.name}</a></p>
+              <p><a href="/event/${item.slug}">${sliceStr(item.name)}</a></p>
             </div>
           </div>
         </div>`;
@@ -74,7 +76,7 @@ function getOrgasList(orgasDiv) {
               </div>
             </div>
             <div class="card__section">
-              <p><a href="/organism/${item.slug}">${item.name}</a></p>
+              <p><a href="/organism/${item.slug}">${sliceStr(item.name)}</a></p>
             </div>
           </div>
         </div>`;
@@ -113,7 +115,7 @@ function getEventsFromOrga(orgaEventsDiv) {
               </div>
             </div>
             <div class="card__section">
-              <p><a href="/event/${item.slug}">${item.name}</a></p>
+              <p><a href="/event/${item.slug}">${sliceStr(item.name)}</a></p>
             </div>
           </div>
         </div>`;
@@ -131,13 +133,14 @@ function getEventsFromOrga(orgaEventsDiv) {
 function initOrgaDropdown(orgasSelect) {
   if (!orgasSelect) return;
   const orgaId = B("#orga-id");
-  if (!orgaId || !orgaId.value) return;
+  //if (!orgaId || !orgaId.value) return;
   axiosGet("/api/organisms", data => {
     if (data) {
       const format = item => {
-        if (orgaId.value && item._id === orgaId.value)
-          return `<option value="${item._id}" selected>${item.name}</option>`;
-        return `<option value="${item._id}">${item.name}</option>`;
+        return `<option value="${item._id}"${orgaId.value && item._id === orgaId.value ? " selected" : ""}>${sliceStr(
+          item.name,
+          30
+        )}</option>`;
       };
       orgasSelect.innerHTML = data2HTML(data, format, "");
     }
