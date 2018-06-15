@@ -40,7 +40,7 @@ app.use(cookieParser());
 const sess = {
   secret: process.env.SECRET,
   key: process.env.KEY,
-  resave: false,
+  resave: true,
   saveUninitialized: false,
   store: new MongoStore({ mongooseConnection: mongoose.connection }),
   cookie: { maxAge: 3600000 } // one hour
