@@ -17,8 +17,6 @@ router.post("/login", authController.preLogin, authController.login);
 router.get("/signup", userController.signupForm);
 router.post(
   "/signup",
-  mainController.upload,
-  catchErrors(mainController.resize),
   userController.validateRegister,
   catchErrors(userController.register),
   authController.login
