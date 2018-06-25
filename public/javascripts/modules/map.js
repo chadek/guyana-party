@@ -140,24 +140,30 @@ function makeMap(mapDiv) {
       map.addLayer(point);
       view.setCenter(position);
       // search geolocated events
+      B("#around-label").classList.add("hidden");
       searchEvents(`/api/search?q=${search}&lon=${pos.coords.longitude}&lat=${pos.coords.latitude}`);
     });
   }
+  B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
+  geolocate();
 
-  const check = B("#around-check");
-  if (check && check.checked) {
-    geolocate();
-  } else {
-    searchEvents(`/api/search?q=${search}`);
-  }
-  check.on("click", function() {
-    if (this.checked) {
-      geolocate();
-    } else {
-      B("#around-label").innerHTML = "Autour de moi";
-      map.removeLayer(point);
-    }
-  });
+
+
+
+  // const check = B("#around-check");
+  // if (check && check.checked) {
+  //   geolocate();
+  // } else {
+  //   searchEvents(`/api/search?q=${search}`);
+  // }
+  // check.on("click", function() {
+  //   if (this.checked) {
+  //     geolocate();
+  //   } else {
+  //     B("#around-label").innerHTML = "Autour de moi";
+  //     map.removeLayer(point);
+  //   }
+  // });
 
   let clusters = new ol.layer.Vector({});
 
