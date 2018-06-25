@@ -37,7 +37,8 @@ function getEventsList(eventsDiv) {
         )}</a>
                 <br><strong>Début :</strong> ${start}
                 <br><strong>Fin :</strong> ${end}
-                <br><strong>Adresse :</strong> ${item.location.address}</p>
+                <br><strong>Adresse :</strong> ${item.location.address}
+                <br><a href="/events/${item.id}/edit">Modifier</a></p>
               </div>
             </div>
             <div class="card__section">

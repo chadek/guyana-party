@@ -11,8 +11,7 @@ exports.eventsPage = (req, res) => {
   res.render("events", { title: "Les évènements sur la carte", search, around, csrfToken: req.csrfToken() });
 };
 
-exports.addPage = (req, res) => {
-  const orga = req.queryString("orga");
+const getTZList = () => {
   const time = Date.now();
   const moment = require("moment-timezone");
   const tzNamesList = moment.tz.names();
@@ -26,17 +25,50 @@ exports.addPage = (req, res) => {
   tzList.sort((a, b) => b.id - a.id);
   // TODO: filter the values to remove bad ones
   // ...
-  res.render("addEvent", {
-    event: {},
+  return tzList;
+};
+
+exports.addPage = (req, res) => {
+  const orga = req.queryString("orga");
+  res.render("editEvent", {
     orga,
-    tzList,
+    tzList: getTZList(),
     title: "Création d'un évènement public",
     csrfToken: req.csrfToken()
   });
 };
 
-exports.canCreate = async (req, res, next) => {
-  next();
+const confirmOwner = (event, user) => {
+  if (!event.author.equals(user._id)) {
+    throw Error("Vous ne pouvez pas éditer cet évènement.");
+  }
+};
+
+exports.editEvent = async (req, res) => {
+  // 1. Find the event given the ID
+  const event = await Event.findOne({ _id: req.paramString("id") });
+  // 2. confirm they are the owner of the event
+  confirmOwner(event, req.user);
+  // 3. render out the edit form so the user can update their store
+  res.render("editEvent", {
+    event,
+    tzList: getTZList(),
+    title: "Edition de l'évènement",
+    csrfToken: req.csrfToken()
+  });
+};
+
+const bodyFormatDateTime = req => {
+  const startDate = req.bodyString("startdate");
+  const startTime = req.bodyString("starttime");
+  const endDate = req.bodyString("enddate");
+  const endTime = req.bodyString("endtime");
+  const tz = req.bodyString("tz");
+  const moment = require("moment-timezone");
+  req.body.start = moment.tz(`${startDate} ${startTime}`, tz).format();
+  req.body.end = moment.tz(`${endDate} ${endTime}`, tz).format();
+  req.body.timezone = `(UTC${moment.tz(`${startDate} ${startTime}`, tz).format("Z")}) ${tz}`;
+  return req.body;
 };
 
 exports.create = async (req, res) => {
@@ -58,18 +90,37 @@ exports.create = async (req, res) => {
   }
 
   req.body.author = req.user._id;
-  const startDate = req.bodyString("startdate");
-  const startTime = req.bodyString("starttime");
-  const endDate = req.bodyString("enddate");
-  const endTime = req.bodyString("endtime");
-  const tz = req.bodyString("tz");
-  const moment = require("moment-timezone");
-  req.body.start = moment.tz(`${startDate} ${startTime}`, tz).format();
-  req.body.end = moment.tz(`${endDate} ${endTime}`, tz).format();
-  req.body.timezone = `(UTC${moment.tz(`${startDate} ${startTime}`, tz).format("Z")}) ${tz}`;
+  // const startDate = req.bodyString("startdate");
+  // const startTime = req.bodyString("starttime");
+  // const endDate = req.bodyString("enddate");
+  // const endTime = req.bodyString("endtime");
+  // const tz = req.bodyString("tz");
+  req.body = bodyFormatDateTime(req);
+  // const moment = require("moment-timezone");
+  // req.body.start = moment.tz(`${startDate} ${startTime}`, tz).format();
+  // req.body.end = moment.tz(`${endDate} ${endTime}`, tz).format();
+  // req.body.timezone = `(UTC${moment.tz(`${startDate} ${startTime}`, tz).format("Z")}) ${tz}`;
   const event = await new Event(req.body).save();
   req.flash("success", `Evènement "${event.name}" créé avec succès !`);
   res.redirect(`/event/${event.slug}`);
+};
+
+exports.updateEvent = async (req, res) => {
+  store.set("addevents-form-data", req.body); // store body to prefill the register form
+
+  // set the location data to be a point
+  req.body.location.type = "Point";
+  // set the updated date
+  req.body.updated = new Date();
+
+  req.body = bodyFormatDateTime(req);
+
+  const event = await Event.findOneAndUpdate({ _id: req.paramString("id") }, req.body, {
+    new: true, // return the new event instead of the old one
+    runValidators: true
+  }).exec();
+  req.flash("success", `Evènement <strong>${event.name}</strong> mis à jour. <a href="/event/${event.slug}">Voir</a>`);
+  res.redirect(`/events/${event._id}/edit`);
 };
 
 exports.getEventBySlug = async (req, res, next) => {

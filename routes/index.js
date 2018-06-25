@@ -15,12 +15,7 @@ router.get("/login", userController.loginForm);
 router.get("/logout", authController.logout);
 router.post("/login", authController.preLogin, authController.login);
 router.get("/signup", userController.signupForm);
-router.post(
-  "/signup",
-  userController.validateRegister,
-  catchErrors(userController.register),
-  authController.login
-);
+router.post("/signup", userController.validateRegister, catchErrors(userController.register), authController.login);
 router.get("/forgot", userController.forgotForm);
 router.post("/forgot", catchErrors(authController.forgot));
 router.get("/reset/:token", catchErrors(authController.reset));
@@ -54,11 +49,7 @@ router.post(
 
 /* Organisms */
 
-router.get(
-  "/organisms/add",
-  authController.isLoggedIn,
-  orgaController.addPage
-);
+router.get("/organisms/add", authController.isLoggedIn, orgaController.addPage);
 router.post(
   "/organisms/add",
   authController.isLoggedIn,
@@ -73,22 +64,24 @@ router.get("/organism/id/:id", catchErrors(orgaController.getOrgaById));
 
 router.get("/events", eventController.eventsPage);
 router.post("/events", eventController.eventsPage);
-router.get(
-  "/events/add",
-  authController.isLoggedIn,
-  catchErrors(userController.hasOrganism),
-  catchErrors(eventController.canCreate),
-  eventController.addPage
-);
+router.get("/events/add", authController.isLoggedIn, catchErrors(userController.hasOrganism), eventController.addPage);
 router.post(
   "/events/add",
   authController.isLoggedIn,
   catchErrors(userController.hasOrganism),
-  catchErrors(eventController.canCreate),
   mainController.upload,
   catchErrors(mainController.resize),
   catchErrors(eventController.create)
 );
+router.post(
+  "/events/add/:id",
+  authController.isLoggedIn,
+  catchErrors(userController.hasOrganism),
+  mainController.upload,
+  catchErrors(mainController.resize),
+  catchErrors(eventController.updateEvent)
+);
+router.get("/events/:id/edit", authController.isLoggedIn, catchErrors(eventController.editEvent));
 router.get("/event/:slug", catchErrors(eventController.getEventBySlug));
 
 /* API */

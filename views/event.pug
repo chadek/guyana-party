@@ -42,8 +42,10 @@ block content
       label Le lieu de l'évènement :
       #map.no-events.readonly
       p.text-center= event.location.address
-    input#longitude(type="hidden" value=(event.location && event.location.coordinates[0]))
-    input#latitude(type="hidden" value=(event.location && event.location.coordinates[1]))
+      input#longitude(type="hidden" value=(event.location && event.location.coordinates[0]))
+      input#latitude(type="hidden" value=(event.location && event.location.coordinates[1]))
+    .pure-u-1.top-space
+      button.pure-button.success.button.expanded(onClick=`location="/events/${event._id}/edit"`) Modifier
 
   +footer()
 
