@@ -18,13 +18,15 @@ block content
         .result
           p.text-center Aucun résultat
       .pure-u-1.u-sm-3-5.l-box
+      
         .around
-          if around
-            input.pure-form#around-check(type="checkbox" name="around" value="around" checked)
-            label#around-label(for="around-check")
-          else
-            input#around-check(type="checkbox" name="around" value="around")
-            label#around-label(for="around-check") Autour de moi
+          label#around-label Autour de moi
+        //-   if around
+        //-     input.pure-form#around-check(type="checkbox" name="around" value="around" checked)
+        //-     label#around-label(for="around-check")
+        //-   else
+        //-     input#around-check(type="checkbox" name="around" value="around")
+        //-     label#around-label(for="around-check") Autour de moi
         //-- MAP --
         .ol-popup#popup
         #map

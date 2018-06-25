@@ -5,26 +5,15 @@ extends layout
 block content
   .hero-container
     .hero
-      form.hero-content(action="/events" method="POST")
-        .search
-          input.search__input(type="text" placeholder="Chercher par thème ou par lieu..." name="search")
-          input(type="hidden" name="_csrf" value=`${csrfToken}`)
-          button.pure-button.pure-button-primary Trouver
-          .around
-            input#around-check(type="checkbox" name="around" value="test")
-            label#around-label(for="around-check") Autour de moi
-            input#around-value(type="hidden" name="aroundValue" value="")
+      .search
+        button.pure-button.pure-button-primary.pure-button-xlarge#around-click Trouver les évènements autour de moi
   .content-wrapper
     .pure-g.content
       .pure-u-1.top-space
-        h2.content-head.text-center Excepteur sint occaecat cupidatat.
-        p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-        p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-        p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-        p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-        p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-        p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-        p Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+        h2.content-head.text-center Planifier des évènements.
+        p Organisez-vous, créez vos évènements et partagez-les.
+        p Soyez curieux et bougez autour de chez vous!
+        p Une application écologique peu gourmande en énergie et espace de stockage.
 
 
   //-.row.home
