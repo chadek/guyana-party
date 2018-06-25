@@ -4,7 +4,7 @@ import addEventForm from "./modules/addEventForm";
 import { B } from "./modules/bling";
 import initDates from "./modules/date";
 import loadEventsOrgasList from "./modules/eventsOrgasList";
-import geolocate from "./modules/geolocation";
+import {geolocate, autourdemoi} from "./modules/geolocation";
 import makeMap from "./modules/map";
 // import "./modules/menu";
 import subscriptions from "./modules/subscriptions";
@@ -43,6 +43,12 @@ if (aroundCheck) {
     }
   });
 }
+
+B("#around-click") && 
+  B("#around-click").on("click", () => {
+      autourdemoi();
+      console.log("msg ok")
+  });
 
 accountForm(B(".btn-old"), B(".btn-new"));
 subscriptions(B(".freeSubsBtn"), B(".assoSubsBtn"));
