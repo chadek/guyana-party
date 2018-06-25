@@ -57,6 +57,7 @@ router.post(
   catchErrors(mainController.resize),
   catchErrors(orgaController.create)
 );
+router.get("/organisms/:id/edit", authController.isLoggedIn, catchErrors(orgaController.editOrga));
 router.get("/organism/:slug", catchErrors(orgaController.getOrgaBySlug));
 router.get("/organism/id/:id", catchErrors(orgaController.getOrgaById));
 

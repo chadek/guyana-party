@@ -5,7 +5,6 @@ block customStyle
   link(rel="stylesheet", href="/vendor/ol/ol.css")
 
 block content
-  //- pre #{h.dump(event)}
   .pure-g
     .pure-u-1.content
       .pure-u-1.text-center
@@ -19,6 +18,17 @@ block content
         - const errorData = h.store.get("form-errors")
         - h.store.remove("form-errors")
         .pure-u-1
+          if event
+            .pure-u-1.text-center.top-space
+              label.form-switch
+                if event.published
+                  input(type="checkbox" name="published" checked="checked")
+                  i
+                  span: strong Publié
+                else
+                  input(type="checkbox" name="published")
+                  i
+                  span: strong.unpublished-color Non publié
           .pure-u-1.top-space
             span.pure-u-1-8.icon!= h.icon("clipboard-pencil")
             input.pure-u-7-8(type="text" placeholder="Nom de l'évènement" name="name" value=`${savedData?savedData.name:(event ? event.name : "")}` class=`${errorData && errorData.includes("name")?"error":""}` required)

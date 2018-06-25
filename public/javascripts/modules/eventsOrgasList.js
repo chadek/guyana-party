@@ -38,7 +38,8 @@ function getEventsList(eventsDiv) {
                 <br><strong>Début :</strong> ${start}
                 <br><strong>Fin :</strong> ${end}
                 <br><strong>Adresse :</strong> ${item.location.address}
-                <br><a href="/events/${item.id}/edit">Modifier</a></p>
+                ${!item.published ? '<br><strong class="unpublished-color">Non publié</strong> |' : "<br>"}
+                <a href="/events/${item.id}/edit">Modifier</a></p>
               </div>
             </div>
             <div class="card__section">
@@ -72,8 +73,9 @@ function getOrgasList(orgasDiv) {
                 <br><a href="/organism/${item.slug}">Voir évènements associés</a>
                 <br><a href="/organism/${item.slug}">Voir communauté</a>
                 <br><strong>Adresse :</strong> ${item.location.address}
-                <br><strong>Souscription :</strong> ${item.subscription ? item.subscription : "free"}
-                <br>(<a href="/souscriptions">Passer en PRO !</a>)</p>
+                <!--<br><strong>Souscription :</strong> ${item.subscription ? item.subscription : "free"}
+                <br>(<a href="/souscriptions">Passer en PRO !</a>)-->
+                <br><a href="/organisms/${item.id}/edit">Modifier</a></p>
               </div>
             </div>
             <div class="card__section">
@@ -112,7 +114,9 @@ function getEventsFromOrga(orgaEventsDiv) {
                 <p><strong>Organisateur :</strong> <a href="/organism/${item.organism.slug}">${item.organism.name}</a>
                 <br><strong>Début :</strong> ${start}
                 <br><strong>Fin :</strong> ${end}
-                <br><strong>Adresse :</strong> ${item.location.address}</p>
+                <br><strong>Adresse :</strong> ${item.location.address}
+                ${!item.published ? '<br><strong class="unpublished-color">Non publié</strong> |' : "<br>"}
+                <a href="/events/${item.id}/edit">Modifier</a></p>
               </div>
             </div>
             <div class="card__section">

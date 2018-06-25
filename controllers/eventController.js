@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Event = mongoose.model("Event");
 const Organism = mongoose.model("Organism");
 const { promisify } = require("es6-promisify");
-const { getPagedItems } = require("../handlers/tools");
+const { getPagedItems, confirmOwner } = require("../handlers/tools");
 const store = require("store");
 
 exports.eventsPage = (req, res) => {
@@ -38,18 +38,12 @@ exports.addPage = (req, res) => {
   });
 };
 
-const confirmOwner = (event, user) => {
-  if (!event.author.equals(user._id)) {
-    throw Error("Vous ne pouvez pas éditer cet évènement.");
-  }
-};
-
 exports.editEvent = async (req, res) => {
   // 1. Find the event given the ID
   const event = await Event.findOne({ _id: req.paramString("id") });
   // 2. confirm they are the owner of the event
   confirmOwner(event, req.user);
-  // 3. render out the edit form so the user can update their store
+  // 3. render out the edit form so the user can update their event
   res.render("editEvent", {
     event,
     tzList: getTZList(),
@@ -73,7 +67,6 @@ const bodyFormatDateTime = req => {
 
 exports.create = async (req, res) => {
   store.set("addevents-form-data", req.body); // store body to prefill the register form
-
   req.sanitizeBody("name");
   req.sanitizeBody("description");
   req.sanitizeBody("location[address]");
@@ -88,18 +81,9 @@ exports.create = async (req, res) => {
     req.flash("error", errors.map(err => err.msg));
     return res.redirect("/events/add");
   }
-
   req.body.author = req.user._id;
-  // const startDate = req.bodyString("startdate");
-  // const startTime = req.bodyString("starttime");
-  // const endDate = req.bodyString("enddate");
-  // const endTime = req.bodyString("endtime");
-  // const tz = req.bodyString("tz");
+  req.body.published = !!req.body.published;
   req.body = bodyFormatDateTime(req);
-  // const moment = require("moment-timezone");
-  // req.body.start = moment.tz(`${startDate} ${startTime}`, tz).format();
-  // req.body.end = moment.tz(`${endDate} ${endTime}`, tz).format();
-  // req.body.timezone = `(UTC${moment.tz(`${startDate} ${startTime}`, tz).format("Z")}) ${tz}`;
   const event = await new Event(req.body).save();
   req.flash("success", `Evènement "${event.name}" créé avec succès !`);
   res.redirect(`/event/${event.slug}`);
@@ -107,12 +91,11 @@ exports.create = async (req, res) => {
 
 exports.updateEvent = async (req, res) => {
   store.set("addevents-form-data", req.body); // store body to prefill the register form
-
   // set the location data to be a point
   req.body.location.type = "Point";
   // set the updated date
   req.body.updated = new Date();
-
+  req.body.published = !!req.body.published;
   req.body = bodyFormatDateTime(req);
 
   const event = await Event.findOneAndUpdate({ _id: req.paramString("id") }, req.body, {
@@ -126,6 +109,7 @@ exports.updateEvent = async (req, res) => {
 exports.getEventBySlug = async (req, res, next) => {
   const event = await Event.findOne({ slug: req.paramString("slug") }).populate("author");
   if (!event) return next();
+  if (!event.publish) confirmOwner(event, req.user); // we can't see an event if it's not published and we don't own it
   const orga = await Organism.findOne({ _id: event.organism });
   if (!orga) return next();
   res.render("event", { event, orga, title: event.name, csrfToken: req.csrfToken() });
@@ -147,7 +131,10 @@ exports.getSearchResult = async (req, res) => {
   const lon = req.queryString("lon");
   const lat = req.queryString("lat");
   const maxDistance = req.queryInt("maxdistance") || 10000; // 10km
-  let find = { $or: [{ name: { $regex: search, $options: "i" } }, { description: { $regex: search, $options: "i" } }] };
+  let find = {
+    $or: [{ name: { $regex: search, $options: "i" } }, { description: { $regex: search, $options: "i" } }],
+    published: true
+  };
   if (lon && lat) {
     find = {
       location: {
@@ -159,7 +146,8 @@ exports.getSearchResult = async (req, res) => {
           $maxDistance: maxDistance
         }
       },
-      $or: [{ name: { $regex: search, $options: "i" } }, { description: { $regex: search, $options: "i" } }]
+      $or: [{ name: { $regex: search, $options: "i" } }, { description: { $regex: search, $options: "i" } }],
+      published: true
     };
   }
   const pagedEvents = await getPagedItems(

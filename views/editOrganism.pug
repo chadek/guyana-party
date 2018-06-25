@@ -8,21 +8,22 @@ block customStyle
 block content
   .banner
     h1.banner__head= title
+  pre #{h.dump(orga)}
   .pure-g
     .pure-u-1.content
       .pure-u-1.text-center
-        p Un organisme permet de créer des évènements pour le compte d'une association ou d'une entreprise ayant besoin de communiquer publiquement ses évènements.
+        p Un groupe permet de créer des évènements pour le compte d'une association ou d'une entreprise ayant besoin de communiquer publiquement ses évènements.
       .separator
-      form.pure-form.pure-u-1(action=`/organisms/add?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
+      form.pure-form.pure-u-1(action=`/organisms/add${orga ? `/${orga._id}`:""}?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
         .pure-u-1
           .pure-u-1.top-space
             span.pure-u-1-8.icon!= h.icon("clipboard-pencil")
-            input.pure-u-7-8(type="text" placeholder="Nom de votre nouvelle organisation" name="name")
+            input.pure-u-7-8(type="text" placeholder="Nom de votre groupe" name="name")
           .pure-u-1.top-space.text-center
-            label.pure-button.pure-button-primary(for="fileUpload") Logo de votre organisme
+            label.pure-button.pure-button-primary(for="fileUpload") Logo du groupe
             input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
             .file-upload-filename
-          .pure-u-1.top-space
+          //-.pure-u-1.top-space
             .pure-u-1.u-md-1-4
               label.pure-radio(for="association")
                 input#association(type="radio" name="type" value="Association" checked="checked")
@@ -42,14 +43,14 @@ block content
           .pure-u-1.top-space
             label Description de votre organisme et de vos actions
             textarea(name="description" placeholder="Donnez envie !")
-          .pure-u-1.top-space
+          //-.pure-u-1.top-space
             label Où se situe votre siège social ?
             #map.no-events
-          .pure-u-1
+          //-.pure-u-1
             span.input-group-label: i.fi-marker.size-36
-            input.input-group-field#address(type="text" placeholder="Adresse" name="location[address]" value=(orga.location && orga.location.address))
-            input#longitude(type="hidden" name="location[coordinates][0]" value=(orga.location && orga.location.coordinates[0]))
-            input#latitude(type="hidden" name="location[coordinates][1]" value=(orga.location && orga.location.coordinates[1]))
+            input.input-group-field#address(type="text" placeholder="Adresse" name="location[address]" value=(orga &&orga.location && orga.location.address))
+            input#longitude(type="hidden" name="location[coordinates][0]" value=(orga && orga.location && orga.location.coordinates[0]))
+            input#latitude(type="hidden" name="location[coordinates][1]" value=(orga && orga.location && orga.location.coordinates[1]))
           .pure-u-1.top-space
             input.pure-button.success.button.expanded(type="submit" value="Créer")
   +footer()
