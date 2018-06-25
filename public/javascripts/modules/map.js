@@ -142,9 +142,9 @@ function makeMap(mapDiv) {
       // search geolocated events
       B("#around-label").classList.add("hidden");
       searchEvents(`/api/search?q=${search}&lon=${pos.coords.longitude}&lat=${pos.coords.latitude}`);
-    });
+    },);
   }
-  B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
+  
   geolocate();
 
 
