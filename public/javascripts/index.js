@@ -27,27 +27,29 @@ B("#fileUpload") &&
   });
 
 // geolocation for home and events pages
-const aroundCheck = B("#around-check");
-if (aroundCheck) {
-  if (aroundCheck.checked) {
-    B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
-    geolocate();
-  }
-  aroundCheck.on("click", function() {
-    if (this.checked) {
-      B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
-      geolocate();
-    } else {
-      B("#around-label").innerHTML = "Autour de moi";
-      B("#around-value").value = "";
-    }
-  });
-}
+// const aroundCheck = B("#around-check");
+// if (aroundCheck) {
+//   if (aroundCheck.checked) {
+//     B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
+//     geolocate();
+//   }
+//   aroundCheck.on("click", function() {
+//     if (this.checked) {
+//       B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
+//       geolocate();
+//     } else {
+//       B("#around-label").innerHTML = "Autour de moi";
+//       B("#around-value").value = "";
+//     }
+//   });
+// }
+
+
+
 
 B("#around-click") && 
   B("#around-click").on("click", () => {
-      autourdemoi();
-      console.log("msg ok")
+    location = "/events";
   });
 
 accountForm(B(".btn-old"), B(".btn-new"));
