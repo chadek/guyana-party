@@ -3,41 +3,33 @@ const User = mongoose.model("User");
 const Organism = mongoose.model("Organism");
 const { promisify } = require("es6-promisify");
 
-exports.loginForm = (req, res) => {
-  res.render("login", { title: "Se connecter", csrfToken: req.csrfToken() });
-};
+exports.loginForm = (req, res) => res.render("login", { title: "Se connecter", csrfToken: req.csrfToken() });
 
-exports.signupForm = (req, res) => {
-  res.render("signup", { title: "Créer un compte", csrfToken: req.csrfToken() });
-};
+exports.signupForm = (req, res) => res.render("signup", { title: "Créer un compte", csrfToken: req.csrfToken() });
 
-exports.forgotForm = (req, res) => {
+exports.forgotForm = (req, res) =>
   res.render("forgot", { title: "Réinitialiser votre mot de passe", csrfToken: req.csrfToken() });
-};
 
 exports.validateRegister = (req, res, next) => {
+  const store = require("store");
+  store.set("signup-form-data", req.body); // store body to prefill the register form
   req.sanitizeBody("name");
-  req.checkBody("name", "You must supply a name!").notEmpty();
-  req.checkBody("email", "That Email is not valid!").isEmail();
+  req.checkBody("name", "Vous devez saisir un nom.").notEmpty();
+  req.checkBody("email", "E-mail incorrect.").isEmail();
   req.sanitizeBody("email").normalizeEmail({
     remove_dots: false,
     remove_extension: false,
     gmail_remove_subaddress: false
   });
-  req.checkBody("password", "Password Cannot be Blank!").notEmpty();
-  req.checkBody("password-confirm", "Confirmed Password Cannot be Blank!").notEmpty();
-  req.checkBody("password-confirm", "Oops! Your passwords do not match").equals(req.bodyString("password"));
+  req.checkBody("password", "Vous devez saisir un mot de passe.").notEmpty();
+  req.checkBody("password-confirm", "Vous devez confirmer le mot de passe.").notEmpty();
+  req.checkBody("password-confirm", "Les mots de passe ne correspondent pas.").equals(req.bodyString("password"));
 
   const errors = req.validationErrors();
   if (errors) {
+    store.set("form-errors", errors.map(err => err.param));
     req.flash("error", errors.map(err => err.msg));
-    res.render("signup", {
-      title: "Créer un compte",
-      body: req.body,
-      flashes: req.flash(),
-      csrfToken: req.csrfToken()
-    });
-    return; // stop the fn from running
+    return res.redirect("/signup");
   }
   next(); // there were no errors!
 };
@@ -54,6 +46,7 @@ exports.register = async (req, res, next) => {
 };
 
 exports.account = (req, res) => {
+  require("store").clearAll(); // clear all data stored
   res.render("account", { title: "Votre compte", csrfToken: req.csrfToken() });
 };
 
@@ -92,7 +85,7 @@ exports.updateAccount = async (req, res) => {
     email: req.bodyEmail("email")
   };
   const photo = req.bodyString("photo");
-  if(photo) {
+  if (photo) {
     updates.photo = photo;
   }
   const user = await User.findOneAndUpdate(

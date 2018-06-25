@@ -11,10 +11,13 @@ block content
         h2= title
       .separator
       form.pure-u-1(action=`/events/add?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
+        - const savedData = h.store.get("addevents-form-data")
+        - const errorData = h.store.get("form-errors")
+        - h.store.remove("form-errors")
         .pure-u-1
           .pure-u-1.top-space
             span.pure-u-1-8.icon!= h.icon("clipboard-pencil")
-            input.pure-u-7-8(type="text" placeholder="Nom de l'évènement" name="name")
+            input.pure-u-7-8(type="text" placeholder="Nom de l'évènement" name="name" value=`${savedData?savedData.name:""}` class=`${errorData && errorData.includes("name")?"error":""}` required)
           .pure-u-1.top-space.text-center
             label.pure-button.pure-button-primary(for="fileUpload") Flyer de l'évènement
             input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
@@ -61,15 +64,15 @@ block content
 
           .pure-u-1.top-space
             label Que proposez vous ?
-            textarea(name="description" placeholder="Un petit wiki pour décrire proprement l'évènement")
+            textarea(name="description" placeholder="Un petit wiki pour décrire proprement l'évènement" value=`${savedData?savedData.description:""}` class=`${errorData && errorData.includes("description")?"error":""}` required) #{savedData?savedData.description:""}
           .pure-u-1.top-space
             label Sélectionnez le lieu de l'évènement sur la carte :
             #map.no-events
             //-.pure-u-1.top-space
             span.input-group-label: i.fi-marker.size-36
-            input.input-group-field#address(type="text" placeholder="Adresse" name="location[address]" value=(event.location && event.location.address))
-            input#longitude(type="hidden" name="location[coordinates][0]" value=(event.location && event.location.coordinates[0]))
-            input#latitude(type="hidden" name="location[coordinates][1]" value=(event.location && event.location.coordinates[1]))
+            input.input-group-field#address(type="text" placeholder="Adresse" name="location[address]" value=`${savedData?savedData.location.address:""}` class=`${errorData && errorData.includes("location.address")?"error":""}` readonly)
+            input#longitude(type="hidden" name="location[coordinates][0]" value=`${savedData?savedData.location.coordinates[0]:""}`)
+            input#latitude(type="hidden" name="location[coordinates][1]" value=`${savedData?savedData.location.coordinates[1]:""}`)
             //- input#timezone(type="hidden" name="timezone")
           .pure-u-1.top-space
             //-.cell.large-8.medium-8.large-offset-2.medium-offset-2

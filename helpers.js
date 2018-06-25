@@ -8,6 +8,9 @@ const fs = require("fs");
 // moment.js is a handy library for displaying dates. We need this in our templates to display things like "Posted 5 minutes ago"
 //exports.moment = require("moment");
 
+// local storage
+exports.store = require("store");
+
 // Dump is a handy debugging function we can use to sort of "console.log" our data
 exports.dump = obj => JSON.stringify(obj, null, 2);
 
@@ -18,8 +21,8 @@ exports.icon = name => fs.readFileSync(`./public/images/icons/${name}.svg`);
 exports.profilePhotoSrc = user => (user.photo ? `/uploads/${user.photo}` : `${user.gravatar}&d=retro`);
 
 exports.translateSubs = subscription => {
-  if(subscription == "free") return "Gratuite";
-  if(subscription == "asso") return "Association";
+  if (subscription == "free") return "Gratuite";
+  if (subscription == "asso") return "Association";
 };
 
 // Some details about the site

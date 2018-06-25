@@ -16,6 +16,7 @@ const errorHandlers = require("./handlers/errorHandlers");
 require("./handlers/passport");
 
 const app = express();
+const devMode = app.get("env") !== "production";
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -36,15 +37,19 @@ app.use(cookieParser());
 
 // Sessions allow us to store data on visitors from request to request
 // This keeps users logged in and allows us to send flash messages
-app.use(
-  session({
-    secret: process.env.SECRET,
-    key: process.env.KEY,
-    resave: false,
-    saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection })
-  })
-);
+const sess = {
+  secret: process.env.SECRET,
+  key: process.env.KEY,
+  resave: true,
+  saveUninitialized: false,
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  cookie: { maxAge: 3600000 } // one hour
+};
+if (!devMode) {
+  app.set("trust proxy", 1); // trust first proxy
+  sess.cookie.secure = true; // serve secure cookies
+}
+app.use(session(sess));
 
 // Passport JS is what we use to handle our logins
 app.use(passport.initialize());
@@ -87,7 +92,7 @@ app.use(errorHandlers.notFound);
 app.use(errorHandlers.flashValidationErrors);
 
 // Otherwise this was a really bad error we didn't expect! Shoot eh
-if (app.get("env") === "development") {
+if (devMode) {
   /* Development Error Handler - Prints stack trace */
   app.use(errorHandlers.developmentErrors);
 }

@@ -3,6 +3,31 @@ const crypto = require("crypto");
 const mongoose = require("mongoose");
 const User = mongoose.model("User");
 const mail = require("../handlers/mail");
+const store = require("store");
+
+function checkEmail(req, res) {
+  req.checkBody("email", "E-mail incorrect.").isEmail();
+  req.sanitizeBody("email").normalizeEmail({
+    remove_dots: false,
+    remove_extension: false,
+    gmail_remove_subaddress: false
+  });
+  const errors = req.validationErrors();
+  if (errors) {
+    store.set("form-errors", errors.map(err => err.param));
+    req.flash("error", errors.map(err => err.msg));
+    return false;
+  }
+  return true;
+}
+
+exports.preLogin = (req, res, next) => {
+  store.set("login-form-data", req.body); // store body to prefill the login form
+  if (!checkEmail(req, res)) {
+    return res.redirect("/login");
+  }
+  next();
+};
 
 exports.login = passport.authenticate("local", {
   failureRedirect: "/login",
@@ -13,7 +38,7 @@ exports.login = passport.authenticate("local", {
 
 exports.logout = (req, res) => {
   req.logout();
-  res.redirect("/");
+  req.session.destroy(err => res.redirect("/"));
 };
 
 exports.isLoggedIn = (req, res, next) => {
@@ -27,6 +52,10 @@ exports.isLoggedIn = (req, res, next) => {
 };
 
 exports.forgot = async (req, res) => {
+  store.set("forgot-form-data", req.body);
+  if (!checkEmail(req, res)) {
+    return res.redirect("/forgot");
+  }
   // 1. See if a user with that email exists
   const user = await User.findOne({ email: req.bodyEmail("email") });
   if (user) {

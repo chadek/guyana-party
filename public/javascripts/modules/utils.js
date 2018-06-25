@@ -82,13 +82,9 @@ function enableScroll() {
   document.onkeydown = null;
 }
 
-export {
-  axiosGet,
-  data2HTML,
-  formatDateTime,
-  toggleClass,
-  preventDefault,
-  preventDefaultForScrollKeys,
-  disableScroll,
-  enableScroll
-};
+function sliceStr(str, limit = 20) {
+  return str.length > limit ? `${str.slice(0, limit)} ...` : str;
+}
+
+export { axiosGet, data2HTML, formatDateTime, toggleClass, preventDefault, preventDefaultForScrollKeys, disableScroll, enableScroll, sliceStr };
+

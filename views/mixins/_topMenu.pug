@@ -5,7 +5,7 @@ mixin topMenu()
         form(action="/events" method="POST")
           input.search__input--nav(type="text" placeholder="Chercher par thème ou par lieu..." name="search" )
           input(type="hidden" name="_csrf" value=`${csrfToken}`)
-    unless user || isLogin || (currentPath == "/login" || currentPath == "/signup" || currentPath == "/forgot")
+    unless user || (currentPath == "/login" || currentPath == "/signup" || currentPath == "/forgot")
       ul.pure-menu-list.connection
         li.pure-menu-item
           a.pure-menu-link(href="/login") Se connecter

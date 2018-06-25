@@ -42,16 +42,16 @@ html
           .home-link.l-box
             a(href="/") ← accueil
 
-        if locals.flashes
+        if flashes
           .row.flash-messages.inner
-            - const categories = Object.keys(locals.flashes)
+            - const categories = Object.keys(flashes)
             each category in categories
               .flash(class=`flash--${category}`)
                 p.flash__text
                   each message, i in flashes[category]
-                    != message
                     if i > 0
                       br
+                    != message
                 button.flash__remove(onClick="this.parentElement.remove()") &times;
 
         block content

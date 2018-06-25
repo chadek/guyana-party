@@ -320,7 +320,7 @@ Hides the menu at `48em`, but modify this based on your app's needs.
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
   display: none;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
   width: 300px;
   margin-top: 44px;
   z-index: 70;

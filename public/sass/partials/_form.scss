@@ -94,3 +94,8 @@ textarea {
     display: block;
   }
 }
+
+input.error,
+textarea.error {
+  border: 2px solid $red;
+}
