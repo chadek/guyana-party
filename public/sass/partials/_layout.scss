@@ -100,7 +100,7 @@
   filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/subscriptions.jpg', sizingMethod='scale');
   height: 200px;
   width: 100%;
-  margin-bottom: 3em;
+  margin-bottom: 1em;
   display: table;
   &__head {
     display: table-cell;
@@ -118,9 +118,9 @@
   }
 }
 @media (min-width: 480px) {
-  .banner {
-    height: 400px;
-  }
+  // .banner {
+  //   height: 400px;
+  // }
   .banner__head {
     font-size: 3em;
   }

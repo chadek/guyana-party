@@ -7,16 +7,17 @@ block customStyle
 
 block content
   .pure-g
+    unless event
+      .banner
+        h1.banner__head= title
     .pure-u-1.content
-      .pure-u-1.text-center
-        h1= title
-        //- Event flyer
-        if event
-          .top-space-40
-            img(src=(event.photo ? `/uploads/${event.photo}` : "/images/default.jpg") alt="Flyer de l'évènement")
-      .separator.top-space
+      if event
+        .pure-u-1.text-center
+          //- Event flyer
+          img(src=(event.photo ? `/uploads/${event.photo}` : "/images/default.jpg") alt="Flyer de l'évènement")
+        .separator.top-space
       form.pure-u-1(action=`/events/add${event ? `/${event._id}`:""}?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
-        - const savedData = h.store.get("addevents-form-data")
+        - const savedData = h.store.get("editevents-form-data")
         - const errorData = h.store.get("form-errors")
         - h.store.remove("form-errors")
         .pure-u-1
@@ -94,6 +95,7 @@ block content
           //- Validation button
           .pure-u-1.top-space-40
             input.pure-button.success.button.expanded(type="submit" value=`${event ? "Valider" : "Créer"}`)
+          input#id(type="hidden" value=event._id)
 
 block customScripts
   script(src="/vendor/jquery/jquery.min.js")

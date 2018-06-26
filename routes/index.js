@@ -82,7 +82,8 @@ router.post(
   catchErrors(mainController.resize),
   catchErrors(eventController.updateEvent)
 );
-router.get("/events/:id/edit", authController.isLoggedIn, catchErrors(eventController.editEvent));
+router.get("/events/:id/edit", authController.isLoggedIn, catchErrors(eventController.editEventPage));
+router.get("/events/:id/publish", authController.isLoggedIn, catchErrors(eventController.publish));
 router.get("/event/:slug", catchErrors(eventController.getEventBySlug));
 
 /* API */

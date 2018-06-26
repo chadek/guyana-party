@@ -33,12 +33,12 @@ exports.addPage = (req, res) => {
   res.render("editEvent", {
     orga,
     tzList: getTZList(),
-    title: "Création d'un évènement public",
+    title: "Création d'un évènement",
     csrfToken: req.csrfToken()
   });
 };
 
-exports.editEvent = async (req, res) => {
+exports.editEventPage = async (req, res) => {
   // 1. Find the event given the ID
   const event = await Event.findOne({ _id: req.paramString("id") });
   // 2. confirm they are the owner of the event
@@ -66,7 +66,7 @@ const bodyFormatDateTime = req => {
 };
 
 exports.create = async (req, res) => {
-  store.set("addevents-form-data", req.body); // store body to prefill the register form
+  store.set("editevents-form-data", req.body); // store body to prefill the register form
   req.sanitizeBody("name");
   req.sanitizeBody("description");
   req.sanitizeBody("location[address]");
@@ -90,7 +90,21 @@ exports.create = async (req, res) => {
 };
 
 exports.updateEvent = async (req, res) => {
-  store.set("addevents-form-data", req.body); // store body to prefill the register form
+  store.set("editevents-form-data", req.body); // store body to prefill the register form
+  req.sanitizeBody("name");
+  req.sanitizeBody("description");
+  req.sanitizeBody("location[address]");
+  req.sanitizeBody("location[coordinates][0]");
+  req.sanitizeBody("location[coordinates][1]");
+  req.checkBody("name", "Vous devez saisir le nom de l'évènement.").notEmpty();
+  req.checkBody("location[address]", "Veuillez sélectionner le lieu de l'évènement sur la carte.").notEmpty();
+  req.checkBody("description", "Veuillez saisir une description de l'évènement.").notEmpty();
+  const errors = req.validationErrors();
+  if (errors) {
+    store.set("form-errors", errors.map(err => err.param));
+    req.flash("error", errors.map(err => err.msg));
+    return res.redirect(`/events/${event._id}/edit`);
+  }
   // set the location data to be a point
   req.body.location.type = "Point";
   // set the updated date
@@ -103,6 +117,17 @@ exports.updateEvent = async (req, res) => {
     runValidators: true
   }).exec();
   req.flash("success", `Evènement <strong>${event.name}</strong> mis à jour. <a href="/event/${event.slug}">Voir</a>`);
+  res.redirect(`/events/${event._id}/edit`);
+};
+
+exports.publish = async (req, res, next) => {
+  const event = await Event.findOne({ _id: req.paramString("id") }).populate("author");
+  if (!event) return next();
+  confirmOwner(event, req.user); // we can't (un)publish an event if we don't own it
+  const published = !req.queryString("cancel");
+  event.published = published;
+  await event.save();
+  req.flash("success", `Votre évènement est <strong>${published ? "publié" : "non publié"}</strong>.`);
   res.redirect(`/events/${event._id}/edit`);
 };
 
