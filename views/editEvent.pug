@@ -82,7 +82,7 @@ block content
           .pure-u-1.top-space-40
             label Que proposez vous ?
           .pure-u-1.top-space
-            textarea#md(name="description" value=`${savedData?savedData.description:(event ? event.description : "")}` class=`${errorData && errorData.includes("description")?"error":""}` required) #{savedData?savedData.description:(event ? event.description : "")}
+            textarea#md(name="description" value=`${savedData?savedData.description:(event ? event.description : "")}` class=`${errorData && errorData.includes("description")?"error":""}` placeholder="Un petit wiki pour décrire proprement l'évènement" required) #{savedData?savedData.description:(event ? event.description : "")}
           //- Event location
           .pure-u-1.top-space-40
             label Sélectionnez le lieu de l'évènement sur la carte :

@@ -3,8 +3,7 @@ if (mdArea) {
   if (!mdArea.classList.contains("readonly")) {
     const SimpleMDE = require("simplemde");
     new SimpleMDE({
-      element: mdArea,
-      placeholder: "Un petit wiki pour décrire proprement l'évènement"
+      element: mdArea
     });
   } else {
     const marked = require("marked");
