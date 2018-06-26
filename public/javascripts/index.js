@@ -4,7 +4,7 @@ import addEventForm from "./modules/addEventForm";
 import { B } from "./modules/bling";
 import initDates from "./modules/date";
 import loadEventsOrgasList from "./modules/eventsOrgasList";
-import geolocate from "./modules/geolocation";
+import {geolocate, autourdemoi} from "./modules/geolocation";
 import makeMap from "./modules/map";
 // import "./modules/menu";
 import subscriptions from "./modules/subscriptions";
@@ -27,22 +27,30 @@ B("#fileUpload") &&
   });
 
 // geolocation for home and events pages
-const aroundCheck = B("#around-check");
-if (aroundCheck) {
-  if (aroundCheck.checked) {
-    B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
-    geolocate();
-  }
-  aroundCheck.on("click", function() {
-    if (this.checked) {
-      B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
-      geolocate();
-    } else {
-      B("#around-label").innerHTML = "Autour de moi";
-      B("#around-value").value = "";
-    }
+// const aroundCheck = B("#around-check");
+// if (aroundCheck) {
+//   if (aroundCheck.checked) {
+//     B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
+//     geolocate();
+//   }
+//   aroundCheck.on("click", function() {
+//     if (this.checked) {
+//       B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
+//       geolocate();
+//     } else {
+//       B("#around-label").innerHTML = "Autour de moi";
+//       B("#around-value").value = "";
+//     }
+//   });
+// }
+
+
+
+
+B("#around-click") && 
+  B("#around-click").on("click", () => {
+    location = "/events";
   });
-}
 
 accountForm(B(".btn-old"), B(".btn-new"));
 subscriptions(B(".freeSubsBtn"), B(".assoSubsBtn"));
