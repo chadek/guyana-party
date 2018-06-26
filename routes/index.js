@@ -57,7 +57,15 @@ router.post(
   catchErrors(mainController.resize),
   catchErrors(orgaController.create)
 );
-router.get("/organisms/:id/edit", authController.isLoggedIn, catchErrors(orgaController.editOrga));
+router.post(
+  "/organisms/add/:id",
+  authController.isLoggedIn,
+  mainController.upload,
+  catchErrors(mainController.resize),
+  catchErrors(orgaController.updateOrga)
+);
+router.get("/organisms/:id/edit", authController.isLoggedIn, catchErrors(orgaController.editOrgaPage));
+router.get("/organisms/:id/remove", authController.isLoggedIn, catchErrors(orgaController.remove));
 router.get("/organism/:slug", catchErrors(orgaController.getOrgaBySlug));
 router.get("/organism/id/:id", catchErrors(orgaController.getOrgaById));
 
@@ -84,6 +92,7 @@ router.post(
 );
 router.get("/events/:id/edit", authController.isLoggedIn, catchErrors(eventController.editEventPage));
 router.get("/events/:id/publish", authController.isLoggedIn, catchErrors(eventController.publish));
+router.get("/events/:id/remove", authController.isLoggedIn, catchErrors(eventController.remove));
 router.get("/event/:slug", catchErrors(eventController.getEventBySlug));
 
 /* API */

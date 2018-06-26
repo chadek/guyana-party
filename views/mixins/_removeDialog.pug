@@ -1,0 +1,9 @@
+mixin removeDialog(model, modelName)
+  .pure-u-1.text-center.remove-event-confirm
+    p.unpublished-color
+      | Voulez-vous vraimement supprimer #{modelName == "event"?"l'évènement":"le groupe"}
+      strong &nbsp;#{model.name}&nbsp;
+      | ?
+    .pure-u-1.text-center
+      button.pure-button.primary.button(onClick=`location="/${modelName}s/${model._id}/remove"`) Ok
+      button.pure-button.button#cancel(onClick=`location="/account"`) Annuler

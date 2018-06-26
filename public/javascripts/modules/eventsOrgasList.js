@@ -39,12 +39,14 @@ function getEventsList(eventsDiv) {
                 <br><strong>Début :</strong> ${start}
                 <br><strong>Fin :</strong> ${end}
                 <br><strong>Adresse :</strong> ${item.location.address}
-                ${!item.published ? '<br><strong class="unpublished-color">Non publié</strong> |' : "<br>"}
-                <a href="/events/${item.id}/edit">Modifier</a></p>
+                ${item.status != "published" ? '<br><strong class="unpublished-color">Non publié</strong> |' : "<br>"}
+                <a href="/events/${item.id}/edit">Modifier</a> | <a href="/event/${item.slug}?remove=true">Supprimer</a></p>
               </div>
             </div>
             <div class="card__section">
-              <p><a href="/event/${item.slug}">${sliceStr(item.name)}</a></p>
+              <p><a ${item.status != "published" ? 'class="unpublished-color"' : ""} href="/event/${
+          item.slug
+        }">${sliceStr(item.name)}</a></p>
             </div>
           </div>
         </div>`;
@@ -71,13 +73,14 @@ function getOrgasList(orgasDiv) {
             <div class="card__header">
               <img src="${imgSrc}" alt="photo organisme">
               <div class="card__header--content">
-                <p><strong>Type d'organisme :</strong> ${item.type}
+                <p>
+                ${item.type ? `<strong>Type d'organisme :</strong> ${item.type}` : ""}
                 <br><a href="/organism/${item.slug}">Voir évènements associés</a>
                 <br><a href="/organism/${item.slug}">Voir communauté</a>
-                <br><strong>Adresse :</strong> ${item.location.address}
+                ${item.location.address ? `<br><strong>Adresse :</strong> ${item.location.address}` : ""}
                 <!--<br><strong>Souscription :</strong> ${item.subscription ? item.subscription : "free"}
                 <br>(<a href="/souscriptions">Passer en PRO !</a>)-->
-                <br><a href="/organisms/${item.id}/edit">Modifier</a></p>
+                <br><a href="/organisms/${item.id}/edit">Modifier</a> | <a href="/organism/${item.slug}?remove=true">Supprimer</a></p>
               </div>
             </div>
             <div class="card__section">
@@ -118,12 +121,14 @@ function getEventsFromOrga(orgaEventsDiv) {
                 <br><strong>Début :</strong> ${start}
                 <br><strong>Fin :</strong> ${end}
                 <br><strong>Adresse :</strong> ${item.location.address}
-                ${!item.published ? '<br><strong class="unpublished-color">Non publié</strong> |' : "<br>"}
-                <a href="/events/${item.id}/edit">Modifier</a></p>
+                ${item.status != "published" ? '<br><strong class="unpublished-color">Non publié</strong> |' : "<br>"}
+                <a href="/events/${item.id}/edit">Modifier</a> | <a href="/event/${item.slug}?remove=true">Supprimer</a></p>
               </div>
             </div>
             <div class="card__section">
-              <p><a href="/event/${item.slug}">${sliceStr(item.name)}</a></p>
+            <p><a ${item.status != "published" ? 'class="unpublished-color"' : ""} href="/event/${
+              item.slug
+            }">${sliceStr(item.name)}</a></p>
             </div>
           </div>
         </div>`;

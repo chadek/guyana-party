@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Event = mongoose.model("Event");
 const Organism = mongoose.model("Organism");
-const { promisify } = require("es6-promisify");
+//const { promisify } = require("es6-promisify");
 const { getPagedItems, confirmOwner } = require("../handlers/tools");
 const store = require("store");
 
@@ -74,7 +74,7 @@ exports.create = async (req, res) => {
   req.sanitizeBody("location[coordinates][1]");
   req.checkBody("name", "Vous devez saisir le nom de l'évènement.").notEmpty();
   req.checkBody("location[address]", "Veuillez sélectionner le lieu de l'évènement sur la carte.").notEmpty();
-  req.checkBody("description", "Veuillez saisir une description de l'évènement.").notEmpty();
+  req.checkBody("description", "Veuillez saisir une description.").notEmpty();
   const errors = req.validationErrors();
   if (errors) {
     store.set("form-errors", errors.map(err => err.param));
@@ -82,14 +82,13 @@ exports.create = async (req, res) => {
     return res.redirect("/events/add");
   }
   req.body.author = req.user._id;
-  req.body.published = !!req.body.published;
   req.body = bodyFormatDateTime(req);
   const event = await new Event(req.body).save();
   req.flash("success", `Evènement "${event.name}" créé avec succès !`);
   res.redirect(`/event/${event.slug}`);
 };
 
-exports.updateEvent = async (req, res) => {
+exports.updateEvent = async (req, res, next) => {
   store.set("editevents-form-data", req.body); // store body to prefill the register form
   req.sanitizeBody("name");
   req.sanitizeBody("description");
@@ -98,24 +97,25 @@ exports.updateEvent = async (req, res) => {
   req.sanitizeBody("location[coordinates][1]");
   req.checkBody("name", "Vous devez saisir le nom de l'évènement.").notEmpty();
   req.checkBody("location[address]", "Veuillez sélectionner le lieu de l'évènement sur la carte.").notEmpty();
-  req.checkBody("description", "Veuillez saisir une description de l'évènement.").notEmpty();
+  req.checkBody("description", "Veuillez saisir une description.").notEmpty();
   const errors = req.validationErrors();
   if (errors) {
     store.set("form-errors", errors.map(err => err.param));
     req.flash("error", errors.map(err => err.msg));
-    return res.redirect(`/events/${event._id}/edit`);
+    return res.redirect("back");
   }
   // set the location data to be a point
   req.body.location.type = "Point";
   // set the updated date
   req.body.updated = new Date();
-  req.body.published = !!req.body.published;
+  //req.body.published = !!req.body.published;
   req.body = bodyFormatDateTime(req);
 
   const event = await Event.findOneAndUpdate({ _id: req.paramString("id") }, req.body, {
     new: true, // return the new event instead of the old one
     runValidators: true
   }).exec();
+  // event = await Event.update(req.body).save();
   req.flash("success", `Evènement <strong>${event.name}</strong> mis à jour. <a href="/event/${event.slug}">Voir</a>`);
   res.redirect(`/events/${event._id}/edit`);
 };
@@ -125,26 +125,42 @@ exports.publish = async (req, res, next) => {
   if (!event) return next();
   confirmOwner(event, req.user); // we can't (un)publish an event if we don't own it
   const published = !req.queryString("cancel");
-  event.published = published;
+  event.status = published ? "published" : "paused";
   await event.save();
   req.flash("success", `Votre évènement est <strong>${published ? "publié" : "non publié"}</strong>.`);
   res.redirect(`/events/${event._id}/edit`);
 };
 
+exports.remove = async (req, res, next) => {
+  const event = await Event.findOne({ _id: req.paramString("id") }).populate("author");
+  if (!event) return next();
+  confirmOwner(event, req.user); // we can't (un)publish an event if we don't own it
+  event.status = "archived";
+  await event.save();
+  req.flash("success", `Votre évènement a été supprimé.`);
+  res.redirect("/account");
+};
+
 exports.getEventBySlug = async (req, res, next) => {
   const event = await Event.findOne({ slug: req.paramString("slug") }).populate("author");
   if (!event) return next();
-  if (!event.publish) confirmOwner(event, req.user); // we can't see an event if it's not published and we don't own it
+  if (event.status != "published") confirmOwner(event, req.user); // we can't see an event if it's not published and we don't own it
+  let remove = false;
+  if (req.queryString("remove")) {
+    remove = true;
+  }
   const orga = await Organism.findOne({ _id: event.organism });
   if (!orga) return next();
-  res.render("event", { event, orga, title: event.name, csrfToken: req.csrfToken() });
+  res.render("event", { event, orga, title: event.name, csrfToken: req.csrfToken(), remove });
 };
 
 exports.getEvents = async (req, res) => {
   const page = req.queryInt("page") || 1;
   const limit = req.queryInt("limit") || 7;
   const orga = req.queryString("orga");
-  let find = orga ? { organism: orga } : { author: req.user._id };
+  const find = orga
+    ? { organism: orga, status: { $regex: "^((?!archived).)*$", $options: "i" } }
+    : { author: req.user._id, status: { $regex: "^((?!archived).)*$", $options: "i" } };
   const result = await getPagedItems(Event, page, limit, find, {}, { created: "desc" });
   res.json(result);
 };
@@ -158,7 +174,7 @@ exports.getSearchResult = async (req, res) => {
   const maxDistance = req.queryInt("maxdistance") || 10000; // 10km
   let find = {
     $or: [{ name: { $regex: search, $options: "i" } }, { description: { $regex: search, $options: "i" } }],
-    published: true
+    status: "published"
   };
   if (lon && lat) {
     find = {
@@ -172,7 +188,7 @@ exports.getSearchResult = async (req, res) => {
         }
       },
       $or: [{ name: { $regex: search, $options: "i" } }, { description: { $regex: search, $options: "i" } }],
-      published: true
+      status: "published"
     };
   }
   const pagedEvents = await getPagedItems(

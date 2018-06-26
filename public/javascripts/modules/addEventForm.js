@@ -37,12 +37,13 @@ function init(dp1, dp2) {
 function addEventForm(dp1, dp2) {
   if (!dp1 || !dp2) return;
   init(dp1, dp2);
-  const eventId = document.getElementById("id").value;
+  let eventId = document.getElementById("id");
   if (eventId) {
     const publishCheckbox = B("label.form-switch input");
     if (publishCheckbox) {
       const span = B("label.form-switch span");
       publishCheckbox.on("click", function() {
+        eventId = eventId.value;
         if (this.checked) {
           span.innerHTML = "<strong>Publication en cours...</strong>";
           location = `/events/${eventId}/publish`;

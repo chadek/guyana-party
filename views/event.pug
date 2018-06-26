@@ -1,19 +1,20 @@
 extends layout
 
-include mixins/_footer
+include mixins/_removeDialog
 
 block customStyle
   link(rel="stylesheet", href="/vendor/ol/ol.css")
-  link(rel="stylesheet", href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css")
 
 block content
   .pure-g
     .pure-u-1.content
-      //- Event flyer
+      if remove
+        +removeDialog(event, "event")
+      //- Flyer
       .pure-u-1.photo-orga-event
         img(src=(event.photo ? `/uploads/${event.photo}` : "/images/default.jpg") alt="Flyer de l'évènement")
       .separator.top-space
-      //- Event name
+      //- Name
       .pure-u-1.top-space.text-center
         h2= event.name
         p Organisateur :
@@ -53,10 +54,9 @@ block content
         p.text-center= event.location.address
         input#longitude(type="hidden" value=(event.location && event.location.coordinates[0]))
         input#latitude(type="hidden" value=(event.location && event.location.coordinates[1]))
-      .pure-u-1.top-space-40
-        button.pure-button.success.button.expanded(onClick=`location="/events/${event._id}/edit"`) Modifier
-
-  +footer()
+      unless remove
+        .pure-u-1.top-space-40
+          button.pure-button.success.button.expanded(onClick=`location="/events/${event._id}/edit"`) Modifier
 
 block customScripts
   script(src="/vendor/ol/ol.min.js")
