@@ -105,7 +105,7 @@ pre.error {
 
 .photo-orga-event {
   text-align: center;
-  height: 250px;
+  max-height: 250px;
   img {
     object-fit: cover;
     max-height: 250px;

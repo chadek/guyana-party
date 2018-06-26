@@ -4,48 +4,57 @@ include mixins/_footer
 
 block customStyle
   link(rel="stylesheet", href="/vendor/ol/ol.css")
+  link(rel="stylesheet", href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css")
 
 block content
-  .pure-g.content
-    .pure-u-1.photo-orga-event
-      img(src=`/uploads/${event.photo}` alt="flyer de l'évènement")
-    .pure-u-1.top-space.text-center
-      h3= event.name
-      p Organisateur :
-        a(href=`/organism/${orga.slug}`)= ` ${orga.name}`
-    .pure-u-1.top-space.text-center
-      p= event.description
-    .separator
-    .pure-u-1.top-space
-      .pure-u-1.l-wrap
-        .u-sm-1-12: label Début
-        .u-sm-5-12.l-content
-          span.pure-u-1-8.icon!= h.icon("calendar")
-          input.pure-u-7-8#startdate(type="text" readonly)
-        .u-sm-5-12.l-content
-          span.pure-u-1-8.icon!= h.icon("clock")
-          input.pure-u-7-8#starttime(type="text" readonly)
-      .pure-u-1.l-wrap
-        .u-sm-1-12: label Fin
-        .u-sm-5-12.l-content
-          span.pure-u-1-8.icon!= h.icon("calendar")
-          input.pure-u-7-8#enddate(type="text" readonly)
-        .u-sm-5-12.l-content
-          span.pure-u-1-8.icon!= h.icon("clock")
-          input.pure-u-7-8#endtime(type="text" readonly)
-        input#event-start(type="hidden" value=`${event.start}`)
-        input#event-end(type="hidden" value=`${event.end}`)
-      .pure-u-1.l-wrap.top-space
-        .u-sm-1: label= `Fuseau horaire : ${event.timezone}`
-    .separator
-    .pure-u-1.top-space
-      label Le lieu de l'évènement :
-      #map.no-events.readonly
-      p.text-center= event.location.address
-      input#longitude(type="hidden" value=(event.location && event.location.coordinates[0]))
-      input#latitude(type="hidden" value=(event.location && event.location.coordinates[1]))
-    .pure-u-1.top-space
-      button.pure-button.success.button.expanded(onClick=`location="/events/${event._id}/edit"`) Modifier
+  .pure-g
+    .pure-u-1.content
+      //- Event flyer
+      .pure-u-1.photo-orga-event
+        img(src=(event.photo ? `/uploads/${event.photo}` : "/images/default.jpg") alt="Flyer de l'évènement")
+      .separator.top-space
+      //- Event name
+      .pure-u-1.top-space.text-center
+        h2= event.name
+        p Organisateur :
+          a(href=`/organism/${orga.slug}`)= ` ${orga.name}`
+      //- Date && Time
+      .pure-u-1.l-wrap.top-space-40.text-center
+        //- Start date && time
+        .pure-u-1: label Début
+        .pure-u-1.top-space
+          .u-sm-5-12.l-content
+            span.pure-u-1-8.icon!= h.icon("calendar")
+            input.pure-u-7-8#startdate(type="text" readonly)
+          .u-sm-5-12.l-content
+            span.pure-u-1-8.icon!= h.icon("clock")
+            input.pure-u-7-8#starttime(type="text" readonly)
+        //- End date && time
+        .pure-u-1.top-space: label Fin
+        .pure-u-1.top-space
+          .u-sm-5-12.l-content
+            span.pure-u-1-8.icon!= h.icon("calendar")
+            input.pure-u-7-8#enddate(type="text" readonly)
+          .u-sm-5-12.l-content
+            span.pure-u-1-8.icon!= h.icon("clock")
+            input.pure-u-7-8#endtime(type="text" readonly)
+          input#event-start(type="hidden" value=`${event.start}`)
+          input#event-end(type="hidden" value=`${event.end}`)
+        .pure-u-1.top-space.text-center
+          .u-sm-1: label= `Fuseau horaire : ${event.timezone}`
+      //- Description
+      .pure-u-1.top-space-40
+        label Description de l'évènement&nbsp;:
+        #md.readonly.top-space #{event.description}
+      //- Event location
+      .pure-u-1.top-space-40
+        label Le lieu de l'évènement :
+        #map.no-events.readonly.top-space
+        p.text-center= event.location.address
+        input#longitude(type="hidden" value=(event.location && event.location.coordinates[0]))
+        input#latitude(type="hidden" value=(event.location && event.location.coordinates[1]))
+      .pure-u-1.top-space-40
+        button.pure-button.success.button.expanded(onClick=`location="/events/${event._id}/edit"`) Modifier
 
   +footer()
 

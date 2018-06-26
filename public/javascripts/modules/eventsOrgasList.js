@@ -17,6 +17,7 @@ function openCard() {
   });
 }
 
+// EVENTS
 function getEventsList(eventsDiv) {
   if (!eventsDiv) return;
   axiosGet("/api/events", data => {
@@ -58,6 +59,7 @@ function getEventsList(eventsDiv) {
   });
 }
 
+// ORGANISMS
 function getOrgasList(orgasDiv) {
   if (!orgasDiv) return;
   axiosGet("/api/organisms", data => {
@@ -94,6 +96,7 @@ function getOrgasList(orgasDiv) {
   });
 }
 
+// EVENTS in an organism
 function getEventsFromOrga(orgaEventsDiv) {
   if (!orgaEventsDiv) return;
   const orgaId = B("#orga-id");
@@ -135,6 +138,7 @@ function getEventsFromOrga(orgaEventsDiv) {
   });
 }
 
+// Organisms dropdown in event edit page
 function initOrgaDropdown(orgasSelect) {
   if (!orgasSelect) return;
   const orgaId = B("#orga-id");
@@ -152,6 +156,7 @@ function initOrgaDropdown(orgasSelect) {
   });
 }
 
+// Main function
 function loadEventsOrgasList(eventsDiv, orgaEventsDiv, orgasDiv, orgasSelect) {
   getEventsList(eventsDiv);
   getEventsFromOrga(orgaEventsDiv);

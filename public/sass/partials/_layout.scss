@@ -29,7 +29,7 @@
 
 .content {
   margin: 0 auto;
-  padding: 0 2em;
+  padding: 0 1em;
   max-width: 800px;
   margin-bottom: 50px;
 }
@@ -38,8 +38,13 @@
   text-align: center;
 }
 
-.top-space {
+.top-space,
+.top-space-20 {
   margin-top: 20px;
+}
+
+.top-space-40 {
+  margin-top: 40px;
 }
 
 .separator {
