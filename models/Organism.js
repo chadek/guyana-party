@@ -26,8 +26,8 @@ const OrganismSchema = new mongoose.Schema(
       },
       coordinates: [Number],
       address: {
-        type: String,
-        required: "Veuillez sélectionner le l'adresse de l'organisme sur la carte, ou saisir une adresse."
+        type: String
+        //required: "Veuillez sélectionner le l'adresse de l'organisme sur la carte, ou saisir une adresse."
       }
     },
     photo: String,
@@ -46,7 +46,7 @@ const OrganismSchema = new mongoose.Schema(
         admin: Boolean
       }
     ],
-    subscription: String, // free < asso < pro < complete
+    subscription: String // free < asso < pro < complete
   },
   {
     toJSON: { virtuals: true },
