@@ -76,8 +76,8 @@ function getOrgasList(orgasDiv) {
               <div class="card__header--content">
                 <p>
                 ${item.type ? `<strong>Type d'organisme :</strong> ${item.type}` : ""}
-                <br><a href="/organism/${item.slug}">Voir évènements associés</a>
-                <br><a href="/organism/${item.slug}">Voir communauté</a>
+                <br><a href="/organism/${item.slug}#events">Voir évènements associés</a>
+                <br><a href="/organism/${item.slug}#community">Voir communauté</a>
                 ${item.location.address ? `<br><strong>Adresse :</strong> ${item.location.address}` : ""}
                 <!--<br><strong>Souscription :</strong> ${item.subscription ? item.subscription : "free"}
                 <br>(<a href="/souscriptions">Passer en PRO !</a>)-->

@@ -98,8 +98,8 @@ router.get("/event/:slug", catchErrors(eventController.getEventBySlug));
 
 /* API */
 
-router.get("/api/organisms", authController.isLoggedIn, catchErrors(orgaController.getOrganisms));
-router.get("/api/events", authController.isLoggedIn, catchErrors(eventController.getEvents));
+router.get("/api/organisms", catchErrors(orgaController.getOrganisms));
+router.get("/api/events", catchErrors(eventController.getEvents));
 router.get("/api/search", catchErrors(eventController.getSearchResult));
 
 module.exports = router;

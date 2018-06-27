@@ -47,7 +47,10 @@ const OrganismSchema = new mongoose.Schema(
           ref: "User",
           required: "La référence de l'utilisateur est requise."
         },
-        admin: Boolean
+        role: {
+          type: String, // guest | admin
+          default: "guest"
+        }
       }
     ],
     subscription: String, // free < asso < pro < complete

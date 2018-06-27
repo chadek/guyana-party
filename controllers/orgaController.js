@@ -32,7 +32,11 @@ exports.create = async (req, res) => {
     req.flash("error", errors.map(err => err.msg));
     return res.redirect("/organisms/add");
   }
+  // save the author
   req.body.author = req.user._id;
+  // add the author as admin into the community
+  req.body.community = [{ user: req.user._id, role: "admin" }];
+  // Create the new organism
   const orga = await new Organism(req.body).save();
   req.flash("success", `Groupe "${orga.name}" créé avec succès !`);
   res.redirect(`/organism/${orga.slug}`);
@@ -71,15 +75,38 @@ exports.remove = async (req, res, next) => {
   res.redirect("/account");
 };
 
+const confirmMember = (orga, user) => {
+  if (!user) return false;
+  return !!orga.community.find(item => {
+    return item.user.equals(user._id);
+  });
+};
+
+const isAdminMember = (orga, user) => {
+  if (!user) return false;
+  return !!orga.community.find(item => {
+    return item.user.equals(user._id) && item.role == "admin";
+  });
+};
+
 exports.getOrgaBySlug = async (req, res, next) => {
-  const orga = await Organism.findOne({ slug: req.paramString("slug") }).populate("author");
+  const orga = await Organism.findOne({ slug: req.paramString("slug") })
+    .populate("author")
+    .populate("community.user");
   if (!orga) return next();
   if (orga.status != "published") confirmOwner(orga, req.user); // we can't see an event if it's not published and we don't own it
   let remove = false;
   if (req.queryString("remove")) {
     remove = true;
   }
-  res.render("organism", { orga, title: orga.name, csrfToken: req.csrfToken(), remove });
+  res.render("organism", {
+    orga,
+    title: orga.name,
+    csrfToken: req.csrfToken(),
+    remove,
+    isMember: confirmMember(orga, req.user),
+    isAdmin: isAdminMember(orga, req.user)
+  });
 };
 
 exports.getOrganisms = async (req, res) => {

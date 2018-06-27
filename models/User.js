@@ -33,13 +33,13 @@ userSchema.virtual("gravatar").get(function() {
   return `https://gravatar.com/avatar/${hash}?s=200`;
 });
 
-userSchema.statics.getMembershipList = function() {
-  return this.aggregate([
-    { $unwind: "$membership" },
-    { $group: { _id: "$membership", count: { $sum: 1 } } },
-    { $sort: { count: -1 } }
-  ]);
-};
+// userSchema.statics.getMembershipList = function() {
+//   return this.aggregate([
+//     { $unwind: "$membership" },
+//     { $group: { _id: "$membership", count: { $sum: 1 } } },
+//     { $sort: { count: -1 } }
+//   ]);
+// };
 
 userSchema.plugin(passportLocalMongoose, { usernameField: "email" });
 userSchema.plugin(mongodbErrorHandler);
