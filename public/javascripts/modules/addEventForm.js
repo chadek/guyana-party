@@ -39,16 +39,27 @@ function addEventForm(dp1, dp2) {
   init(dp1, dp2);
   let eventId = document.getElementById("id");
   if (eventId) {
-    const publishCheckbox = B("label.form-switch input");
-    if (publishCheckbox) {
-      const span = B("label.form-switch span");
-      publishCheckbox.on("click", function() {
-        eventId = eventId.value;
+    eventId = eventId.value;
+    const publicCheckbox = B("label.form-switch-public input");
+    if (publicCheckbox) {
+      const span = B("label.form-switch-public span");
+      publicCheckbox.on("click", function() {
+        span.innerHTML = "<strong>action en cours...</strong>";
         if (this.checked) {
-          span.innerHTML = "<strong>Publication en cours...</strong>";
+          location = `/events/${eventId}/gopublic`;
+        } else {
+          location = `/events/${eventId}/gopublic?cancel=true`;
+        }
+      });
+    }
+    const publishCheckbox = B("label.form-switch-publish input");
+    if (publishCheckbox) {
+      const span = B("label.form-switch-publish span");
+      publishCheckbox.on("click", function() {
+        span.innerHTML = "<strong>action en cours...</strong>";
+        if (this.checked) {
           location = `/events/${eventId}/publish`;
         } else {
-          span.innerHTML = "<strong>Dépublication en cours...</strong>";
           location = `/events/${eventId}/publish?cancel=true`;
         }
       });

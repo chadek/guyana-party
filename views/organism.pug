@@ -2,7 +2,7 @@ extends layout
 
 include mixins/_removeDialog
 
-block customStyle
+//-block customStyle
   link(rel="stylesheet", href="/vendor/ol/ol.css")
 
 block content
@@ -24,7 +24,7 @@ block content
         label Description&nbsp;:
         #md.readonly.top-space #{orga.description}
       //- Location
-      if orga.location.address
+      //-if orga.location.address
         .pure-u-1.top-space-40
           label L'adresse du siège social :
           #map.no-events.readonly.top-space

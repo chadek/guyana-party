@@ -25,7 +25,16 @@ block content
           //- publishing checkbox
           if event
             .pure-u-1.text-center.top-space
-              label.form-switch
+              label.form-switch.form-switch-public
+                if event.public
+                  input(type="checkbox" name="public" checked="checked")
+                  i
+                  span: strong Public
+                else
+                  input(type="checkbox" name="public")
+                  i
+                  span: strong Privé
+              label.form-switch.form-switch-publish(style="margin-left: 20px;")
                 if event.status == "published"
                   input(type="checkbox" name="published" checked="checked")
                   i

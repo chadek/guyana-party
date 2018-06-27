@@ -64,7 +64,7 @@ exports.updateOrga = async (req, res) => {
 exports.remove = async (req, res, next) => {
   const orga = await Organism.findOne({ _id: req.paramString("id") }).populate("author");
   if (!orga) return next();
-  confirmOwner(orga, req.user); // we can't (un)publish an organism if we don't own it
+  confirmOwner(orga, req.user); // we can't remove a groupe if we don't own it
   orga.status = "archived";
   await orga.save();
   req.flash("success", `Votre groupe a été supprimé.`);

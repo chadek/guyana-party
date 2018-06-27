@@ -131,10 +131,21 @@ exports.publish = async (req, res, next) => {
   res.redirect(`/events/${event._id}/edit`);
 };
 
-exports.remove = async (req, res, next) => {
+exports.goPublic = async (req, res, next) => {
   const event = await Event.findOne({ _id: req.paramString("id") }).populate("author");
   if (!event) return next();
   confirmOwner(event, req.user); // we can't (un)publish an event if we don't own it
+  const isPublic = !req.queryString("cancel");
+  event.public = isPublic;
+  await event.save();
+  req.flash("success", `Votre évènement est <strong>${isPublic ? "public" : "privé"}</strong>.`);
+  res.redirect(`/events/${event._id}/edit`);
+};
+
+exports.remove = async (req, res, next) => {
+  const event = await Event.findOne({ _id: req.paramString("id") }).populate("author");
+  if (!event) return next();
+  confirmOwner(event, req.user); // we can't remove an event if we don't own it
   event.status = "archived";
   await event.save();
   req.flash("success", `Votre évènement a été supprimé.`);

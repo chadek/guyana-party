@@ -48,6 +48,10 @@ const eventSchema = new mongoose.Schema(
     status: {
       type: String, // paused | published | archived
       default: "paused"
+    },
+    public: {
+      type: Boolean,
+      default: false
     }
   },
   {

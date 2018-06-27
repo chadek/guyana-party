@@ -39,6 +39,7 @@ function getEventsList(eventsDiv) {
                 <br><strong>Début :</strong> ${start}
                 <br><strong>Fin :</strong> ${end}
                 <br><strong>Adresse :</strong> ${item.location.address}
+                ${!item.public?"<br><strong>Evènement privé</strong>":""}
                 ${item.status != "published" ? '<br><strong class="unpublished-color">Non publié</strong> |' : "<br>"}
                 <a href="/events/${item.id}/edit">Modifier</a> | <a href="/event/${item.slug}?remove=true">Supprimer</a></p>
               </div>
