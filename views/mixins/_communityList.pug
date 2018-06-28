@@ -1,0 +1,55 @@
+mixin communityList(communityList, isAdmin, showAction=true)
+  link(rel="stylesheet", href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css")
+  table#communityTable.display
+    thead
+      tr
+        th Nom
+        th Rôle
+        if isAdmin && showAction
+          th Actions
+    tbody
+      each item in communityList
+        tr(style="cursor: pointer;")
+          //- Name
+          td(onClick=`location='/account/${item.id}'`) #{item.user.name}
+          //- Role
+          td.text-center
+            if item.role=="admin"
+              strong admin
+            else
+              #{item.role}
+          //- Actions
+          if isAdmin && showAction
+            td
+
+  //- script(src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous")
+  //- script(src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js")
+  script(src="/vendor/jquery/jquery.min.js")
+  script(src="/vendor/jquery/datatables/jquery.datatables.min.js")
+  script(type="text/javascript").
+    $(document).ready(function() {
+      $("#communityTable").dataTable({
+        language: {
+          processing: "Traitement en cours...",
+          search: "Rechercher&nbsp;:",
+          lengthMenu: "Afficher _MENU_ &eacute;l&eacute;ments",
+          info: "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+          infoEmpty: "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+          infoFiltered: "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+          infoPostFix: "",
+          loadingRecords: "Chargement en cours...",
+          zeroRecords: "Aucun &eacute;l&eacute;ment &agrave; afficher",
+          emptyTable: "Aucune donnée disponible dans le tableau",
+          paginate: {
+            first: "Premier",
+            previous: "Pr&eacute;c&eacute;dent",
+            next: "Suivant",
+            last: "Dernier"
+          },
+          aria: {
+            sortAscending: ": activer pour trier la colonne par ordre croissant",
+            sortDescending: ": activer pour trier la colonne par ordre décroissant"
+          }
+        }
+      });
+    });

@@ -1,10 +1,10 @@
 extends layout
 
 include mixins/_removeDialog
+include mixins/_communityList
 
-block customStyle
-  //- link(rel="stylesheet", href="/vendor/ol/ol.css")
-  link(rel="stylesheet", href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css")
+//- block customStyle
+  link(rel="stylesheet", href="/vendor/ol/ol.css")
 
 block content
   .pure-g#top
@@ -44,33 +44,4 @@ block content
       .pure-u-1.top-space-40.text-center
         h3 La communauté
       .pure-u-1.top-space-40.content#community
-        table#communityTable.display
-          thead
-            tr
-              th Nom
-              th Rôle
-              if isAdmin
-                th Actions
-          tbody
-            each item in orga.community
-              tr(style="cursor: pointer;")
-                //- Name
-                td(onClick=`location='/account/${item.id}'`) #{item.user.name}
-                //- Role
-                td
-                  if item.role=="admin"
-                    strong admin
-                  else
-                    #{item.role}
-                //- Actions
-                if isAdmin
-                  td
-
-block customScripts
-  //- script(src="/vendor/ol/ol.min.js")
-  script(src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous")
-  script(src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js")
-  script(type="text/javascript").
-    $(document).ready(function() {
-      $("#communityTable").DataTable();
-    });
+        +communityList(orga.community, isAdmin)
