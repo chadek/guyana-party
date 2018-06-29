@@ -15,7 +15,7 @@
       border: 0;
       outline: 0;
       height: 100%;
-      margin-left: 50px;
+      margin-left: 0px;
       :focus {
         background-color: black;
         border: 0;
@@ -24,7 +24,7 @@
   }
   &__nav {
     float: left;
-    width: 50%;
+    width: 140%;
   }
   .around {
     position: absolute;
