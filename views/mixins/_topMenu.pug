@@ -1,12 +1,17 @@
 mixin topMenu()
   .pure-menu.pure-menu-horizontal.pure-menu-fixed
+    ul.pure-menu-list
+      li.pure-menu-item.menu-item-logo
+        a.pure-menu-link(href="/")
+          img.avatar(src="/images/icons/logo.png")   
     unless currentPath == "/" || currentPath == "/events" || currentPath == "/login"
-      .search.search__nav
-        form(action="/events" method="POST")
-          input.search__input--nav(type="text" placeholder="Chercher par thème ou par lieu..." name="search" )
-          input(type="hidden" name="_csrf" value=`${csrfToken}`)
+      li.pure-menu-item
+        .search.search__nav
+          form(action="/events" method="POST")
+            input.search__input--nav(type="text" placeholder="Chercher par thème ou par lieu..." name="search" )
+            input(type="hidden" name="_csrf" value=`${csrfToken}`)
     unless user || (currentPath == "/login" || currentPath == "/signup" || currentPath == "/forgot")
-      ul.pure-menu-list.connection
+      ul.pure-menu-list.right.connection
         li.pure-menu-item
           a.pure-menu-link(href="/login") Se connecter
         li.pure-menu-separator
@@ -14,7 +19,7 @@ mixin topMenu()
           a.pure-menu-link(href="/signup") Créer un compte
     else
       if user
-        ul.pure-menu-list.menu-item-avatar
+        ul.pure-menu-list.right.menu-item-avatar
           li.pure-menu-item
             span.pure-menu-link
               img.avatar(src=`${h.profilePhotoSrc(user)}` alt="Mon compte")
