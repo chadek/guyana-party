@@ -59,7 +59,7 @@
 .pure-menu-horizontal {
   height: $menuHeight;
   background-color: black;
-  .pure-menu-list {
+  .pure-menu-list.right {
     float: right;
   }
 }
@@ -401,6 +401,11 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 }
 
 .menu-item-avatar .pure-menu-link {
+  height: 44px;
+  cursor: pointer;
+}
+
+.menu-item-logo .pure-menu-link{
   height: 44px;
   cursor: pointer;
 }

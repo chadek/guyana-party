@@ -5,8 +5,11 @@ extends layout
 block content
   .hero-container
     .hero
-      .search
-        button.pure-button.pure-button-primary.pure-button-xlarge#around-click Trouver les évènements autour de moi
+      .pure-g
+        .search.pure-1-5
+          button.pure-button.pure-button-primary.button-xlarge#around-click Trouver les évènements autour de moi
+        .pure-3-5
+          button.pure-button.button-success.button-xlarge#newevents-click Créer un évènement rapide
   .content-wrapper
     .pure-g.content
       .pure-u-1.top-space
@@ -14,6 +17,7 @@ block content
         p Organisez-vous, créez vos évènements et partagez-les.
         p Soyez curieux et bougez autour de chez vous!
         p Une application écologique peu gourmande en énergie et espace de stockage.
+        p La vie est un écosystème et un terrain d'expérience
 
 
   //-.row.home
