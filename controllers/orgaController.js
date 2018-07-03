@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Organism = mongoose.model("Organism");
+const Event = mongoose.model("Event");
 const { getPagedItems, confirmOwner } = require("../handlers/tools");
 const store = require("store");
 
@@ -69,9 +70,23 @@ exports.remove = async (req, res, next) => {
   const orga = await Organism.findOne({ _id: req.paramString("id") }).populate("author");
   if (!orga) return next();
   confirmOwner(orga, req.user); // we can't remove a groupe if we don't own it
+
   orga.status = "archived";
-  await orga.save();
-  req.flash("success", `Votre groupe a été supprimé.`);
+  const orgaResult = await orga.save();
+  if (!orgaResult) return next();
+
+  // Remove the linked events
+  const events = await Event.find({
+    organism: orga._id,
+    status: { $regex: "^((?!archived).)*$", $options: "i" }
+  });
+  if (!events) return next();
+  events.map(async event => {
+    event.status = "archived";
+    await event.save();
+  });
+
+  req.flash("success", `Votre groupe a été archivé.`);
   res.redirect("/account");
 };
 

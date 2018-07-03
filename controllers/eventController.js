@@ -148,7 +148,7 @@ exports.remove = async (req, res, next) => {
   confirmOwner(event, req.user); // we can't remove an event if we don't own it
   event.status = "archived";
   await event.save();
-  req.flash("success", `Votre évènement a été supprimé.`);
+  req.flash("success", `Votre évènement a été archivé.`);
   res.redirect("/account");
 };
 

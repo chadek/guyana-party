@@ -39,9 +39,11 @@ function getEventsList(eventsDiv) {
                 <br><strong>Début :</strong> ${start}
                 <br><strong>Fin :</strong> ${end}
                 <br><strong>Adresse :</strong> ${item.location.address}
-                ${!item.public?"<br><strong>Evènement privé</strong>":""}
+                ${!item.public ? "<br><strong>Evènement privé</strong>" : ""}
                 ${item.status != "published" ? '<br><strong class="unpublished-color">Non publié</strong> |' : "<br>"}
-                <a href="/events/${item.id}/edit">Modifier</a> | <a href="/event/${item.slug}?remove=true">Supprimer</a></p>
+                <a href="/events/${item.id}/edit">Modifier</a> | <a href="/event/${
+          item.slug
+        }?remove=true">Archiver</a></p>
               </div>
             </div>
             <div class="card__section">
@@ -81,7 +83,9 @@ function getOrgasList(orgasDiv) {
                 ${item.location.address ? `<br><strong>Adresse :</strong> ${item.location.address}` : ""}
                 <!--<br><strong>Souscription :</strong> ${item.subscription ? item.subscription : "free"}
                 <br>(<a href="/souscriptions">Passer en PRO !</a>)-->
-                <br><a href="/organisms/${item.id}/edit">Modifier</a> | <a href="/organism/${item.slug}?remove=true">Supprimer</a></p>
+                <br><a href="/organisms/${item.id}/edit">Modifier</a> | <a href="/organism/${
+          item.slug
+        }?remove=true">Archiver</a></p>
               </div>
             </div>
             <div class="card__section">
@@ -123,13 +127,15 @@ function getEventsFromOrga(orgaEventsDiv) {
                 <br><strong>Fin :</strong> ${end}
                 <br><strong>Adresse :</strong> ${item.location.address}
                 ${item.status != "published" ? '<br><strong class="unpublished-color">Non publié</strong> |' : "<br>"}
-                <a href="/events/${item.id}/edit">Modifier</a> | <a href="/event/${item.slug}?remove=true">Supprimer</a></p>
+                <a href="/events/${item.id}/edit">Modifier</a> | <a href="/event/${
+          item.slug
+        }?remove=true">Archiver</a></p>
               </div>
             </div>
             <div class="card__section">
             <p><a ${item.status != "published" ? 'class="unpublished-color"' : ""} href="/event/${
-              item.slug
-            }">${sliceStr(item.name)}</a></p>
+          item.slug
+        }">${sliceStr(item.name)}</a></p>
             </div>
           </div>
         </div>`;

@@ -21,7 +21,7 @@ exports.getPagedItems = async (model, page, limit, find, projection, sort) => {
 };
 
 exports.confirmOwner = function(model, user) {
-  if (!model.author.equals(user._id)) {
+  if (!user || !model.author.equals(user._id)) {
     throw Error("Vous ne pouvez pas effectuer cet action !");
   }
 };
