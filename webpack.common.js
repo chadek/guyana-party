@@ -44,7 +44,7 @@ const styles = {
 const config = {
   entry: {
     // we only have 1 entry, but I've set it up for multiple in the future
-    app: "./public/javascripts/index.js"
+    App: "./public/javascripts/index.js"
   },
   // Once things are done, we kick it out to a file.
   output: {

@@ -4,8 +4,8 @@ import addEventForm from "./modules/addEventForm";
 import { B } from "./modules/bling";
 import initDates from "./modules/date";
 import loadEventsOrgasList from "./modules/eventsOrgasList";
-import {geolocate, autourdemoi} from "./modules/geolocation";
 import makeMap from "./modules/map";
+import "./modules/simplemde";
 // import "./modules/menu";
 import subscriptions from "./modules/subscriptions";
 
@@ -44,10 +44,7 @@ B("#fileUpload") &&
 //   });
 // }
 
-
-
-
-B("#around-click") && 
+B("#around-click") &&
   B("#around-click").on("click", () => {
     location = "/events";
   });

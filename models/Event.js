@@ -13,7 +13,7 @@ const eventSchema = new mongoose.Schema(
     description: {
       type: String,
       trim: true,
-      required: "Veuillez saisir une description de l'évènement."
+      required: "Veuillez saisir une description."
     },
     tags: [String],
     created: {
@@ -28,7 +28,6 @@ const eventSchema = new mongoose.Schema(
         default: "Point"
       },
       coordinates: [Number],
-      timezone: String,
       address: {
         type: String,
         required: "Veuillez sélectionner le lieu de l'évènement sur la carte."
@@ -45,7 +44,15 @@ const eventSchema = new mongoose.Schema(
       ref: "Organism",
       required: "L'organisme de l'évènement est requis."
     },
-    timezone: String // ex: "(UTC-03:00) America/Cayenne"
+    timezone: String, // ex: "(UTC-03:00) America/Cayenne"
+    status: {
+      type: String, // paused | published | archived
+      default: "paused"
+    },
+    public: {
+      type: Boolean,
+      default: false
+    }
   },
   {
     toJSON: { virtuals: true },

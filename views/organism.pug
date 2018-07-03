@@ -1,35 +1,47 @@
 extends layout
 
-include mixins/_footer
+include mixins/_removeDialog
+include mixins/_communityList
 
-block customStyle
+//- block customStyle
   link(rel="stylesheet", href="/vendor/ol/ol.css")
 
 block content
-  .pure-g
+  .pure-g#top
     .pure-u-1.content
+      if remove
+        +removeDialog(orga, "organism")
+      //- Logo
       .pure-u-1.photo-orga-event
-        img(src=`/uploads/${orga.photo}` alt="Logo de l'organisme")
+        img(src=(orga.photo ? `/uploads/${orga.photo}` : "/images/default.jpg") alt="Logo de l'organisme")
+      .separator.top-space
+      //- Name
       .pure-u-1.top-space.text-center
-        h4= orga.name
-        p= `(${orga.type})`
-      .pure-u-1.top-space.text-center
-        p= orga.description
-      .separator
-      .pure-u-1.top-space
-        label L'adresse du siège social :
-        #map.no-events.readonly
-        p.text-center= orga.location.address
-    .separator
-    .pure-u-1.top-space.text-center
-      h3 Mes évènements
-    .pure-u-1.top-space.orga-events
-      p.cell.top-space.text-center Chargement...
-    input#orga-id(type="hidden" value=`${orga._id}`)
-    input#longitude(type="hidden" value=(orga.location && orga.location.coordinates[0]))
-    input#latitude(type="hidden" value=(orga.location && orga.location.coordinates[1]))
+        h2= orga.name
+        if orga.type
+          p= `(${orga.type})`
+      //- Description
+      .pure-u-1.top-space-40
+        label Description&nbsp;:
+        #md.readonly.top-space #{orga.description}
+      //- Location
+      //-if orga.location.address
+        .pure-u-1.top-space-40
+          label L'adresse du siège social :
+          #map.no-events.readonly.top-space
+          p.text-center= orga.location.address
+          input#longitude(type="hidden" value=(orga.location && orga.location.coordinates[0]))
+          input#latitude(type="hidden" value=(orga.location && orga.location.coordinates[1]))
+    .pure-u-1.top-space-40
+      .pure-u-1.text-center
+        h3 Evènements en cours
+      .pure-u-1.top-space.orga-events#events
+        p.top-space.text-center Chargement...
+    if orga
+      input#orga-id(type="hidden" value=`${orga._id}`)
 
-  +footer()
-
-block customScripts
-  script(src="/vendor/ol/ol.min.js")
+    if isMember
+      .pure-u-1.top-space-40.text-center
+        h3 La communauté
+      .pure-u-1.top-space-40.content#community
+        +communityList(orga.community, isAdmin)

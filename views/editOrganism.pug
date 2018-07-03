@@ -1,28 +1,36 @@
 extends layout
 
-include mixins/_footer
-
 block customStyle
   link(rel="stylesheet", href="/vendor/ol/ol.css")
+  link(rel="stylesheet", href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css")
 
 block content
-  .banner
-    h1.banner__head= title
+  //- pre #{h.dump(orga)}
   .pure-g
+    unless orga
+      .banner
+        h1.banner__head= title
     .pure-u-1.content
-      .pure-u-1.text-center
-        p Un organisme permet de créer des évènements pour le compte d'une association ou d'une entreprise ayant besoin de communiquer publiquement ses évènements.
-      .separator
-      form.pure-form.pure-u-1(action=`/organisms/add?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
+      if orga
+        .pure-u-1.text-center.photo-orga-event
+          //- Logo
+          img(src=(orga.photo ? `/uploads/${orga.photo}` : "/images/default.jpg") alt="Flyer de l'évènement")
+        .separator.top-space
+      form.pure-u-1(action=`/organisms/add${orga?`/${orga._id}`:""}?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
+        - const savedData = h.store.get("editorgas-form-data")
+        - const errorData = h.store.get("form-errors")
+        - h.store.remove("form-errors")
         .pure-u-1
-          .pure-u-1.top-space
-            span.pure-u-1-8.icon!= h.icon("clipboard-pencil")
-            input.pure-u-7-8(type="text" placeholder="Nom de votre nouvelle organisation" name="name")
-          .pure-u-1.top-space.text-center
-            label.pure-button.pure-button-primary(for="fileUpload") Logo de votre organisme
+          //- Name
+          .pure-u-1.top-space-40
+            span.pure-u-2-24.icon!= h.icon("clipboard-pencil")
+            input.pure-u-22-24(type="text" placeholder="Nom de votre groupe" name="name" value=`${savedData?savedData.name:(orga ? orga.name : "")}` class=`${errorData && errorData.includes("name")?"error":""}` required)
+          //- Logo input
+          .pure-u-1.top-space-40.text-center
+            label.pure-button.pure-button-primary(for="fileUpload") Logo du groupe
             input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
             .file-upload-filename
-          .pure-u-1.top-space
+          //-.pure-u-1.top-space-40
             .pure-u-1.u-md-1-4
               label.pure-radio(for="association")
                 input#association(type="radio" name="type" value="Association" checked="checked")
@@ -39,20 +47,21 @@ block content
               label.pure-radio(for="collectivite")
                 input#collectivite(type="radio" name="type" value="Collectivité")
                 | Collectivité
+          //- Description
+          .pure-u-1.top-space-40
+            label Description du groupe et de vos actions :
           .pure-u-1.top-space
-            label Description de votre organisme et de vos actions
-            textarea(name="description" placeholder="Donnez envie !")
-          .pure-u-1.top-space
+            textarea#md(name="description" value=`${savedData?savedData.description:(orga ? orga.description : "")}` placeholder="Donnez envie !") #{savedData?savedData.description:(orga ? orga.description : "")}
+          //-.pure-u-1.top-space
             label Où se situe votre siège social ?
             #map.no-events
-          .pure-u-1
+          //-.pure-u-1
             span.input-group-label: i.fi-marker.size-36
-            input.input-group-field#address(type="text" placeholder="Adresse" name="location[address]" value=(orga.location && orga.location.address))
-            input#longitude(type="hidden" name="location[coordinates][0]" value=(orga.location && orga.location.coordinates[0]))
-            input#latitude(type="hidden" name="location[coordinates][1]" value=(orga.location && orga.location.coordinates[1]))
-          .pure-u-1.top-space
-            input.pure-button.success.button.expanded(type="submit" value="Créer")
-  +footer()
+            input.input-group-field#address(type="text" placeholder="Adresse" name="location[address]" value=(orga &&orga.location && orga.location.address))
+            input#longitude(type="hidden" name="location[coordinates][0]" value=(orga && orga.location && orga.location.coordinates[0]))
+            input#latitude(type="hidden" name="location[coordinates][1]" value=(orga && orga.location && orga.location.coordinates[1]))
+          .pure-u-1.top-space-40
+            input.pure-button.success.button.expanded(type="submit" value=`${orga ? "Valider" : "Créer"}`)
 
 block customScripts
   script(src="/vendor/ol/ol.min.js")

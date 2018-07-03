@@ -12,7 +12,8 @@ const OrganismSchema = new mongoose.Schema(
     slug: String,
     description: {
       type: String,
-      trim: true
+      trim: true,
+      required: "Veuillez saisir une description."
     },
     type: String, // association | ong | entreprise | collectivité
     created: {
@@ -24,10 +25,13 @@ const OrganismSchema = new mongoose.Schema(
         type: String,
         default: "Point"
       },
-      coordinates: [Number],
+      coordinates: {
+        type: [Number],
+        default: [0, 0]
+      },
       address: {
-        type: String,
-        required: "Veuillez sélectionner le l'adresse de l'organisme sur la carte, ou saisir une adresse."
+        type: String
+        //required: "Veuillez sélectionner le l'adresse de l'organisme sur la carte, ou saisir une adresse."
       }
     },
     photo: String,
@@ -43,10 +47,17 @@ const OrganismSchema = new mongoose.Schema(
           ref: "User",
           required: "La référence de l'utilisateur est requise."
         },
-        admin: Boolean
+        role: {
+          type: String, // guest | admin
+          default: "guest"
+        }
       }
     ],
     subscription: String, // free < asso < pro < complete
+    status: {
+      type: String, // published | archived
+      default: "published"
+    }
   },
   {
     toJSON: { virtuals: true },

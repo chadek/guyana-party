@@ -51,9 +51,12 @@ exports.account = (req, res) => {
 };
 
 exports.hasOrganism = async (req, res, next) => {
-  const orga = await Organism.findOne({ author: req.user._id });
+  const orga = await Organism.findOne({
+    author: req.user._id,
+    status: { $regex: "^((?!archived).)*$", $options: "i" }
+  });
   if (!orga) {
-    req.flash("error", "Vous devez créer un organisme avant de créer votre évènement.");
+    req.flash("error", "Vous devez créer un groupe avant de créer votre évènement.");
     res.redirect("/organisms/add");
     return;
   }
