@@ -1,25 +1,43 @@
 mixin topMenu()
-  .pure-menu.pure-menu-horizontal.pure-menu-fixed
-    ul.pure-menu-list
-      li.pure-menu-item.menu-item-logo
-        a.pure-menu-link(href="/")
-          img.avatar(src="/images/icons/logo.png")   
-    unless currentPath == "/" || currentPath == "/events" || currentPath == "/login"
-      li.pure-menu-item
-        .search.search__nav
+  //- .pure-menu.pure-menu-horizontal.pure-menu-fixed.flex-container
+  //-   ul.pure-menu-list.flex-grow-1
+  //-     li.pure-menu-item.menu-item-logo
+  //-       a.pure-menu-link(href="/")
+  //-         img.avatar(src="/images/icons/logo.png")   
+  //-     unless currentPath == "/" || currentPath == "/events" || currentPath == "/login"
+  //-       li.pure-menu-item
+  //-         .search.search__nav
+  //-           form(action="/events" method="POST")
+  //-             input.search__input--nav(type="text" placeholder="Chercher" name="search" )
+  //-             input(type="hidden" name="_csrf" value=`${csrfToken}`)
+  //-   unless user || (currentPath == "/login" || currentPath == "/signup" || currentPath == "/forgot")
+  //-     ul.pure-menu-list.right.connection.flex-grow-1
+  //-       li.pure-menu-item
+  //-         a.pure-menu-link(href="/login") Se connecter
+  //-       li.pure-menu-separator
+  //-       li.pure-menu-item
+  //-         a.pure-menu-link(href="/signup") Créer un compte
+  //-   else
+  //-     if user
+  //-       ul.pure-menu-list.right.menu-item-avatar.flex-grow-1
+  //-         li.pure-menu-item
+  //-           span.pure-menu-link
+  //-             img.avatar(src=`${h.profilePhotoSrc(user)}` alt="Mon compte")
+  .topbar
+    .pure-g
+      .top-left.pure-u-2-12
+        a(href="/")
+          img.avatar(src="/images/icons/logo.png")
+      .top-middle.pure-u-1-2
+        unless currentPath == "/" || currentPath == "/events" || currentPath == "/login"
           form(action="/events" method="POST")
-            input.search__input--nav(type="text" placeholder="Chercher par thème ou par lieu..." name="search" )
-            input(type="hidden" name="_csrf" value=`${csrfToken}`)
-    unless user || (currentPath == "/login" || currentPath == "/signup" || currentPath == "/forgot")
-      ul.pure-menu-list.right.connection
-        li.pure-menu-item
-          a.pure-menu-link(href="/login") Se connecter
-        li.pure-menu-separator
-        li.pure-menu-item
-          a.pure-menu-link(href="/signup") Créer un compte
-    else
-      if user
-        ul.pure-menu-list.right.menu-item-avatar
-          li.pure-menu-item
-            span.pure-menu-link
-              img.avatar(src=`${h.profilePhotoSrc(user)}` alt="Mon compte")
+                input.search__input--nav(type="text" placeholder="Chercher" name="search" )
+                input(type="hidden" name="_csrf" value=`${csrfToken}`)
+      .top-right.pure-u-1-3
+        unless user || (currentPath == "/login" || currentPath == "/signup" || currentPath == "/forgot")
+          a.top-link(href="/login") Se connecter
+          a.top-link(href="/signup") Créer un compte
+        if user
+          span.top-link.menu-item-avatar
+            img.avatar(src=`${h.profilePhotoSrc(user)}` alt="Mon compte")
+

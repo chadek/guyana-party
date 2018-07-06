@@ -56,17 +56,14 @@
 //   color: #777;
 // }
 
-.pure-menu-horizontal {
-  height: $menuHeight;
-  background-color: black;
-  .pure-menu-list.right {
-    float: right;
-  }
-}
-.pure-menu-horizontal .pure-menu-link {
-  color: white;
-  font-weight: bold;
-}
+// .pure-menu-horizontal {
+//   height: $menuHeight;
+//   background-color: black;
+// }
+// .pure-menu-horizontal .pure-menu-link {
+//   color: white;
+//   font-weight: bold;
+// }
 
 /*
 Add transition to containers so they can push in and out.
@@ -123,78 +120,78 @@ The `#menu` `<div>` is the parent `<div>` that contains the `.pure-menu` that
 appears on the left side of the page.
 */
 
-#menu {
-  margin-left: -$menuWidth;
-  width: $menuWidth;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 1000; /* so the menu or its navicon stays above all content */
-  background: #191818;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
+// #menu {
+//   margin-left: -$menuWidth;
+//   width: $menuWidth;
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   bottom: 0;
+//   z-index: 1000; /* so the menu or its navicon stays above all content */
+//   background: #191818;
+//   overflow-y: auto;
+//   -webkit-overflow-scrolling: touch;
+// }
 /*
   All anchors inside the menu should be styled like this.
   */
-#menu a {
-  //color: #999;
-  color: white;
-  border: none;
-  padding: 0.6em 0 0.6em 0.6em;
-}
+// #menu a {
+//   //color: #999;
+//   color: white;
+//   border: none;
+//   padding: 0.6em 0 0.6em 0.6em;
+// }
 
 /*
   Remove all background/borders, since we are applying them to #menu.
   */
-#menu .pure-menu,
-#menu .pure-menu ul {
-  border: none;
-  background: transparent;
-}
+// #menu .pure-menu,
+// #menu .pure-menu ul {
+//   border: none;
+//   background: transparent;
+// }
 
 /*
   Add that light border to separate items into groups.
   */
-#menu .pure-menu ul,
-#menu .pure-menu .menu-item-divided {
-  border-top: 1px solid #333;
-}
+// #menu .pure-menu ul,
+// #menu .pure-menu .menu-item-divided {
+//   border-top: 1px solid #333;
+// }
 
 /*
   Change color of the anchor links on hover/focus.
   */
-#menu .pure-menu li a:hover,
-#menu .pure-menu li a:focus,
-.pure-menu-horizontal li a:hover,
-.pure-menu-horizontal li a:focus {
-  background: #333;
-}
+// #menu .pure-menu li a:hover,
+// #menu .pure-menu li a:focus,
+// .pure-menu-horizontal li a:hover,
+// .pure-menu-horizontal li a:focus {
+//   background: #333;
+// }
 
 /*
   This styles the selected menu item `<li>`.
   */
-#menu .pure-menu-selected,
-#menu .pure-menu-heading {
-  background: #1f8dd6;
-}
+// #menu .pure-menu-selected,
+// #menu .pure-menu-heading {
+//   background: #1f8dd6;
+// }
 /*
   This styles a link within a selected menu item `<li>`.
   */
-#menu .pure-menu-selected a {
-  color: #fff;
-}
+// #menu .pure-menu-selected a {
+//   color: #fff;
+// }
 
 /*
   This styles the menu heading.
   */
-#menu .pure-menu-heading {
-  font-size: 110%;
-  color: #fff;
-  margin: 0;
-  height: $menuHeight;
-}
+// #menu .pure-menu-heading {
+//   font-size: 110%;
+//   color: #fff;
+//   margin: 0;
+//   height: $menuHeight;
+// }
 
 /* -- Dynamic Button For Responsive Menu -------------------------------------*/
 
@@ -400,6 +397,10 @@ Hides the menu at `48em`, but modify this based on your app's needs.
   }
 }
 
+.menu-item-avatar {
+  // direction: rtl;
+}
+
 .menu-item-avatar .pure-menu-link {
   height: 44px;
   cursor: pointer;
@@ -413,3 +414,18 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 .pure-menu-list.connection {
   margin-top: 5px;
 }
+
+.topbar{
+  height: $menuHeight;
+  background-color: $black;
+  overflow: hidden;
+  top : 0;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+}
+
+.top-left, .top-middle, .top-right {
+  padding : 7px;
+}
+
