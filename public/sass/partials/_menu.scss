@@ -429,3 +429,29 @@ Hides the menu at `48em`, but modify this based on your app's needs.
   padding : 7px;
 }
 
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  float: left;
+}
+
+.menu-item {
+  display: block;
+  // text-align: center;
+  // text-decoration: none;
+  // vertical-align: middle;
+  padding: 7px;
+}
+
+.menu-li-right {
+  float: right;
+  padding : 7px;
+}
+
+
+
+
