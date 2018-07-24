@@ -397,19 +397,16 @@ Hides the menu at `48em`, but modify this based on your app's needs.
   }
 }
 
-.menu-item-avatar {
-  // direction: rtl;
-}
 
-.menu-item-avatar .pure-menu-link {
-  height: 44px;
-  cursor: pointer;
-}
+// .menu-item-avatar .pure-menu-link {
+//   height: 44px;
+//   cursor: pointer;
+// }
 
-.menu-item-logo .pure-menu-link{
-  height: 44px;
-  cursor: pointer;
-}
+// .menu-item-logo .pure-menu-link{
+//   height: 44px;
+//   cursor: pointer;
+// }
 
 .pure-menu-list.connection {
   margin-top: 5px;
@@ -445,6 +442,11 @@ li {
   // text-decoration: none;
   // vertical-align: middle;
   padding: 7px;
+}
+
+.menu-item-avatar {
+  display: block;
+  padding: 0;
 }
 
 .menu-li-right {

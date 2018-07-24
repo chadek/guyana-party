@@ -29,10 +29,10 @@ mixin topMenu()
         a.menu-item(href="/")
           img.avatar(src="/images/icons/logo.png")
       unless currentPath == "/" || currentPath == "/events" || currentPath == "/login"
-        li
-          form(action="/events" method="POST")
-                input.search__input--nav(type="text" placeholder="Chercher" name="search" )
-                input(type="hidden" name="_csrf" value=`${csrfToken}`)
+        li.li-form
+          form.search-form(action="/events" method="POST")
+            input.search-input(type="text" placeholder="Rechercher" name="search" )
+            input(type="hidden" name="_csrf" value=`${csrfToken}`)
       unless user || (currentPath == "/login" || currentPath == "/signup" || currentPath == "/forgot")
         li.menu-li-right
           a.menu-item(href="/login") Se connecter
@@ -40,6 +40,6 @@ mixin topMenu()
           a.menu-item(href="/signup") Créer un compte
       if user
         li.menu-li-right
-          span.menu-item-avatar
+          a.menu-item-avatar
             img.avatar(src=`${h.profilePhotoSrc(user)}` alt="Mon compte")
 
