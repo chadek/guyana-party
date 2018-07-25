@@ -24,12 +24,12 @@ mixin topMenu()
   //-           span.pure-menu-link
   //-             img.avatar(src=`${h.profilePhotoSrc(user)}` alt="Mon compte")
   .topbar
-    ul
-      li
+    ul.ul-topbar
+      li.li-topbar
         a.menu-item(href="/")
           img.avatar(src="/images/icons/logo.png")
       unless currentPath == "/" || currentPath == "/events" || currentPath == "/login"
-        li.li-form
+        li.li-form.li-topbar
           form.search-form(action="/events" method="POST")
             input.search-input(type="text" placeholder="Rechercher" name="search" )
             input(type="hidden" name="_csrf" value=`${csrfToken}`)

@@ -426,13 +426,13 @@ Hides the menu at `48em`, but modify this based on your app's needs.
   padding : 7px;
 }
 
-ul {
+.ul-topbar {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-li {
+.li-topbar {
   float: left;
 }
 
