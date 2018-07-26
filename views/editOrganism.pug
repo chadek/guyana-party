@@ -21,6 +21,10 @@ block content
         - const errorData = h.store.get("form-errors")
         - h.store.remove("form-errors")
         .pure-u-1
+          //- Edit & Archive buttons
+          .pure-u-1.text-center.top-space-40
+            a(href=`/organism/${orga.slug}?remove=true` title="Archiver")
+              span.icon!= h.icon("archive")
           //- Name
           .pure-u-1.top-space-40
             span.pure-u-2-24.icon!= h.icon("clipboard-pencil")

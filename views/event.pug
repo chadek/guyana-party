@@ -17,6 +17,12 @@ block content
       //- Name
       .pure-u-1.top-space.text-center
         h2= event.name
+        //- Edit & Archive buttons
+        if isOwner
+          a(href=`/events/${event.id}/edit` title="Modifier" style="margin-right: 10px;")
+            span.icon!= h.icon("edit")
+          a(href=`/event/${event.slug}?remove=true` title="Archiver")
+            span.icon!= h.icon("archive")
         p Organisateur :
           a(href=`/organism/${orga.slug}`)= ` ${orga.name}`
       //- Date && Time

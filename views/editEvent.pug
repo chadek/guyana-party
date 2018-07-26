@@ -43,6 +43,10 @@ block content
                   input(type="checkbox" name="published")
                   i
                   span: strong.unpublished-color Non publié
+              //- Edit & Archive buttons
+              a(href=`/event/${event.slug}?remove=true` title="Archiver" style="margin-left: 20px;")
+                span.icon!= h.icon("archive")
+
           //- Name
           .pure-u-1.top-space-40
             span.pure-u-2-24.icon!= h.icon("clipboard-pencil")

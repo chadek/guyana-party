@@ -162,7 +162,8 @@ exports.getEventBySlug = async (req, res, next) => {
   }
   const orga = await Organism.findOne({ _id: event.organism });
   if (!orga) return next();
-  res.render("event", { event, orga, title: event.name, csrfToken: req.csrfToken(), remove });
+  const isOwner = req.user && event.author.equals(req.user._id);
+  res.render("event", { event, orga, title: event.name, csrfToken: req.csrfToken(), remove, isOwner });
 };
 
 exports.getEvents = async (req, res) => {
