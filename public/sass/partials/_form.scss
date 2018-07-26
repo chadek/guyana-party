@@ -8,10 +8,27 @@ form textarea {
       border-color: red;
     }
   }
+  // &.at {
+  //   text-indent: 32px;
+  // }
 }
 
 select {
   max-width: 300px;
+}
+
+.input-at {
+  position: relative;
+  input {
+    text-indent: 32px;
+  }
+  span {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    font-size: 20px;
+    color: $quiet;
+  }
 }
 
 // label {

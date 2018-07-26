@@ -1,8 +1,12 @@
 extends layout
 
+include mixins/_removeDialog
+
 block content
   .pure-g.small-form-inner.l-wrap.top-space
     .pure-u-1
+      if remove
+        +removeDialog(user, "account")
       .text-center
         h1= title
       .login-container
@@ -13,8 +17,17 @@ block content
             label.pure-button.pure-button-primary(for="fileUpload") Représentation visuelle
             input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
             .file-upload-filename
-          label.top-space(for="name") Nom de l'organisateur
-          input#name(type="text" name="name" value=`${user.name}` required)
-          label(for="email") E-mail
-          input#email(type="text" name="email" value=`${user.email}` required)
-          button.pure-button.success.button.expanded.top-space Enregistrer
+          //- label.top-space(for="name") Nom
+          //- input#name(type="text" name="name" value=`${user.name}` placeholder="Votre nom")
+          label.top-space(for="name") Identifiant :
+          .input-at
+            input#name(type="text" name="name" value=`${user.name}` placeholder="Votre nom" required)
+            span @
+          label.top-space(for="email") E-mail :
+          input#email(type="text" name="email" value=`${user.email}` placeholder="Votre e-mail" required)
+          button.pure-button.success.button.expanded.top-space-40 Enregistrer
+      .separator.top-space-40
+      .top-space
+        a(href="/forgot") Réinitialiser votre mot de passe
+      .top-space
+        a(href="/account/edit?remove=true") Supprimer votre compte

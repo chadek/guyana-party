@@ -5,8 +5,9 @@ block content
     .pure-u-1
       .text-center
         h1= title
-        span.quiet ou
-          a(href="/login")  se connecter à votre compte
+        unless user
+          span.quiet ou
+            a(href="/login")  se connecter à votre compte
         p Saisir votre adresse email et un lien permettant la réinitialisation de votre mot de passe vous sera envoyé.
       .login-container.small-form-inner
         form(action="/forgot" method="POST")

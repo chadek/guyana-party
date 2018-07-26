@@ -25,7 +25,11 @@ router.post(
 router.get("/forgot", userController.forgotForm);
 router.post("/forgot", catchErrors(authController.forgot));
 router.get("/reset/:token", catchErrors(authController.reset));
-router.post("/reset/:token", authController.confirmedPasswords, catchErrors(authController.update));
+router.post(
+  "/reset/:token",
+  authController.confirmedPasswords,
+  catchErrors(authController.update)
+);
 
 /* Subscriptions */
 
@@ -44,13 +48,22 @@ router.get(
 /* Account */
 
 router.get("/account", authController.isLoggedIn, userController.account);
-router.get("/account/edit", authController.isLoggedIn, userController.editAccount);
+router.get(
+  "/account/edit",
+  authController.isLoggedIn,
+  userController.editAccount
+);
 router.post(
   "/account/edit",
   authController.isLoggedIn,
   mainController.upload,
   catchErrors(mainController.resize),
   catchErrors(userController.updateAccount)
+);
+router.get(
+  "/accounts/:id/remove",
+  authController.isLoggedIn,
+  catchErrors(userController.remove)
 );
 
 /* Organisms */
@@ -75,7 +88,11 @@ router.get(
   authController.isLoggedIn,
   catchErrors(orgaController.editOrgaPage)
 );
-router.get("/organisms/:id/remove", authController.isLoggedIn, catchErrors(orgaController.remove));
+router.get(
+  "/organisms/:id/remove",
+  authController.isLoggedIn,
+  catchErrors(orgaController.remove)
+);
 router.get("/organism/:slug", catchErrors(orgaController.getOrgaBySlug));
 router.get("/organism/id/:id", catchErrors(orgaController.getOrgaById));
 
@@ -110,13 +127,21 @@ router.get(
   authController.isLoggedIn,
   catchErrors(eventController.editEventPage)
 );
-router.get("/events/:id/publish", authController.isLoggedIn, catchErrors(eventController.publish));
+router.get(
+  "/events/:id/publish",
+  authController.isLoggedIn,
+  catchErrors(eventController.publish)
+);
 router.get(
   "/events/:id/gopublic",
   authController.isLoggedIn,
   catchErrors(eventController.goPublic)
 );
-router.get("/events/:id/remove", authController.isLoggedIn, catchErrors(eventController.remove));
+router.get(
+  "/events/:id/remove",
+  authController.isLoggedIn,
+  catchErrors(eventController.remove)
+);
 router.get("/event/:slug", catchErrors(eventController.getEventBySlug));
 
 /* API */

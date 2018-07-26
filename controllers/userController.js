@@ -1,17 +1,26 @@
 const mongoose = require("mongoose");
+const { promisify } = require("es6-promisify");
+const store = require("store");
+
 const User = mongoose.model("User");
 const Organism = mongoose.model("Organism");
-const { promisify } = require("es6-promisify");
 
-exports.loginForm = (req, res) => res.render("login", { title: "Se connecter", csrfToken: req.csrfToken() });
+exports.loginForm = (req, res) =>
+  res.render("login", { title: "Se connecter", csrfToken: req.csrfToken() });
 
-exports.signupForm = (req, res) => res.render("signup", { title: "Créer un compte", csrfToken: req.csrfToken() });
+exports.signupForm = (req, res) =>
+  res.render("signup", {
+    title: "Créer un compte",
+    csrfToken: req.csrfToken()
+  });
 
 exports.forgotForm = (req, res) =>
-  res.render("forgot", { title: "Réinitialiser votre mot de passe", csrfToken: req.csrfToken() });
+  res.render("forgot", {
+    title: "Réinitialiser votre mot de passe",
+    csrfToken: req.csrfToken()
+  });
 
 exports.validateRegister = (req, res, next) => {
-  const store = require("store");
   store.set("signup-form-data", req.body); // store body to prefill the register form
   req.sanitizeBody("name");
   req.checkBody("name", "Vous devez saisir un nom.").notEmpty();
@@ -22,8 +31,12 @@ exports.validateRegister = (req, res, next) => {
     gmail_remove_subaddress: false
   });
   req.checkBody("password", "Vous devez saisir un mot de passe.").notEmpty();
-  req.checkBody("password-confirm", "Vous devez confirmer le mot de passe.").notEmpty();
-  req.checkBody("password-confirm", "Les mots de passe ne correspondent pas.").equals(req.bodyString("password"));
+  req
+    .checkBody("password-confirm", "Vous devez confirmer le mot de passe.")
+    .notEmpty();
+  req
+    .checkBody("password-confirm", "Les mots de passe ne correspondent pas.")
+    .equals(req.bodyString("password"));
 
   const errors = req.validationErrors();
   if (errors) {
@@ -46,7 +59,7 @@ exports.register = async (req, res, next) => {
 };
 
 exports.account = (req, res) => {
-  require("store").clearAll(); // clear all data stored
+  store.clearAll(); // clear all data stored
   res.render("account", { title: "Votre compte", csrfToken: req.csrfToken() });
 };
 
@@ -56,7 +69,10 @@ exports.hasOrganism = async (req, res, next) => {
     status: { $regex: "^((?!archived).)*$", $options: "i" }
   });
   if (!orga) {
-    req.flash("error", "Vous devez créer un groupe avant de créer votre évènement.");
+    req.flash(
+      "error",
+      "Vous devez créer un groupe avant de créer votre évènement."
+    );
     res.redirect("/organisms/add");
     return;
   }
@@ -79,7 +95,15 @@ exports.hasOrganism = async (req, res, next) => {
 // };
 
 exports.editAccount = (req, res) => {
-  res.render("editAccount", { title: "Edition de votre compte", csrfToken: req.csrfToken() });
+  let remove = false;
+  if (req.queryString("remove")) {
+    remove = true;
+  }
+  res.render("editAccount", {
+    title: "Edition de votre compte",
+    csrfToken: req.csrfToken(),
+    remove
+  });
 };
 
 exports.updateAccount = async (req, res) => {
@@ -91,11 +115,23 @@ exports.updateAccount = async (req, res) => {
   if (photo) {
     updates.photo = photo;
   }
-  const user = await User.findOneAndUpdate(
+  await User.findOneAndUpdate(
     { _id: req.user._id },
     { $set: updates },
     { new: true, runValidators: true, context: "query" }
   );
   req.flash("success", "Compte mis à jour !");
-  res.redirect("back");
+  res.redirect("/account");
+};
+
+exports.remove = async (req, res, next) => {
+  const user = await User.findOne({ _id: req.paramString("id") });
+  if (!user) return next();
+  // we can't remove a user account if we are not the owner
+  if (!req.user._id.equals(user._id)) {
+    throw Error("Vous ne pouvez pas effectuer cet action !");
+  }
+  await user.remove();
+  req.flash("success", "Votre compte a été supprimé.");
+  res.redirect("/");
 };

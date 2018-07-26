@@ -15,7 +15,6 @@ block content
           label(for="name") Nom
           input#name(type="text" name="name" value=`${savedData?savedData.name:""}` class=`${errorData && errorData.includes("name")?"error":""}` required)
           label.top-space(for="email") E-mail
-            span.quiet  (ou identifiant)
           input#email(type="email" name="email" value=`${savedData?savedData.email:""}` class=`${errorData && errorData.includes("email")?"error":""}` required)
           label(for="password") Mot de passe
           input#password(type="password" name="password" class=`${errorData && errorData.includes("password")?"error":""}` required)
