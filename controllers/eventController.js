@@ -3,8 +3,9 @@ const mongoose = require("mongoose");
 const Event = mongoose.model("Event");
 const Organism = mongoose.model("Organism");
 // const { promisify } = require("es6-promisify");
-const { getPagedItems, confirmOwner } = require("../handlers/tools");
 const store = require("store");
+const moment = require("moment-timezone");
+const { getPagedItems, confirmOwner } = require("../handlers/tools");
 
 exports.eventsPage = (req, res) => {
   const search = req.bodyString("search") || req.queryString("q") || "";
@@ -13,24 +14,23 @@ exports.eventsPage = (req, res) => {
     title: "Les évènements sur la carte",
     search,
     around,
-    csrfToken: req.csrfToken(),
+    csrfToken: req.csrfToken()
   });
 };
 
 const getTZList = () => {
   const time = Date.now();
-  const moment = require("moment-timezone");
   const tzNamesList = moment.tz.names();
   const tzList = [];
   for (let i = 0; i < tzNamesList.length; i++) {
     const zone = moment.tz.zone(tzNamesList[i]);
     const tzValue = moment.tz(time, zone.name).format("Z");
-    const selected = moment.tz.guess() == zone.name;
+    const selected = moment.tz.guess() === zone.name;
     tzList.push({
       id: zone.utcOffset(time),
       label: `(UTC${tzValue}) ${zone.name}`,
       value: zone.name,
-      selected,
+      selected
     });
   }
   tzList.sort((a, b) => b.id - a.id);
@@ -45,7 +45,7 @@ exports.addPage = (req, res) => {
     orga,
     tzList: getTZList(),
     title: "Création d'un évènement",
-    csrfToken: req.csrfToken(),
+    csrfToken: req.csrfToken()
   });
 };
 
@@ -59,7 +59,7 @@ exports.editEventPage = async (req, res) => {
     event,
     tzList: getTZList(),
     title: "Edition de l'évènement",
-    csrfToken: req.csrfToken(),
+    csrfToken: req.csrfToken()
   });
 };
 
@@ -69,7 +69,6 @@ const bodyFormatDateTime = req => {
   const endDate = req.bodyString("enddate");
   const endTime = req.bodyString("endtime");
   const tz = req.bodyString("tz");
-  const moment = require("moment-timezone");
   req.body.start = moment.tz(`${startDate} ${startTime}`, tz).format();
   req.body.end = moment.tz(`${endDate} ${endTime}`, tz).format();
   req.body.timezone = `(UTC${moment.tz(`${startDate} ${startTime}`, tz).format("Z")}) ${tz}`;
@@ -128,7 +127,7 @@ exports.updateEvent = async (req, res, next) => {
 
   const event = await Event.findOneAndUpdate({ _id: req.paramString("id") }, req.body, {
     new: true, // return the new event instead of the old one
-    runValidators: true,
+    runValidators: true
   }).exec();
   // event = await Event.update(req.body).save();
   req.flash(
@@ -176,7 +175,7 @@ exports.remove = async (req, res, next) => {
 exports.getEventBySlug = async (req, res, next) => {
   const event = await Event.findOne({ slug: req.paramString("slug") }).populate("author");
   if (!event) return next();
-  if (event.status != "published") confirmOwner(event, req.user); // we can't see an event if it's not published and we don't own it
+  if (event.status !== "published") confirmOwner(event, req.user); // we can't see an event if it's not published and we don't own it
   let remove = false;
   if (req.queryString("remove")) {
     remove = true;
@@ -190,7 +189,7 @@ exports.getEventBySlug = async (req, res, next) => {
     title: event.name,
     csrfToken: req.csrfToken(),
     remove,
-    isOwner,
+    isOwner
   });
 };
 
@@ -199,8 +198,14 @@ exports.getEvents = async (req, res) => {
   const limit = req.queryInt("limit") || 7;
   const orga = req.queryString("orga");
   const find = orga
-    ? { organism: orga, status: { $regex: "^((?!archived).)*$", $options: "i" } }
-    : { author: req.user._id, status: { $regex: "^((?!archived).)*$", $options: "i" } };
+    ? {
+        organism: orga,
+        status: { $regex: "^((?!archived).)*$", $options: "i" }
+      }
+    : {
+        author: req.user._id,
+        status: { $regex: "^((?!archived).)*$", $options: "i" }
+      };
   const result = await getPagedItems(Event, page, limit, find, {}, { created: "desc" });
   res.json(result);
 };
@@ -215,9 +220,9 @@ exports.getSearchResult = async (req, res) => {
   let find = {
     $or: [
       { name: { $regex: search, $options: "i" } },
-      { description: { $regex: search, $options: "i" } },
+      { description: { $regex: search, $options: "i" } }
     ],
-    status: "published",
+    status: "published"
   };
   if (lon && lat) {
     find = {
@@ -225,16 +230,16 @@ exports.getSearchResult = async (req, res) => {
         $near: {
           $geometry: {
             type: "Point",
-            coordinates: [lon, lat].map(parseFloat),
+            coordinates: [lon, lat].map(parseFloat)
           },
-          $maxDistance: maxDistance,
-        },
+          $maxDistance: maxDistance
+        }
       },
       $or: [
         { name: { $regex: search, $options: "i" } },
-        { description: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } }
       ],
-      status: "published",
+      status: "published"
     };
   }
   const pagedEvents = await getPagedItems(
@@ -248,7 +253,7 @@ exports.getSearchResult = async (req, res) => {
       slug: 1,
       name: 1,
       start: 1,
-      "location.coordinates": 1,
+      "location.coordinates": 1
     },
     { score: { $meta: "textScore" } }
   );

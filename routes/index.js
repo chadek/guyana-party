@@ -1,4 +1,5 @@
 const express = require("express");
+
 const router = express.Router();
 const mainController = require("../controllers/mainController");
 const userController = require("../controllers/userController");
@@ -15,7 +16,12 @@ router.get("/login", userController.loginForm);
 router.get("/logout", authController.logout);
 router.post("/login", authController.preLogin, authController.login);
 router.get("/signup", userController.signupForm);
-router.post("/signup", userController.validateRegister, catchErrors(userController.register), authController.login);
+router.post(
+  "/signup",
+  userController.validateRegister,
+  catchErrors(userController.register),
+  authController.login
+);
 router.get("/forgot", userController.forgotForm);
 router.post("/forgot", catchErrors(authController.forgot));
 router.get("/reset/:token", catchErrors(authController.reset));
@@ -64,7 +70,11 @@ router.post(
   catchErrors(mainController.resize),
   catchErrors(orgaController.updateOrga)
 );
-router.get("/organisms/:id/edit", authController.isLoggedIn, catchErrors(orgaController.editOrgaPage));
+router.get(
+  "/organisms/:id/edit",
+  authController.isLoggedIn,
+  catchErrors(orgaController.editOrgaPage)
+);
 router.get("/organisms/:id/remove", authController.isLoggedIn, catchErrors(orgaController.remove));
 router.get("/organism/:slug", catchErrors(orgaController.getOrgaBySlug));
 router.get("/organism/id/:id", catchErrors(orgaController.getOrgaById));
@@ -73,7 +83,12 @@ router.get("/organism/id/:id", catchErrors(orgaController.getOrgaById));
 
 router.get("/events", eventController.eventsPage);
 router.post("/events", eventController.eventsPage);
-router.get("/events/add", authController.isLoggedIn, catchErrors(userController.hasOrganism), eventController.addPage);
+router.get(
+  "/events/add",
+  authController.isLoggedIn,
+  catchErrors(userController.hasOrganism),
+  eventController.addPage
+);
 router.post(
   "/events/add",
   authController.isLoggedIn,
@@ -90,9 +105,17 @@ router.post(
   catchErrors(mainController.resize),
   catchErrors(eventController.updateEvent)
 );
-router.get("/events/:id/edit", authController.isLoggedIn, catchErrors(eventController.editEventPage));
+router.get(
+  "/events/:id/edit",
+  authController.isLoggedIn,
+  catchErrors(eventController.editEventPage)
+);
 router.get("/events/:id/publish", authController.isLoggedIn, catchErrors(eventController.publish));
-router.get("/events/:id/gopublic", authController.isLoggedIn, catchErrors(eventController.goPublic));
+router.get(
+  "/events/:id/gopublic",
+  authController.isLoggedIn,
+  catchErrors(eventController.goPublic)
+);
 router.get("/events/:id/remove", authController.isLoggedIn, catchErrors(eventController.remove));
 router.get("/event/:slug", catchErrors(eventController.getEventBySlug));
 

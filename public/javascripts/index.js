@@ -22,8 +22,8 @@ B(".menu-item-avatar") &&
 // managing file uploads when needed
 B("#fileUpload") &&
   B("#fileUpload").on("change", function(e) {
-    e = e || window.event;
-    this.nextSibling.textContent = `Fichier : ${(e.target || e.srcElement).files[0].name}`;
+    const evt = e || window.event;
+    this.nextSibling.textContent = `Fichier : ${(evt.target || evt.srcElement).files[0].name}`;
   });
 
 // geolocation for home and events pages
@@ -46,7 +46,7 @@ B("#fileUpload") &&
 
 B("#around-click") &&
   B("#around-click").on("click", () => {
-    location = "/events";
+    window.location = "/events";
   });
 
 accountForm(B(".btn-old"), B(".btn-new"));
