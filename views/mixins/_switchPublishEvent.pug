@@ -1,0 +1,21 @@
+mixin switchPublishEvent(event)
+  .switch-publish-event
+    input#id(type="hidden" value=event._id)
+    label.form-switch.form-switch-public
+      if event.public
+        input(type="checkbox" checked="checked")
+        i
+        span: strong Public
+      else
+        input(type="checkbox")
+        i
+        span: strong Privé
+    label.form-switch.form-switch-publish(style="margin-left: 20px;")
+      if event.status == "published"
+        input(type="checkbox" checked="checked")
+        i
+        span: strong Publié
+      else
+        input(type="checkbox")
+        i
+        span: strong.unpublished-color Non publié

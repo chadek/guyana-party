@@ -1,5 +1,7 @@
 extends layout
 
+include mixins/_switchPublishEvent
+
 block customStyle
   link(rel="stylesheet", href="/vendor/jquery/clockpicker/jquery.clockpicker.min.css")
   link(rel="stylesheet", href="/vendor/ol/ol.css")
@@ -25,28 +27,11 @@ block content
           //- publishing checkbox
           if event
             .pure-u-1.text-center.top-space
-              label.form-switch.form-switch-public
-                if event.public
-                  input(type="checkbox" name="public" checked="checked")
-                  i
-                  span: strong Public
-                else
-                  input(type="checkbox" name="public")
-                  i
-                  span: strong Privé
-              label.form-switch.form-switch-publish(style="margin-left: 20px;")
-                if event.status == "published"
-                  input(type="checkbox" name="published" checked="checked")
-                  i
-                  span: strong Publié
-                else
-                  input(type="checkbox" name="published")
-                  i
-                  span: strong.unpublished-color Non publié
+              +switchPublishEvent(event)
+              br
               //- Edit & Archive buttons
-              a(href=`/event/${event.slug}?remove=true` title="Archiver" style="margin-left: 20px;")
+              a(href=`/event/${event.slug}?remove=true` title="Archiver")
                 span.icon!= h.icon("archive")
-
           //- Name
           .pure-u-1.top-space-40
             span.pure-u-2-24.icon!= h.icon("clipboard-pencil")
@@ -109,8 +94,8 @@ block content
           //- Validation button
           .pure-u-1.top-space-40
             input.pure-button.success.button.expanded(type="submit" value=`${event ? "Valider" : "Créer"}`)
-          if event
-            input#id(type="hidden" value=event._id)
+          //-if event
+          //-  input#id(type="hidden" value=event._id)
 
 block customScripts
   script(src="/vendor/jquery/jquery.min.js")

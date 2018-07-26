@@ -1,6 +1,7 @@
 extends layout
 
 include mixins/_removeDialog
+include mixins/_switchPublishEvent
 
 block customStyle
   link(rel="stylesheet", href="/vendor/ol/ol.css")
@@ -17,8 +18,11 @@ block content
       //- Name
       .pure-u-1.top-space.text-center
         h2= event.name
-        //- Edit & Archive buttons
+      .pure-u-1.top-space.text-center
+        //- Switches, Edit & Archive buttons
         if isOwner
+          +switchPublishEvent(event)
+          br
           a(href=`/events/${event.id}/edit` title="Modifier" style="margin-right: 10px;")
             span.icon!= h.icon("edit")
           a(href=`/event/${event.slug}?remove=true` title="Archiver")
