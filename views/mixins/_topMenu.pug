@@ -1,45 +1,30 @@
 mixin topMenu()
-  //- .pure-menu.pure-menu-horizontal.pure-menu-fixed.flex-container
-  //-   ul.pure-menu-list.flex-grow-1
-  //-     li.pure-menu-item.menu-item-logo
-  //-       a.pure-menu-link(href="/")
-  //-         img.avatar(src="/images/icons/logo.png")   
-  //-     unless currentPath == "/" || currentPath == "/events" || currentPath == "/login"
-  //-       li.pure-menu-item
-  //-         .search.search__nav
-  //-           form(action="/events" method="POST")
-  //-             input.search__input--nav(type="text" placeholder="Chercher" name="search" )
-  //-             input(type="hidden" name="_csrf" value=`${csrfToken}`)
-  //-   unless user || (currentPath == "/login" || currentPath == "/signup" || currentPath == "/forgot")
-  //-     ul.pure-menu-list.right.connection.flex-grow-1
-  //-       li.pure-menu-item
-  //-         a.pure-menu-link(href="/login") Se connecter
-  //-       li.pure-menu-separator
-  //-       li.pure-menu-item
-  //-         a.pure-menu-link(href="/signup") Créer un compte
-  //-   else
-  //-     if user
-  //-       ul.pure-menu-list.right.menu-item-avatar.flex-grow-1
-  //-         li.pure-menu-item
-  //-           span.pure-menu-link
-  //-             img.avatar(src=`${h.profilePhotoSrc(user)}` alt="Mon compte")
+
   .topbar
     ul.ul-topbar
       li.li-topbar
         a.menu-item(href="/")
           img.avatar(src="/images/icons/logo.png")
-      unless currentPath == "/" || currentPath == "/events" || currentPath == "/login"
-        li.li-form.li-topbar
-          form.search-form(action="/events" method="POST")
-            input.search-input(type="text" placeholder="Rechercher" name="search" )
-            input(type="hidden" name="_csrf" value=`${csrfToken}`)
       unless user || (currentPath == "/login" || currentPath == "/signup" || currentPath == "/forgot")
         li.menu-li-right
-          a.menu-item(href="/login") Se connecter
+          a.menu-item.menu-item__text(href="/login") Se connecter
         li.menu-li-right
-          a.menu-item(href="/signup") Créer un compte
+          a.menu-item.menu-item__text(href="/signup") Créer un compte
       if user
         li.menu-li-right
-          a.menu-item-avatar
+          a.menu-item-avatar.menu-item
             img.avatar(src=`${h.profilePhotoSrc(user)}` alt="Mon compte")
 
+  if user
+    .pop-over
+      .no-back
+        .pop-over-header
+          span.pop-over-header-title= `${user.name} (${user.email})`
+          a.pop-over-header-close-btn.icon-close(href="#") &times;
+        .pop-over-content
+          div
+            ul.pop-over-list
+              li: a(href="/account") Mon compte
+            hr
+            ul.pop-over-list
+              li: a(href="/logout") Se déconnecter

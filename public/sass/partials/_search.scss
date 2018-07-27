@@ -44,14 +44,13 @@
 }
 
 .search-form{
-  font-size: 20px;
-  outline: 0;
-  border:0;
+  width: auto;
 }
 
 .search-input{
   font-size: 20px;
   height: 100%;
+  // display: block;
   background-color: $black;
   background-image: url('/images/icons/search.svg');
   background-position: 0px 7px; 
@@ -60,8 +59,8 @@
   color: white;
   outline:0px;
   border:0;
-  border-radius: 2px;
   padding : 12px 20px 12px 40px;
+  width: 80%;
 }
 
 .search-input:focus{
@@ -70,6 +69,7 @@
 }
 
 .li-form{
-  width: 50%;
-  padding: 0px 10px;
+  // width: 50%;
+  // padding: 0px 10px;
+  // float: left;
 }

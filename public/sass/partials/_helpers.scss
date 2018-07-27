@@ -12,14 +12,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  align-self: center;
-}
-
-.logo{
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  align-self: center;
+  // align-self: center;
 }
 
 .icon {
@@ -66,7 +59,7 @@
       z-index: 1;
       p {
         margin-top: 0;
-        font-size: 1.1rem
+        font-size: 1.1rem;
       }
     }
   }
@@ -86,6 +79,7 @@
       position: relative;
       left: calc(50% - 10px);
       top: calc(50% - 30px);
+      width: 2%;
       font-size: 40px;
       color: grey;
     }
@@ -112,7 +106,7 @@ pre.error {
 
 .photo-orga-event {
   text-align: center;
-  height: 250px;
+  max-height: 250px;
   img {
     object-fit: cover;
     max-height: 250px;
@@ -133,4 +127,18 @@ pre.error {
 
 .no-scroll {
   overflow: hidden;
+}
+
+.unpublished-color {
+  color: rgba(200, 0, 0, 1);
+}
+
+.remove-event-confirm {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding-bottom: 10px;
+  border: 1px solid rgba(200, 0, 0, 1);
+  #cancel {
+    margin-left: 10px;
+  }
 }

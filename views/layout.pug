@@ -15,30 +15,19 @@ html
     meta(http-equiv="x-ua-compatible" content="ie=edge")
     meta(name="viewport" content="width=device-width, initial-scale=1")
   body
+
+    +topMenu()
+
     #layout
       //- Menu toggle
       //- a.menu-link.active#menuLink(href="#menu")
         //- Hamburger icon
         //- span
       //- +sideMenu()
-      +topMenu()
-
-      if user
-        .pop-over
-          .no-back
-            .pop-over-header
-              span.pop-over-header-title= `${user.name} (${user.email})`
-              a.pop-over-header-close-btn.icon-close(href="#") &times;
-            .pop-over-content
-              div
-                ul.pop-over-list
-                  li: a(href="/account") Mon compte
-                hr
-                ul.pop-over-list
-                  li: a(href="/logout") Se déconnecter
+      //- +topMenu()
 
       #content
-        unless currentPath == "/"
+        //-unless currentPath == "/"
           .home-link.l-box
             a(href="/") ← accueil
 
