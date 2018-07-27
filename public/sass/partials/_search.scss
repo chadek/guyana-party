@@ -1,43 +1,75 @@
-.search {
-  position: relative;
-  display: flex;
-  form {
-    width: 100%;
-  }
-  &__input {
-    font-size: 25px;
-    outline: 0;
-    border: 0;
-    &--nav {
-      font-size: 25px;
-      background: none;
-      color: white;
-      border: 0;
-      outline: 0;
-      height: 100%;
-      margin-left: 0px;
-      :focus {
-        background-color: black;
-        border: 0;
-      }
-    }
-  }
-  &__nav {
-    float: left;
-    width: 140%;
-  }
-  .around {
-    position: absolute;
-    margin-top: 60px;
-    label {
-      color: white;
-    }
-  }
-}
+// .search {
+//   position: relative;
+//   display: flex;
+//   form {
+//     width: 100%;
+//     // width: 200px;
+//   }
+//   &__input {
+//     font-size: 25px;
+//     outline: 0;
+//     border: 0;
+//     &--nav {
+//       font-size: 25px;
+//       background: none;
+//       color: white;
+//       border: 0;
+//       outline: 0;
+//       height: 100%;
+//       margin-left: 0px;
+//       :focus {
+//         background-color: black;
+//         border: 0;
+//       }
+//     }
+//   }
+//   &__nav {
+//     // float: left;
+//     width: 70%;
+//   }
+//   .around {
+//     position: absolute;
+//     margin-top: 60px;
+//     label {
+//       color: white;
+//     }
+//   }
+// }
 .around {
   label {
     display: inline;
     margin-left: 5px;
     cursor: pointer;
   }
+}
+
+.search-form{
+  width: auto;
+}
+
+.search-input{
+  font-size: 20px;
+  height: 100%;
+  // display: block;
+  background-color: $black;
+  background-image: url('/images/icons/search.svg');
+  background-position: 0px 7px; 
+  background-repeat: no-repeat;
+  background-size: 30px;
+  color: white;
+  outline:0px;
+  border:0;
+  padding : 12px 20px 12px 40px;
+  width: 80%;
+}
+
+.search-input:focus{
+  background-color: $black;
+  border:0;
+}
+
+.li-form{
+  // width: 50%;
+  // padding: 0px 10px;
+  // float: left;
 }

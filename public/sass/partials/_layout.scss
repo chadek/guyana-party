@@ -149,3 +149,12 @@
 .footer a {
   color: #ddd;
 }
+
+.flex-container {
+  display: flex;
+  align-items: stretch;
+}
+
+.flex-grow-1{
+  flex-grow : 1;
+}
