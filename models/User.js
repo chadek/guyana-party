@@ -21,6 +21,13 @@ const userSchema = new mongoose.Schema({
     trim: true,
     required: "Veuillez saisir un identifiant."
   },
+  slug: {
+    type: String,
+    unique: true,
+    lowercase: true,
+    trim: true,
+    required: "slug required."
+  },
   photo: String,
   isValid: {
     type: Boolean,
@@ -30,10 +37,9 @@ const userSchema = new mongoose.Schema({
   resetPasswordExpires: Date
 });
 
-// Define our indexes
 userSchema.index({
   email: "text",
-  name: "text"
+  slug: "text"
 });
 
 userSchema.virtual("gravatar").get(function() {

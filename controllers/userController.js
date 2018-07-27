@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { promisify } = require("es6-promisify");
 const store = require("store");
+const slug = require("slugs");
 
 const User = mongoose.model("User");
 const Organism = mongoose.model("Organism");
@@ -23,7 +24,10 @@ exports.forgotForm = (req, res) =>
 exports.validateRegister = (req, res, next) => {
   store.set("signup-form-data", req.body); // store body to prefill the register form
   req.sanitizeBody("name");
-  req.checkBody("name", "Vous devez saisir un nom.").notEmpty();
+  req
+    .checkBody("name", "Vous devez saisir un nom.")
+    .notEmpty()
+    .isLength({ min: 5, max: 50 });
   req.checkBody("email", "E-mail incorrect.").isEmail();
   req.sanitizeBody("email").normalizeEmail({
     remove_dots: false,
@@ -51,10 +55,10 @@ exports.register = async (req, res, next) => {
   const user = new User({
     email: req.bodyEmail("email"),
     name: req.bodyString("name"),
-    photo: req.bodyString("photo")
+    slug: slug(req.bodyString("name"))
   });
   const register = promisify(User.register.bind(User));
-  await register(user, req.bodyString("password"));
+  const reg = await register(user, req.bodyString("password"));
   next(); // pass to authController.login
 };
 
@@ -109,6 +113,7 @@ exports.editAccount = (req, res) => {
 exports.updateAccount = async (req, res) => {
   const updates = {
     name: req.bodyString("name"),
+    slug: slug(req.bodyString("name")),
     email: req.bodyEmail("email")
   };
   const photo = req.bodyString("photo");
@@ -134,4 +139,21 @@ exports.remove = async (req, res, next) => {
   await user.remove();
   req.flash("success", "Votre compte a été supprimé.");
   res.redirect("/");
+};
+
+exports.isNameAvailable = async (req, res) => {
+  let isNameAvailable = true;
+  const name = slug(req.paramString("name"));
+  // We don't check if it's the same name
+  if (req.user && req.user.slug === name) {
+    return res.json({ isNameAvailable });
+  }
+  const user = await User.findOne(
+    { slug: { $regex: `^${name}$`, $options: "i" } },
+    { _id: 1 }
+  );
+  if (user) {
+    isNameAvailable = false;
+  }
+  res.json({ isNameAvailable });
 };

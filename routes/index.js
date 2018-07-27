@@ -149,5 +149,9 @@ router.get("/event/:slug", catchErrors(eventController.getEventBySlug));
 router.get("/api/organisms", catchErrors(orgaController.getOrganisms));
 router.get("/api/events", catchErrors(eventController.getEvents));
 router.get("/api/search", catchErrors(eventController.getSearchResult));
+router.get(
+  "/api/isNameAvailable/:name",
+  catchErrors(userController.isNameAvailable)
+);
 
 module.exports = router;
