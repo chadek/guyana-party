@@ -10,9 +10,10 @@
     "build-dev": "webpack-dev-server --open --config webpack.dev.js",
     "start": "webpack -p --progress --config webpack.prod.js && node ./start.js",
     "assets": "webpack -w --config webpack.dev.js --display-max-modules 0",
-    "dev": "concurrently \"npm run assets\" \"node ./start.js\" --names \"📦,💻\" --prefix name",
+    "dev": "standard && concurrently \"npm run assets\" \"node ./start.js\" --names \"📦,💻\" --prefix name",
     "sample": "node ./data/load-sample-data.js",
-    "blowitallaway": "node ./data/load-sample-data.js --delete"
+    "blowitallaway": "node ./data/load-sample-data.js --delete",
+    "linter": "standard --verbose"
   },
   "browserslist": "last 2 versions",
   "dependencies": {
@@ -22,7 +23,7 @@
     "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",
     "csurf": "^1.9.0",
-    "dompurify": "^1.0.6",
+    "dompurify": "^1.0.7",
     "dotenv": "^6.0.0",
     "es6-promisify": "^6.0.0",
     "express": "^4.16.3",
@@ -30,12 +31,12 @@
     "express-validator": "^5.3.0",
     "html-to-text": "^4.0.0",
     "jimp": "^0.2.28",
-    "juice": "^4.3.1",
+    "juice": "^4.3.2",
     "marked": "^0.4.0",
     "md5": "^2.2.1",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
-    "mongoose": "^5.2.5",
+    "mongoose": "^5.2.6",
     "mongoose-mongodb-errors": "^0.0.2",
     "multer": "^1.3.1",
     "nodemailer": "^4.6.7",
@@ -51,7 +52,7 @@
     "validator": "^10.4.0"
   },
   "devDependencies": {
-    "autoprefixer": "^9.0.1",
+    "autoprefixer": "^9.0.2",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
@@ -63,12 +64,13 @@
     "node-sass": "^4.9.2",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
     "postcss-loader": "^2.1.6",
-    "sass-loader": "^7.0.3",
+    "sass-loader": "^7.1.0",
+    "standard": "latest",
     "uglifyjs-webpack-plugin": "^1.2.7",
-    "webpack": "^4.16.2",
+    "webpack": "^4.16.3",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5",
-    "webpack-merge": "^4.1.3"
+    "webpack-merge": "^4.1.4"
   },
   "contributors": [
     "Fabrice Meyer <meyer.fabrice@gmx.fr>",
