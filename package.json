@@ -12,8 +12,7 @@
     "assets": "webpack -w --config webpack.dev.js --display-max-modules 0",
     "dev": "standard && concurrently \"npm run assets\" \"node ./start.js\" --names \"📦,💻\" --prefix name",
     "sample": "node ./data/load-sample-data.js",
-    "blowitallaway": "node ./data/load-sample-data.js --delete",
-    "linter": "standard --verbose"
+    "blowitallaway": "node ./data/load-sample-data.js --delete"
   },
   "browserslist": "last 2 versions",
   "dependencies": {
