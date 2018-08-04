@@ -1,124 +1,138 @@
-const passport = require("passport");
-const crypto = require("crypto");
-const mongoose = require("mongoose");
-const User = mongoose.model("User");
-const mail = require("../handlers/mail");
-const store = require("store");
+const passport = require('passport')
+const crypto = require('crypto')
+const mongoose = require('mongoose')
+const User = mongoose.model('User')
+const mail = require('../handlers/mail')
+const store = require('store')
 
-function checkEmail(req, res) {
-  req.checkBody("email", "E-mail incorrect.").isEmail();
-  req.sanitizeBody("email").normalizeEmail({
+function checkEmail (req, res) {
+  req.checkBody('email', 'E-mail incorrect.').isEmail()
+  req.sanitizeBody('email').normalizeEmail({
     remove_dots: false,
     remove_extension: false,
     gmail_remove_subaddress: false
-  });
-  const errors = req.validationErrors();
+  })
+  const errors = req.validationErrors()
   if (errors) {
-    store.set("form-errors", errors.map(err => err.param));
-    req.flash("error", errors.map(err => err.msg));
-    return false;
+    store.set('form-errors', errors.map(err => err.param))
+    req.flash('error', errors.map(err => err.msg))
+    return false
   }
-  return true;
+  return true
 }
 
 exports.preLogin = (req, res, next) => {
-  store.set("login-form-data", req.body); // store body to prefill the login form
+  store.set('login-form-data', req.body) // store body to prefill the login form
   if (!checkEmail(req, res)) {
-    return res.redirect("/login");
+    return res.redirect('/login')
   }
-  next();
-};
+  next()
+}
 
-exports.login = passport.authenticate("local", {
-  failureRedirect: "/login",
-  failureFlash: "Connexion échouée !",
-  successRedirect: "/account",
-  successFlash: "Connexion réussie !"
-});
+exports.login = passport.authenticate('local', {
+  failureRedirect: '/login',
+  failureFlash: 'Connexion échouée !',
+  successRedirect: '/account',
+  successFlash: 'Connexion réussie !'
+})
 
 exports.logout = (req, res) => {
-  req.logout();
-  req.session.destroy(err => res.redirect("/"));
-};
+  req.logout()
+  req.session.destroy(e => res.redirect('/'))
+}
 
 exports.isLoggedIn = (req, res, next) => {
   // first check if the user is authenticated
   if (req.isAuthenticated()) {
-    next(); // carry on! They are logged in!
-    return;
+    next() // carry on! They are logged in!
+    return
   }
-  req.flash("error", "Vous devez être connecté(e) pour voir cette page !");
-  res.redirect("/login");
-};
+  req.flash('error', 'Vous devez être connecté(e) pour voir cette page !')
+  res.redirect('/login')
+}
 
 exports.forgot = async (req, res) => {
-  store.set("forgot-form-data", req.body);
+  store.set('forgot-form-data', req.body)
   if (!checkEmail(req, res)) {
-    return res.redirect("/forgot");
+    return res.redirect('/forgot')
   }
   // 1. See if a user with that email exists
-  const user = await User.findOne({ email: req.bodyEmail("email") });
+  const user = await User.findOne({ email: req.bodyEmail('email') })
   if (user) {
     // 2. Set reset tokens and expiry on their account
-    user.resetPasswordToken = crypto.randomBytes(20).toString("hex");
-    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour from now
-    await user.save();
+    user.resetPasswordToken = crypto.randomBytes(20).toString('hex')
+    user.resetPasswordExpires = Date.now() + 3600000 // 1 hour from now
+    await user.save()
     // 3. Send them an email with the token
-    const resetURL = `http://${req.headerString("host")}/reset/${user.resetPasswordToken}`;
+    const resetURL = `http://${req.headerString('host')}/reset/${
+      user.resetPasswordToken
+    }`
     await mail.send({
       user,
-      subject: "Réinitialisation de votre mot de passe",
+      subject: 'Réinitialisation de votre mot de passe',
       resetURL,
-      filename: "password-reset"
-    });
+      filename: 'password-reset'
+    })
   }
   // 4. flash the message
   req.flash(
-    "success",
+    'success',
     `Un email vient de vous être envoyé à ${req.bodyEmail(
-      "email"
+      'email'
     )}. Cet email contient un lien vous permettant de récupérer votre mot de passe.`
-  );
+  )
   // 5. redirect to login page
-  res.redirect("/login");
-};
+  res.redirect('/login')
+}
 
 exports.reset = async (req, res) => {
   const user = await User.findOne({
-    resetPasswordToken: req.paramString("token"),
+    resetPasswordToken: req.paramString('token'),
     resetPasswordExpires: { $gt: Date.now() }
-  });
+  })
   if (!user) {
-    req.flash("error", "Le lien de récupération du mot de passe est invalide ou a expiré.");
-    return res.redirect("/login");
+    req.flash(
+      'error',
+      'Le lien de récupération du mot de passe est invalide ou a expiré.'
+    )
+    return res.redirect('/login')
   }
   // if there is a user, show the reset password form
-  res.render("reset", { title: "Réinitialisez votre mot de passe", csrfToken: req.csrfToken() });
-};
+  res.render('reset', {
+    title: 'Réinitialisez votre mot de passe',
+    csrfToken: req.csrfToken()
+  })
+}
 
 exports.confirmedPasswords = (req, res, next) => {
-  if (req.body.password === req.bodyString("password-confirm")) {
-    next(); // keepit going!
-    return;
+  if (req.body.password === req.bodyString('password-confirm')) {
+    next() // keepit going!
+    return
   }
-  req.flash("error", "Les mots de passe ne correspondent pas !");
-  res.redirect("back");
-};
+  req.flash('error', 'Les mots de passe ne correspondent pas !')
+  res.redirect('back')
+}
 
 exports.update = async (req, res) => {
   const user = await User.findOne({
-    resetPasswordToken: req.paramString("token"),
+    resetPasswordToken: req.paramString('token'),
     resetPasswordExpires: { $gt: Date.now() }
-  });
+  })
   if (!user) {
-    req.flash("error", "Le lien de récupération du mot de passe est invalide ou a expiré.");
-    return res.redirect("/login");
+    req.flash(
+      'error',
+      'Le lien de récupération du mot de passe est invalide ou a expiré.'
+    )
+    return res.redirect('/login')
   }
-  await user.setPassword(req.bodyString("password"));
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpires = undefined;
-  const updatedUser = await user.save();
-  await req.login(updatedUser);
-  req.flash("success", "Votre mot de passe a été réinitialisé ! Vous êtes maintenant connecté(e) !");
-  res.redirect("/");
-};
+  await user.setPassword(req.bodyString('password'))
+  user.resetPasswordToken = undefined
+  user.resetPasswordExpires = undefined
+  const updatedUser = await user.save()
+  await req.login(updatedUser)
+  req.flash(
+    'success',
+    'Votre mot de passe a été réinitialisé ! Vous êtes maintenant connecté(e) !'
+  )
+  res.redirect('/')
+}

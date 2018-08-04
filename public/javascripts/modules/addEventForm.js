@@ -6,7 +6,9 @@ function init (dp1, dp2) {
   const endValue = document.getElementById('end').value
   if (!startValue || !endValue) {
     const date = new Date()
-    let str = `${`0${date.getHours()}`.slice(-2)}:${`0${date.getMinutes()}`.slice(-2)}`
+    let str = `${`0${date.getHours()}`.slice(
+      -2
+    )}:${`0${date.getMinutes()}`.slice(-2)}`
     document.getElementById('starttime').value = str
     document.getElementById('endtime').value = str
     // build date String

@@ -18,7 +18,8 @@ exports.dump = obj => JSON.stringify(obj, null, 2)
 exports.icon = name => fs.readFileSync(`./public/images/icons/${name}.svg`)
 
 // profile photo
-exports.profilePhotoSrc = user => (user.photo ? `/uploads/${user.photo}` : `${user.gravatar}&d=retro`)
+exports.profilePhotoSrc = user =>
+  user.photo ? `/uploads/${user.photo}` : `${user.gravatar}&d=retro`
 
 // exports.translateSubs = subscription => {
 //   if (subscription === 'free') return 'Gratuite'

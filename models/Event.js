@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const slug = require("slugs");
+const mongoose = require('mongoose')
+const slug = require('slugs')
 
-mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise
 
 const eventSchema = new mongoose.Schema(
   {
@@ -14,7 +14,7 @@ const eventSchema = new mongoose.Schema(
     description: {
       type: String,
       trim: true,
-      required: "Veuillez saisir une description."
+      required: 'Veuillez saisir une description.'
     },
     tags: [String],
     created: {
@@ -26,7 +26,7 @@ const eventSchema = new mongoose.Schema(
     location: {
       type: {
         type: String,
-        default: "Point"
+        default: 'Point'
       },
       coordinates: [Number],
       address: {
@@ -37,18 +37,18 @@ const eventSchema = new mongoose.Schema(
     photo: String,
     author: {
       type: mongoose.Schema.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: "L'auteur de l'évènement est requis."
     },
     organism: {
       type: mongoose.Schema.ObjectId,
-      ref: "Organism",
+      ref: 'Organism',
       required: "L'organisme de l'évènement est requis."
     },
     timezone: String, // ex: "(UTC-03:00) America/Cayenne"
     status: {
       type: String, // paused | published | archived
-      default: "paused"
+      default: 'paused'
     },
     public: {
       type: Boolean,
@@ -59,45 +59,45 @@ const eventSchema = new mongoose.Schema(
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
   }
-);
+)
 
 // Define our indexes
 eventSchema.index({
-  name: "text",
-  description: "text"
-});
+  name: 'text',
+  description: 'text'
+})
 
-eventSchema.index({ location: "2dsphere" });
+eventSchema.index({ location: '2dsphere' })
 
-eventSchema.pre("save", async function(next) {
-  if (!this.isModified("name")) {
-    next(); // skip it
-    return; // stop this function from running
+eventSchema.pre('save', async function (next) {
+  if (!this.isModified('name')) {
+    next() // skip it
+    return // stop this function from running
   }
-  this.slug = slug(this.name);
+  this.slug = slug(this.name)
   // find other stores that have a slug of event, event-1, event-2
-  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, "i");
-  const eventsWithSlug = await this.constructor.find({ slug: slugRegEx });
+  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i')
+  const eventsWithSlug = await this.constructor.find({ slug: slugRegEx })
   if (eventsWithSlug.length) {
-    this.slug = `${this.slug}-${eventsWithSlug.length + 1}`;
+    this.slug = `${this.slug}-${eventsWithSlug.length + 1}`
   }
-  next();
-});
+  next()
+})
 
-eventSchema.statics.getTagsList = function() {
+eventSchema.statics.getTagsList = function () {
   return this.aggregate([
-    { $unwind: "$tags" },
-    { $group: { _id: "$tags", count: { $sum: 1 } } },
+    { $unwind: '$tags' },
+    { $group: { _id: '$tags', count: { $sum: 1 } } },
     { $sort: { count: -1 } }
-  ]);
-};
-
-function autopopulate(next) {
-  this.populate("organism");
-  next();
+  ])
 }
 
-eventSchema.pre("find", autopopulate);
-eventSchema.pre("findOne", autopopulate);
+function autopopulate (next) {
+  this.populate('organism')
+  next()
+}
 
-module.exports = mongoose.model("Event", eventSchema);
+eventSchema.pre('find', autopopulate)
+eventSchema.pre('findOne', autopopulate)
+
+module.exports = mongoose.model('Event', eventSchema)
