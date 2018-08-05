@@ -1,45 +1,51 @@
-import dompurify from "dompurify";
-import { B } from "./bling";
-import { axiosGet } from "./utils";
+import dompurify from 'dompurify'
+import { B } from './bling'
+import { axiosGet } from './utils'
 
-function geolocate() {
+function geolocate () {
   navigator.geolocation.getCurrentPosition(pos => {
     console.log(pos)
     // get town and postcode form nominatim
     axiosGet(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lon=${pos.coords.longitude}&lat=${pos.coords.latitude}`,
+      `https://nominatim.openstreetmap.org/reverse?format=json&lon=${
+        pos.coords.longitude
+      }&lat=${pos.coords.latitude}`,
       data => {
         const text = dompurify.sanitize(
-          `Trouver les évènements autour de <strong style='color:#527fdc;'>${data.address.town}</strong>`
-        );
-        B("#around-click").innerHTML = text;
-        B("#around-value").value = JSON.stringify({
+          `Trouver les évènements autour de <strong style='color:#527fdc;'>${
+            data.address.town
+          }</strong>`
+        )
+        B('#around-click').innerHTML = text
+        B('#around-value').value = JSON.stringify({
           text: text,
           lon: pos.coords.longitude,
           lat: pos.coords.latitude,
           location: `${data.address.town} ${data.address.postcode}`
-        });
+        })
       }
-    );
-  });
-};
+    )
+  })
+}
 
-function autourdemoi() {
+function autourdemoi () {
   navigator.geolocation.getCurrentPosition(pos => {
     console.log(pos)
     // get town and postcode form nominatim
     axiosGet(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lon=${pos.coords.longitude}&lat=${pos.coords.latitude}`,
+      `https://nominatim.openstreetmap.org/reverse?format=json&lon=${
+        pos.coords.longitude
+      }&lat=${pos.coords.latitude}`,
       data => {
-        B("#around-value").value = JSON.stringify({
+        B('#around-value').value = JSON.stringify({
           lon: pos.coords.longitude,
           lat: pos.coords.latitude,
           location: `${data.address.town} ${data.address.postcode}`
-        });
-        location = "/events";
+        })
+        window.location = '/events'
       }
-    );
-  });
+    )
+  })
 }
 
-export {geolocate, autourdemoi};
+export { geolocate, autourdemoi }

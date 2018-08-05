@@ -6,7 +6,7 @@ const userController = require('../controllers/userController')
 const authController = require('../controllers/authController')
 const orgaController = require('../controllers/orgaController')
 const eventController = require('../controllers/eventController')
-const subscriptionController = require('../controllers/subscriptionController')
+// const subscriptionController = require('../controllers/subscriptionController')
 const { catchErrors } = require('../handlers/errorHandlers')
 
 /* Main */
@@ -33,17 +33,17 @@ router.post(
 
 /* Subscriptions */
 
-router.get('/souscriptions', subscriptionController.subscriptionsPage)
-router.get(
-  '/souscriptions/free',
-  authController.isLoggedIn,
-  catchErrors(subscriptionController.selectFreeSubscription)
-)
-router.get(
-  '/souscriptions/payment/:subscription',
-  authController.isLoggedIn,
-  subscriptionController.subscriptionPaymentPage
-)
+// router.get('/souscriptions', subscriptionController.subscriptionsPage)
+// router.get(
+//   '/souscriptions/free',
+//   authController.isLoggedIn,
+//   catchErrors(subscriptionController.selectFreeSubscription)
+// )
+// router.get(
+//   '/souscriptions/payment/:subscription',
+//   authController.isLoggedIn,
+//   subscriptionController.subscriptionPaymentPage
+// )
 
 /* Account */
 
