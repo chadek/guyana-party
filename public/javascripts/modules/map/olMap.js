@@ -172,7 +172,7 @@ class Map {
         if (size > maxSize) {
           focusPos = feature.getGeometry().flatCoordinates
           maxSize = size
-          console.log(focusPos)
+          // console.log(focusPos)
         }
         // Apply style for not merged point
         let style = this.defaultStyleMark
