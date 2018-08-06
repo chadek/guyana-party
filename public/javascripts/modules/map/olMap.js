@@ -71,7 +71,7 @@ class Map {
     )
   }
 
-  singleShowPoint (callbackFn, searchEvents = false) {
+  singleShowPoint (callbackFn) {
     if (!this.singlePos) {
       startGeolocation(
         pos => {
@@ -80,10 +80,13 @@ class Map {
         },
         // Error
         () => {
+          const position = fromLonLat([LON, LAT])
           this.addSinglePoint(
-            this.singlePos,
+            position,
             callbackFn,
-            getGPSCoords(this.singlePos)
+            getGPSCoords(position),
+            true,
+            false
           )
         }
       )
@@ -93,8 +96,6 @@ class Map {
         callbackFn,
         getGPSCoords(this.singlePos)
       )
-    }
-    if (searchEvents) {
     }
   }
 
@@ -114,22 +115,26 @@ class Map {
     })
   }
 
-  addSinglePoint (position, callbackFn, gpsCoord, center = true) {
-    let styleMark = this.defaultStyleMark
-    if (!this.single) {
-      styleMark = getMarkerStyle(
-        { color: '#339900', width: 2 },
-        { color: '#bbff99' }
-      )
+  addSinglePoint (position, callbackFn, gpsCoord, center = true, show = true) {
+    if (show) {
+      let styleMark = this.defaultStyleMark
+      if (!this.single) {
+        styleMark = getMarkerStyle(
+          { color: '#339900', width: 2 },
+          { color: '#bbff99' }
+        )
+      }
+      this.singlePoint = getLayerVector(position, styleMark)
+
+      this.map.addLayer(this.singlePoint)
+
+      if (center) this.view.setCenter(position)
     }
-    this.singlePoint = getLayerVector(position, styleMark)
-    this.map.addLayer(this.singlePoint)
-    if (center) this.view.setCenter(position)
     callbackFn(gpsCoord)
   }
 
   showEvents (events) {
-    console.log(events)
+    // console.log(events)
     const features = []
     // Create features from events
     events.forEach(event => {
@@ -151,6 +156,11 @@ class Map {
         })
       )
     })
+
+    let maxSize = 0
+    let focusPos = null
+    const styleCache = {}
+
     // Create cluster from features
     const cluster = new LayerVector({
       source: new Cluster({
@@ -159,23 +169,44 @@ class Map {
       }),
       style: feature => {
         const size = feature.get('features').length
+        if (size > maxSize) {
+          focusPos = feature.getGeometry().flatCoordinates
+          maxSize = size
+          console.log(focusPos)
+        }
         // Apply style for not merged point
         let style = this.defaultStyleMark
-        console.log('features size:' + size)
+        // console.log('features size:' + size)
         // If points merged, apply different styles and display number of merged points
         if (size > 1) {
-          style = getMarkerStyle({ color: '#fff' }, { color: '#3399CC' }, 10)
-          style.setText(
-            new Text({
-              text: size.toString(),
-              fill: new Fill({ color: '#fff' })
-            })
-          )
+          style = styleCache[size]
+          if (!style) {
+            style = getMarkerStyle(
+              { color: '#000', width: 2 },
+              { color: '#3399CC' },
+              10
+            )
+            style.setText(
+              new Text({
+                text: size.toString(),
+                fill: new Fill({ color: '#fff' })
+              })
+            )
+            styleCache[size] = style
+          }
         }
         return style
       }
     })
+
     this.map.addLayer(cluster)
+
+    // TODO: get the event when cluster is rendered, then center the position
+    if (!this.singlePoint) {
+      setTimeout(() => {
+        this.view.setCenter(focusPos)
+      }, 1000)
+    }
   }
 
   eventsOnClick (
@@ -200,13 +231,12 @@ class Map {
       if (feature) {
         // Get events from cluster
         const events = feature.get('features')
-        console.log(events)
-
+        // console.log(events)
         // If events are clustered (there are events)
         let coords
         if (events) {
           coords = events[0].getGeometry().getCoordinates()
-          console.log(this.view.getZoom(), MAXZOOM)
+          // console.log(this.view.getZoom(), MAXZOOM)
           if (events.length === 1) {
             // If no merge
             showPopup(popupDiv, popup, coords, onEventHTMLFn(events[0]))
@@ -222,13 +252,14 @@ class Map {
         } else {
           // there is no events, display user location popup (with coordinates)
           coords = feature.getGeometry().getCoordinates()
-          const hdms = toStringHDMS(getGPSCoords(coords))
-          showPopup(popupDiv, popup, coords, userPosHTMLFn(hdms))
+          const gpsCoords = getGPSCoords(coords)
+          const hdms = toStringHDMS(gpsCoords)
+          showPopup(popupDiv, popup, coords, userPosHTMLFn(gpsCoords, hdms))
         }
       }
     })
   }
-}
+} // Class End
 
 function getMarkerStyle (stroke, fill, radius = 7) {
   return new Style({

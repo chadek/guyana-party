@@ -1,16 +1,14 @@
 import Map from './olMap'
 import { axiosGet } from '../utils'
 
-const search = document.querySelector('.search__input')
-
 const map = new Map({
   mouseWheelZoom: true
 })
-
-console.log(map)
+// console.log(map)
 
 map.singleShowPoint(coords => {
-  console.log(coords)
+  // console.log(coords)
+  const search = document.querySelector('.search__input')
   if (search) {
     axiosGet(
       `/api/search?q=${
@@ -31,7 +29,7 @@ map.eventsOnClick(
   onZoomMaxHTMLFn,
   userPosHTMLFn,
   coords => {
-    console.log(coords)
+    // console.log(coords)
   }
 )
 
@@ -47,11 +45,10 @@ function onEventHTMLFn (event) {
   return `
     <div style="font-size:.8em">
       <font size="4">${event.get('name')}</font>
-      <br>Organisateur: <a href="/organism/${event.get('author').slug}">${
+      <br><br>Organisateur: <a href="/organism/${event.get('author').slug}">${
   event.get('author').name
-}</a>
-      <br>${start}
-      <br><a href="/event/${event.get('slug')}">Plus d'info</a>
+}</a><br><br>${start}
+      <br><br><a href="/event/${event.get('slug')}">Plus d'info</a>
     </div>`
 }
 
@@ -66,10 +63,12 @@ function onZoomMaxHTMLFn (events) {
   return `${content}</div>`
 }
 
-function userPosHTMLFn (hdms) {
+function userPosHTMLFn (coords, hdms) {
   return `
     <div style="font-size:.8em">
-      <font size="3">Votre localisation (basé sur votre adresse IP)</font>
-      <br><code>${hdms}</code>
+      <font size="3">Votre localisation<br>(basée sur l'adresse IP) :</font>
+      <br><br><code>lon.: ${coords[0]}</code>
+      <br><code>lat.: ${coords[1]}</code>
+      <br><br><code>${hdms}</code>
     </div>`
 }

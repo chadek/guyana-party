@@ -12,15 +12,15 @@ const map = new Map({
   lat: latElem ? latElem.value : null
 })
 
-console.log(map)
+// console.log(map)
 
 map.singleShowPoint(coords => {
-  console.log(coords)
+  // console.log(coords)
   updateAddress(coords)
 })
 
 map.singleOnClick(coords => {
-  console.log(coords)
+  // console.log(coords)
   updateAddress(coords)
 })
 
@@ -33,7 +33,7 @@ function updateAddress (coords) {
   axiosGet(
     `https://nominatim.openstreetmap.org/reverse?format=json&lon=${coords[0].toString()}&lat=${coords[1].toString()}`,
     data => {
-      console.log(data)
+      // console.log(data)
       if (addressElem) addressElem.value = data.display_name
     }
   )
