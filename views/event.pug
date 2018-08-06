@@ -60,7 +60,7 @@ block content
       //- Event location
       .pure-u-1.top-space-40
         label Le lieu de l'évènement :
-        #map.no-events.readonly.top-space
+        #map.single.readonly.top-space
         p.text-center= event.location.address
         input#longitude(type="hidden" value=(event.location && event.location.coordinates[0]))
         input#latitude(type="hidden" value=(event.location && event.location.coordinates[1]))

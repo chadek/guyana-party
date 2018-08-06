@@ -5,10 +5,11 @@ import { B, BB } from './modules/bling'
 import { checkName } from './modules/checkForm'
 import initDates from './modules/date'
 import loadEventsOrgasList from './modules/eventsOrgasList'
-import makeMap from './modules/map'
+// import makeMap from './modules/map'
+import './modules/map'
 import './modules/simplemde'
 // import "./modules/menu";
-import subscriptions from './modules/subscriptions'
+// import subscriptions from './modules/subscriptions'
 
 // open popup on click on avatar nav
 B('.menu-item-avatar') &&
@@ -53,8 +54,10 @@ B('#around-click') &&
   })
 
 accountForm(B('.btn-old'), B('.btn-new'))
-subscriptions(B('.freeSubsBtn'), B('.assoSubsBtn'))
-makeMap(B('#map'))
+// subscriptions(B('.freeSubsBtn'), B('.assoSubsBtn'))
+
+// makeMap(B('#map'))
+
 loadEventsOrgasList(
   B('.events'),
   B('.orga-events'),

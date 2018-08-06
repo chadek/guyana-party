@@ -86,7 +86,7 @@ block content
           //- Event location
           .pure-u-1.top-space-40
             label Sélectionnez le lieu de l'évènement sur la carte :
-            #map.no-events.top-space
+            #map.single.top-space
             span.input-group-label: i.fi-marker.size-36
             input.input-group-field#address(type="text" placeholder="Sélectionnez le lieu de l'évènement sur la carte..." name="location[address]" value=`${savedData?savedData.location.address:(event ? event.location.address : "")}` class=`${errorData && errorData.includes("location.address")?"error":""}` readonly)
             input#longitude(type="hidden" name="location[coordinates][0]" value=`${savedData?savedData.location.coordinates[0]:(event ? event.location.coordinates[0] : "")}`)
@@ -100,7 +100,7 @@ block content
 block customScripts
   script(src="/vendor/jquery/jquery.min.js")
   script(src="/vendor/jquery/clockpicker/jquery.clockpicker.min.js")
-  script(src="/vendor/ol/ol.min.js")
+  //- script(src="/vendor/ol/ol.min.js")
   script(type="text/javascript").
     $(document).ready(function() {
       $(".clockpicker").clockpicker();
