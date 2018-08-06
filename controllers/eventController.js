@@ -198,9 +198,10 @@ exports.remove = async (req, res, next) => {
 }
 
 exports.getEventBySlug = async (req, res, next) => {
-  const event = await Event.findOne({ slug: req.paramString('slug') }).populate(
-    'author'
-  )
+  const event = await Event.findOne({ slug: req.paramString('slug') })
+  // .populate(
+  //   'author'
+  // )
   if (!event) return next()
   if (event.status !== 'published') confirmOwner(event, req.user) // we can't see an event if it's not published and we don't own it
   let remove = false
