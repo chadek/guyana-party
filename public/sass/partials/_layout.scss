@@ -3,9 +3,10 @@
   position: relative;
   left: 0;
   padding-left: 0;
-  padding-bottom: 120px;
+  // padding-bottom: 120px;
   min-height: 100%;
 }
+
 #layout.active #menu {
   left: $menuWidth;
   width: $menuWidth;
@@ -134,7 +135,7 @@
 }
 
 .footer {
-  position: absolute;
+  position: relative;
   background: #111;
   color: #888;
   text-align: center;

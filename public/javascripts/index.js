@@ -4,8 +4,8 @@ import addEventForm from "./modules/addEventForm";
 import { B } from "./modules/bling";
 import initDates from "./modules/date";
 import loadEventsOrgasList from "./modules/eventsOrgasList";
-import {geolocate, autourdemoi} from "./modules/geolocation";
 import makeMap from "./modules/map";
+import "./modules/simplemde";
 // import "./modules/menu";
 import subscriptions from "./modules/subscriptions";
 
@@ -26,6 +26,7 @@ B("#fileUpload") &&
     this.nextSibling.textContent = `Fichier : ${(e.target || e.srcElement).files[0].name}`;
   });
 
+
 // geolocation for home and events pages
 // const aroundCheck = B("#around-check");
 // if (aroundCheck) {
@@ -44,13 +45,10 @@ B("#fileUpload") &&
 //   });
 // }
 
-
-
-
-B("#around-click") && 
-  B("#around-click").on("click", () => {
-    location = "/events";
-  });
+// B("#around-click") &&
+//   B("#around-click").on("click", () => {
+//     location = "/events";
+//   });
 
 accountForm(B(".btn-old"), B(".btn-new"));
 subscriptions(B(".freeSubsBtn"), B(".assoSubsBtn"));

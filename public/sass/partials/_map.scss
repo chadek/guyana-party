@@ -1,8 +1,10 @@
 #map {
   position: relative;
-  top: 5px;
-  height: 45vh;
+  padding: 5px;
+  // height: 120%;
+  width: 100%;
 }
+
 
 #geolocation {
   font-size: 13px;
@@ -38,3 +40,5 @@
   left: -50px;
   min-width: 220px;
 }
+
+

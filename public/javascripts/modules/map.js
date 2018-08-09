@@ -25,7 +25,7 @@ function makeMap(mapDiv) {
   // View declaration (set max/min zoom and init position)
   const view = new ol.View({
     center: pos,
-    zoom: 14,
+    zoom: 4,
     maxZoom: MAXZOOM,
     minZoom: MINZOOM
   });
@@ -123,31 +123,56 @@ function makeMap(mapDiv) {
 
   const search = B(".search__input").value;
 
-  function geolocate() {
-    navigator.geolocation.getCurrentPosition(pos => {
-      const position = ol.proj.fromLonLat([pos.coords.longitude, pos.coords.latitude]);
-      point = new ol.layer.Vector({
-        source: new ol.source.Vector({
-          features: [
-            new ol.Feature({
-              geometry: new ol.geom.Point(position),
-              text: "Votre localisation est <br>"
-            })
-          ]
-        }),
-        style: getMarkerStyle(7, { color: "#339900", width: 2 }, { color: "#bbff99" })
-      });
-      map.addLayer(point);
-      view.setCenter(position);
-      // search geolocated events
-      B("#around-label").classList.add("hidden");
-      searchEvents(`/api/search?q=${search}&lon=${pos.coords.longitude}&lat=${pos.coords.latitude}`);
-    },);
-  }
+  // function geolocate() {
+  //   navigator.geolocation.getCurrentPosition(pos => {
+  //     const position = ol.proj.fromLonLat([pos.coords.longitude, pos.coords.latitude]);
+  //     point = new ol.layer.Vector({
+  //       source: new ol.source.Vector({
+  //         features: [
+  //           new ol.Feature({
+  //             geometry: new ol.geom.Point(position),
+  //             text: "Votre localisation est <br>"
+  //           })
+  //         ]
+  //       }),
+  //       style: getMarkerStyle(7, { color: "#339900", width: 2 }, { color: "#bbff99" })
+  //     });
+  //     map.addLayer(point);
+  //     view.setCenter(position);
+  //     // search geolocated events
+  //     B("#around-label").classList.add("hidden");
+  //     searchEvents(`/api/search?q=${search}&lon=${pos.coords.longitude}&lat=${pos.coords.latitude}`);
+  //   },);
+  // }
   
-  geolocate();
+  // geolocate();
 
+  function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min - 1;
+  }
 
+  function geoalea(){
+    // -180 < longitude < 180
+    // -90 < latitude < 90
+    const longitude = getRndInteger(-180,180);
+    const latitude = getRndInteger(-70,70);
+    const position = ol.proj.fromLonLat([longitude, latitude]);
+    point = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        features: [
+          new ol.Feature({
+            geometry: new ol.geom.Point(position),
+          })
+        ]
+      }),
+      style: getMarkerStyle(7, {color: "#339900", width: 2}, {color:"#bbff99"})
+    });
+    map.addLayer(point);
+    view.setCenter(position);
+    searchEvents(`/api/search?q${search}&lon=${longitude}&lat${latitude}`);
+  }
+
+  geoalea();
 
 
   // const check = B("#around-check");
