@@ -5,11 +5,13 @@ import { B, BB } from './modules/bling'
 import { checkName } from './modules/checkForm'
 import initDates from './modules/date'
 import loadEventsOrgasList from './modules/eventsOrgasList'
-// import makeMap from './modules/map'
 import './modules/map'
 import './modules/simplemde'
 // import "./modules/menu";
 // import subscriptions from './modules/subscriptions'
+
+// Signup form - check the availability of the name
+checkName(BB('input'), B('input#name'), B('#name-error'), B('#action-btn'))
 
 // open popup on click on avatar nav
 B('.menu-item-avatar') &&
@@ -56,8 +58,6 @@ B('#around-click') &&
 accountForm(B('.btn-old'), B('.btn-new'))
 // subscriptions(B('.freeSubsBtn'), B('.assoSubsBtn'))
 
-// makeMap(B('#map'))
-
 loadEventsOrgasList(
   B('.events'),
   B('.orga-events'),
@@ -66,4 +66,3 @@ loadEventsOrgasList(
 )
 initDates(B('#event-start'), B('#event-end'))
 addEventForm(B('#dp1'), B('#dp2'), B('.switch-publish-event'))
-checkName(BB('input'), B('input#name'), B('#name-error'), B('#action-btn'))

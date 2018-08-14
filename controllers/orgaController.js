@@ -40,6 +40,9 @@ exports.create = async (req, res) => {
   req.body.author = req.user._id
   // add the author as admin into the community
   req.body.community = [{ user: req.user._id, role: 'admin' }]
+
+  // TODO: Check the number of orgas already created to limit the process
+
   // Create the new organism
   const orga = await new Organism(req.body).save()
   req.flash('success', `Groupe "${orga.name}" créé avec succès !`)

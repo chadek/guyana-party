@@ -100,6 +100,9 @@ exports.create = async (req, res) => {
   }
   req.body.author = req.user._id
   req.body = bodyFormatDateTime(req)
+
+  // TODO: Check the number of events already created to limit the process
+
   const event = await new Event(req.body).save()
   req.flash('success', `Evènement "${event.name}" créé avec succès !`)
   res.redirect(`/event/${event.slug}`)
