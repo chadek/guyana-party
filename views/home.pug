@@ -13,7 +13,7 @@ block content
           #map
       .pure-u-1.u-lg-1-3.u-md-1-3
         .search
-          input.search__input(type="text" placeholder="Restaurant Cayenne, pizzeria, plombier..." name="search" value=`${search?search:''}`)
+          input.search__input(type="text" autocomplete="off" placeholder="Restaurant Cayenne, pizzeria, plombier..." name="search" value=`${search?search:''}`)
           input(type="hidden" name="_csrf" value=`${csrfToken}`)
     
         ul.pure-u-1.result
