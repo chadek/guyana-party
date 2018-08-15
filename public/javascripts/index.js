@@ -9,6 +9,8 @@ import "./modules/simplemde";
 // import "./modules/menu";
 import subscriptions from "./modules/subscriptions";
 
+import { axiosGet } from "./modules/utils";
+
 // open popup on click on avatar nav
 B(".menu-item-avatar") &&
   B(".menu-item-avatar").on("click", () => {
@@ -25,6 +27,27 @@ B("#fileUpload") &&
     e = e || window.event;
     this.nextSibling.textContent = `Fichier : ${(e.target || e.srcElement).files[0].name}`;
   });
+
+// function makeList(listDiv){
+//   if (!listDiv) return;
+
+//   searchEvents(`/api/search?q${search}&lon=${longitude}&lat${latitude}`);
+// }
+
+// function searchEvents(url) {
+//   axiosGet(url, data => {
+//     if (data && data.items) {
+//       loadListEvents(data.items);
+//     }
+//   });
+// }
+
+// function loadListEvents(allevents) {
+//   console.log("par ici la monnaie");
+//   console.log(allevents);
+
+// }
+
 
 
 // geolocation for home and events pages

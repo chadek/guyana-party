@@ -63,7 +63,7 @@ function makeMap(mapDiv) {
   }
 
   // default marker style (blue circle)
-  const defaultStyleMark = getMarkerStyle(7, { color: "#2980b9", width: 2 }, { color: "rgba(52, 152, 219, 0.5)" });
+  const defaultStyleMark = getMarkerStyle(10, { color: "#2980b9", width: 2 }, { color: "rgba(52, 152, 219, 0.5)" });
 
   if (showDefaultPoint) {
     // Create point on map
@@ -201,9 +201,42 @@ function makeMap(mapDiv) {
   }
 
   function loadEvents(events) {
+    // console.log("BIDULLLEEEEEE!!!");
     console.log(events);
+    // initialise home page html element ul
+    let homeList = document.getElementById('resultelements');
+
     const features = [];
     for (let i = 0, len = events.length; i < len; i++) {
+      // add inner html for li elements (events)
+      console.log("tryyyyyyy to make change!!");
+      // let start = new Date(events[i].get("start"));
+      // start = `Le ${("0" + start.getDate()).slice(-2)}/${("0" + start.getMonth()).slice(
+      //   -2
+      // )}/${start.getFullYear()} à ${("0" + start.getHours()).slice(-2)}:${("0" + start.getMinutes()).slice(-2)}`;
+      // console.log(start);
+      homeList.innerHTML += 
+      `
+        <li class=".pure-u-1.result-element.result-link">
+          <div class="pure-u-1-4">
+            <img class="result-picture" src="/images/icons/logo.png">
+          </div>
+          <div class="pure-u-3-4.">
+            <div class="pure-u-1 u-sm-1">
+              <h4 class="no-margin-title">
+                <a class="no-margin-title" href="/event/`+events[i].slug+`">`+events[i].name +`</a>
+              </h4>
+              <h4 class="no-margin-title">
+                <a href="/organism/`+events[i].organism.slug+`">`+events[i].organism.name+`</a>
+              </h4>
+            </div>
+            <div class="pure-u-1.u-sm-1">
+              <span>`+events[i].start+`</span>
+            </div>
+          </div>
+        <li>
+      `;
+
       features[i] = new ol.Feature({
         geometry: new ol.geom.Point(
           ol.proj.fromLonLat([events[i].location.coordinates[0], events[i].location.coordinates[1]])
@@ -216,6 +249,10 @@ function makeMap(mapDiv) {
         },
         start: events[i].start
       });
+
+      //Ajout à la liste
+
+
       map.removeLayer(clusters);
       const styleCache = {};
       clusters = new ol.layer.Vector({
