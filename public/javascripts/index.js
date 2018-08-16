@@ -28,50 +28,6 @@ B("#fileUpload") &&
     this.nextSibling.textContent = `Fichier : ${(e.target || e.srcElement).files[0].name}`;
   });
 
-// function makeList(listDiv){
-//   if (!listDiv) return;
-
-//   searchEvents(`/api/search?q${search}&lon=${longitude}&lat${latitude}`);
-// }
-
-// function searchEvents(url) {
-//   axiosGet(url, data => {
-//     if (data && data.items) {
-//       loadListEvents(data.items);
-//     }
-//   });
-// }
-
-// function loadListEvents(allevents) {
-//   console.log("par ici la monnaie");
-//   console.log(allevents);
-
-// }
-
-
-
-// geolocation for home and events pages
-// const aroundCheck = B("#around-check");
-// if (aroundCheck) {
-//   if (aroundCheck.checked) {
-//     B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
-//     geolocate();
-//   }
-//   aroundCheck.on("click", function() {
-//     if (this.checked) {
-//       B("#around-label").innerHTML = "<strong>Localisation en cours...</strong>";
-//       geolocate();
-//     } else {
-//       B("#around-label").innerHTML = "Autour de moi";
-//       B("#around-value").value = "";
-//     }
-//   });
-// }
-
-// B("#around-click") &&
-//   B("#around-click").on("click", () => {
-//     location = "/events";
-//   });
 
 accountForm(B(".btn-old"), B(".btn-new"));
 subscriptions(B(".freeSubsBtn"), B(".assoSubsBtn"));

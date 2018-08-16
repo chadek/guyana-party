@@ -209,32 +209,37 @@ function makeMap(mapDiv) {
     const features = [];
     for (let i = 0, len = events.length; i < len; i++) {
       // add inner html for li elements (events)
-      console.log("tryyyyyyy to make change!!");
+      // console.log("tryyyyyyy to make change!!");
       // let start = new Date(events[i].get("start"));
       // start = `Le ${("0" + start.getDate()).slice(-2)}/${("0" + start.getMonth()).slice(
       //   -2
       // )}/${start.getFullYear()} à ${("0" + start.getHours()).slice(-2)}:${("0" + start.getMinutes()).slice(-2)}`;
       // console.log(start);
+      // console.log(events[i].photo);
+      let start = new Date(events[i].start);
+      start = `Le ${("0" + start.getDate()).slice(-2)}/${("0" + start.getMonth()).slice(
+        -2
+      )}/${start.getFullYear()} à ${("0" + start.getHours()).slice(-2)}:${("0" + start.getMinutes()).slice(-2)}`;
+
+
       homeList.innerHTML += 
       `
-        <li class=".pure-u-1.result-element.result-link">
-          <div class="pure-u-1-4">
+        <li class="pure-u-1 result-element result-link">
+          <div class="pure-u-6-24">
             <img class="result-picture" src="/images/icons/logo.png">
           </div>
-          <div class="pure-u-3-4.">
+          <div class="pure-u-17-24">
             <div class="pure-u-1 u-sm-1">
               <h4 class="no-margin-title">
-                <a class="no-margin-title" href="/event/`+events[i].slug+`">`+events[i].name +`</a>
+                <a href="/event/`+events[i].slug+`">`+events[i].name +`</a>
               </h4>
               <h4 class="no-margin-title">
                 <a href="/organism/`+events[i].organism.slug+`">`+events[i].organism.name+`</a>
               </h4>
-            </div>
-            <div class="pure-u-1.u-sm-1">
-              <span>`+events[i].start+`</span>
+              <span>`+start+`</span>
             </div>
           </div>
-        <li>
+        </li>
       `;
 
       features[i] = new ol.Feature({
@@ -249,8 +254,6 @@ function makeMap(mapDiv) {
         },
         start: events[i].start
       });
-
-      //Ajout à la liste
 
 
       map.removeLayer(clusters);
@@ -325,6 +328,7 @@ function makeMap(mapDiv) {
         // if no point merge display popup
         if (events.length == 1) {
           // start date format
+          // console.log(events[0].get("start"));
           let start = new Date(events[0].get("start"));
           start = `Le ${("0" + start.getDate()).slice(-2)}/${("0" + start.getMonth()).slice(
             -2
