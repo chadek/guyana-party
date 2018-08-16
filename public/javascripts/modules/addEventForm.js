@@ -1,69 +1,70 @@
+import { B } from "./bling";
+
 function init(dp1, dp2) {
-  // get current date
-  const date = new Date();
-  // Date client
-  // d = new Date()
-  // Thu May 10 2018 18:41:41 GMT-0300 (-03)
-  // n = d.toUTCString();
-  // "Thu, 10 May 2018 21:41:41 GMT"
-  //console.log("Date de MERDE! ",date);
-  // build hours string
-  let str = ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
-  document.getElementById("starttime").value = str;
-  document.getElementById("endtime").value = str;
-  // build date String
-  const day = ("0" + date.getDate()).slice(-2);
-  const month = ("0" + (date.getMonth() + 1)).slice(-2);
-  str = `${date.getFullYear()}-${month}-${day}`;
-  dp1.value = str;
-  dp2.value = str;
-
-  // const tz = date.getTimezoneOffset();
-  // const tzm = tz % 60;
-  // const tzh = tz / 60;
-
-  // timezoneh=document.getElementById("timezoneh");
-  // timezonem=document.getElementById("timezonem");
-  // if (tzh < 0) {
-  //   if (tzh > -10){
-  //     timezoneh.value = "+0"+tzm;
-  //   }
-  //   timezoneh.value = "+"+tzm;
-
-  // } else {
-  //   if (tzh < 10) {
-  //     timezoneh.value = `-0${-tzm}`;
-  //   } else {
-  //     timezoneh.value = `-${-tzm}`;
-  //   }
-
-  // }
+  const startValue = document.getElementById("start").value;
+  const endValue = document.getElementById("end").value;
+  if (!startValue || !endValue) {
+    const date = new Date();
+    let str = ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
+    document.getElementById("starttime").value = str;
+    document.getElementById("endtime").value = str;
+    // build date String
+    const day = ("0" + date.getDate()).slice(-2);
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    str = `${date.getFullYear()}-${month}-${day}`;
+    dp1.value = str;
+    dp2.value = str;
+  } else {
+    // Start date
+    let date = new Date(startValue);
+    document.getElementById("starttime").value =
+      ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
+    let day = ("0" + date.getDate()).slice(-2);
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let str = `${date.getFullYear()}-${month}-${day}`;
+    dp1.value = str;
+    // End date
+    date = new Date(endValue);
+    document.getElementById("endtime").value =
+      ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
+    day = ("0" + date.getDate()).slice(-2);
+    month = ("0" + (date.getMonth() + 1)).slice(-2);
+    str = `${date.getFullYear()}-${month}-${day}`;
+    dp2.value = str;
+  }
 }
-
-// function initClockPicker(clockPicker) {
-//   if (!clockPicker) return;
-//   clockPicker.clockpicker();
-//   //.find('input').change(function(){
-//   //    console.log(this.value);
-//   //});
-// }
-
-// function initDatePicker(dp1, dp2) {
-//   window.prettyPrint && prettyPrint();
-//   const options = {
-//     format: "dd/mm/yyyy",
-//     disableDblClickSelection: true,
-//     language: "fr"
-//   };
-//   $(dp1).fdatepicker(options);
-//   $(dp2).fdatepicker(options);
-// }
 
 function addEventForm(dp1, dp2) {
   if (!dp1 || !dp2) return;
   init(dp1, dp2);
-  //initClockPicker(clockPicker);
-  //initDatePicker(dp1, dp2);
+  let eventId = document.getElementById("id");
+  if (eventId) {
+    eventId = eventId.value;
+    const publicCheckbox = B("label.form-switch-public input");
+    if (publicCheckbox) {
+      const span = B("label.form-switch-public span");
+      publicCheckbox.on("click", function() {
+        span.innerHTML = "<strong>action en cours...</strong>";
+        if (this.checked) {
+          location = `/events/${eventId}/gopublic`;
+        } else {
+          location = `/events/${eventId}/gopublic?cancel=true`;
+        }
+      });
+    }
+    const publishCheckbox = B("label.form-switch-publish input");
+    if (publishCheckbox) {
+      const span = B("label.form-switch-publish span");
+      publishCheckbox.on("click", function() {
+        span.innerHTML = "<strong>action en cours...</strong>";
+        if (this.checked) {
+          location = `/events/${eventId}/publish`;
+        } else {
+          location = `/events/${eventId}/publish?cancel=true`;
+        }
+      });
+    }
+  }
 }
 
 export default addEventForm;

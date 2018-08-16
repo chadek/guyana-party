@@ -17,6 +17,7 @@ function openCard() {
   });
 }
 
+// EVENTS
 function getEventsList(eventsDiv) {
   if (!eventsDiv) return;
   axiosGet("/api/events", data => {
@@ -37,11 +38,18 @@ function getEventsList(eventsDiv) {
         )}</a>
                 <br><strong>Début :</strong> ${start}
                 <br><strong>Fin :</strong> ${end}
-                <br><strong>Adresse :</strong> ${item.location.address}</p>
+                <br><strong>Adresse :</strong> ${item.location.address}
+                ${!item.public ? "<br><strong>Evènement privé</strong>" : ""}
+                ${item.status != "published" ? '<br><strong class="unpublished-color">Non publié</strong> |' : "<br>"}
+                <a href="/events/${item.id}/edit">Modifier</a> | <a href="/event/${
+          item.slug
+        }?remove=true">Archiver</a></p>
               </div>
             </div>
             <div class="card__section">
-              <p><a href="/event/${item.slug}">${sliceStr(item.name)}</a></p>
+              <p><a ${item.status != "published" ? 'class="unpublished-color"' : ""} href="/event/${
+          item.slug
+        }">${sliceStr(item.name)}</a></p>
             </div>
           </div>
         </div>`;
@@ -56,6 +64,7 @@ function getEventsList(eventsDiv) {
   });
 }
 
+// ORGANISMS
 function getOrgasList(orgasDiv) {
   if (!orgasDiv) return;
   axiosGet("/api/organisms", data => {
@@ -67,12 +76,16 @@ function getOrgasList(orgasDiv) {
             <div class="card__header">
               <img src="${imgSrc}" alt="photo organisme">
               <div class="card__header--content">
-                <p><strong>Type d'organisme :</strong> ${item.type}
-                <br><a href="/organism/${item.slug}">Voir évènements associés</a>
-                <br><a href="/organism/${item.slug}">Voir communauté</a>
-                <br><strong>Adresse :</strong> ${item.location.address}
-                <br><strong>Souscription :</strong> ${item.subscription ? item.subscription : "free"}
-                <br>(<a href="/souscriptions">Passer en PRO !</a>)</p>
+                <p>
+                ${item.type ? `<strong>Type d'organisme :</strong> ${item.type}` : ""}
+                <br><a href="/organism/${item.slug}#events">Voir évènements associés</a>
+                <br><a href="/organism/${item.slug}#community">Voir communauté</a>
+                ${item.location.address ? `<br><strong>Adresse :</strong> ${item.location.address}` : ""}
+                <!--<br><strong>Souscription :</strong> ${item.subscription ? item.subscription : "free"}
+                <br>(<a href="/souscriptions">Passer en PRO !</a>)-->
+                <br><a href="/organisms/${item.id}/edit">Modifier</a> | <a href="/organism/${
+          item.slug
+        }?remove=true">Archiver</a></p>
               </div>
             </div>
             <div class="card__section">
@@ -91,6 +104,7 @@ function getOrgasList(orgasDiv) {
   });
 }
 
+// EVENTS in an organism
 function getEventsFromOrga(orgaEventsDiv) {
   if (!orgaEventsDiv) return;
   const orgaId = B("#orga-id");
@@ -111,11 +125,17 @@ function getEventsFromOrga(orgaEventsDiv) {
                 <p><strong>Organisateur :</strong> <a href="/organism/${item.organism.slug}">${item.organism.name}</a>
                 <br><strong>Début :</strong> ${start}
                 <br><strong>Fin :</strong> ${end}
-                <br><strong>Adresse :</strong> ${item.location.address}</p>
+                <br><strong>Adresse :</strong> ${item.location.address}
+                ${item.status != "published" ? '<br><strong class="unpublished-color">Non publié</strong> |' : "<br>"}
+                <a href="/events/${item.id}/edit">Modifier</a> | <a href="/event/${
+          item.slug
+        }?remove=true">Archiver</a></p>
               </div>
             </div>
             <div class="card__section">
-              <p><a href="/event/${item.slug}">${sliceStr(item.name)}</a></p>
+            <p><a ${item.status != "published" ? 'class="unpublished-color"' : ""} href="/event/${
+          item.slug
+        }">${sliceStr(item.name)}</a></p>
             </div>
           </div>
         </div>`;
@@ -130,6 +150,7 @@ function getEventsFromOrga(orgaEventsDiv) {
   });
 }
 
+// Organisms dropdown in event edit page
 function initOrgaDropdown(orgasSelect) {
   if (!orgasSelect) return;
   const orgaId = B("#orga-id");
@@ -147,6 +168,7 @@ function initOrgaDropdown(orgasSelect) {
   });
 }
 
+// Main function
 function loadEventsOrgasList(eventsDiv, orgaEventsDiv, orgasDiv, orgasSelect) {
   getEventsList(eventsDiv);
   getEventsFromOrga(orgaEventsDiv);
