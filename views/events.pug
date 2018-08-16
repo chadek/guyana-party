@@ -5,83 +5,17 @@ block customStyle
 
 block content
   .pure-g
-    .pure-u-1.text-center
-      h2= title
+    //- .pure-u-1.text-center
+    //-   h2= title
     .pure-u-1.l-box
-      form(action="/events" method="POST")
-        .search
-          input.search__input(type="text" placeholder="Restaurant Cayenne, pizzeria, plombier..." name="search" value=`${search?search:''}`)
-          input#around-value(type="hidden" name="aroundValue" value=`${around}`)
-          input(type="hidden" name="_csrf" value=`${csrfToken}`)
-    .pure-u-1
-      .pure-u-1.u-sm-2-5.l-box
-        .result
-          p.text-center Aucun résultat
-      .pure-u-1.u-sm-3-5.l-box
-      
-        .around
-          label#around-label Autour de moi
-        //-   if around
-        //-     input.pure-form#around-check(type="checkbox" name="around" value="around" checked)
-        //-     label#around-label(for="around-check")
-        //-   else
-        //-     input#around-check(type="checkbox" name="around" value="around")
-        //-     label#around-label(for="around-check") Autour de moi
-        //-- MAP --
-        .ol-popup#popup
-        #map
-  //-.grid-container.fluid
-    .grid-x.grid-margin-x
-      .cell.text-center
-        h3= title
-    .grid-x.grid-margin-x
-      .cell
-        form(action="/events" method="POST")
-          .search
-            input.search__input(type="text" placeholder="Chercher par thème ou par lieu..." name="search" value=`${search?search:''}`)
-            input#around-value(type="hidden" name="aroundValue" value=`${around}`)
-    .grid-x.grid-margin-x
-      .cell.events-list.large-4
-        p Aucun résultat
-      .cell.events-map.large-8
-        .around
-          if around
-            input#around-check(type="checkbox" name="around" value="around" checked)
-            label#around-label(for="around-check")
-            //-!= around.text
-          else
-            input#around-check(type="checkbox" name="around" value="around")
-            label#around-label(for="around-check") Autour de moi
-        #map
-          .ol-popup#popup
-          nav#map_menu
-            //-button#geolocation Autour de moi
-            //-ul.no_list
-              form
-                li:input#party(type="checkbox" name="eventLayer" checked) Festif
-                li:input#sport(type="checkbox" name="eventLayer" checked) Sportif
-                li:input#culture(type="checkbox" name="eventLayer" checked) Culturel
-
-  //-.row
-    .column
-      .row
-        .div(style="text-align: center;")
-          h3 Tous les futurs événements
-        .input-group
-          span.input-group-label: i.fi-magnifying-glass.size-36
-          input.input-group-field#input_recherche(name="search" type="text" placeholder="Ville, tags…" autofocus="")
-          .input-group-button
-            input.button#search(type="submit" value="Rechercher")
-
-  //-#map(style="height: 77vh;")
-    .ol-popup#popup/
-    nav#map_menu
-      button#geolocation Géolocalisation
-      ul.no_list
-        form
-          li:input#party(type="checkbox" name="eventLayer" checked) Festif
-          li:input#sport(type="checkbox" name="eventLayer" checked) Sportif
-          li:input#culture(type="checkbox" name="eventLayer" checked) Culturel
+      //- form(action="/events" method="POST")
+      .search
+        input.search__input(type="text" placeholder="Restaurant Cayenne, pizzeria, plombier..." name="search" value=`${search?search:''}`)
+        input#around-value(type="hidden" name="aroundValue" value=`${around}`)
+        input(type="hidden" name="_csrf" value=`${csrfToken}`)
+    .pure-u-1.l-box
+      .ol-popup#popup
+      #map
 
 block customScripts
   script(src="/vendor/ol/ol.min.js")
