@@ -15,8 +15,13 @@ const ZOOM = 14
 const CLUSTER_DISTANCE = 10
 const MAXZOOM = 20
 const MINZOOM = 2
-const LON = -52.3009
-const LAT = 4.931609
+const RANDOM_POINTS = [
+  [-52.3009, 4.931609], // Cayenne
+  [-61.05878, 14.616065], // Fort-de-France
+  [-61.551, 16.265], // Guadeloupe
+  [55.449264, -20.873425], // Réunion
+  [2.3522219, 48.856614] // Paris
+]
 
 class Map {
   constructor (params) {
@@ -37,13 +42,24 @@ class Map {
       this.lon && this.lat ? fromLonLat([this.lon, this.lat]) : null
     this.singlePoint = null
     this.defaultStyleMark = null
+    this.defaultPos = null
+    this.randomPoints = params.randomPoints || RANDOM_POINTS
     this.init()
   }
 
   init () {
+    // Default position
+    if (this.randomPoints.length > 0) {
+      this.defaultPos = fromLonLat(
+        this.randomPoints[Math.floor(Math.random() * this.randomPoints.length)]
+      )
+    } else {
+      this.defaultPos = fromLonLat(RANDOM_POINTS[0])
+    }
+
     // Instanciate the view
     this.view = new View({
-      center: this.singlePos ? this.singlePos : fromLonLat([LON, LAT]),
+      center: this.singlePos ? this.singlePos : this.defaultPos,
       zoom: this.zoom,
       maxZoom: this.maxZoom,
       minZoom: this.minZoom
@@ -80,13 +96,13 @@ class Map {
         },
         // Error
         () => {
-          const position = fromLonLat([LON, LAT])
+          const position = this.defaultPos
           this.addSinglePoint(
             position,
             callbackFn,
             getGPSCoords(position),
-            true,
-            false
+            true, // center on point
+            false // hidden point
           )
         }
       )
@@ -130,11 +146,11 @@ class Map {
 
       if (center) this.view.setCenter(position)
     }
-    callbackFn(gpsCoord)
+    callbackFn(gpsCoord, show)
   }
 
   showEvents (events) {
-    // console.log(events)
+    if (!events || events.length === 0) return
     const features = []
     // Create features from events
     events.forEach(event => {

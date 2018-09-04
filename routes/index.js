@@ -98,8 +98,8 @@ router.get('/organism/id/:id', catchErrors(orgaController.getOrgaById))
 
 /* Events */
 
-router.get('/events', eventController.eventsPage)
-router.post('/events', eventController.eventsPage)
+// router.get('/events', eventController.eventsPage)
+// router.post('/events', eventController.eventsPage)
 router.get(
   '/events/add',
   authController.isLoggedIn,

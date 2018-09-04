@@ -2,12 +2,11 @@ import Map from './olMap'
 import { axiosGet } from '../utils'
 
 const map = new Map({
-  mouseWheelZoom: true
+  mouseWheelZoom: true,
+  zoom: 13
 })
-// console.log(map)
 
 map.singleShowPoint(coords => {
-  // console.log(coords)
   const search = document.querySelector('.search__input')
   if (search) {
     axiosGet(

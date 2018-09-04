@@ -7,16 +7,16 @@ const store = require('store')
 const moment = require('moment-timezone')
 const { getPagedItems, confirmOwner } = require('../handlers/tools')
 
-exports.eventsPage = (req, res) => {
-  const search = req.bodyString('search') || req.queryString('q') || ''
-  const around = req.bodyString('aroundValue') || ''
-  res.render('events', {
-    title: 'Les évènements sur la carte',
-    search,
-    around,
-    csrfToken: req.csrfToken()
-  })
-}
+// exports.eventsPage = (req, res) => {
+//   const search = req.bodyString('search') || req.queryString('q') || ''
+//   const around = req.bodyString('aroundValue') || ''
+//   res.render('events', {
+//     title: 'Les évènements sur la carte',
+//     search,
+//     around,
+//     csrfToken: req.csrfToken()
+//   })
+// }
 
 const getTZList = () => {
   const time = Date.now()
