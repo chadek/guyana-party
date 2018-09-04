@@ -20,6 +20,11 @@ block content
         h2= orga.name
         if orga.type
           p= `(${orga.type})`
+        if isAdmin
+          a(href=`/organisms/${orga.id}/edit` title="Modifier" style="margin-right: 10px;")
+            span.icon!= h.icon("edit")
+          a(href=`/organism/${orga.slug}?remove=true` title="Archiver")
+            span.icon!= h.icon("archive")
       //- Description
       .pure-u-1.top-space-40
         label Description&nbsp;:

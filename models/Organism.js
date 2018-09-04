@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
-const slug = require("slugs");
+const mongoose = require('mongoose')
+mongoose.Promise = global.Promise
+const slug = require('slugs')
 
 const OrganismSchema = new mongoose.Schema(
   {
@@ -13,7 +13,7 @@ const OrganismSchema = new mongoose.Schema(
     description: {
       type: String,
       trim: true,
-      required: "Veuillez saisir une description."
+      required: 'Veuillez saisir une description.'
     },
     type: String, // association | ong | entreprise | collectivité
     created: {
@@ -23,7 +23,7 @@ const OrganismSchema = new mongoose.Schema(
     location: {
       type: {
         type: String,
-        default: "Point"
+        default: 'Point'
       },
       coordinates: {
         type: [Number],
@@ -31,61 +31,61 @@ const OrganismSchema = new mongoose.Schema(
       },
       address: {
         type: String
-        //required: "Veuillez sélectionner le l'adresse de l'organisme sur la carte, ou saisir une adresse."
+        // required: "Veuillez sélectionner le l'adresse de l'organisme sur la carte, ou saisir une adresse."
       }
     },
     photo: String,
     author: {
       type: mongoose.Schema.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: "L'auteur de l'organisme est requis."
     },
     community: [
       {
         user: {
           type: mongoose.Schema.ObjectId,
-          ref: "User",
+          ref: 'User',
           required: "La référence de l'utilisateur est requise."
         },
         role: {
           type: String, // guest | admin
-          default: "guest"
+          default: 'guest'
         }
       }
     ],
     subscription: String, // free < asso < pro < complete
     status: {
       type: String, // published | archived
-      default: "published"
+      default: 'published'
     }
   },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
   }
-);
+)
 
 // Define our indexes
 OrganismSchema.index({
-  name: "text",
-  description: "text"
-});
+  name: 'text',
+  description: 'text'
+})
 
-OrganismSchema.index({ location: "2dsphere" });
+OrganismSchema.index({ location: '2dsphere' })
 
-OrganismSchema.pre("save", async function(next) {
-  if (!this.isModified("name")) {
-    next(); // skip it
-    return; // stop this function from running
+OrganismSchema.pre('save', async function (next) {
+  if (!this.isModified('name')) {
+    next() // skip it
+    return // stop this function from running
   }
-  this.slug = slug(this.name);
+  this.slug = slug(this.name)
   // find other stores that have a slug of event, event-1, event-2
-  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, "i");
-  const eventsWithSlug = await this.constructor.find({ slug: slugRegEx });
+  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i')
+  const eventsWithSlug = await this.constructor.find({ slug: slugRegEx })
   if (eventsWithSlug.length) {
-    this.slug = `${this.slug}-${eventsWithSlug.length + 1}`;
+    this.slug = `${this.slug}-${eventsWithSlug.length + 1}`
   }
-  next();
-});
+  next()
+})
 
-module.exports = mongoose.model("Organism", OrganismSchema);
+module.exports = mongoose.model('Organism', OrganismSchema)
