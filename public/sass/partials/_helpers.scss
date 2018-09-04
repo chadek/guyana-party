@@ -12,7 +12,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  align-self: center;
+  // align-self: center;
 }
 
 .logo {
@@ -81,11 +81,12 @@
   &__new {
     cursor: pointer;
     &:after {
-      content: "+";
+      content: '+';
       display: block;
       position: relative;
       left: calc(50% - 10px);
       top: calc(50% - 30px);
+      width: 2%;
       font-size: 40px;
       color: grey;
     }
