@@ -3,7 +3,7 @@ import { axiosGet } from '../utils'
 
 const map = new Map({
   mouseWheelZoom: true,
-  zoom: 13
+  zoom: 11
 })
 
 map.singleShowPoint(coords => {
@@ -16,6 +16,7 @@ map.singleShowPoint(coords => {
       data => {
         if (data && data.items) {
           map.showEvents(data.items)
+          showEventsList(data.items)
         }
       }
     )
@@ -32,15 +33,17 @@ map.eventsOnClick(
   }
 )
 
-function onEventHTMLFn (event) {
-  // start date format
-  let start = new Date(event.get('start'))
-  start = `Le ${('0' + start.getDate()).slice(-2)}/${(
+function formatEventStart (isoStart) {
+  let start = new Date(isoStart)
+  return `Le ${('0' + start.getDate()).slice(-2)}/${(
     '0' + start.getMonth()
   ).slice(-2)}/${start.getFullYear()} à ${('0' + start.getHours()).slice(
     -2
   )}:${('0' + start.getMinutes()).slice(-2)}`
+}
 
+function onEventHTMLFn (event) {
+  const start = formatEventStart(event.get('start')) // start date format
   return `
     <div style="font-size:.8em">
       <font size="4">${event.get('name')}</font>
@@ -70,4 +73,25 @@ function userPosHTMLFn (coords, hdms) {
       <br><code>lat.: ${coords[1]}</code>
       <br><br><code>${hdms}</code>
     </div>`
+}
+
+function showEventsList (events) {
+  const homeList = document.getElementById('resultelements')
+  events.forEach(event => {
+    const imgSrc = event.photo
+      ? `/uploads/${event.photo}`
+      : '/images/icons/logo.png'
+    const start = formatEventStart(event.start)
+    const orga = event.organism
+    homeList.innerHTML += `
+      <li class="pure-u-1 result-element"
+        onclick="location.href='/event/${event.slug}'">
+        <div><img src="${imgSrc}" alt="${event.name}"></div>
+        <div>
+          <h4>${event.name}</h4>
+          <h4>${orga.name}</h4>
+          <span>${start}</span>
+        </div>
+      </li>`
+  })
 }

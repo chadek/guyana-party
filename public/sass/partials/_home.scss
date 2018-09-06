@@ -8,31 +8,35 @@
 
 .result {
   list-style-type: none;
-  // overflow: scroll;
+  overflow: auto;
   position: relative;
+  padding: 0 5px;
+  h4 {
+    margin: unset;
+  }
   &-element {
-    // width: 100%;
+    display: flex;
+    margin-top: 5px;
     padding: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    &:hover {
+      background-color: $lightGray;
+    }
+    img {
+      object-fit: cover;
+      width: 80px;
+      height: 70px;
+      border-radius: 3px;
+      margin-right: 15px;
+    }
   }
-  &-link:hover {
-    background-color: $lightGray;
-  }
-  &-picture {
-    height: 70px;
-    width: 70px;
-    border-radius: 3px;
-  }
-}
-
-.no-margin-title {
-  margin: unset;
 }
 
 // ordi middle
 @media screen and (min-width: 48em) {
   .result {
     max-height: 85vh;
-    overflow-y: scroll;
   }
 
   // #map {

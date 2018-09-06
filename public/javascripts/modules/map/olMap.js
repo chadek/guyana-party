@@ -16,11 +16,11 @@ const CLUSTER_DISTANCE = 10
 const MAXZOOM = 20
 const MINZOOM = 2
 const RANDOM_POINTS = [
-  [-52.3009, 4.931609], // Cayenne
-  [-61.05878, 14.616065], // Fort-de-France
-  [-61.551, 16.265], // Guadeloupe
-  [55.449264, -20.873425], // Réunion
-  [2.3522219, 48.856614] // Paris
+  [-52.3009, 4.931609] // Cayenne
+  // [-61.05878, 14.616065], // Fort-de-France
+  // [-61.534042, 16.237687], // Point-à-Pitre
+  // [55.455054, -20.89066], // Saint-Denis (Réunion)
+  // [2.3522219, 48.856614] // Paris
 ]
 
 class Map {

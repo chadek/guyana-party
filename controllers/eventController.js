@@ -230,13 +230,13 @@ exports.getEvents = async (req, res) => {
   const orga = req.queryString('orga')
   const find = orga
     ? {
-      organism: orga,
-      status: { $regex: '^((?!archived).)*$', $options: 'i' }
-    }
+        organism: orga,
+        status: { $regex: '^((?!archived).)*$', $options: 'i' }
+      }
     : {
-      author: req.user._id,
-      status: { $regex: '^((?!archived).)*$', $options: 'i' }
-    }
+        author: req.user._id,
+        status: { $regex: '^((?!archived).)*$', $options: 'i' }
+      }
   const result = await getPagedItems(
     Event,
     page,
@@ -291,6 +291,7 @@ exports.getSearchResult = async (req, res) => {
       slug: 1,
       name: 1,
       start: 1,
+      photo: 1,
       'location.coordinates': 1
     },
     { score: { $meta: 'textScore' } }
