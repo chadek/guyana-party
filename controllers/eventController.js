@@ -230,13 +230,13 @@ exports.getEvents = async (req, res) => {
   const orga = req.queryString('orga')
   const find = orga
     ? {
-        organism: orga,
-        status: { $regex: '^((?!archived).)*$', $options: 'i' }
-      }
+      organism: orga,
+      status: { $regex: '^((?!archived).)*$', $options: 'i' }
+    }
     : {
-        author: req.user._id,
-        status: { $regex: '^((?!archived).)*$', $options: 'i' }
-      }
+      author: req.user._id,
+      status: { $regex: '^((?!archived).)*$', $options: 'i' }
+    }
   const result = await getPagedItems(
     Event,
     page,
