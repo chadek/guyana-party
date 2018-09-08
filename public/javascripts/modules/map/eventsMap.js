@@ -9,17 +9,14 @@ const map = new Map({
 map.singleShowPoint(coords => {
   const search = document.querySelector('.search__input')
   if (search) {
-    axiosGet(
-      `/api/search?q=${
-        search.value
-      }&lon=${coords[0].toString()}&lat=${coords[1].toString()}`,
-      data => {
-        if (data && data.items) {
-          map.showEvents(data.items)
-          showEventsList(data.items)
-        }
+    const lon = coords[0].toString()
+    const lat = coords[1].toString()
+    search.on('keydown', e => {
+      if (e.key === 'Enter' || e.keyCode === 13) {
+        showEvents(e.target.value, lon, lat)
       }
-    )
+    })
+    showEvents(search.value, lon, lat)
   }
 })
 
@@ -28,10 +25,20 @@ map.eventsOnClick(
   onEventHTMLFn,
   onZoomMaxHTMLFn,
   userPosHTMLFn,
-  coords => {
-    // console.log(coords)
-  }
+  coords => {}
 )
+
+function showEvents (search, lon, lat) {
+  axiosGet(
+    `/api/search?q=${search}&lon=${lon}&lat=${lat}&maxdistance=20000`,
+    data => {
+      if (data && data.items) {
+        map.showEvents(data.items)
+        showEventsList(data.items)
+      }
+    }
+  )
+}
 
 function formatEventStart (isoStart) {
   let start = new Date(isoStart)
@@ -77,19 +84,19 @@ function userPosHTMLFn (coords, hdms) {
 
 function showEventsList (events) {
   const homeList = document.getElementById('resultelements')
+  homeList.innerHTML = ''
   events.forEach(event => {
     const imgSrc = event.photo
       ? `/uploads/${event.photo}`
       : '/images/icons/logo.png'
     const start = formatEventStart(event.start)
-    const orga = event.organism
     homeList.innerHTML += `
       <li class="pure-u-1 result-element"
         onclick="location.href='/event/${event.slug}'">
         <div><img src="${imgSrc}" alt="${event.name}"></div>
         <div>
           <h4>${event.name}</h4>
-          <h4>${orga.name}</h4>
+          <h4>${event.organism.name}</h4>
           <span>${start}</span>
         </div>
       </li>`

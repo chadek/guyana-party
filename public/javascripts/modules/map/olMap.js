@@ -1,7 +1,7 @@
 'use strict'
 
 import { Feature, Map as OlMap, Overlay, View } from 'ol'
-import { fromLonLat, transform } from 'ol/proj'
+import { fromLonLat, toLonLat } from 'ol/proj'
 import { Tile, Vector as LayerVector } from 'ol/layer'
 import { OSM, Vector as SourceVector, Cluster } from 'ol/source'
 import { defaults as ctrlDefaults, ScaleLine, ZoomSlider } from 'ol/control'
@@ -100,18 +100,14 @@ class Map {
           this.addSinglePoint(
             position,
             callbackFn,
-            getGPSCoords(position),
+            toLonLat(position),
             true, // center on point
             false // hidden point
           )
         }
       )
     } else {
-      this.addSinglePoint(
-        this.singlePos,
-        callbackFn,
-        getGPSCoords(this.singlePos)
-      )
+      this.addSinglePoint(this.singlePos, callbackFn, toLonLat(this.singlePos))
     }
   }
 
@@ -125,7 +121,7 @@ class Map {
       this.addSinglePoint(
         this.singlePos,
         callbackFn,
-        getGPSCoords(this.singlePos),
+        toLonLat(this.singlePos),
         false
       )
     })
@@ -268,7 +264,7 @@ class Map {
         } else {
           // there is no events, display user location popup (with coordinates)
           coords = feature.getGeometry().getCoordinates()
-          const gpsCoords = getGPSCoords(coords)
+          const gpsCoords = toLonLat(coords)
           const hdms = toStringHDMS(gpsCoords)
           showPopup(popupDiv, popup, coords, userPosHTMLFn(gpsCoords, hdms))
         }
@@ -303,11 +299,6 @@ function getLayerVector (position, markerStyle, text = '') {
 
 function startGeolocation (successCallback, errorCallback) {
   navigator.geolocation.getCurrentPosition(successCallback, errorCallback)
-}
-
-// Get the GPS coordinates from ol event coordinates
-function getGPSCoords (coords) {
-  return transform(coords, 'EPSG:3857', 'EPSG:4326')
 }
 
 function showPopup (popupDiv, popup, coords, html) {
