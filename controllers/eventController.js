@@ -224,10 +224,12 @@ exports.getEventBySlug = async (req, res, next) => {
   })
 }
 
+/** route: /api/events */
 exports.getEvents = async (req, res) => {
   const page = req.queryInt('page') || 1
   const limit = req.queryInt('limit') || 7
   const orga = req.queryString('orga')
+  // We want events by status, organism (if available) otherwise by author
   const find = orga
     ? {
       organism: orga,
@@ -237,6 +239,7 @@ exports.getEvents = async (req, res) => {
       author: req.user._id,
       status: { $regex: '^((?!archived).)*$', $options: 'i' }
     }
+  // Paginate the events list
   const result = await getPagedItems(
     Event,
     page,
@@ -248,6 +251,7 @@ exports.getEvents = async (req, res) => {
   res.json(result)
 }
 
+/** route : /api/search */
 exports.getSearchResult = async (req, res) => {
   const page = req.queryInt('page') || 1
   const limit = req.queryInt('limit') || 10
@@ -255,38 +259,33 @@ exports.getSearchResult = async (req, res) => {
   const lon = req.queryString('lon')
   const lat = req.queryString('lat')
   const maxDistance = req.queryInt('maxdistance') || 10000 // 10km
+  // We want published events by location (if available), name or description
   let find = {
     $or: [
       { name: { $regex: search, $options: 'i' } },
       { description: { $regex: search, $options: 'i' } }
     ],
-    status: 'published'
+    status: 'published',
+    public: true
   }
   if (lon && lat) {
-    find = {
-      location: {
-        $near: {
-          $geometry: {
-            type: 'Point',
-            coordinates: [lon, lat].map(parseFloat)
-          },
-          $maxDistance: maxDistance
-        }
-      },
-      $or: [
-        { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } }
-      ],
-      status: 'published'
+    find.location = {
+      $near: {
+        $geometry: {
+          type: 'Point',
+          coordinates: [lon, lat].map(parseFloat)
+        },
+        $maxDistance: maxDistance
+      }
     }
   }
+  // Paginate the events list
   const pagedEvents = await getPagedItems(
     Event,
     page,
     limit,
     find,
     {
-      score: { $meta: 'textScore' },
       _id: false,
       slug: 1,
       name: 1,
@@ -294,7 +293,7 @@ exports.getSearchResult = async (req, res) => {
       photo: 1,
       'location.coordinates': 1
     },
-    { score: { $meta: 'textScore' } }
+    { start: 1 }
   )
   res.json(pagedEvents)
 }

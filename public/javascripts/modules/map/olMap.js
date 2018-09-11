@@ -16,11 +16,11 @@ const CLUSTER_DISTANCE = 10
 const MAXZOOM = 20
 const MINZOOM = 2
 const RANDOM_POINTS = [
-  [-52.3009, 4.931609] // Cayenne
-  // [-61.05878, 14.616065], // Fort-de-France
-  // [-61.534042, 16.237687], // Point-à-Pitre
-  // [55.455054, -20.89066], // Saint-Denis (Réunion)
-  // [2.3522219, 48.856614] // Paris
+  [-52.3009, 4.931609], // Cayenne
+  [-61.05878, 14.616065], // Fort-de-France
+  [-61.534042, 16.237687], // Point-à-Pitre
+  [55.455054, -20.89066], // Saint-Denis (Réunion)
+  [2.3522219, 48.856614] // Paris
 ]
 
 class Map {
@@ -29,7 +29,6 @@ class Map {
     this.view = null
     this.single = params.single
     this.readOnly = params.readOnly
-    this.geolocate = params.geolocate
     this.target = params.target || 'map'
     this.zoom = params.zoom || ZOOM
     this.clusterDistance = params.clusterDistance || CLUSTER_DISTANCE
