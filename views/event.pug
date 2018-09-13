@@ -1,6 +1,7 @@
 extends layout
 
 include mixins/_removeDialog
+include mixins/_switchPublishEvent
 
 block customStyle
   link(rel="stylesheet", href="/vendor/ol/ol.css")
@@ -17,6 +18,15 @@ block content
       //- Name
       .pure-u-1.top-space.text-center
         h2= event.name
+      .pure-u-1.top-space.text-center
+        //- Switches, Edit & Archive buttons
+        if isOwner
+          +switchPublishEvent(event)
+          br
+          a(href=`/events/${event.id}/edit` title="Modifier" style="margin-right: 10px;")
+            span.icon!= h.icon("edit")
+          a(href=`/event/${event.slug}?remove=true` title="Archiver")
+            span.icon!= h.icon("archive")
         p Organisateur :
           a(href=`/organism/${orga.slug}`)= ` ${orga.name}`
       //- Date && Time
@@ -50,13 +60,10 @@ block content
       //- Event location
       .pure-u-1.top-space-40
         label Le lieu de l'évènement :
-        #map.no-events.readonly.top-space
+        #map.single.readonly.top-space
         p.text-center= event.location.address
         input#longitude(type="hidden" value=(event.location && event.location.coordinates[0]))
         input#latitude(type="hidden" value=(event.location && event.location.coordinates[1]))
       unless remove
         .pure-u-1.top-space-40
           button.pure-button.success.button.expanded(onClick=`location="/events/${event._id}/edit"`) Modifier
-
-block customScripts
-  script(src="/vendor/ol/ol.min.js")

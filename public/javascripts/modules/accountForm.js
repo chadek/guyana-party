@@ -1,8 +1,8 @@
-import { B } from "./bling";
-import { setTimeout } from "timers";
+// import { B } from "./bling";
+// import { setTimeout } from "timers";
 
-function accountForm(btn_old, btn_new) {
-  if(!btn_old || !btn_new) return;
+function accountForm (btnOld, btnNew) {
+  if (!btnOld || !btnNew) return
 
   // $("[data-mobile-app-toggle] .button").click(function() {
   //   $(this)
@@ -11,17 +11,15 @@ function accountForm(btn_old, btn_new) {
   //   $(this).addClass("is-active");
   // });
 
-  btn_old.on("click", function() {
+  btnOld.on('click', function () {
     // TODO
-    console.log("show old");
-  });
+    console.log('show old')
+  })
 
-  btn_new.on("click", function() {
+  btnNew.on('click', function () {
     // TODO
-    console.log("show new");
-  });
-
-
+    console.log('show new')
+  })
 }
 
-export default accountForm;
+export default accountForm

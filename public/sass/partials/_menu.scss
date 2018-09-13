@@ -11,7 +11,6 @@ Add transition to containers so they can push in and out.
   transition: all 0.2s ease-out;
 }
 
-
 #menu-overlay {
   position: absolute;
   top: 0;
@@ -23,7 +22,6 @@ Add transition to containers so they can push in and out.
   opacity: 0;
   cursor: pointer;
   visibility: hidden;
-
 }
 #menu-overlay.active {
   opacity: 1;
@@ -119,12 +117,11 @@ Add transition to containers so they can push in and out.
   }
 }
 
-
-.topbar{
+.topbar {
   height: $menuHeight;
   background-color: $black;
   overflow: hidden;
-  top : 0;
+  top: 0;
   left: 0;
   // right: 0;
   position: fixed;
@@ -149,7 +146,7 @@ Add transition to containers so they can push in and out.
 .menu-item {
   display: block;
   padding: 7px;
-  &__text{
+  &__text {
     padding: 14px;
     text-decoration: none;
     color: #fff;
@@ -160,9 +157,9 @@ Add transition to containers so they can push in and out.
   }
 }
 
-
 .menu-item-avatar {
   display: block;
+  cursor: pointer;
   // padding: 7px;
 }
 
@@ -170,7 +167,3 @@ Add transition to containers so they can push in and out.
   float: right;
   // padding : 7px;
 }
-
-
-
-

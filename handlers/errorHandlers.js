@@ -7,19 +7,19 @@
 */
 
 exports.catchErrors = fn => {
-  return function(req, res, next) {
-    return fn(req, res, next).catch(next);
-  };
-};
+  return function (req, res, next) {
+    return fn(req, res, next).catch(next)
+  }
+}
 
 /*
   Handle CSRF token errors
 */
 exports.csrfErrors = (err, req, res, next) => {
-  if (err.code !== "EBADCSRFTOKEN") return next(err);
-  req.flash("error", "Action non autorisée !");
-  res.redirect("back");
-};
+  if (err.code !== 'EBADCSRFTOKEN') return next(err)
+  req.flash('error', 'Action non autorisée !')
+  res.redirect('back')
+}
 
 /*
   Not Found Error Handler
@@ -27,10 +27,10 @@ exports.csrfErrors = (err, req, res, next) => {
   If we hit a route that is not found, we mark it as 404 and pass it along to the next error handler to display
 */
 exports.notFound = (req, res, next) => {
-  const err = new Error("Not Found");
-  err.status = 404;
-  next(err);
-};
+  const err = new Error('Not Found')
+  err.status = 404
+  next(err)
+}
 
 /*
   MongoDB Validation Error Handler
@@ -38,12 +38,12 @@ exports.notFound = (req, res, next) => {
   Detect if there are mongodb validation errors that we can nicely show via flash messages
 */
 exports.flashValidationErrors = (err, req, res, next) => {
-  if (!err.errors) return next(err);
+  if (!err.errors) return next(err)
   // validation errors look like
-  const errorKeys = Object.keys(err.errors);
-  errorKeys.forEach(key => req.flash("error", err.errors[key].message));
-  res.redirect("back");
-};
+  const errorKeys = Object.keys(err.errors)
+  errorKeys.forEach(key => req.flash('error', err.errors[key].message))
+  res.redirect('back')
+}
 
 /*
   Development Error Handler
@@ -51,22 +51,25 @@ exports.flashValidationErrors = (err, req, res, next) => {
   In development we show good error messages so if we hit a syntax error or any other previously un-handled error, we can show good info on what happened
 */
 exports.developmentErrors = (err, req, res, next) => {
-  if (!err) return next(err);
-  err.stack = err.stack || "";
+  if (!err) return next(err)
+  err.stack = err.stack || ''
   const errorDetails = {
     message: err.message,
     status: err.status,
-    stackHighlighted: err.stack.replace(/[a-z_-\d]+.js:\d+:\d+/gi, "<mark>$&</mark>")
-  };
-  res.status(err.status || 500);
+    stackHighlighted: err.stack.replace(
+      /[a-z_-\d]+.js:\d+:\d+/gi,
+      '<mark>$&</mark>'
+    )
+  }
+  res.status(err.status || 500)
   res.format({
     // Based on the `Accept` http header
-    "text/html": () => {
-      res.render("error", errorDetails);
+    'text/html': () => {
+      res.render('error', errorDetails)
     }, // Form Submit, Reload the page
-    "application/json": () => res.json(errorDetails) // Ajax call, send JSON back
-  });
-};
+    'application/json': () => res.json(errorDetails) // Ajax call, send JSON back
+  })
+}
 
 /*
   Production Error Handler
@@ -74,10 +77,10 @@ exports.developmentErrors = (err, req, res, next) => {
   No stacktraces are leaked to user
 */
 exports.productionErrors = (err, req, res, next) => {
-  if (!err) return next(err);
-  res.status(err.status || 500);
-  res.render("error", {
+  if (!err) return next(err)
+  res.status(err.status || 500)
+  res.render('error', {
     message: err.message,
     error: {}
-  });
-};
+  })
+}

@@ -1,9 +1,10 @@
-const mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
-const md5 = require("md5");
-const validator = require("validator");
-const mongodbErrorHandler = require("mongoose-mongodb-errors");
-const passportLocalMongoose = require("passport-local-mongoose");
+const mongoose = require('mongoose')
+const md5 = require('md5')
+const validator = require('validator')
+const mongodbErrorHandler = require('mongoose-mongodb-errors')
+const passportLocalMongoose = require('passport-local-mongoose')
+
+mongoose.Promise = global.Promise
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -11,13 +12,21 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    valdidate: [validator.isEmail, "Email Invalide"],
-    require: "L'email est requis"
+    valdidate: [validator.isEmail, 'Email Invalide'],
+    require: "L'email est requis."
   },
   name: {
     type: String,
-    require: "Le nom est requis",
-    trim: true
+    unique: true,
+    trim: true,
+    required: 'Veuillez saisir un identifiant.'
+  },
+  slug: {
+    type: String,
+    unique: true,
+    lowercase: true,
+    trim: true,
+    required: 'slug required.'
   },
   photo: String,
   isValid: {
@@ -26,22 +35,19 @@ const userSchema = new mongoose.Schema({
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date
-});
+})
 
-userSchema.virtual("gravatar").get(function() {
-  const hash = md5(this.email);
-  return `https://gravatar.com/avatar/${hash}?s=200`;
-});
+userSchema.index({
+  email: 'text',
+  slug: 'text'
+})
 
-// userSchema.statics.getMembershipList = function() {
-//   return this.aggregate([
-//     { $unwind: "$membership" },
-//     { $group: { _id: "$membership", count: { $sum: 1 } } },
-//     { $sort: { count: -1 } }
-//   ]);
-// };
+userSchema.virtual('gravatar').get(function () {
+  const hash = md5(this.email)
+  return `https://gravatar.com/avatar/${hash}?s=200`
+})
 
-userSchema.plugin(passportLocalMongoose, { usernameField: "email" });
-userSchema.plugin(mongodbErrorHandler);
+userSchema.plugin(passportLocalMongoose, { usernameField: 'email' })
+userSchema.plugin(mongodbErrorHandler)
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', userSchema)
