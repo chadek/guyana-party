@@ -6,19 +6,51 @@ const map = new Map({
   zoom: 11
 })
 
+const searchInput = document.querySelector('.search__input')
+let searchInputValue = ''
+
 map.singleShowPoint(coords => {
-  const search = document.querySelector('.search__input')
-  if (search) {
+  if (searchInput) {
     const lon = coords[0].toString()
     const lat = coords[1].toString()
-    search.on('keydown', e => {
+    searchInput.on('keydown', e => {
       if (e.key === 'Enter' || e.keyCode === 13) {
         showEvents(e.target.value, lon, lat)
       }
     })
-    showEvents(search.value, lon, lat)
+    searchInput.on('change', e => (searchInputValue = e.target.value))
+    showEvents('', lon, lat)
   }
 })
+
+const aroundBtn = document.getElementById('around')
+if (aroundBtn) {
+  aroundBtn.on('click', () => {
+    map.goAround((coords, show, err) => {
+      if (err) {
+        console.info(
+          'Le suivit de position géographique a été bloqué pour cette page'
+        )
+        return
+      }
+      showEvents(searchInputValue, coords[0].toString(), coords[1].toString())
+    })
+  })
+}
+
+const randomBtn = document.getElementById('random')
+if (randomBtn) {
+  randomBtn.on('click', () => {
+    map.goRandom(coords => {
+      showEvents(searchInputValue, coords[0].toString(), coords[1].toString())
+    })
+  })
+}
+
+const newBtn = document.getElementById('new')
+if (newBtn) {
+  newBtn.on('click', () => (window.location = '/events/add'))
+}
 
 map.eventsOnClick(
   document.getElementById('popup'),
@@ -98,6 +130,7 @@ function showEventsList (events) {
           <h4>${event.name}</h4>
           <h4>${event.organism.name}</h4>
           <span>${start}</span>
+          <br><code>${map.getGPSToHDMS(event.location.coordinates)}</code>
         </div>
       </li>`
   })

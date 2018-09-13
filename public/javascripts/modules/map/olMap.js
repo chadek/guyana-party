@@ -47,14 +47,7 @@ class Map {
   }
 
   init () {
-    // Default position
-    if (this.randomPoints.length > 0) {
-      this.defaultPos = fromLonLat(
-        this.randomPoints[Math.floor(Math.random() * this.randomPoints.length)]
-      )
-    } else {
-      this.defaultPos = fromLonLat(RANDOM_POINTS[0])
-    }
+    this.setDefaultRandomPosition()
 
     // Instanciate the view
     this.view = new View({
@@ -84,6 +77,39 @@ class Map {
       { color: '#2980b9', width: 2 },
       { color: 'rgba(52, 152, 219, 0.5)' }
     )
+  }
+
+  setDefaultRandomPosition () {
+    if (this.randomPoints.length > 0) {
+      this.defaultPos = fromLonLat(
+        this.randomPoints[Math.floor(Math.random() * this.randomPoints.length)]
+      )
+    } else {
+      this.defaultPos = fromLonLat(RANDOM_POINTS[0])
+    }
+  }
+
+  goAround (callbackFn) {
+    startGeolocation(
+      pos => {
+        const lonlat = [pos.coords.longitude, pos.coords.latitude]
+        this.addSinglePoint(fromLonLat(lonlat), callbackFn, lonlat)
+      },
+      () => callbackFn(toLonLat(this.defaultPos), true, true) // Error
+    )
+  }
+
+  goRandom (callbackFn) {
+    this.setDefaultRandomPosition()
+    const position = this.defaultPos
+    this.addSinglePoint(
+      position,
+      callbackFn,
+      toLonLat(position),
+      true, // center on point
+      false // hidden point
+    )
+    this.view.setCenter(position)
   }
 
   singleShowPoint (callbackFn) {
@@ -264,11 +290,16 @@ class Map {
           // there is no events, display user location popup (with coordinates)
           coords = feature.getGeometry().getCoordinates()
           const gpsCoords = toLonLat(coords)
-          const hdms = toStringHDMS(gpsCoords)
+          const hdms = this.getGPSToHDMS(gpsCoords)
           showPopup(popupDiv, popup, coords, userPosHTMLFn(gpsCoords, hdms))
         }
       }
     })
+  }
+
+  /** Get a geographic coordinate with the hemisphere, degrees, minutes, and seconds. */
+  getGPSToHDMS (gps) {
+    return toStringHDMS(gps)
   }
 } // Class End
 
