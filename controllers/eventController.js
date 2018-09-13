@@ -14,12 +14,16 @@ exports.eventsPage = (req, res) => {
 const getTZList = () => {
   const time = Date.now();
   const moment = require("moment-timezone");
+  // const moment = moment.tz.pack(require("../public/vendor/timezone/latest.json"));
+  moment.tz.load(require("../public/vendor/timezone/timezone.json"));
+  // conlole.log(momenttz);
   const tzNamesList = moment.tz.names();
   let tzList = [];
   for (let i = 0; i < tzNamesList.length; i++) {
     const zone = moment.tz.zone(tzNamesList[i]);
     const tzValue = moment.tz(time, zone.name).format("Z");
     const selected = moment.tz.guess() == zone.name;
+    
     tzList.push({ id: zone.utcOffset(time), label: `(UTC${tzValue}) ${zone.name}`, value: zone.name, selected });
   }
   tzList.sort((a, b) => b.id - a.id);
