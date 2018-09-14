@@ -12,7 +12,7 @@ block content
         h1.banner__head= title
     .pure-u-1.content
       if orga
-        .pure-u-1.text-center.photo-orga-event
+        .pure-u-1.photo-orga-event
           //- Logo
           img(src=(orga.photo ? `/uploads/${orga.photo}` : "/images/default.jpg") alt="Flyer de l'évènement")
         .separator.top-space
@@ -21,6 +21,11 @@ block content
         - const errorData = h.store.get("form-errors")
         - h.store.remove("form-errors")
         .pure-u-1
+          if orga
+            //- Edit & Archive buttons
+            .pure-u-1.text-center.top-space-40
+              a(href=`/organism/${orga.slug}?remove=true` title="Archiver")
+                span.icon!= h.icon("archive")
           //- Name
           .pure-u-1.top-space-40
             span.pure-u-2-24.icon!= h.icon("clipboard-pencil")
