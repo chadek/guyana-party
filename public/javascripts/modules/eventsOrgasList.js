@@ -19,60 +19,7 @@ function openCard () {
 
 // EVENTS
 function getEventsList (eventsDiv) {
-  if (!eventsDiv) return
-  axiosGet('/api/events', data => {
-    if (data) {
-      const format = item => {
-        const imgSrc = item.photo
-          ? `/uploads/${item.photo}`
-          : `/images/default.jpg`
-        let start = formatDateTime(item.start)
-        let end = formatDateTime(item.end)
-        start = `${start.date} à ${start.time}`
-        end = `${end.date} à ${end.time}`
-        return `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content">
-          <div class="card">
-            <div class="card__header">
-              <img src="${imgSrc}" alt="photo évènement">
-              <div class="card__header--content">
-                <p><strong>Organisateur :</strong> <a href="/organism/${
-  item.organism.slug
-}">${sliceStr(item.organism.name)}</a>
-                <br><strong>Début :</strong> ${start}
-                <br><strong>Fin :</strong> ${end}
-                <br><strong>Adresse :</strong> ${item.location.address}
-                ${!item.public ? '<br><strong>Evènement privé</strong>' : ''}
-                ${
-  item.status !== 'published'
-    ? '<br><strong class="unpublished-color">Non publié</strong> |'
-    : '<br>'
-}
-                <a href="/events/${
-  item.id
-}/edit">Modifier</a> | <a href="/event/${
-  item.slug
-}?remove=true">Archiver</a></p>
-              </div>
-            </div>
-            <div class="card__section">
-              <p><a ${
-  item.status !== 'published' ? 'class="unpublished-color"' : ''
-} href="/event/${item.slug}">${sliceStr(item.name)}</a></p>
-            </div>
-          </div>
-        </div>`
-      }
-      const concat = `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content">
-        <div class="card card__new card__new--event" title="Ajouter un évènement"></div>
-      </div>`
-      eventsDiv.innerHTML = data2HTML(data, format, concat)
-      B('.card__new--event').on(
-        'click',
-        () => (window.location.href = '/events/add')
-      )
-      openCard()
-    }
-  })
+  getEvents(eventsDiv)
 }
 
 // ORGANISMS
@@ -138,10 +85,14 @@ function getOrgasList (orgasDiv) {
 
 // EVENTS in an organism
 function getEventsFromOrga (orgaEventsDiv) {
-  if (!orgaEventsDiv) return
-  const orgaId = B('#orga-id')
-  if (!orgaId || !orgaId.value) return
-  axiosGet(`/api/events?orga=${orgaId.value}`, data => {
+  getEvents(orgaEventsDiv, B('#orga-id'))
+}
+
+// Get the events
+function getEvents (eventsDiv, orgaId = null) {
+  if (!eventsDiv) return
+  if (orgaId !== null && (!orgaId || !orgaId.value)) return
+  axiosGet(`/api/events${orgaId ? `?orga=${orgaId.value}` : ''}`, data => {
     if (data) {
       const format = item => {
         const imgSrc = item.photo
@@ -151,44 +102,47 @@ function getEventsFromOrga (orgaEventsDiv) {
         let end = formatDateTime(item.end)
         start = `${start.date} à ${start.time}`
         end = `${end.date} à ${end.time}`
+        const orgaSlug = item.organism.slug
+        const orgaName = sliceStr(item.organism.name)
+        const address = sliceStr(item.location.address, 90)
+        const status =
+          item.status !== 'published'
+            ? '<br><strong class="unpublished-color">Non publié</strong> |'
+            : '<br>'
         return `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content">
-          <div class="card">
-            <div class="card__header">
-              <img src="${imgSrc}" alt="photo évènement">
-              <div class="card__header--content">
-                <p><strong>Organisateur :</strong> <a href="/organism/${
-  item.organism.slug
-}">${item.organism.name}</a>
-                <br><strong>Début :</strong> ${start}
-                <br><strong>Fin :</strong> ${end}
-                <br><strong>Adresse :</strong> ${item.location.address}
-                ${
-  item.status !== 'published'
-    ? '<br><strong class="unpublished-color">Non publié</strong> |'
-    : '<br>'
-}
-                <a href="/events/${
+        <div class="card">
+          <div class="card__header">
+            <img src="${imgSrc}" alt="photo évènement">
+            <div class="card__header--content">
+              <p><strong>Organisateur :</strong> <a href="/organism/${orgaSlug}">${orgaName}</a>
+              <br><strong>Début :</strong> ${start}
+              <br><strong>Fin :</strong> ${end}
+              <br><strong>Adresse :</strong> ${address}
+              ${!item.public ? '<br><strong>Evènement privé</strong>' : ''}
+              ${status}
+              <a href="/events/${
   item.id
 }/edit">Modifier</a> | <a href="/event/${
   item.slug
 }?remove=true">Archiver</a></p>
-              </div>
             </div>
-            <div class="card__section">
+          </div>
+          <div class="card__section">
             <p><a ${
   item.status !== 'published' ? 'class="unpublished-color"' : ''
 } href="/event/${item.slug}">${sliceStr(item.name)}</a></p>
-            </div>
           </div>
-        </div>`
-      }
-      const concat = `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content">
-        <div class="card card__new card__new--event" title="Ajouter un évènement"></div>
+        </div>
       </div>`
-      orgaEventsDiv.innerHTML = data2HTML(data, format, concat)
+      }
+      const concat = `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content"><div class="card card__new card__new--event" title="Ajouter un évènement"></div></div>`
+      eventsDiv.innerHTML = data2HTML(data, format, concat)
       B('.card__new--event').on(
         'click',
-        () => (window.location.href = `/events/add?orga=${orgaId.value}`)
+        () =>
+          (window.location.href = `/events/add${
+            orgaId ? `?orga=${orgaId.value}` : ''
+          }`)
       )
       openCard()
     }

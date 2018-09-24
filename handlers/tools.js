@@ -3,7 +3,7 @@
 exports.getPagedItems = async (model, page, limit, find, projection, sort) => {
   page = parseInt(page)
   limit = parseInt(limit)
-  if (!page || !limit) {
+  if (isNaN(page) || isNaN(limit)) {
     return {
       isErrorPage: true,
       error: 'page and limit parameters must be integers'

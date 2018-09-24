@@ -240,21 +240,14 @@ exports.getEvents = async (req, res) => {
       status: { $regex: '^((?!archived).)*$', $options: 'i' }
     }
   // Paginate the events list
-  const result = await getPagedItems(
-    Event,
-    page,
-    limit,
-    find,
-    {},
-    { created: 'desc' }
-  )
+  const result = await getPagedItems(Event, page, limit, find, {}, { start: 1 })
   res.json(result)
 }
 
 /** route : /api/search */
 exports.getSearchResult = async (req, res) => {
   const page = req.queryInt('page') || 1
-  const limit = req.queryInt('limit') || 10
+  const limit = req.queryInt('limit') || 0
   const search = req.queryString('q')
   const lon = req.queryString('lon')
   const lat = req.queryString('lat')
@@ -266,6 +259,7 @@ exports.getSearchResult = async (req, res) => {
       { description: { $regex: search, $options: 'i' } }
     ],
     status: 'published',
+    end: { $gte: Date.now() },
     public: true
   }
   if (lon && lat) {
