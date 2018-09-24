@@ -240,14 +240,7 @@ exports.getEvents = async (req, res) => {
       status: { $regex: '^((?!archived).)*$', $options: 'i' }
     }
   // Paginate the events list
-  const result = await getPagedItems(
-    Event,
-    page,
-    limit,
-    find,
-    {},
-    { created: 'desc' }
-  )
+  const result = await getPagedItems(Event, page, limit, find, {}, { start: 1 })
   res.json(result)
 }
 
@@ -266,6 +259,7 @@ exports.getSearchResult = async (req, res) => {
       { description: { $regex: search, $options: 'i' } }
     ],
     status: 'published',
+    end: { $gte: Date.now() },
     public: true
   }
   if (lon && lat) {
