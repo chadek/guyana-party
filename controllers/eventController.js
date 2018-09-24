@@ -254,7 +254,7 @@ exports.getEvents = async (req, res) => {
 /** route : /api/search */
 exports.getSearchResult = async (req, res) => {
   const page = req.queryInt('page') || 1
-  const limit = req.queryInt('limit') || 10
+  const limit = req.queryInt('limit') || 0
   const search = req.queryString('q')
   const lon = req.queryString('lon')
   const lat = req.queryString('lat')
