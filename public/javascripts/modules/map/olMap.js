@@ -7,7 +7,7 @@ import { OSM, Vector as SourceVector, Cluster } from 'ol/source'
 import { defaults as ctrlDefaults, ScaleLine, ZoomSlider } from 'ol/control'
 import { defaults as interactionDefaults } from 'ol/interaction'
 import { Style, Circle, Stroke, Fill, Text } from 'ol/style'
-import { Point } from 'ol/geom'
+import { Point, LineString } from 'ol/geom'
 import { toStringHDMS } from 'ol/coordinate'
 import dompurify from 'dompurify'
 
@@ -32,6 +32,7 @@ class Map {
     this.target = params.target || 'map'
     this.zoom = params.zoom || ZOOM
     this.clusterDistance = params.clusterDistance || CLUSTER_DISTANCE
+    this.layers = []
     this.maxZoom = params.maxZoom || MAXZOOM
     this.minZoom = params.minZoom || MINZOOM
     this.mouseWheelZoom = params.mouseWheelZoom
@@ -164,10 +165,32 @@ class Map {
       this.singlePoint = getLayerVector(position, styleMark)
 
       this.map.addLayer(this.singlePoint)
+      // this.layers.push(this.singlePoint)
 
       if (center) this.view.setCenter(position)
     }
     callbackFn(gpsCoord, show)
+  }
+
+  onMove (callbackFn) {
+    this.map.on('moveend', e => {
+      // this.map.getLayers().forEach(layer => {
+      //   console.log(layer.getSource().getState(), layer.getVisible())
+      // })
+      // Remove existing layers
+      this.layers.forEach(layer => this.map.removeLayer(layer))
+      this.layers = []
+      // Get center position
+      const center = this.view.getCenter()
+      // Get half of the width of the map div and
+      //  get the letf border coordinates from pixel position
+      const half = document.getElementById(`${this.target}`).offsetWidth / 2
+      const border = this.map.getCoordinateFromPixel([half, 0])
+      // Calculate the distance between center and border to get approximate radius
+      const distance = distanceBetweenPoints(center, border)
+
+      callbackFn(toLonLat(center), distance)
+    })
   }
 
   showEvents (events) {
@@ -237,6 +260,7 @@ class Map {
     })
 
     this.map.addLayer(cluster)
+    this.layers.push(cluster)
 
     // TODO: get the event when cluster is rendered, then center the position
     if (!this.singlePoint) {
@@ -335,6 +359,11 @@ function showPopup (popupDiv, popup, coords, html) {
   popupDiv.innerHTML = dompurify.sanitize(html)
   popupDiv.style.display = 'block'
   popup.setPosition(coords)
+}
+
+function distanceBetweenPoints (lonlat1, lonlat2) {
+  const line = new LineString([lonlat1, lonlat2])
+  return Math.round(line.getLength() * 100) / 100
 }
 
 export default Map

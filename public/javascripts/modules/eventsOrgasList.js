@@ -30,17 +30,18 @@ function getEventsList (eventsDiv) {
         let end = formatDateTime(item.end)
         start = `${start.date} à ${start.time}`
         end = `${end.date} à ${end.time}`
+        const orgaSlug = item.organism.slug
+        const orgaName = sliceStr(item.organism.name)
+        const address = sliceStr(item.location.address, 90)
         return `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content">
           <div class="card">
             <div class="card__header">
               <img src="${imgSrc}" alt="photo évènement">
               <div class="card__header--content">
-                <p><strong>Organisateur :</strong> <a href="/organism/${
-  item.organism.slug
-}">${sliceStr(item.organism.name)}</a>
+                <p><strong>Organisateur :</strong> <a href="/organism/${orgaSlug}">${orgaName}</a>
                 <br><strong>Début :</strong> ${start}
                 <br><strong>Fin :</strong> ${end}
-                <br><strong>Adresse :</strong> ${item.location.address}
+                <br><strong>Adresse :</strong> ${address}
                 ${!item.public ? '<br><strong>Evènement privé</strong>' : ''}
                 ${
   item.status !== 'published'

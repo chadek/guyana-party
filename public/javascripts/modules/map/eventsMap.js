@@ -52,6 +52,15 @@ if (newBtn) {
   newBtn.on('click', () => (window.location = '/events/add'))
 }
 
+map.onMove((coords, distance) => {
+  showEvents(
+    searchInputValue,
+    coords[0].toString(),
+    coords[1].toString(),
+    distance
+  )
+})
+
 map.eventsOnClick(
   document.getElementById('popup'),
   onEventHTMLFn,
@@ -60,9 +69,9 @@ map.eventsOnClick(
   coords => {}
 )
 
-function showEvents (search, lon, lat) {
+function showEvents (search, lon, lat, maxDistance = 20000) {
   axiosGet(
-    `/api/search?q=${search}&lon=${lon}&lat=${lat}&maxdistance=20000`,
+    `/api/search?q=${search}&lon=${lon}&lat=${lat}&maxdistance=${maxDistance}`,
     data => {
       if (data && data.items) {
         map.showEvents(data.items)
