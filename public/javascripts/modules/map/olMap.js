@@ -20,7 +20,9 @@ const RANDOM_POINTS = [
   [-61.05878, 14.616065], // Fort-de-France
   [-61.534042, 16.237687], // Point-à-Pitre
   [55.455054, -20.89066], // Saint-Denis (Réunion)
-  [2.3522219, 48.856614] // Paris
+  [2.3522219, 48.856614], // Paris
+  [45.2282, -12.7812] // Mamoudzou
+  
 ]
 
 class Map {

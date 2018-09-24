@@ -16,54 +16,60 @@ block content
         img(src=(event.photo ? `/uploads/${event.photo}` : "/images/default.jpg") alt="Flyer de l'évènement")
       .separator.top-space
       //- Name
-      .pure-u-1.top-space.text-center
-        h2= event.name
-      .pure-u-1.top-space.text-center
+      .pure-u-1.text-center
+        h2= event.name 
+          span.normaltext &nbsp; par
+          a(href=`/organism/${orga.slug}`)= ` ${orga.name}`
+      
         //- Switches, Edit & Archive buttons
-        if isOwner
+      if isOwner
+        .pure-u-1.top-space.text-center
           +switchPublishEvent(event)
           br
           a(href=`/events/${event.id}/edit` title="Modifier" style="margin-right: 10px;")
             span.icon!= h.icon("edit")
           a(href=`/event/${event.slug}?remove=true` title="Archiver")
             span.icon!= h.icon("archive")
-        p Organisateur :
-          a(href=`/organism/${orga.slug}`)= ` ${orga.name}`
+        //- p Organisateur :
+        //-   a(href=`/organism/${orga.slug}`)= ` ${orga.name}`
+      //- Description
+      .pure-u-1
+        //- label Description de l'évènement&nbsp;:
+        #md.readonly.top-space #{event.description}
       //- Date && Time
-      .pure-u-1.l-wrap.top-space-40.text-center
+      .pure-u-1-2.l-wrap.top-space-40.text-center
         //- Start date && time
-        .pure-u-1: label Début
-        .pure-u-1.top-space
-          .u-sm-5-12.l-content
-            span.pure-u-1-8.icon!= h.icon("calendar")
-            input.pure-u-7-8#startdate(type="text" readonly)
-          .u-sm-5-12.l-content
-            span.pure-u-1-8.icon!= h.icon("clock")
-            input.pure-u-7-8#starttime(type="text" readonly)
+        .pure-u-1
+          label.pure-u-1-6 Début
+          //- .pure-u-1.top-space
+          .pure-u-5-12
+            span.pure-u-1-4.icon!= h.icon("calendar")
+            input.pure-u-3-4#startdate(type="text" readonly)
+          .pure-u-5-12
+            span.pure-u-1-4.icon!= h.icon("clock")
+            input.pure-u-3-4#starttime(type="text" readonly)
         //- End date && time
-        .pure-u-1.top-space: label Fin
-        .pure-u-1.top-space
-          .u-sm-5-12.l-content
-            span.pure-u-1-8.icon!= h.icon("calendar")
-            input.pure-u-7-8#enddate(type="text" readonly)
-          .u-sm-5-12.l-content
-            span.pure-u-1-8.icon!= h.icon("clock")
-            input.pure-u-7-8#endtime(type="text" readonly)
+        .pure-u-1
+          label.pure-u-1-6 Fin
+          .pure-u-5-12
+            span.pure-u-1-4.icon!= h.icon("calendar")
+            input.pure-u-3-4#enddate(type="text" readonly)
+          .pure-u-5-12
+            span.pure-u-1-4.icon!= h.icon("clock")
+            input.pure-u-3-4#endtime(type="text" readonly)
           input#event-start(type="hidden" value=`${event.start}`)
           input#event-end(type="hidden" value=`${event.end}`)
         .pure-u-1.top-space.text-center
           .u-sm-1: label= `Fuseau horaire : ${event.timezone}`
-      //- Description
-      .pure-u-1.top-space-40
-        label Description de l'évènement&nbsp;:
-        #md.readonly.top-space #{event.description}
+        .pure-u-1
+          p.text-center= event.location.address
       //- Event location
-      .pure-u-1.top-space-40
-        label Le lieu de l'évènement :
+      .pure-u-1-2
+        //- label Le lieu de l'évènement :
         #map.single.readonly.top-space
-        p.text-center= event.location.address
+        //- p.text-center= event.location.address
         input#longitude(type="hidden" value=(event.location && event.location.coordinates[0]))
         input#latitude(type="hidden" value=(event.location && event.location.coordinates[1]))
-      unless remove
-        .pure-u-1.top-space-40
-          button.pure-button.success.button.expanded(onClick=`location="/events/${event._id}/edit"`) Modifier
+      //- unless remove
+      //-   .pure-u-1.top-space-40
+      //-     button.pure-button.success.button.expanded(onClick=`location="/events/${event._id}/edit"`) Modifier

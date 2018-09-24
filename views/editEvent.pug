@@ -63,7 +63,7 @@ block content
                 span.pure-u-1-8.icon!= h.icon("calendar")
                 input.pure-u-7-8#dp1(type="date" name="startdate")
               .u-sm-5-12.l-content
-                .clockpicker(data-placement="bottom" data-align="top" data-autoclose="true")
+                .clockpicker#horloge1(data-placement="bottom" data-align="top" data-autoclose="true")
                   span.pure-u-1-8.icon!= h.icon("clock")
                   input.pure-u-7-8#starttime(type="text" name="starttime")
                   input#start(type="hidden" name="start" value=`${savedData?savedData.start:(event?event.start:"")}`)
@@ -74,7 +74,7 @@ block content
                 span.pure-u-1-8.icon!= h.icon("calendar")
                 input.pure-u-7-8#dp2(type="date" name="enddate")
               .u-sm-5-12.l-content
-                .clockpicker(data-placement="bottom" data-align="top" data-autoclose="true")
+                .clockpicker#horloge2(data-placement="bottom" data-align="top" data-autoclose="true")
                   span.pure-u-1-8.icon!= h.icon("clock")
                   input.pure-u-7-8#endtime(type="text" name="endtime")
                   input#end(type="hidden" name="end" value=`${savedData?savedData.end:(event?event.end:"")}`)
