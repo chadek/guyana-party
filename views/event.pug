@@ -37,7 +37,10 @@ block content
         //- label Description de l'évènement&nbsp;:
         #md.readonly.top-space #{event.description}
       //- Date && Time
-      .pure-u-1-2.l-wrap.top-space-40.text-center
+      .u-md-1-2.u-xl-1-2.pure-u-1.l-wrap.top-space-40.text-center
+        //- Fuseau horaire
+        .pure-u-1.top-space.text-center.normaltext
+          .u-sm-1: label= `Fuseau horaire : ${event.timezone}`
         //- Start date && time
         .pure-u-1
           label.pure-u-1-6 Début
@@ -59,12 +62,10 @@ block content
             input.pure-u-3-4#endtime(type="text" readonly)
           input#event-start(type="hidden" value=`${event.start}`)
           input#event-end(type="hidden" value=`${event.end}`)
-        .pure-u-1.top-space.text-center
-          .u-sm-1: label= `Fuseau horaire : ${event.timezone}`
-        .pure-u-1
+        .pure-u-1.normaltext
           p.text-center= event.location.address
       //- Event location
-      .pure-u-1-2
+      .u-md-1-2.u-xl-1-2.pure-u-1
         //- label Le lieu de l'évènement :
         #map.single.readonly.top-space
         //- p.text-center= event.location.address
