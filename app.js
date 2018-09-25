@@ -1,10 +1,13 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
+const helmet = require('helmet')
+const compression = require('compression')
 const expressValidator = require('express-validator')
 const cookieParser = require('cookie-parser')
 const csrf = require('csurf')
 const session = require('express-session')
+const morgan = require('morgan')
 const MongoStore = require('connect-mongo')(session)
 const mongoose = require('mongoose')
 const passport = require('passport')
@@ -28,6 +31,9 @@ app.use(express.static(path.join(__dirname, 'public')))
 // Takes the raw requests and turns them into usable properties on req.body
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use(helmet()) // cleaning http headers
+app.use(compression()) // gzip compression of the response body
 
 // Exposes a bunch of methods for validating data. Used heavily on userController.validateRegister
 app.use(expressValidator())
@@ -78,6 +84,10 @@ app.use((req, res, next) => {
 
 // Add protection against CSRF attacks
 app.use(csrf({ cookie: true }))
+
+if (devMode) {
+  app.use(morgan('dev')) // HTTP request logger
+}
 
 // After allllll that above middleware, we finally handle our own routes!
 app.use('/', routes)
