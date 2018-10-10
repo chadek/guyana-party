@@ -1,22 +1,6 @@
 import { B, BB } from './bling'
 import { axiosGet, data2HTML, formatDateTime, sliceStr } from './utils'
 
-function openCard () {
-  const cardHeader = BB('.card__header')
-  cardHeader.on('mouseover', function () {
-    this.children[0].classList.add('open')
-    setTimeout(() => {
-      if (this.children[0].classList.contains('open')) {
-        this.children[0].classList.add('hidden')
-      }
-    }, 500)
-  })
-  cardHeader.on('mouseleave', function () {
-    this.children[0].classList.remove('open')
-    this.children[0].classList.remove('hidden')
-  })
-}
-
 // EVENTS
 function getEventsList (eventsDiv) {
   getEvents(eventsDiv)
@@ -78,7 +62,6 @@ function getOrgasList (orgasDiv) {
         'click',
         () => (window.location.href = '/organisms/add')
       )
-      openCard()
     }
   })
 }
@@ -166,7 +149,6 @@ function getEvents (eventsDiv, orgaId = null, page = 1) {
               orgaId ? `?orga=${orgaId.value}` : ''
             }`)
         )
-        openCard()
       }
     }
   )
