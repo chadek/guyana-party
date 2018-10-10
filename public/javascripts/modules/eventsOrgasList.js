@@ -89,27 +89,36 @@ function getEventsFromOrga (orgaEventsDiv) {
 }
 
 // Get the events
-function getEvents (eventsDiv, orgaId = null) {
+function getEvents (eventsDiv, orgaId = null, page = 1) {
   if (!eventsDiv) return
   if (orgaId !== null && (!orgaId || !orgaId.value)) return
-  axiosGet(`/api/events${orgaId ? `?orga=${orgaId.value}` : ''}`, data => {
-    if (data) {
-      const format = item => {
-        const imgSrc = item.photo
-          ? `/uploads/${item.photo}`
-          : `/images/default.jpg`
-        let start = formatDateTime(item.start)
-        let end = formatDateTime(item.end)
-        start = `${start.date} à ${start.time}`
-        end = `${end.date} à ${end.time}`
-        const orgaSlug = item.organism.slug
-        const orgaName = sliceStr(item.organism.name)
-        const address = sliceStr(item.location.address, 90)
-        const status =
-          item.status !== 'published'
-            ? '<br><strong class="unpublished-color">Non publié</strong> |'
-            : '<br>'
-        return `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content">
+  axiosGet(
+    `/api/events?page=${page}${orgaId ? `&orga=${orgaId.value}` : ''}`,
+    data => {
+      if (data) {
+        const currentPage = data.page
+        const pages = data.pages
+        const count = data.count
+        const limit = data.limit
+
+        B('.eventsCount').innerHTML = ` (${count})`
+
+        const format = item => {
+          const imgSrc = item.photo
+            ? `/uploads/${item.photo}`
+            : `/images/default.jpg`
+          let start = formatDateTime(item.start)
+          let end = formatDateTime(item.end)
+          start = `${start.date} à ${start.time}`
+          end = `${end.date} à ${end.time}`
+          const orgaSlug = item.organism.slug
+          const orgaName = sliceStr(item.organism.name)
+          const address = sliceStr(item.location.address, 90)
+          const status =
+            item.status !== 'published'
+              ? '<br><strong class="unpublished-color">Non publié</strong> |'
+              : '<br>'
+          return `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content">
         <div class="card">
           <div class="card__header">
             <img src="${imgSrc}" alt="photo évènement">
@@ -134,19 +143,49 @@ function getEvents (eventsDiv, orgaId = null) {
           </div>
         </div>
       </div>`
+        }
+        const concat = `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content"><div class="card card__new card__new--event" title="Ajouter un évènement"></div></div>`
+        eventsDiv.innerHTML = `<div>${data2HTML(data, format, concat)}</div>`
+        if (count > limit) {
+          eventsDiv.innerHTML += pagination(currentPage, pages)
+          // Click on events pagination
+          BB('.events .pageBtn').on('click', e => {
+            let page = e.target.textContent
+            if (page === '«' || page === `&laquo;`) {
+              page = currentPage - 1
+            } else if (page === '»' || page === `&raquo;`) {
+              page = currentPage + 1
+            }
+            getEvents(eventsDiv, orgaId, page)
+          })
+        }
+        B('.card__new--event').on(
+          'click',
+          () =>
+            (window.location.href = `/events/add${
+              orgaId ? `?orga=${orgaId.value}` : ''
+            }`)
+        )
+        openCard()
       }
-      const concat = `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content"><div class="card card__new card__new--event" title="Ajouter un évènement"></div></div>`
-      eventsDiv.innerHTML = data2HTML(data, format, concat)
-      B('.card__new--event').on(
-        'click',
-        () =>
-          (window.location.href = `/events/add${
-            orgaId ? `?orga=${orgaId.value}` : ''
-          }`)
-      )
-      openCard()
     }
-  })
+  )
+}
+
+function pagination (currentPage, pages) {
+  let content = `<div class="pagination text-center"><ul>`
+  if (currentPage > 1) {
+    content += `<li class="pageBtn" title="page précédente">&laquo;</li>`
+  }
+  for (let i = 1; i <= pages; i++) {
+    content += `<li class="${
+      i === currentPage ? 'active' : 'pageBtn'
+    }" title="page ${i}">${i}</li>`
+  }
+  if (currentPage < pages) {
+    content += `<li class="pageBtn" title="page suivante">&raquo;</li>`
+  }
+  return `${content}</ul></div>`
 }
 
 // Organisms dropdown in event edit page
