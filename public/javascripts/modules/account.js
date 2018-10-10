@@ -23,8 +23,8 @@ function manageOldNewButtons () {
 }
 
 function account () {
-  const events = B('.account .events')
-  const orgas = B('.account .orgas')
+  const events = B('.account #events')
+  const orgas = B('.account #orgas')
   if (!events || !orgas) return
   manageOldNewButtons()
 }

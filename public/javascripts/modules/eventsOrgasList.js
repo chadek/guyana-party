@@ -149,7 +149,7 @@ function getEvents (eventsDiv, orgaId = null, page = 1) {
         if (count > limit) {
           eventsDiv.innerHTML += pagination(currentPage, pages)
           // Click on events pagination
-          BB('.events .pageBtn').on('click', e => {
+          BB('#events .pageBtn').on('click', e => {
             let page = e.target.textContent
             if (page === '«' || page === `&laquo;`) {
               page = currentPage - 1

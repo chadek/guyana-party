@@ -35,9 +35,9 @@ B('#fileUpload') &&
 account()
 
 loadEventsOrgasList(
-  B('.events'),
-  B('.orga-events'),
-  B('.orgas'),
+  B('#events'),
+  B('#orga-events'),
+  B('#orgas'),
   B('#orga-select')
 )
 initDates(B('#event-start'), B('#event-end'))
