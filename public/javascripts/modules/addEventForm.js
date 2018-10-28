@@ -39,21 +39,44 @@ function init (dp1, dp2) {
   }
 }
 
-function addEventForm (dp1, dp2, switchPublishEvent) {
+function addEventForm (dp1, dp2, switchPublishEvent, occurring) {
   init(dp1, dp2)
 
   dp1.on('change', (e)=>{
+    if (dp2.value < dp1.value) {
+      console.log("la date de fin est avant la date de début")
+    }
     dp2.value = dp1.value
   })
 
   // const time1 = document.getElementById("horloge1");
-  const time2 = document.getElementById("horloge2");
+  // const time2 = document.getElementById("horloge2");
   $("#horloge1").change((e)=>{
     console.log("Hello time !")
     // console.log($(time1).val())
     $("#endtime").val(starttime.value)
 
   })
+
+  const chooseocc = document.getElementById("chooseocc")
+  occurring.on('change', (e)=>{
+    console.log(occurring.value)
+    if (occurring.value == "weeks") {
+      chooseocc.innerHTML= `
+      <input type="checkbox" name="day1" value="monday"> Lundi
+      <input type="checkbox" name="day2" value="monday"> Mardi
+      <input type="checkbox" name="day3" value="monday"> Mercredi
+      <input type="checkbox" name="day4" value="monday"> Jeudi
+      <input type="checkbox" name="day5" value="monday"> Vendredi
+      <input type="checkbox" name="day6" value="monday"> Samedi
+      <input type="checkbox" name="day7" value="monday"> Dimanche
+      `
+    } else {
+      chooseocc.innerHTML = ``
+    }
+  })
+
+
 
   if (!switchPublishEvent) return
   let eventId = document.getElementById('id')
