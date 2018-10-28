@@ -92,6 +92,7 @@ exports.create = async (req, res) => {
     )
     .notEmpty()
   req.checkBody('description', 'Veuillez saisir une description.').notEmpty()
+  req.sanitizeBody("occurring")
   const errors = req.validationErrors()
   if (errors) {
     store.set('form-errors', errors.map(err => err.param))
