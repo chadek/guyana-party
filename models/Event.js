@@ -32,7 +32,6 @@ const eventSchema = new mongoose.Schema(
       publisher: {
         type: mongoose.Schema.ObjectId,
         ref: 'User',
-        // required: 'Publisher required'
       }
     },
     location: {
