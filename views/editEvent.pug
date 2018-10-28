@@ -35,7 +35,7 @@ block content
           //- Name
           .pure-u-1.top-space-40
             span.pure-u-2-24.icon!= h.icon("clipboard-pencil")
-            input.pure-u-22-24(type="text" placeholder="Nom de l'évènement" name="name" value=`${savedData?savedData.name:(event ? event.name : "")}` class=`${errorData && errorData.includes("name")?"error":""}` required)
+            input.pure-u-22-24(autocomplete="off" type="text" placeholder="Nom de l'évènement" name="name" value=`${savedData?savedData.name:(event ? event.name : "")}` class=`${errorData && errorData.includes("name")?"error":""}` required)
           //- Flyer de l'évènement
           .pure-u-1.top-space-40.text-center
             label.pure-button.pure-button-primary(for="fileUpload") Flyer de l'évènement
@@ -78,11 +78,19 @@ block content
                   span.pure-u-1-8.icon!= h.icon("clock")
                   input.pure-u-7-8#endtime(type="text" name="endtime")
                   input#end(type="hidden" name="end" value=`${savedData?savedData.end:(event?event.end:"")}`)
+            .pure-u-1.top-space: label Répéter l'évènement&nbsp;:&nbsp;
+              select#occurring(name="occurring")
+                option(value="none") non
+                option(value="days") chaque jour
+                option(value="weeks") chaque semaine
+                //- option(value="months") chaque mois
+              #chooseocc
+
           //- Description
           .pure-u-1.top-space-40
             label Description :
           .pure-u-1.top-space
-            textarea#md(name="description" value=`${savedData?savedData.description:(event ? event.description : "")}` class=`${errorData && errorData.includes("description")?"error":""}` placeholder="Un petit wiki pour décrire proprement l'évènement") #{savedData?savedData.description:(event ? event.description : "")}
+            textarea#md(autocomplete="off" name="description" value=`${savedData?savedData.description:(event ? event.description : "")}` class=`${errorData && errorData.includes("description")?"error":""}` placeholder="Un petit wiki pour décrire proprement l'évènement") #{savedData?savedData.description:(event ? event.description : "")}
           //- Event location
           .pure-u-1.top-space-40
             label Sélectionnez le lieu de l'évènement sur la carte :
