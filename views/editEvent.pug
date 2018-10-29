@@ -79,7 +79,7 @@ block content
                   input.pure-u-7-8#endtime(type="text" name="endtime")
                   input#end(type="hidden" name="end" value=`${savedData?savedData.end:(event?event.end:"")}`)
             .pure-u-1.top-space: label Répéter l'évènement&nbsp;:&nbsp;
-              select#occurring(name="occurring")
+              select#occurringType(name="occurring[type]")
                 option(value="none") non
                 option(value="days") chaque jour
                 option(value="weeks") chaque semaine

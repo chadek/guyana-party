@@ -41,4 +41,4 @@ loadEventsOrgasList(
   B('#orga-select')
 )
 initDates(B('#event-start'), B('#event-end'))
-addEventForm(B('#dp1'), B('#dp2'), B('.switch-publish-event'), B('#occurring'))
+addEventForm(B('#dp1'), B('#dp2'), B('.switch-publish-event'), B('#occurringType'))

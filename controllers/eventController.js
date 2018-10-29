@@ -92,7 +92,14 @@ exports.create = async (req, res) => {
     )
     .notEmpty()
   req.checkBody('description', 'Veuillez saisir une description.').notEmpty()
-  req.sanitizeBody("occurring")
+  // comment enregistrer les checkboxs dans une liste
+  req.sanitizeBody('occurring[type]')
+  req.body.occurring.days.forEach(day => {
+    req.sanitizeBody(day)
+  })
+  
+  
+
   const errors = req.validationErrors()
   if (errors) {
     store.set('form-errors', errors.map(err => err.param))
