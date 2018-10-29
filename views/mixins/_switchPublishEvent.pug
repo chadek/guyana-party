@@ -3,19 +3,23 @@ mixin switchPublishEvent(event)
     input#id(type="hidden" value=event._id)
     label.form-switch.form-switch-public
       if event.public
+        span: strong Privé
         input(type="checkbox" checked="checked")
         i
         span: strong Public
       else
+        span: strong Privé
         input(type="checkbox")
         i
-        span: strong Privé
+        span: strong Public
     label.form-switch.form-switch-publish(style="margin-left: 20px;")
       if event.status == "published"
+        span: strong Non publié
         input(type="checkbox" checked="checked")
         i
         span: strong Publié
       else
+        span: strong.unpublished-color Non publié
         input(type="checkbox")
         i
-        span: strong.unpublished-color Non publié
+        span: strong Publié
