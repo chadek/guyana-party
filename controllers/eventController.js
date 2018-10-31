@@ -264,6 +264,7 @@ exports.getSearchResult = async (req, res) => {
       { description: { $regex: search, $options: 'i' } }
     ],
     status: 'published',
+    start: {$lte: Date.now() },
     end: { $gte: Date.now() },
     public: true
   }
