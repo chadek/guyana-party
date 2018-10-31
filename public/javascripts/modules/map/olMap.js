@@ -63,11 +63,7 @@ class Map {
     this.map = new OlMap({
       target: this.target,
       controls: ctrlDefaults().extend([new ScaleLine(), new ZoomSlider()]),
-      layers: [
-        new Tile({
-          source: new OSM()
-        })
-      ],
+      layers: [new Tile({ source: new OSM({ crossOrigin: null }) })],
       view: this.view,
       interactions: interactionDefaults({
         mouseWheelZoom: !!this.mouseWheelZoom

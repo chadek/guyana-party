@@ -28,12 +28,12 @@ app.set('view engine', 'pug')
 // Serves up static files from the public folder. Anything in public/ will just be served up as the file it is
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.use(helmet()) // cleaning http headers
+app.use(compression()) // gzip compression of the response body
+
 // Takes the raw requests and turns them into usable properties on req.body
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-
-app.use(helmet()) // cleaning http headers
-app.use(compression()) // gzip compression of the response body
 
 // Exposes a bunch of methods for validating data. Used heavily on userController.validateRegister
 app.use(expressValidator())

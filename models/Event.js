@@ -23,15 +23,15 @@ const eventSchema = new mongoose.Schema(
     },
     start: Date,
     end: Date,
-    occurring: { 
+    occurring: {
       type: String,
-      default: 'none',
+      default: 'none'
     },
     published: {
       date: Date,
       publisher: {
         type: mongoose.Schema.ObjectId,
-        ref: 'User',
+        ref: 'User'
         // required: 'Publisher required'
       }
     },
