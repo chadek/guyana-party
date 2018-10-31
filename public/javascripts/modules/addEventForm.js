@@ -39,7 +39,7 @@ function init (dp1, dp2) {
   }
 }
 
-function addEventForm (dp1, dp2, switchPublishEvent, occurringType) {
+function addEventForm (dp1, dp2, switchPublishEvent, occurring) {
   init(dp1, dp2)
 
   dp1.on('change', (e)=>{
@@ -63,21 +63,13 @@ function addEventForm (dp1, dp2, switchPublishEvent, occurringType) {
     }
   })
 
-  const chooseocc = document.getElementById("chooseocc")
-  occurringType.on('change', (e)=>{
-    console.log(occurringType.value)
-    if (occurringType.value == "weeks") {
-      chooseocc.innerHTML= `
-      <input type="checkbox" id="monday" name="occurring[days][]" value="monday"> <label for="monday">Lundi</label>
-      <input type="checkbox" id="thuesday" name="occurring[days][]" value="thuesday"> <label for="thuesday">Mardi</label>
-      <input type="checkbox" id="wednesday" name="occurring[days][]" value="wednesday"> <label for="wednesday">Mercredi</label>
-      <input type="checkbox" id="thursday" name="occurring[days][]" value="thursday"> <label for="thursday">Jeudi</label>
-      <input type="checkbox" id="friday" name="occurring[days][]" value="friday"> <label for="friday">Vendredi</label>
-      <input type="checkbox" id="saturday" name="occurring[days][]" value="saturday"> <label for="saturday">Samedi</label>
-      <input type="checkbox" id="sunday" name="occurring[days][]" value="sunday"> <label for="sunday">Dimanche</label>
-      `
+  const occurringdays = document.getElementById("daysocc")
+  occurring.on('change', (e)=>{
+    console.log(occurring.checked)
+    if (occurring.checked) {
+      occurringdays.classList.remove("hidden")
     } else {
-      chooseocc.innerHTML = ``
+      occurringdays.classList.add("hidden")
     }
   })
 

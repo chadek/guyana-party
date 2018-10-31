@@ -59,8 +59,23 @@ block content
             //- Récurrence de l'évènement
             .pure-u-1.top-space: label Répéter l'évènement &nbsp;
               input(type="checkbox" id="occurring" name="occurring" value="occurring")
-              .top-space
-              #chooseocc
+              .top-
+              #daysocc(class="hidden")
+                input(type="checkbox" id="monday" name="occurring[days][]" value="monday")
+                label(for="monday") Lundi &nbsp;
+                input(type="checkbox" id="thuesday" name="occurring[days][]" value="thuesday")
+                label(for="thuesday") Mardi &nbsp;
+                input(type="checkbox" id="wednesday" name="occurring[days][]" value="wednesday")
+                label(for="wednesday") Mercredi &nbsp;
+                input(type="checkbox" id="thursday" name="occurring[days][]" value="thursday")
+                label(for="thursday") Jeudi &nbsp;
+                input(type="checkbox" id="friday" name="occurring[days][]" value="friday")
+                label(for="friday") Vendredi &nbsp;
+                input(type="checkbox" id="saturday" name="occurring[days][]" value="saturday")
+                label(for="saturday") Samedi &nbsp;
+                input(type="checkbox" id="sunday" name="occurring[days][]" value="sunday")
+                label(for="sunday") Dimanche &nbsp;
+
             .top-space  
             //- Start date && time
             .pure-u-1: label Début :
