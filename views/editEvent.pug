@@ -56,6 +56,12 @@ block content
                 option(value=tz.value selected=(event ? tz.label == event.timezone : tz.selected))= tz.label
           //- Date && Time
           .pure-u-1.l-wrap.top-space-40
+            //- Récurrence de l'évènement
+            .pure-u-1.top-space: label Répéter l'évènement &nbsp;
+              input(type="checkbox" id="occurring" name="occurring" value="occurring")
+              .top-space
+              #chooseocc
+            .top-space  
             //- Start date && time
             .pure-u-1: label Début :
             .pure-u-1.top-space
@@ -78,13 +84,8 @@ block content
                   span.pure-u-1-8.icon!= h.icon("clock")
                   input.pure-u-7-8#endtime(type="text" name="endtime")
                   input#end(type="hidden" name="end" value=`${savedData?savedData.end:(event?event.end:"")}`)
-            .pure-u-1.top-space: label Répéter l'évènement&nbsp;:&nbsp;
-              select#occurringType(name="occurring[type]")
-                option(value="none") non
-                option(value="days") chaque jour
-                option(value="weeks") chaque semaine
-                //- option(value="months") chaque mois
-              #chooseocc
+
+              
 
           //- Description
           .pure-u-1.top-space-40
