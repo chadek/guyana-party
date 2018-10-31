@@ -13,7 +13,6 @@ block content
             p: a(href="/account/edit") Edition du compte
         .separator.top-space.lg-hide
       .pure-u-1.u-lg-5-6
-        //- if user.subscription
         .pure-u-1.text-center.top-space
           h2 Mes évènements
             span.eventsCount
@@ -25,11 +24,6 @@ block content
         .pure-u-1.l-wrap.top-space#events
           p.top-space.text-center Chargement...
         .separator.top-space
-        //- else
-          .pure-u-1.text-center.top-space
-            p Vous n'avez actuellement souscrit à aucune offre, veuillez cliquer sur le bouton ci-dessous pour accéder à la page des souscriptions :
-          .pure-u-1.text-center.top-space
-            a.pure-button.success(href="/souscriptions") Choisir une souscription
         .pure-u-1.text-center.top-space
           h2 Mes groupes
             span.orgasCount
