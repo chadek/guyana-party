@@ -67,6 +67,3 @@ block content
             input#latitude(type="hidden" name="location[coordinates][1]" value=(orga && orga.location && orga.location.coordinates[1]))
           .pure-u-1.top-space-40
             input.pure-button.success.button.expanded(type="submit" value=`${orga ? "Valider" : "Créer"}`)
-
-block customScripts
-  script(src="/vendor/ol/ol.min.js")

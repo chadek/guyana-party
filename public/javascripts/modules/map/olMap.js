@@ -22,7 +22,6 @@ const RANDOM_POINTS = [
   [55.455054, -20.89066], // Saint-Denis (Réunion)
   [2.3522219, 48.856614], // Paris
   [45.2282, -12.7812] // Mamoudzou
-  
 ]
 
 class Map {
@@ -64,11 +63,7 @@ class Map {
     this.map = new OlMap({
       target: this.target,
       controls: ctrlDefaults().extend([new ScaleLine(), new ZoomSlider()]),
-      layers: [
-        new Tile({
-          source: new OSM()
-        })
-      ],
+      layers: [new Tile({ source: new OSM({ crossOrigin: null }) })],
       view: this.view,
       interactions: interactionDefaults({
         mouseWheelZoom: !!this.mouseWheelZoom

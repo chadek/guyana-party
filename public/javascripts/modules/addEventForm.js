@@ -37,23 +37,22 @@ function init (dp1, dp2) {
     str = `${date.getFullYear()}-${month}-${day}`
     dp2.value = str
   }
+
+  dp1.on('change', e => {
+    dp2.value = dp1.value
+  })
 }
 
 function addEventForm (dp1, dp2, switchPublishEvent) {
   init(dp1, dp2)
 
-  dp1.on('change', (e)=>{
-    dp2.value = dp1.value
-  })
-
   // const time1 = document.getElementById("horloge1");
-  const time2 = document.getElementById("horloge2");
-  $("#horloge1").change((e)=>{
-    console.log("Hello time !")
-    // console.log($(time1).val())
-    $("#endtime").val(starttime.value)
-
-  })
+  // const time2 = document.getElementById('horloge2')
+  // $('#horloge1').change(e => {
+  //   console.log('Hello time !')
+  //   // console.log($(time1).val())
+  //   $('#endtime').val(starttime.value)
+  // })
 
   if (!switchPublishEvent) return
   let eventId = document.getElementById('id')
