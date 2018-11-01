@@ -94,9 +94,12 @@ exports.create = async (req, res) => {
   req.checkBody('description', 'Veuillez saisir une description.').notEmpty()
   // comment enregistrer les checkboxs dans une liste
 
-  req.body.occurring.days.forEach(day => {
-    req.sanitizeBody(day)
-  })
+  // if ( req.body.occurring.days !== undefined ) {
+  //   req.body.occurring.days.forEach(day => {
+  //     req.sanitizeBody(day)
+  //   })
+  // }
+  
 
   
 

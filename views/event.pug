@@ -62,6 +62,11 @@ block content
             input.pure-u-3-4#endtime(type="text" readonly)
           input#event-start(type="hidden" value=`${event.start}`)
           input#event-end(type="hidden" value=`${event.end}`)
+
+        .pure-u-1
+          label.pure-u-1= `Récurrence de l'évènement : ${event.occurring.days}`
+
+
         .pure-u-1.normaltext
           p.text-center= event.location.address
       //- Event location
