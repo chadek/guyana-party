@@ -1,11 +1,13 @@
 extends layout
 
+include mixins/_customMapStyle
+include mixins/_customMapScript
+
 block customStyle
-  link(rel="stylesheet", href="/vendor/ol/ol.css")
   link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
+  +customMapStyle()
 
 block content
-
   .pure-u-g
     .pure-u-1
       .pure-u-1.u-lg-2-3.u-md-2-3
@@ -22,51 +24,6 @@ block content
             i(class="fa fa-random")
           button#new.pure-button.button(title="Créer un évènement") Créer un évènement
         ul.pure-u-1.result#resultelements
-          //- li.pure-u-1.result-element.result-link
-          //-   .pure-u-1-4
-          //-     img.result-picture(src="/images/icons/logo.png")
-          //-   .pure-u-3-4
-          //-     .pure-u-1.u-sm-1
-          //-       h4.no-margin-title Nom d'un évènement !!
-          //-     .pure-u-1.u-sm-1
-          //-       span Le 05/07/2018 à 18:59
-          //- li.pure-u-1.result-element
-          //-   a.pure-u-1.result-link(href="#")
-          //-     img.result-picture(src="/images/icons/logo.png")
-          //- li.pure-u-1.result-element
-          //-   a.pure-u-1.result-link(href="#")
-          //-     img.result-picture(src="/images/icons/logo.png")
-          //- li.pure-u-1.result-element
-          //-   a.pure-u-1.result-link(href="#")
-          //-     img.result-picture(src="/images/icons/logo.png")
-          //- li.pure-u-1.result-element
-          //-   a.pure-u-1.result-link(href="#")
-          //-     img.result-picture(src="/images/icons/logo.png")
-          //- li.pure-u-1.result-element
-          //-   a.pure-u-1.result-link(href="#")
-          //-     img.result-picture(src="/images/icons/logo.png")
-          //- li.pure-u-1.result-element
-          //-   a.pure-u-1.result-link(href="#")
-          //-     img.result-picture(src="/images/icons/logo.png")
-          //- li.pure-u-1.result-element
-          //-   a.pure-u-1.result-link(href="#")
-          //-     img.result-picture(src="/images/icons/logo.png")
-          //- li.pure-u-1.result-element
-          //-   a.pure-u-1.result-link(href="#")
-          //-     img.result-picture(src="/images/icons/logo.png")
-          //- li.pure-u-1.result-element
-          //-   a.pure-u-1.result-link(href="#")
-          //-     img.result-picture(src="/images/icons/logo.png")
 
-
-  //- p Organisez-vous, créez vos évènements et partagez-les.
-  //- p Soyez curieux et bougez autour de chez vous!
-  //- p Une application économe en énergie et en stockage.
-  //- p La vie est un écosystème et un terrain d'expériencep Organisez-vous, créez vos évènements et partagez-les.
-  //- p Soyez curieux et bougez autour de chez vous!
-  //- p Une application écologique peu gourmande en énergie et espace de stockage.
-  //- p Limité son expérience numérique pour augmenté sa réalité !
-
-
-//- block customScripts
-//-   script(src="/vendor/ol/ol.min.js")
+block customScripts
+  +customMapScript()

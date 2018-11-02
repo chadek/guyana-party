@@ -29,7 +29,7 @@ const getTZList = () => {
   for (let i = 0; i < tzNamesList.length; i++) {
     const zone = moment.tz.zone(tzNamesList[i])
     const tzValue = moment.tz(time, zone.name).format('Z')
-    const selected = moment.tz.guess() == zone.name
+    const selected = moment.tz.guess() === zone.name
 
     tzList.push({
       id: zone.utcOffset(time),
@@ -264,7 +264,7 @@ exports.getSearchResult = async (req, res) => {
       { description: { $regex: search, $options: 'i' } }
     ],
     status: 'published',
-    start: {$lte: Date.now() },
+    start: { $lte: Date.now() },
     end: { $gte: Date.now() },
     public: true
   }

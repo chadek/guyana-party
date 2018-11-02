@@ -1,8 +1,13 @@
 extends layout
 
+include mixins/_customMapStyle
+include mixins/_customMdeStyle
+include mixins/_customMapScript
+include mixins/_customMdeScript
+
 block customStyle
-  link(rel="stylesheet", href="/vendor/ol/ol.css")
-  link(rel="stylesheet", href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css")
+  +customMapStyle()
+  +customMdeStyle()
 
 block content
   //- pre #{h.dump(orga)}
@@ -67,3 +72,7 @@ block content
             input#latitude(type="hidden" name="location[coordinates][1]" value=(orga && orga.location && orga.location.coordinates[1]))
           .pure-u-1.top-space-40
             input.pure-button.success.button.expanded(type="submit" value=`${orga ? "Valider" : "Créer"}`)
+
+block customScripts
+  +customMapScript()
+  +customMdeScript()
