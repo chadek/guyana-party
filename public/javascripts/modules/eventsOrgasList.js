@@ -2,10 +2,17 @@ import { B, BB } from './bling'
 import { axiosGet, data2HTML, formatDateTime, sliceStr } from './utils'
 
 // ORGANISMS
-function getOrgasList (orgasDiv) {
-  if (!orgasDiv) return
-  axiosGet('/api/organisms', data => {
+function getGroups (groupsDiv, page = 1) {
+  if (!groupsDiv) return
+  axiosGet(`/api/organisms?page=${page}`, data => {
     if (data) {
+      const currentPage = data.page
+      const pages = data.pages
+      const count = data.count
+      const limit = data.limit
+
+      if (count) B('.groupsCount').innerHTML = ` (${count})`
+
       const format = item => {
         const imgSrc = item.photo
           ? `/uploads/${item.photo}`
@@ -52,7 +59,20 @@ function getOrgasList (orgasDiv) {
       const concat = `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content">
         <div class="card card__new card__new--organism" title="Ajouter un organisme"></div>
       </div>`
-      orgasDiv.innerHTML = data2HTML(data, format, concat)
+      groupsDiv.innerHTML = data2HTML(data, format, concat)
+      if (count > limit) {
+        groupsDiv.innerHTML += pagination(currentPage, pages)
+        // Click on groups pagination
+        BB('#orgas .pageBtn').on('click', e => {
+          let page = e.target.textContent
+          if (page === '«' || page === `&laquo;`) {
+            page = currentPage - 1
+          } else if (page === '»' || page === `&raquo;`) {
+            page = currentPage + 1
+          }
+          getGroups(groupsDiv, page)
+        })
+      }
       B('.card__new--organism').on(
         'click',
         () => (window.location.href = '/organisms/add')
@@ -62,19 +82,22 @@ function getOrgasList (orgasDiv) {
 }
 
 // Get the events
-function getEvents (eventsDiv, orgaId = null, page = 1) {
+function getEvents (eventsDiv, orgaId = null, page = 1, archived = false) {
   if (!eventsDiv) return
   if (orgaId !== null && (!orgaId || !orgaId.value)) return
   axiosGet(
-    `/api/events?page=${page}${orgaId ? `&orga=${orgaId.value}` : ''}`,
+    `/api/events?page=${page}${orgaId ? `&orga=${orgaId.value}` : ''}${
+      archived ? `&archived=true` : ''
+    }`,
     data => {
       if (data) {
+        console.log(data)
         const currentPage = data.page
         const pages = data.pages
         const count = data.count
         const limit = data.limit
 
-        B('.eventsCount').innerHTML = ` (${count})`
+        if (count) B('.eventsCount').innerHTML = ` (${count})`
 
         const format = item => {
           const imgSrc = item.photo
@@ -100,18 +123,27 @@ function getEvents (eventsDiv, orgaId = null, page = 1) {
               <br><strong>Début :</strong> ${start}
               <br><strong>Fin :</strong> ${end}
               <br><strong>Adresse :</strong> ${address}
-              ${!item.public ? '<br><strong>Evènement privé</strong>' : ''}
-              ${status}
-              <a href="/events/${
+              ${
+  item.status !== 'archived'
+    ? `
+                ${!item.public ? '<br><strong>Evènement privé</strong>' : ''}
+                ${status}
+                <a href="/events/${
   item.id
 }/edit">Modifier</a> | <a href="/event/${
   item.slug
-}?remove=true">Archiver</a></p>
+}?remove=true">Archiver</a>
+              `
+    : '<br><strong>Archivé</strong>'
+}
+              </p>
             </div>
           </div>
           <div class="card__section">
             <p><a ${
-  item.status !== 'published' ? 'class="unpublished-color"' : ''
+  item.status !== 'published' && item.status !== 'archived'
+    ? 'class="unpublished-color"'
+    : ''
 } href="/event/${item.slug}">${sliceStr(item.name)}</a></p>
           </div>
         </div>
@@ -178,10 +210,11 @@ function initOrgaDropdown (orgasSelect) {
 }
 
 // Main function
-function loadEventsOrgasList (eventsDiv, orgasDiv, orgasSelect) {
+function loadEventsOrgasList (eventsDiv, groupsDiv, groupsSelect) {
   getEvents(eventsDiv, B('#orga-id'))
-  getOrgasList(orgasDiv)
-  initOrgaDropdown(orgasSelect)
+  getGroups(groupsDiv)
+  initOrgaDropdown(groupsSelect)
 }
 
 export default loadEventsOrgasList
+export { getEvents }
