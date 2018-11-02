@@ -5,10 +5,6 @@ import { B, BB } from './modules/bling'
 import { checkName } from './modules/checkForm'
 import initDates from './modules/date'
 import loadEventsOrgasList from './modules/eventsOrgasList'
-import './modules/map'
-import './modules/simplemde'
-// import "./modules/menu";
-// import subscriptions from './modules/subscriptions'
 
 // Signup form - check the availability of the name
 checkName(BB('input'), B('input#name'), B('#name-error'), B('#action-btn'))
@@ -34,11 +30,6 @@ B('#fileUpload') &&
 
 account()
 
-loadEventsOrgasList(
-  B('#events'),
-  B('#orga-events'),
-  B('#orgas'),
-  B('#orga-select')
-)
+loadEventsOrgasList(B('#events'), B('#orgas'), B('#orga-select'))
 initDates(B('#event-start'), B('#event-end'))
 addEventForm(B('#dp1'), B('#dp2'), B('.switch-publish-event'))

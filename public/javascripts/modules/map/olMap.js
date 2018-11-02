@@ -1,9 +1,10 @@
 'use strict'
-
+import 'ol/ol.css'
+import './ol-custom.css'
 import { Feature, Map as OlMap, Overlay, View } from 'ol'
 import { fromLonLat, toLonLat } from 'ol/proj'
 import { Tile, Vector as LayerVector } from 'ol/layer'
-import { OSM, Vector as SourceVector, Cluster } from 'ol/source'
+import { OSM, TileDebug, Vector as SourceVector, Cluster } from 'ol/source'
 import { defaults as ctrlDefaults, ScaleLine, ZoomSlider } from 'ol/control'
 import { defaults as interactionDefaults } from 'ol/interaction'
 import { Style, Circle, Stroke, Fill, Text } from 'ol/style'
@@ -21,7 +22,7 @@ const RANDOM_POINTS = [
   [-61.534042, 16.237687], // Point-à-Pitre
   [55.455054, -20.89066], // Saint-Denis (Réunion)
   [2.3522219, 48.856614], // Paris
-  [45.2282, -12.7812] // Mamoudzou
+  [45.2282, -12.7812] // Mamoudzou (Mayotte)
 ]
 
 class Map {
@@ -45,13 +46,13 @@ class Map {
     this.defaultStyleMark = null
     this.defaultPos = null
     this.randomPoints = params.randomPoints || RANDOM_POINTS
+    this.debug = params.debug
     this.init()
   }
 
   init () {
     this.setDefaultRandomPosition()
 
-    // Instanciate the view
     this.view = new View({
       center: this.singlePos ? this.singlePos : this.defaultPos,
       zoom: this.zoom,
@@ -59,26 +60,49 @@ class Map {
       minZoom: this.minZoom
     })
 
+    const source = new OSM({ crossOrigin: null })
+
+    // The default layers (add a debug tile layer in debug mode)
+    const layers = [new Tile({ source })]
+    this.debug &&
+      layers.push(
+        new Tile({
+          source: new TileDebug({
+            projection: 'EPSG:3857',
+            tileGrid: source.getTileGrid()
+          })
+        })
+      )
+
     // Instanciate the map
     this.map = new OlMap({
       target: this.target,
       controls: ctrlDefaults().extend([new ScaleLine(), new ZoomSlider()]),
-      layers: [new Tile({ source: new OSM({ crossOrigin: null }) })],
+      loadTilesWhileInteracting: true, // loading tiles while dragging/zooming
+      layers,
       view: this.view,
       interactions: interactionDefaults({
         mouseWheelZoom: !!this.mouseWheelZoom
       })
     })
 
+    if (this.debug) {
+      console.log(
+        'Default Position:',
+        this.singlePos ? this.singlePos : this.defaultPos
+      )
+      console.log(this.map)
+    }
+
     // Default marker style (blue circle)
     this.defaultStyleMark = getMarkerStyle(
       { color: '#2980b9', width: 2 },
       { color: 'rgba(52, 152, 219, 0.5)' }
     )
-  }
+  } // Init End
 
   setDefaultRandomPosition () {
-    if (this.randomPoints.length > 0) {
+    if (this.randomPoints && this.randomPoints.length > 0) {
       this.defaultPos = fromLonLat(
         this.randomPoints[Math.floor(Math.random() * this.randomPoints.length)]
       )

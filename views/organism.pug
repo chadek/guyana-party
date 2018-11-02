@@ -1,10 +1,8 @@
 extends layout
 
+include mixins/_customMdeScript
 include mixins/_removeDialog
 include mixins/_communityList
-
-//- block customStyle
-  link(rel="stylesheet", href="/vendor/ol/ol.css")
 
 block content
   .pure-g#top
@@ -51,3 +49,6 @@ block content
         h3 La communauté
       .pure-u-1.top-space-40.content#community
         +communityList(orga.community, isAdmin)
+
+block customScripts
+  +customMdeScript()

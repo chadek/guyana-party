@@ -1,11 +1,6 @@
 import { B, BB } from './bling'
 import { axiosGet, data2HTML, formatDateTime, sliceStr } from './utils'
 
-// EVENTS
-function getEventsList (eventsDiv) {
-  getEvents(eventsDiv)
-}
-
 // ORGANISMS
 function getOrgasList (orgasDiv) {
   if (!orgasDiv) return
@@ -64,11 +59,6 @@ function getOrgasList (orgasDiv) {
       )
     }
   })
-}
-
-// EVENTS in an organism
-function getEventsFromOrga (orgaEventsDiv) {
-  getEvents(orgaEventsDiv, B('#orga-id'))
 }
 
 // Get the events
@@ -188,9 +178,8 @@ function initOrgaDropdown (orgasSelect) {
 }
 
 // Main function
-function loadEventsOrgasList (eventsDiv, orgaEventsDiv, orgasDiv, orgasSelect) {
-  getEventsList(eventsDiv)
-  getEventsFromOrga(orgaEventsDiv)
+function loadEventsOrgasList (eventsDiv, orgasDiv, orgasSelect) {
+  getEvents(eventsDiv, B('#orga-id'))
   getOrgasList(orgasDiv)
   initOrgaDropdown(orgasSelect)
 }
