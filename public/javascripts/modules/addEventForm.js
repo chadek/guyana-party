@@ -39,7 +39,7 @@ function init (dp1, dp2) {
   }
 }
 
-function addEventForm (dp1, dp2, switchPublishEvent, occurring) {
+function addEventForm (dp1, dp2, switchPublishEvent) {
   init(dp1, dp2)
 
   dp1.on('change', (e)=>{
@@ -63,15 +63,15 @@ function addEventForm (dp1, dp2, switchPublishEvent, occurring) {
     }
   })
 
-  const occurringdays = document.getElementById("daysocc")
-  occurring.on('change', (e)=>{
-    console.log(occurring.checked)
-    if (occurring.checked) {
-      occurringdays.classList.remove("hidden")
-    } else {
-      occurringdays.classList.add("hidden")
-    }
-  })
+  // const occurringdays = document.getElementById("daysocc")
+  // occurring.on('change', (e)=>{
+  //   console.log(occurring.checked)
+  //   if (occurring.checked) {
+  //     occurringdays.classList.remove("hidden")
+  //   } else {
+  //     occurringdays.classList.add("hidden")
+  //   }
+  // })
 
 
 

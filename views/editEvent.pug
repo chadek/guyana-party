@@ -57,24 +57,66 @@ block content
           //- Date && Time
           .pure-u-1.l-wrap.top-space-40
             //- Récurrence de l'évènement
-            .pure-u-1.top-space: label Répéter l'évènement &nbsp;
-              input(type="checkbox" id="occurring" name="occurring" value="occurring")
-              .top-
-              #daysocc(class="hidden")
+            .pure-u-1.top-space: label Répétition de l'évènement &nbsp;:
+            .top-space
+              - const mondayChecked = savedData ? savedData.occurring.days.includes("monday") : (event ? event.occurring.days.includes("monday") : false)
+              - const thuesdayChecked = savedData ? savedData.occurring.days.includes("thuesday") : (event ? event.occurring.days.includes("thuesday") : false)
+              - const wednesdayChecked = savedData ? savedData.occurring.days.includes("wednesday") : (event ? event.occurring.days.includes("wednesday") : false)
+              - const thursdayChecked = savedData ? savedData.occurring.days.includes("thursday") : (event ? event.occurring.days.includes("thursday") : false)
+              - const fridayChecked = savedData ? savedData.occurring.days.includes("friday") : (event ? event.occurring.days.includes("friday") : false)
+              - const saturdayChecked = savedData ? savedData.occurring.days.includes("saturday") : (event ? event.occurring.days.includes("saturday") : false)
+              - const sundayChecked = savedData ? savedData.occurring.days.includes("sunday") : (event ? event.occurring.days.includes("sunday") : false)
+
+              if mondayChecked
+                input(type="checkbox" id="monday" name="occurring[days][]" value="monday" checked)
+                label(for="monday") Lundi &nbsp;
+              else
                 input(type="checkbox" id="monday" name="occurring[days][]" value="monday")
                 label(for="monday") Lundi &nbsp;
+
+              if thuesdayChecked
+                input(type="checkbox" id="thuesday" name="occurring[days][]" value="thuesday" checked)  
+                label(for="thuesday") Mardi &nbsp;
+              else
                 input(type="checkbox" id="thuesday" name="occurring[days][]" value="thuesday")
                 label(for="thuesday") Mardi &nbsp;
+
+              if wednesdayChecked
+                input(type="checkbox" id="wednesday" name="occurring[days][]" value="wednesday" checked)
+                label(for="wednesday") Mercredi &nbsp;
+              else
                 input(type="checkbox" id="wednesday" name="occurring[days][]" value="wednesday")
                 label(for="wednesday") Mercredi &nbsp;
+
+              if thursdayChecked
+                input(type="checkbox" id="thursday" name="occurring[days][]" value="thursday" checked)
+                label(for="thursday") Jeudi &nbsp;
+              else
                 input(type="checkbox" id="thursday" name="occurring[days][]" value="thursday")
                 label(for="thursday") Jeudi &nbsp;
+
+              if fridayChecked
+                input(type="checkbox" id="friday" name="occurring[days][]" value="friday" checked)
+                label(for="friday") Vendredi &nbsp;
+              else
                 input(type="checkbox" id="friday" name="occurring[days][]" value="friday")
                 label(for="friday") Vendredi &nbsp;
+              
+              if saturdayChecked
+                input(type="checkbox" id="saturday" name="occurring[days][]" value="saturday" checked)
+                label(for="saturday") Samedi &nbsp;
+              else
                 input(type="checkbox" id="saturday" name="occurring[days][]" value="saturday")
                 label(for="saturday") Samedi &nbsp;
+              
+              if sundayChecked
+                input(type="checkbox" id="sunday" name="occurring[days][]" value="sunday" checked)
+                label(for="sunday") Dimanche &nbsp;
+              else
                 input(type="checkbox" id="sunday" name="occurring[days][]" value="sunday")
                 label(for="sunday") Dimanche &nbsp;
+              
+              
 
             .top-space  
             //- Start date && time
