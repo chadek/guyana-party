@@ -64,7 +64,10 @@ block content
           input#event-end(type="hidden" value=`${event.end}`)
 
         .pure-u-1
-          label.pure-u-1= `Récurrence de l'évènement : ${event.occurring.days}`
+          label.pure-u-1= `Récurrence de l'évènement :`
+          .pure-u-1.normaltext
+            p= event.occurring.days.join(" ")
+            
 
 
         .pure-u-1.normaltext
