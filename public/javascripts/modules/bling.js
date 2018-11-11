@@ -4,7 +4,6 @@
 const B = document.querySelector.bind(document)
 const BB = document.querySelectorAll.bind(document)
 
-/* eslint-disable no-undef */
 Node.prototype.on = window.on = function (name, fn) {
   this.addEventListener(name, fn)
 }
@@ -20,6 +19,5 @@ NodeList.prototype.on = NodeList.prototype.addEventListener = function (
     elem.on(name, fn)
   })
 }
-/* eslint-enable no-undef */
 
 export { B, BB }

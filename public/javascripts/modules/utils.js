@@ -52,17 +52,17 @@ function toggleClass (element, className) {
 }
 
 // left: 37, up: 38, right: 39, down: 40, spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
-const scrollKeys = {
-  37: 1,
-  38: 1,
-  39: 1,
-  40: 1,
-  32: 1,
-  33: 1,
-  34: 1,
-  35: 1,
-  36: 1
-}
+// const scrollKeys = {
+//   37: 1,
+//   38: 1,
+//   39: 1,
+//   40: 1,
+//   32: 1,
+//   33: 1,
+//   34: 1,
+//   35: 1,
+//   36: 1
+// }
 
 function preventDefault (e) {
   e = e || window.event
@@ -70,36 +70,79 @@ function preventDefault (e) {
   e.returnValue = false
 }
 
-function preventDefaultForScrollKeys (e) {
-  if (scrollKeys[e.keyCode]) {
-    preventDefault(e)
-    return false
-  }
-}
+// function preventDefaultForScrollKeys (e) {
+//   if (scrollKeys[e.keyCode]) {
+//     preventDefault(e)
+//     return false
+//   }
+// }
 
-function disableScroll () {
-  if (window.addEventListener) {
-    // older FF
-    window.addEventListener('DOMMouseScroll', preventDefault, false)
-  }
-  window.onwheel = preventDefault // modern standard
-  window.onmousewheel = document.onmousewheel = preventDefault // older browsers, IE
-  window.ontouchmove = preventDefault // mobile
-  document.onkeydown = preventDefaultForScrollKeys
-}
+// function disableScroll () {
+//   if (window.addEventListener) {
+//     // older FF
+//     window.addEventListener('DOMMouseScroll', preventDefault, false)
+//   }
+//   window.onwheel = preventDefault // modern standard
+//   window.onmousewheel = document.onmousewheel = preventDefault // older browsers, IE
+//   window.ontouchmove = preventDefault // mobile
+//   document.onkeydown = preventDefaultForScrollKeys
+// }
 
-function enableScroll () {
-  if (window.removeEventListener) {
-    window.removeEventListener('DOMMouseScroll', preventDefault, false)
-  }
-  window.onmousewheel = document.onmousewheel = null
-  window.onwheel = null
-  window.ontouchmove = null
-  document.onkeydown = null
-}
+// function enableScroll () {
+//   if (window.removeEventListener) {
+//     window.removeEventListener('DOMMouseScroll', preventDefault, false)
+//   }
+//   window.onmousewheel = document.onmousewheel = null
+//   window.onwheel = null
+//   window.ontouchmove = null
+//   document.onkeydown = null
+// }
 
 function sliceStr (str, limit = 20) {
   return str.length > limit ? `${str.slice(0, limit)} ...` : str
+}
+
+// Button to add a new event or group
+function addNewBtn (isGroup = false) {
+  let typeClass = 'card__new--event'
+  let title = 'Ajouter un évènement'
+  if (isGroup) {
+    typeClass = 'card__new--group'
+    title = 'Ajouter un groupe'
+  }
+  return `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content">
+    <div class="card card__new ${typeClass}" title="${title}"></div>
+  </div>`
+}
+
+function pagination (currentPage, pages) {
+  let content = `<div class="pagination text-center"><ul>`
+  if (currentPage > 1) {
+    content += `<li class="pageBtn" title="page précédente">&laquo;</li>`
+  }
+  for (let i = 1; i <= pages; i++) {
+    content += `<li class="${
+      i === currentPage ? 'active' : 'pageBtn'
+    }" title="page ${i}">${i}</li>`
+  }
+  if (currentPage < pages) {
+    content += `<li class="pageBtn" title="page suivante">&raquo;</li>`
+  }
+  return `${content}</ul></div>`
+}
+
+// Organisms dropdown in event edit page
+function initOrgaDropdown (orgasSelect, orgaId) {
+  axiosGet('/api/organisms', data => {
+    if (data) {
+      const format = item => {
+        return `<option value="${item._id}"${
+          orgaId.value && item._id === orgaId.value ? ' selected' : ''
+        }>${sliceStr(item.name, 30)}</option>`
+      }
+      orgasSelect.innerHTML = data2HTML(data, format, '')
+    }
+  })
 }
 
 export {
@@ -108,8 +151,8 @@ export {
   formatDateTime,
   toggleClass,
   preventDefault,
-  preventDefaultForScrollKeys,
-  disableScroll,
-  enableScroll,
-  sliceStr
+  sliceStr,
+  addNewBtn,
+  pagination,
+  initOrgaDropdown
 }

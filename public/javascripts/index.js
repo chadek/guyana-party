@@ -1,10 +1,11 @@
 import '../sass/style.scss'
-import account from './modules/account'
+import './modules/account'
+import './modules/eventPage'
+import './modules/groupPage'
 import addEventForm from './modules/addEventForm'
 import { B, BB } from './modules/bling'
 import { checkName } from './modules/checkForm'
 import initDates from './modules/date'
-import loadEventsOrgasList from './modules/eventsOrgasList'
 
 // Signup form - check the availability of the name
 checkName(BB('input'), B('input#name'), B('#name-error'), B('#action-btn'))
@@ -28,8 +29,5 @@ B('#fileUpload') &&
     }`
   })
 
-account()
-
-loadEventsOrgasList(B('#events'), B('#orgas'), B('#orga-select'))
 initDates(B('#event-start'), B('#event-end'))
 addEventForm(B('#dp1'), B('#dp2'), B('.switch-publish-event'))
