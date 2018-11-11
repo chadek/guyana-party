@@ -23,10 +23,6 @@ const eventSchema = new mongoose.Schema(
     },
     start: Date,
     end: Date,
-    occurring: {
-      type: String,
-      default: 'none'
-    },
     published: {
       date: Date,
       publisher: {
