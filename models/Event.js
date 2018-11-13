@@ -26,7 +26,7 @@ const eventSchema = new mongoose.Schema(
     published: {
       date: Date,
       publisher: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
         // required: 'Publisher required'
       }
@@ -44,12 +44,12 @@ const eventSchema = new mongoose.Schema(
     },
     photo: String,
     author: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: "L'auteur de l'évènement est requis."
     },
     organism: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Organism'
       // required: "L'organisme de l'évènement est requis."
     },

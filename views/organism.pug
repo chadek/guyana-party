@@ -44,11 +44,11 @@ block content
     if orga
       input#orga-id(type="hidden" value=`${orga._id}`)
 
-    if isMember
+    if isMember && community
       .pure-u-1.top-space-40.text-center
         h3 La communauté
       .pure-u-1.top-space-40.content#community
-        +communityList(orga.community, isAdmin)
+        +communityList(community, isAdmin)
 
 block customScripts
   +customMdeScript()

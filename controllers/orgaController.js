@@ -1,8 +1,14 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose') /* .set('debug', true) */
+const store = require('store')
+const {
+  getPagedItems,
+  confirmOwner,
+  asyncForEach
+} = require('../handlers/tools')
+
 const Organism = mongoose.model('Organism')
 const Event = mongoose.model('Event')
-const { getPagedItems, confirmOwner } = require('../handlers/tools')
-const store = require('store')
+const User = mongoose.model('User')
 
 exports.addPage = (req, res) => {
   res.render('editOrganism', {
@@ -107,37 +113,45 @@ exports.remove = async (req, res, next) => {
   res.redirect('/account')
 }
 
-const confirmMember = (orga, user) => {
+const confirmMember = (community, user) => {
   if (!user) return false
-  return !!orga.community.find(item => {
-    return item.user.equals(user._id)
-  })
+  return undefined !== community.find(o => o._id.equals(user._id))
 }
 
-const isAdminMember = (orga, user) => {
+const isAdminMember = (community, user) => {
   if (!user) return false
-  return !!orga.community.find(item => {
-    return item.user.equals(user._id) && item.role === 'admin'
-  })
+  return (
+    undefined !==
+    community.find(o => o._id.equals(user._id) && o.role === 'admin')
+  )
 }
 
 exports.getOrgaBySlug = async (req, res, next) => {
   const orga = await Organism.findOne({ slug: req.paramString('slug') })
-    .populate('author')
-    .populate('community.user')
+
   if (!orga) return next()
   if (orga.status !== 'published') confirmOwner(orga, req.user) // we can't see an event if it's not published and we don't own it
-  let remove = false
-  if (req.queryString('remove')) {
-    remove = true
-  }
+
+  const community = []
+
+  await asyncForEach(orga.community, async member => {
+    const found = await User.findById(member.user)
+    if (found) {
+      found.role = member.role
+      community.push(found)
+    }
+  })
+
+  orga.community = [] // Remove old community data
+
   res.render('organism', {
     orga,
     title: orga.name,
     csrfToken: req.csrfToken(),
-    remove,
-    isMember: confirmMember(orga, req.user),
-    isAdmin: isAdminMember(orga, req.user)
+    remove: req.queryString('remove'),
+    community,
+    isMember: confirmMember(community, req.user),
+    isAdmin: isAdminMember(community, req.user)
   })
 }
 
