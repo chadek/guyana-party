@@ -47,4 +47,4 @@ function checkName (inputs, nameInput, errorLabel, btn) {
   })
 }
 
-export { checkName }
+export default checkName

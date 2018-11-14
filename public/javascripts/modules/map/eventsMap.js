@@ -82,7 +82,7 @@ function showEvents (search, lon, lat, maxDistance = 20000) {
 }
 
 function formatEventStart (isoStart) {
-  let start = new Date(isoStart)
+  const start = new Date(isoStart)
   return `Le ${('0' + start.getDate()).slice(-2)}/${(
     '0' + start.getMonth()
   ).slice(-2)}/${start.getFullYear()} à ${('0' + start.getHours()).slice(

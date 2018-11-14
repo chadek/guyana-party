@@ -25,7 +25,7 @@ const getTZList = () => {
   moment.tz.load(require('../public/vendor/timezone/timezone.json'))
   // conlole.log(momenttz);
   const tzNamesList = moment.tz.names()
-  let tzList = []
+  const tzList = []
   for (let i = 0; i < tzNamesList.length; i++) {
     const zone = moment.tz.zone(tzNamesList[i])
     const tzValue = moment.tz(time, zone.name).format('Z')
@@ -267,7 +267,7 @@ exports.getSearchResult = async (req, res) => {
   const lat = req.queryString('lat')
   const maxDistance = req.queryInt('maxdistance') || 10000 // 10km
   // We want published events by location (if available), name or description
-  let find = {
+  const find = {
     $or: [
       { name: { $regex: search, $options: 'i' } },
       { description: { $regex: search, $options: 'i' } }
