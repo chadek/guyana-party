@@ -4,7 +4,7 @@ import './modules/eventPage'
 import './modules/groupPage'
 import addEventForm from './modules/addEventForm'
 import { B, BB } from './modules/bling'
-import { checkName } from './modules/checkForm'
+import checkName from './modules/checkForm'
 import initDates from './modules/date'
 
 // Signup form - check the availability of the name
