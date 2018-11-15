@@ -20,7 +20,7 @@ function manageOldNewButtons (eventsDiv, groupsDiv) {
   })
 }
 
-;(() => {
+(() => {
   const eventsDiv = B('.account #events')
   const groupsDiv = B('.account #groups')
   if (!eventsDiv || !groupsDiv) return

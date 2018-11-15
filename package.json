@@ -10,7 +10,7 @@
     "build-dev": "webpack-dev-server --open --config webpack.dev.js",
     "start": "webpack -p --progress --config webpack.prod.js && node ./start.js",
     "assets": "webpack -w --config webpack.dev.js --display-max-modules 0",
-    "dev": "concurrently \"npm run assets\" \"node ./start.js\" --names \"webpack,node   \" --prefix name",
+    "dev": "npm run linter && concurrently \"npm run assets\" \"node ./start.js\" --names \"webpack,node   \" --prefix name",
     "sample": "node ./data/load-sample-data.js",
     "blowitallaway": "node ./data/load-sample-data.js --delete",
     "backup": "node ./data/load-sample-data.js --backup",
