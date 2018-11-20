@@ -1,4 +1,5 @@
 {
+  "root": true,
   "extends": ["eslint:recommended", "standard"],
   "parser": "babel-eslint",
   "parserOptions": {
@@ -13,11 +14,12 @@
     "jquery": true,
     "jest": true
   },
+  "plugins": ["babel"],
   "rules": {
     "no-debugger": 0,
     "no-alert": 0,
     "no-console": 0,
-    "no-unused-vars": 1,
+    "no-unused-vars": "error",
     "prefer-const": [
       "error",
       {
@@ -25,6 +27,13 @@
       }
     ],
     "comma-dangle": 1,
-    "import/prefer-default-export": 1
+    "import/prefer-default-export": 1,
+    "babel/new-cap": 1,
+    "babel/no-invalid-this": 0,
+    "babel/object-curly-spacing": 0,
+    "babel/quotes": 0,
+    "babel/semi": 0,
+    "babel/no-unused-expressions": 1,
+    "babel/valid-typeof": 1
   }
 }

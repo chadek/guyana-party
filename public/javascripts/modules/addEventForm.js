@@ -1,4 +1,4 @@
-import { B } from './bling'
+import { b } from './bling'
 
 function init (dp1, dp2) {
   if (!dp1 || !dp2) return
@@ -58,24 +58,24 @@ function addEventForm (dp1, dp2, switchPublishEvent) {
   let eventId = document.getElementById('id')
   if (eventId) {
     eventId = eventId.value
-    const publicCheckbox = B('label.form-switch-public input')
+    const publicCheckbox = b('label.form-switch-public input')
     if (publicCheckbox) {
-      const span = B('label.form-switch-public span')
+      const span = b('label.form-switch-public span')
       publicCheckbox.on('click', function () {
         span.innerHTML = '<strong>action en cours...</strong>'
-        if (this.checked) {
+        if (publicCheckbox.checked) {
           window.location = `/events/${eventId}/gopublic`
         } else {
           window.location = `/events/${eventId}/gopublic?cancel=true`
         }
       })
     }
-    const publishCheckbox = B('label.form-switch-publish input')
+    const publishCheckbox = b('label.form-switch-publish input')
     if (publishCheckbox) {
-      const span = B('label.form-switch-publish span')
+      const span = b('label.form-switch-publish span')
       publishCheckbox.on('click', function () {
         span.innerHTML = '<strong>action en cours...</strong>'
-        if (this.checked) {
+        if (publishCheckbox.checked) {
           window.location = `/events/${eventId}/publish`
         } else {
           window.location = `/events/${eventId}/publish?cancel=true`

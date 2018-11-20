@@ -1,5 +1,5 @@
 import dompurify from 'dompurify'
-import { B } from './bling'
+import { b } from './bling'
 import { axiosGet } from './utils'
 
 function geolocate () {
@@ -16,8 +16,8 @@ function geolocate () {
             data.address.town
           }</strong>`
         )
-        B('#around-click').innerHTML = text
-        B('#around-value').value = JSON.stringify({
+        b('#around-click').innerHTML = text
+        b('#around-value').value = JSON.stringify({
           text: text,
           lon: pos.coords.longitude,
           lat: pos.coords.latitude,
@@ -37,7 +37,7 @@ function autourdemoi () {
         pos.coords.longitude
       }&lat=${pos.coords.latitude}`,
       data => {
-        B('#around-value').value = JSON.stringify({
+        b('#around-value').value = JSON.stringify({
           lon: pos.coords.longitude,
           lat: pos.coords.latitude,
           location: `${data.address.town} ${data.address.postcode}`

@@ -1,4 +1,4 @@
-import { B, BB } from '../bling'
+import { b, bb } from '../bling'
 import {
   axiosGet,
   data2HTML,
@@ -18,44 +18,48 @@ function eventCardFormat (item) {
   const orgaSlug = item.organism.slug
   const orgaName = sliceStr(item.organism.name)
   const address = sliceStr(item.location.address, 90)
-  const status =
-    item.status !== 'published'
-      ? '<br><strong class="unpublished-color">Non publié</strong> |'
-      : '<br>'
-  return `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content">
-        <div class="card">
-          <div class="card__header">
-            <img src="${imgSrc}" alt="photo évènement">
-            <div class="card__header--content">
-              <p><strong>Organisateur :</strong> <a href="/organism/${orgaSlug}">${orgaName}</a>
-              <br><strong>Début :</strong> ${start}
-              <br><strong>Fin :</strong> ${end}
-              <br><strong>Adresse :</strong> ${address}
-              ${
-  item.status !== 'archived'
-    ? `
-                ${!item.public ? '<br><strong>Evènement privé</strong>' : ''}
-                ${status}
-                <a href="/events/${
-  item.id
-}/edit">Modifier</a> | <a href="/event/${
-  item.slug
-}?remove=true">Archiver</a>
-              `
-    : '<br><strong>Archivé</strong>'
-}
-              </p>
-            </div>
-          </div>
-          <div class="card__section">
-            <p><a ${
-  item.status !== 'published' && item.status !== 'archived'
-    ? 'class="unpublished-color"'
-    : ''
-} href="/event/${item.slug}">${sliceStr(item.name)}</a></p>
-          </div>
+  const titleClass =
+    item.status !== 'published' && item.status !== 'archived'
+      ? 'class="unpublished-color"'
+      : ''
+  let privateEventLabel = '<strong>Evènement Archivé</strong>'
+  let actionsLabel = ''
+  if (item.status !== 'archived') {
+    privateEventLabel = !item.public
+      ? '<br><strong>Evènement privé</strong>'
+      : ''
+    const actions = `
+      <a href="/events/${item.id}/edit">Modifier</a> |
+      <a href="/event/${item.slug}?remove=true">Archiver</a>`
+    actionsLabel =
+      item.status !== 'published'
+        ? `<br><strong class="unpublished-color">Non publié</strong> | ${actions}`
+        : `<br>${actions}`
+  }
+
+  return `
+    <div class="card">
+      <div class="card__header">
+        <img src="${imgSrc}" alt="photo évènement">
+        <div class="card__header--content">
+          <p>
+            <strong>Organisateur :</strong>&nbsp<a href="/organism/${orgaSlug}">${orgaName}</a>
+            <br><strong>Début :</strong>&nbsp${start}
+            <br><strong>Fin :</strong>&nbsp${end}
+            <br><strong>Adresse :</strong>&nbsp${address}
+            ${privateEventLabel}
+            ${actionsLabel}
+          </p>
         </div>
-      </div>`
+      </div>
+      <div class="card__section">
+        <p>
+          <a href="/event/${item.slug}" ${titleClass}>
+            ${sliceStr(item.name, 25)}
+          </a>
+        </p>
+      </div>
+    </div>`
 }
 
 function getEvents (eventsDiv, orgaId = null, page = 1, archived = false) {
@@ -70,15 +74,18 @@ function getEvents (eventsDiv, orgaId = null, page = 1, archived = false) {
     const count = data.count
     const limit = data.limit
 
-    if (count) B('.eventsCount').innerHTML = ` (${count})` // adding the count
+    // adding the count
+    if (count) b('.eventsCount').innerHTML = ` (${count})`
+    else b('.eventsCount').innerHTML = ''
 
     // Add the events to the events div container
     eventsDiv.innerHTML = data2HTML(data, eventCardFormat, addNewBtn())
     // Add the pagination
-    if (count > limit) {
-      eventsDiv.innerHTML += pagination(currentPage, pages)
+    const paginationDiv = b('#eventsPagination')
+    if (paginationDiv && count > limit) {
+      paginationDiv.innerHTML = pagination(currentPage, pages)
       // Click on events pagination
-      BB('#events .pageBtn').on('click', e => {
+      bb('#eventsPagination .pageBtn').on('click', e => {
         let page = e.target.textContent
         if (page === '«' || page === `&laquo;`) {
           page = currentPage - 1
@@ -89,7 +96,7 @@ function getEvents (eventsDiv, orgaId = null, page = 1, archived = false) {
       })
     }
     // Add click event on new button
-    B('.card__new--event').on('click', () => {
+    b('.card__new--event').on('click', () => {
       location.href = `/events/add${orgaId ? `?orga=${orgaId.value}` : ''}`
     })
   })

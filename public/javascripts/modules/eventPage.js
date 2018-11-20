@@ -1,9 +1,9 @@
-import { B } from './bling'
+import { b } from './bling'
 import { initOrgaDropdown } from './utils'
 
 function loadGroupsList () {
-  const orgaSelect = B('#orga-select')
-  const orgaId = B('#orga-id')
+  const orgaSelect = b('#orga-select')
+  const orgaId = b('#orga-id')
   if (!orgaSelect || !orgaId) return
   initOrgaDropdown(orgaSelect, orgaId)
 }

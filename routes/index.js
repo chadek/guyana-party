@@ -1,12 +1,11 @@
 const express = require('express')
 
-const router = express.Router()
+const router = express.Router() // eslint-disable-line babel/new-cap
 const mainController = require('../controllers/mainController')
 const userController = require('../controllers/userController')
 const authController = require('../controllers/authController')
 const orgaController = require('../controllers/orgaController')
 const eventController = require('../controllers/eventController')
-// const subscriptionController = require('../controllers/subscriptionController')
 const { catchErrors } = require('../handlers/errorHandlers')
 
 /* Main */
@@ -30,20 +29,6 @@ router.post(
   authController.confirmedPasswords,
   catchErrors(authController.update)
 )
-
-/* Subscriptions */
-
-// router.get('/souscriptions', subscriptionController.subscriptionsPage)
-// router.get(
-//   '/souscriptions/free',
-//   authController.isLoggedIn,
-//   catchErrors(subscriptionController.selectFreeSubscription)
-// )
-// router.get(
-//   '/souscriptions/payment/:subscription',
-//   authController.isLoggedIn,
-//   subscriptionController.subscriptionPaymentPage
-// )
 
 /* Account */
 
@@ -98,8 +83,6 @@ router.get('/organism/id/:id', catchErrors(orgaController.getOrgaById))
 
 /* Events */
 
-// router.get('/events', eventController.eventsPage)
-// router.post('/events', eventController.eventsPage)
 router.get(
   '/events/add',
   authController.isLoggedIn,

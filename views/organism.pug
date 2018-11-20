@@ -39,8 +39,9 @@ block content
       .pure-u-1.text-center
         h3 Evènements en cours
           span.eventsCount
-      .pure-u-1.top-space.orga-events#events
+      .pure-u-1.top-space.cardGrid.orga-events#events
         p.top-space.text-center Chargement...
+      .pure-u-1.l-wrap.top-space#eventsPagination
     if orga
       input#orga-id(type="hidden" value=`${orga._id}`)
 

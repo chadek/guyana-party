@@ -157,7 +157,7 @@ exports.getOrgaBySlug = async (req, res, next) => {
 
 exports.getOrganisms = async (req, res) => {
   const page = req.queryInt('page') || 1
-  const limit = req.queryInt('limit') || 4
+  const limit = req.queryInt('limit') || 7
   const find = {
     author: req.user._id,
     status: { $regex: '^((?!archived).)*$', $options: 'i' }

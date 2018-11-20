@@ -95,7 +95,7 @@
   // background: transparent
   //   url("http://24.media.tumblr.com/ccb268832580ac12951828a1c179de69/tumblr_mo2xbk8JUK1st5lhmo1_1280.jpg")
   //   0 0 no-repeat fixed;
-  background: transparent url('/images/subscriptions.jpg') 0 0 no-repeat fixed;
+  background: transparent url("/images/subscriptions.jpg") 0 0 no-repeat fixed;
   text-align: center;
   background-size: cover;
   filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/subscriptions.jpg', sizingMethod='scale');
@@ -141,6 +141,7 @@
   text-align: center;
   bottom: 0;
   width: 100%;
+  margin-top: 25px;
   // &--fixed {
   //   position: fixed;
   //   width: 100%;

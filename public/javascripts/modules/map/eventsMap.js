@@ -1,4 +1,5 @@
 import Map from './olMap'
+import { b } from '../bling'
 import { axiosGet } from '../utils'
 
 const map = new Map({
@@ -6,7 +7,7 @@ const map = new Map({
   zoom: 11
 })
 
-const searchInput = document.querySelector('.search__input')
+const searchInput = b('.search__input')
 let searchInputValue = ''
 
 map.singleShowPoint(coords => {

@@ -64,7 +64,7 @@ class Map {
 
     // The default layers (add a debug tile layer in debug mode)
     const layers = [new Tile({ source })]
-    this.debug &&
+    if (this.debug) {
       layers.push(
         new Tile({
           source: new TileDebug({
@@ -73,6 +73,7 @@ class Map {
           })
         })
       )
+    }
 
     // Instanciate the map
     this.map = new OlMap({

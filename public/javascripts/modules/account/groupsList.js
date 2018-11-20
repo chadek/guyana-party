@@ -1,40 +1,38 @@
-import { B, BB } from '../bling'
+import { b, bb } from '../bling'
 import { axiosGet, data2HTML, sliceStr, addNewBtn, pagination } from '../utils'
 
 function groupCardFormat (item) {
   const imgSrc = item.photo ? `/uploads/${item.photo}` : `/images/default.jpg`
-  return `<div class="pure-u-1 u-lg-1-4 u-md-1-3 u-sm-1-2 l-content">
+  const typeLabel = item.type
+    ? `<strong>Type d'organisme :</strong> ${item.type}`
+    : ''
+  const addressLabel = item.location.address
+    ? `<br><strong>Adresse :</strong> ${item.location.address}`
+    : ''
+  const editLabel = `<a href="/organisms/${item.id}/edit">Modifier</a>`
+  const archiveLabel = `
+    <a href="/organism/${item.slug}?remove=true">Archiver</a>`
+
+  return `
     <div class="card">
       <div class="card__header">
         <img src="${imgSrc}" alt="photo organisme">
         <div class="card__header--content">
           <p>
-          ${item.type ? `<strong>Type d'organisme :</strong> ${item.type}` : ''}
-          <br><a href="/organism/${
-  item.slug
-}#events">Voir évènements associés</a>
-          <br><a href="/organism/${item.slug}#community">Voir communauté</a>
-          ${
-  item.location.address
-    ? `<br><strong>Adresse :</strong> ${item.location.address}`
-    : ''
-}
-          <!--<br><strong>Souscription :</strong> ${
-  item.subscription ? item.subscription : 'free'
-}
-          <br>(<a href="/souscriptions">Passer en PRO !</a>)-->
-          <br><a href="/organisms/${
-  item.id
-}/edit">Modifier</a> | <a href="/organism/${
-  item.slug
-}?remove=true">Archiver</a></p>
+            ${typeLabel}<br>
+            <a href="/organism/${item.slug}#events">
+              Voir évènements associés
+            </a>
+            <br><a href="/organism/${item.slug}#community">Voir communauté</a>
+            ${addressLabel}
+            <br>${editLabel} | ${archiveLabel}
+          </p>
         </div>
       </div>
       <div class="card__section">
         <p><a href="/organism/${item.slug}">${sliceStr(item.name)}</a></p>
       </div>
-    </div>
-  </div>`
+    </div>`
 }
 
 function getGroups (groupsDiv, page = 1) {
@@ -46,14 +44,17 @@ function getGroups (groupsDiv, page = 1) {
     const count = data.count
     const limit = data.limit
 
-    if (count) B('.groupsCount').innerHTML = ` (${count})` // adding the count
+    // adding the count
+    if (count) b('.groupsCount').innerHTML = ` (${count})`
+    else b('.groupsCount').innerHTML = ''
 
     // Add the groups to the groups div container
     groupsDiv.innerHTML = data2HTML(data, groupCardFormat, addNewBtn(true))
-    if (count > limit) {
-      groupsDiv.innerHTML += pagination(currentPage, pages)
+    const paginationDiv = b('#groupsPagination')
+    if (paginationDiv && count > limit) {
+      paginationDiv.innerHTML = pagination(currentPage, pages)
       // Click on groups pagination
-      BB('#orgas .pageBtn').on('click', e => {
+      bb('#groupsPagination .pageBtn').on('click', e => {
         let page = e.target.textContent
         if (page === '«' || page === `&laquo;`) {
           page = currentPage - 1
@@ -64,7 +65,7 @@ function getGroups (groupsDiv, page = 1) {
       })
     }
     // Add click event on new button
-    B('.card__new--group').on('click', () => (location.href = '/organisms/add'))
+    b('.card__new--group').on('click', () => (location.href = '/organisms/add'))
   })
 }
 
