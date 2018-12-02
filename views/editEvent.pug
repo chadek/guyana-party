@@ -1,11 +1,15 @@
 extends layout
 
+include mixins/_customMapStyle
+include mixins/_customMdeStyle
+include mixins/_customMapScript
+include mixins/_customMdeScript
 include mixins/_switchPublishEvent
 
 block customStyle
+  +customMapStyle()
+  +customMdeStyle()
   link(rel="stylesheet", href="/vendor/jquery/clockpicker/jquery.clockpicker.min.css")
-  link(rel="stylesheet", href="/vendor/ol/ol.css")
-  link(rel="stylesheet", href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css")
 
 block content
   //- pre #{h.dump(event)}
@@ -168,6 +172,8 @@ block content
 block customScripts
   script(src="/vendor/jquery/jquery.min.js")
   script(src="/vendor/jquery/clockpicker/jquery.clockpicker.min.js")
+  +customMapScript()
+  +customMdeScript()
   script(type="text/javascript").
     $(document).ready(function() {
       $(".clockpicker").clockpicker();

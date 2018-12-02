@@ -38,6 +38,10 @@ function init (dp1, dp2) {
     str = `${date.getFullYear()}-${month}-${day}`
     dp2.value = str
   }
+
+  dp1.on('change', e => {
+    dp2.value = dp1.value
+  })
 }
 
 function addEventForm (dp1, dp2, switchPublishEvent) {

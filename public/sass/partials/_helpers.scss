@@ -29,23 +29,19 @@
   }
 }
 
-@keyframes card_open {
-  0% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-192px);
-    opacity: 0;
-  }
-}
-
 .card {
   background: white;
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
   max-width: 220px;
   height: 225px;
   margin: 0.5em auto;
+  &:hover img {
+    transition: all 0.7s ease;
+    transform: translateY(-192px);
+    opacity: 0;
+    z-index: 1;
+  }
+
   &__header {
     position: relative;
     height: 185px;
@@ -56,10 +52,8 @@
       width: 100%;
       object-fit: cover;
       z-index: 2;
-      &.open {
-        animation: card_open 1s 1 ease-out;
-      }
     }
+
     &--content {
       position: absolute;
       padding: 0.5em;
@@ -92,7 +86,7 @@
     }
   }
 }
-.normaltext{
+.normaltext {
   font-style: normal;
   font-family: serif;
   font-weight: normal;

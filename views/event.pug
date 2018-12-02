@@ -1,10 +1,13 @@
 extends layout
 
+include mixins/_customMapStyle
+include mixins/_customMapScript
+include mixins/_customMdeScript
 include mixins/_removeDialog
 include mixins/_switchPublishEvent
 
 block customStyle
-  link(rel="stylesheet", href="/vendor/ol/ol.css")
+  +customMapStyle()
 
 block content
   .pure-g
@@ -17,10 +20,10 @@ block content
       .separator.top-space
       //- Name
       .pure-u-1.text-center
-        h2= event.name 
+        h2= event.name
           span.normaltext &nbsp; par
           a(href=`/organism/${orga.slug}`)= ` ${orga.name}`
-      
+
         //- Switches, Edit & Archive buttons
       if isOwner
         .pure-u-1.top-space.text-center
@@ -148,3 +151,7 @@ block content
       //- unless remove
       //-   .pure-u-1.top-space-40
       //-     button.pure-button.success.button.expanded(onClick=`location="/events/${event._id}/edit"`) Modifier
+
+block customScripts
+  +customMapScript()
+  +customMdeScript()

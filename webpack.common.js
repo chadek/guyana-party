@@ -8,7 +8,6 @@ const path = require('path')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const autoprefixer = require('autoprefixer')
-const devMode = process.env.NODE_ENV !== 'production'
 
 // This is our JavaScript rule that specifies what to do with .js files
 const javascript = {
@@ -46,7 +45,9 @@ const styles = {
 const config = {
   entry: {
     // we only have 1 entry, but I've set it up for multiple in the future
-    App: './public/javascripts/index.js'
+    App: './public/javascripts/index.js',
+    Map: './public/javascripts/modules/map/index.js',
+    Mde: './public/javascripts/modules/simplemde.js'
   },
   // Once things are done, we kick it out to a file.
   output: {
@@ -56,6 +57,12 @@ const config = {
     // we can use "substitutions" in file names like [name] and [hash]
     // name will be `App` because that is what we used above in our entry
     filename: '[name].bundle.js'
+    // chunkFilename: '[name].bundle.js'
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
   },
   // remember we said webpack sees everything as modules and how different loaders are responsible for different file types? Here is is where we implement them. Pass it the rules for our JS and our styles
   module: {
@@ -65,13 +72,13 @@ const config = {
     new CleanWebpackPlugin(['public/dist']),
     // here is where we tell it to output our css to a separate file
     new MiniCssExtractPlugin({
-      filename: devMode ? 'style.css' : 'style.[hash].css',
-      chunkFilename: devMode ? '[id].css' : '[id].[hash].css'
+      filename: '[name].style.css'
+      // chunkFilename: '[id].css'
     })
   ]
 }
 
 // webpack is cranky about some packages using a soon to be deprecated API. shhhhhhh
-// process.noDeprecation = true;
+process.noDeprecation = true
 
 module.exports = config
