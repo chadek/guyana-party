@@ -1,4 +1,5 @@
 import { B } from './bling'
+import { Thursday } from 'next-day';
 
 function init (dp1, dp2) {
   if (!dp1 || !dp2) return
@@ -62,6 +63,8 @@ function addEventForm (dp1, dp2, switchPublishEvent) {
       $("#endtime").val(starttime.value)
     }
   })
+
+  
 
   // const occurringdays = document.getElementById("daysocc")
   // occurring.on('change', (e)=>{
