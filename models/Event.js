@@ -24,15 +24,13 @@ const eventSchema = new mongoose.Schema(
     start: Date,
     end: Date,
     occurring: {
-      type: String,
-      default: 'none'
+      days: [String]
     },
     published: {
       date: Date,
       publisher: {
         type: mongoose.Schema.ObjectId,
-        ref: 'User'
-        // required: 'Publisher required'
+        ref: 'User',
       }
     },
     location: {

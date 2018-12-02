@@ -65,6 +65,80 @@ block content
             input.pure-u-3-4#endtime(type="text" readonly)
           input#event-start(type="hidden" value=`${event.start}`)
           input#event-end(type="hidden" value=`${event.end}`)
+
+        //- ne rien afficher si il n'y a rien dans la liste event.occurring.days
+        if !(event.occurring.days === undefined || event.occurring.days.length == 0)
+          .pure-u-1
+            label.pure-u-1= `Récurrence de l'évènement :`
+            ul.ul-daysdisabled
+            if event.occurring.days.includes("monday")
+              li.li-daydisabled
+                input(type="checkbox" id="monday" name="occurring[days][]" value="monday" checked disabled)
+                label(for="monday") Lundi &nbsp;
+            else
+              li.li-daydisabled
+                input(type="checkbox" id="monday" name="occurring[days][]" value="monday" disabled)
+                label(for="monday") Lundi &nbsp;
+
+            if event.occurring.days.includes("tuesday")
+              li.li-daydisabled
+                input(type="checkbox" id="tuesday" name="occurring[days][]" value="tuesday" checked disabled)
+                label(for="tuesday") Mardi &nbsp;
+            else
+              li.li-daydisabled
+                input(type="checkbox" id="tuesday" name="occurring[days][]" value="tuesday" disabled)
+                label(for="tuesday") Mardi &nbsp;
+
+            if event.occurring.days.includes("wednesday")
+              li.li-daydisabled
+                input(type="checkbox" id="wednesday" name="occurring[days][]" value="wednesday" checked disabled)
+                label(for="wednesday") Mercredi &nbsp;
+            else
+              li.li-daydisabled
+                input(type="checkbox" id="wednesday" name="occurring[days][]" value="wednesday" disabled)
+                label(for="wednesday") Mercredi &nbsp;
+            
+            if event.occurring.days.includes("thursday")
+              li.li-daydisabled
+                input(type="checkbox" id="thursday" name="occurring[days][]" value="thursday" checked disabled)
+                label(for="thursday") Jeudi &nbsp;
+            else
+              li.li-daydisabled
+                input(type="checkbox" id="thursday" name="occurring[days][]" value="thursday" disabled)
+                label(for="thursday") Jeudi &nbsp;
+
+            if event.occurring.days.includes("friday")
+              li.li-daydisabled
+                input(type="checkbox" id="friday" name="occurring[days][]" value="friday" checked disabled)
+                label(for="friday") Vendredi &nbsp;
+            else
+              li.li-daydisabled
+                input(type="checkbox" id="friday" name="occurring[days][]" value="friday" disabled)
+                label(for="friday") Vendredi &nbsp;
+            
+            if event.occurring.days.includes("saturday")
+              li.li-daydisabled
+                input(type="checkbox" id="saturday" name="occurring[days][]" value="saturday" checked disabled)
+                label(for="saturday") Samedi &nbsp;
+            else
+              li.li-daydisabled
+                input(type="checkbox" id="saturday" name="occurring[days][]" value="saturday" disabled)
+                label(for="saturday") Samedi &nbsp;
+
+            if event.occurring.days.includes("sunday")
+              li.li-daydisabled
+                input(type="checkbox" id="sunday" name="occurring[days][]" value="sunday" checked disabled)
+                label(for="sunday") Dimanche &nbsp;
+            else
+              li.li-daydisabled
+                input(type="checkbox" id="sunday" name="occurring[days][]" value="sunday" disabled)
+                label(for="sunday") Dimanche &nbsp;
+            
+
+          
+            
+
+
         .pure-u-1.normaltext
           p.text-center= event.location.address
       //- Event location

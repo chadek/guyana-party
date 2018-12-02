@@ -1,4 +1,5 @@
 import { B } from './bling'
+import { Thursday } from 'next-day';
 
 function init (dp1, dp2) {
   if (!dp1 || !dp2) return
@@ -46,13 +47,40 @@ function init (dp1, dp2) {
 function addEventForm (dp1, dp2, switchPublishEvent) {
   init(dp1, dp2)
 
-  // const time1 = document.getElementById("horloge1");
-  // const time2 = document.getElementById('horloge2')
-  // $('#horloge1').change(e => {
-  //   console.log('Hello time !')
-  //   // console.log($(time1).val())
-  //   $('#endtime').val(starttime.value)
+  dp1.on('change', (e)=>{
+    if (dp2.value < dp1.value) {
+      // console.log("la date de fin est avant la date de début")
+      dp2.value = dp1.value
+      // il faut changer aussi l'heure de fin
+      $("#endtime").val(starttime.value)
+    }
+    
+    
+  })
+
+
+  $("#horloge1").change((e)=>{
+    if (dp2.value > dp1.value) {
+      console.log("on ne change pas l'heure de fin")
+    }else{
+      console.log("Si la date de fin en plus tot de que la date de début alors on peux changer l'heure de début")
+      $("#endtime").val(starttime.value)
+    }
+  })
+
+  
+
+  // const occurringdays = document.getElementById("daysocc")
+  // occurring.on('change', (e)=>{
+  //   console.log(occurring.checked)
+  //   if (occurring.checked) {
+  //     occurringdays.classList.remove("hidden")
+  //   } else {
+  //     occurringdays.classList.add("hidden")
+  //   }
   // })
+
+
 
   if (!switchPublishEvent) return
   let eventId = document.getElementById('id')
