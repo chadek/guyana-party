@@ -1,5 +1,4 @@
 import { B } from './bling'
-import { Thursday } from 'next-day';
 
 function init (dp1, dp2) {
   if (!dp1 || !dp2) return
