@@ -47,9 +47,9 @@ function addEventForm (dp1, dp2, switchPublishEvent, isrec) {
 
 
   date1.addEventListener("change", (e)=>{
-    console.log("Laisse moi toucher ta date de début !")
+    // console.log("Laisse moi toucher ta date de début !")
     if (date2.value < date1.value) {
-      console.log("la date de fin est avant la date de début")
+      // console.log("la date de fin est avant la date de début")
       date2.value = date1.value
       // il faut changer aussi l'heure de fin
       $("#endtime").val(starttime.value)
@@ -57,12 +57,12 @@ function addEventForm (dp1, dp2, switchPublishEvent, isrec) {
   })
 
   const clock1 = document.getElementById("horloge1")
-  clock1.addEventListener("chanage", (e)=>{
-    console.log("Je te touche enfoiré de clock!")
+  clock1.addEventListener("change", (e)=>{
+    // console.log("Je te touche enfoiré de clock!")
     if (dp2.value > dp1.value) {
-      console.log("on ne change pas l'heure de fin")
+      // console.log("on ne change pas l'heure de fin")
     }else{
-      console.log("Si la date de fin en plus tot de que la date de début alors on peux changer l'heure de début")
+      // console.log("Si la date de fin en plus tot de que la date de début alors on peux changer l'heure de début")
       $("#endtime").val(starttime.value)
     }
   })
@@ -74,9 +74,9 @@ function addEventForm (dp1, dp2, switchPublishEvent, isrec) {
   isrec.on('change', (e)=>{
     console.log(isrec.checked)
     if (isrec.checked) {
-      checkday.classList.remove("hidden")
+      checkday.classList.toggle("hidden")
     } else {
-      checkday.classList.add("hidden")
+      checkday.classList.toggle("hidden")
       document.getElementById("monday").checked = false
       document.getElementById("thuesday").checked = false
       document.getElementById("wednesday").checked = false

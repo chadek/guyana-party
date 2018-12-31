@@ -24,7 +24,7 @@ const eventSchema = new mongoose.Schema(
     start: Date,
     end: Date,
     occurring: {
-      days: [String]
+      day: [String]
     },
     published: {
       date: Date,
