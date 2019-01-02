@@ -167,7 +167,7 @@ function lookForNextOccurring (event){
     NextDatesInTheWeek.sort(function(a,b){return a.getTime() - b.getTime()});
   }
   // console.log("La prochaine date est : "+ NextDatesInTheWeek[0])
-  return NextDatesInTheWeek[0]
+  return formatEventStart(NextDatesInTheWeek[0])
 }
 
 //avant d'appeler la fonction formatEventStart, vérifier si l'évènement à quelque chose dans la liste 
@@ -182,7 +182,7 @@ function showEventsList (events) {
     const imgSrc = event.photo
       ? `/uploads/${event.photo}`
       : '/images/icons/logo.png'
-    const start = formatEventStart(event.start)
+    var start = formatEventStart(event.start)
 
     console.log(event.occurring.day)
 
@@ -190,7 +190,7 @@ function showEventsList (events) {
       console.log("Il n'y a aps d'occ ici")
     }else{
       // const nextocc = lookForNextOccurring(event)
-      lookForNextOccurring(event)
+      start = lookForNextOccurring(event)
       // console.log(nextocc)
     }
     
@@ -202,7 +202,6 @@ function showEventsList (events) {
           <h4>${event.name}</h4>
           <h4>${event.organism.name}</h4>
           <span>${start}</span>
-          <span>Ruc muche</span>
           <br><code>${map.getGPSToHDMS(event.location.coordinates)}</code>
         </div>
       </li>`

@@ -5,7 +5,6 @@ const Organism = mongoose.model('Organism')
 // const { promisify } = require("es6-promisify");
 const store = require('store')
 const moment = require('moment-timezone')
-const nextDay = require('next-day')
 const { getPagedItems, confirmOwner } = require('../handlers/tools')
 
 // exports.eventsPage = (req, res) => {
@@ -286,8 +285,10 @@ exports.getSearchResult = async (req, res) => {
     {
       _id: false,
       slug: 1,
+      occurring: 1,
       name: 1,
       start: 1,
+      end: 1,
       photo: 1,
       'location.coordinates': 1
     },
