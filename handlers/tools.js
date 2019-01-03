@@ -24,6 +24,7 @@ exports.getPagedItems = async (model, page, limit, find, projection, sort) => {
     page,
     pages: Math.ceil(count / limit),
     count,
+    limit,
     isErrorPage: !items.length && skip
   }
 }

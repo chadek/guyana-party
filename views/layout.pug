@@ -1,4 +1,3 @@
-//- include mixins/_sideMenu
 include mixins/_topMenu
 include mixins/_footer
 
@@ -6,10 +5,10 @@ doctype html
 html
   head
     title= `${title} | ${h.siteName}`
-    block customStyle
     link(rel="stylesheet", href="/vendor/pure/pure-min.css")
     link(rel="stylesheet", href="/vendor/pure/grid.css")
-    link(rel="stylesheet", href="/dist/style.css")
+    link(rel="stylesheet", href="/dist/App.style.css")
+    block customStyle
     link(rel="shortcut icon" type="image/png" href="/images/icons/favicon.ico")
     meta(charset="utf-8")
     meta(http-equiv="x-ua-compatible" content="ie=edge")
@@ -19,18 +18,7 @@ html
     +topMenu()
 
     #layout
-      //- Menu toggle
-      //- a.menu-link.active#menuLink(href="#menu")
-        //- Hamburger icon
-        //- span
-      //- +sideMenu()
-      //- +topMenu()
-
       #content
-        //-unless currentPath == "/"
-          .home-link.l-box
-            a(href="/") ← accueil
-
         if flashes
           .row.flash-messages.inner
             - const categories = Object.keys(flashes)
@@ -47,5 +35,6 @@ html
 
     +footer()
 
-block customScripts
 script(src="/dist/App.bundle.js")
+script(src="/dist/vendors~App~Map.bundle.js")
+block customScripts

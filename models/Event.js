@@ -52,8 +52,8 @@ const eventSchema = new mongoose.Schema(
     },
     organism: {
       type: mongoose.Schema.ObjectId,
-      ref: 'Organism',
-      required: "L'organisme de l'évènement est requis."
+      ref: 'Organism'
+      // required: "L'organisme de l'évènement est requis."
     },
     timezone: String, // ex: "(UTC-03:00) America/Cayenne"
     status: {

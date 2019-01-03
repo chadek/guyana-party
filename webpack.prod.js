@@ -15,10 +15,10 @@ module.exports = merge(require('./webpack.common.js'), {
       }),
       new OptimizeCSSAssetsPlugin({})
     ]
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    })
-  ]
+  }
+  // plugins: [
+  //   new webpack.DefinePlugin({
+  //     'process.env.NODE_ENV': JSON.stringify('production')
+  //   })
+  // ]
 })
