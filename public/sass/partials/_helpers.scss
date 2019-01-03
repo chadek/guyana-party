@@ -32,16 +32,14 @@
 .card {
   background: white;
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
-  max-width: 220px;
+  width: 220px;
   height: 225px;
-  margin: 0.5em auto;
   &:hover img {
     transition: all 0.7s ease;
     transform: translateY(-192px);
     opacity: 0;
     z-index: 1;
   }
-
   &__header {
     position: relative;
     height: 185px;
@@ -53,7 +51,6 @@
       object-fit: cover;
       z-index: 2;
     }
-
     &--content {
       position: absolute;
       padding: 0.5em;
@@ -75,7 +72,7 @@
   &__new {
     cursor: pointer;
     &:after {
-      content: '+';
+      content: "+";
       display: block;
       position: relative;
       left: calc(50% - 10px);
@@ -86,6 +83,23 @@
     }
   }
 }
+
+.cardGrid {
+  display: grid;
+  grid-row-gap: 30px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  @media (min-width: $sm) and (max-width: $lg) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  @media (min-width: $xs) and (max-width: $sm) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width: $xs) {
+    grid-template-columns: 1fr;
+  }
+  justify-items: center;
+}
+
 .normaltext {
   font-style: normal;
   font-family: serif;

@@ -44,7 +44,7 @@ const styles = {
 // OK - now it's time to put it all together
 const config = {
   entry: {
-    // we only have 1 entry, but I've set it up for multiple in the future
+    // we only have an entry for each main module
     App: './public/javascripts/index.js',
     Map: './public/javascripts/modules/map/index.js',
     Mde: './public/javascripts/modules/simplemde.js'

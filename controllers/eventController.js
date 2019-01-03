@@ -29,7 +29,7 @@ const getTZList = () => {
   moment.tz.load(require('../public/vendor/timezone/timezone.json'))
   // conlole.log(momenttz);
   const tzNamesList = moment.tz.names()
-  let tzList = []
+  const tzList = []
   for (let i = 0; i < tzNamesList.length; i++) {
     const zone = moment.tz.zone(tzNamesList[i])
     const tzValue = moment.tz(time, zone.name).format('Z')
@@ -240,37 +240,46 @@ exports.getEvents = async (req, res) => {
   const page = req.queryInt('page') || 1
   const limit = req.queryInt('limit') || 7
   const orga = req.queryString('orga')
+  const archived = req.queryString('archived')
   // We want events by status, organism (if available) otherwise by author
+  const status = archived ? '^archived$' : '^((?!archived).)*$'
   const find = orga
     ? {
       organism: orga,
-      status: { $regex: '^((?!archived).)*$', $options: 'i' }
+      status: { $regex: status, $options: 'i' }
     }
     : {
       author: req.user._id,
-      status: { $regex: '^((?!archived).)*$', $options: 'i' }
+      status: { $regex: status, $options: 'i' }
     }
   // Paginate the events list
-  const result = await getPagedItems(Event, page, limit, find, {}, { start: 1 })
+  const result = await getPagedItems(
+    Event,
+    page,
+    limit,
+    find,
+    {},
+    { start: -1 }
+  )
   res.json(result)
 }
 
 /** route : /api/search */
 exports.getSearchResult = async (req, res) => {
   const page = req.queryInt('page') || 1
-  const limit = req.queryInt('limit') || 0
+  const limit = req.queryInt('limit') || 10
   const search = req.queryString('q')
   const lon = req.queryString('lon')
   const lat = req.queryString('lat')
   const maxDistance = req.queryInt('maxdistance') || 10000 // 10km
   // We want published events by location (if available), name or description
-  let find = {
+  const find = {
     $or: [
       { name: { $regex: search, $options: 'i' } },
       { description: { $regex: search, $options: 'i' } }
     ],
     status: 'published',
-    start: { $lte: Date.now() },
+    // start: { $lte: Date.now() },
     end: { $gte: Date.now() },
     public: true
   }

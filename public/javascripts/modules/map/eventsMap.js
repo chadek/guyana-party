@@ -1,4 +1,5 @@
 import Map from './olMap'
+import { b } from '../bling'
 import { axiosGet } from '../utils'
 var nextDay = require('next-day');
 
@@ -7,7 +8,7 @@ const map = new Map({
   zoom: 11
 })
 
-const searchInput = document.querySelector('.search__input')
+const searchInput = b('.search__input')
 let searchInputValue = ''
 
 map.singleShowPoint(coords => {
@@ -83,10 +84,16 @@ function showEvents (search, lon, lat, maxDistance = 20000) {
 }
 
 function formatEventStart (isoStart) {
+<<<<<<< HEAD
   let start = new Date(isoStart)
   let month = start.getMonth()+1 
   let srtStartDate = `Le ${('0' + start.getDate()).slice(-2)}/${(
     '0' + month 
+=======
+  const start = new Date(isoStart)
+  return `Le ${('0' + start.getDate()).slice(-2)}/${(
+    '0' + start.getMonth()
+>>>>>>> f3742d9f76b6a836de76f6e1233f4a34ba7c8417
   ).slice(-2)}/${start.getFullYear()} à ${('0' + start.getHours()).slice(
     -2
     )}:${('0' + start.getMinutes()).slice(-2)}`
