@@ -1,11 +1,18 @@
 node_modules/
+eslint_result.html
 .DS_Store
-_DS_Store
 *.log
-.idea
-.vscode
 variables.env
 package-lock.json
 public/dist/
 public/uploads/*
 !public/uploads/.gitkeep
+data/backup/*
+!data/backup/.gitkeep
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

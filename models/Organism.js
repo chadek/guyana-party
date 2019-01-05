@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
-mongoose.Promise = global.Promise
 const slug = require('slugs')
+
+mongoose.Promise = global.Promise
 
 const OrganismSchema = new mongoose.Schema(
   {
@@ -36,14 +37,14 @@ const OrganismSchema = new mongoose.Schema(
     },
     photo: String,
     author: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: "L'auteur de l'organisme est requis."
     },
     community: [
       {
         user: {
-          type: mongoose.Schema.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
           required: "La référence de l'utilisateur est requise."
         },

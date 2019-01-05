@@ -1,4 +1,4 @@
-;(() => {
+(() => {
   const mapDiv = document.getElementById('map')
   if (!mapDiv) return
   const single = document.querySelector('.single')

@@ -8,16 +8,17 @@ mixin communityList(communityList, isAdmin, showAction=true)
         if isAdmin && showAction
           th Actions
     tbody
-      each item in communityList
+      each member in communityList
         tr(style="cursor: pointer;")
           //- Name
-          td(onClick=`location='/account/${item.id}'`) #{item.user.name}
+          //- td(onClick=`location='/account/${member._id}'`) #{member.name}
+          td #{member.name}
           //- Role
           td.text-center
-            if item.role=="admin"
+            if member.role=="admin"
               strong admin
             else
-              #{item.role}
+              #{member.role}
           //- Actions
           if isAdmin && showAction
             td

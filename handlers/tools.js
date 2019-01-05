@@ -15,10 +15,7 @@ exports.getPagedItems = async (model, page, limit, find, projection, sort) => {
     .skip(skip)
     .limit(limit)
     .sort(sort)
-  const [items, count] = await Promise.all([
-    itemsPromise,
-    model.estimatedDocumentCount(find)
-  ])
+  const [items, count] = await Promise.all([itemsPromise, model.count(find)])
   return {
     items,
     page,
@@ -32,5 +29,11 @@ exports.getPagedItems = async (model, page, limit, find, projection, sort) => {
 exports.confirmOwner = function (model, user) {
   if (!user || !model.author.equals(user._id)) {
     throw Error('Vous ne pouvez pas effectuer cet action !')
+  }
+}
+
+exports.asyncForEach = async function (array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array)
   }
 }

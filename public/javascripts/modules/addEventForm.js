@@ -1,4 +1,4 @@
-import { B } from './bling'
+import { b } from './bling'
 
 function init (dp1, dp2) {
   if (!dp1 || !dp2) return
@@ -43,41 +43,55 @@ function init (dp1, dp2) {
   })
 }
 
-function addEventForm (dp1, dp2, switchPublishEvent) {
+function addEventForm (dp1, dp2, switchPublishEvent, isrec) {
   init(dp1, dp2)
 
-  dp1.on('change', (e)=>{
-    if (dp2.value < dp1.value) {
+  const date1 = document.getElementById("dp1")
+  const date2 = document.getElementById("dp2")
+
+
+  date1.addEventListener("change", (e)=>{
+    // console.log("Laisse moi toucher ta date de début !")
+    if (date2.value < date1.value) {
       // console.log("la date de fin est avant la date de début")
-      dp2.value = dp1.value
+      date2.value = date1.value
       // il faut changer aussi l'heure de fin
       $("#endtime").val(starttime.value)
-    }
-    
-    
+    } 
   })
 
-
-  $("#horloge1").change((e)=>{
+  const clock1 = document.getElementById("horloge1")
+  clock1.addEventListener("change", (e)=>{
+    // console.log("Je te touche enfoiré de clock!")
     if (dp2.value > dp1.value) {
-      console.log("on ne change pas l'heure de fin")
+      // console.log("on ne change pas l'heure de fin")
     }else{
-      console.log("Si la date de fin en plus tot de que la date de début alors on peux changer l'heure de début")
+      // console.log("Si la date de fin en plus tot de que la date de début alors on peux changer l'heure de début")
       $("#endtime").val(starttime.value)
     }
   })
 
   
 
-  // const occurringdays = document.getElementById("daysocc")
-  // occurring.on('change', (e)=>{
-  //   console.log(occurring.checked)
-  //   if (occurring.checked) {
-  //     occurringdays.classList.remove("hidden")
-  //   } else {
-  //     occurringdays.classList.add("hidden")
-  //   }
-  // })
+  const checkday = document.getElementById("checkday")
+
+  isrec.on('change', (e)=>{
+    console.log(isrec.checked)
+    if (isrec.checked) {
+      checkday.classList.toggle("hidden")
+    } else {
+      checkday.classList.toggle("hidden")
+      document.getElementById("monday").checked = false
+      document.getElementById("thuesday").checked = false
+      document.getElementById("wednesday").checked = false
+      document.getElementById("thursday").checked = false
+      document.getElementById("friday").checked = false
+      document.getElementById("saturday").checked = false
+      document.getElementById("sunday").checked = false
+      // uncheck all days
+
+    }
+  })
 
 
 
@@ -85,24 +99,24 @@ function addEventForm (dp1, dp2, switchPublishEvent) {
   let eventId = document.getElementById('id')
   if (eventId) {
     eventId = eventId.value
-    const publicCheckbox = B('label.form-switch-public input')
+    const publicCheckbox = b('label.form-switch-public input')
     if (publicCheckbox) {
-      const span = B('label.form-switch-public span')
+      const span = b('label.form-switch-public span')
       publicCheckbox.on('click', function () {
         span.innerHTML = '<strong>action en cours...</strong>'
-        if (this.checked) {
+        if (publicCheckbox.checked) {
           window.location = `/events/${eventId}/gopublic`
         } else {
           window.location = `/events/${eventId}/gopublic?cancel=true`
         }
       })
     }
-    const publishCheckbox = B('label.form-switch-publish input')
+    const publishCheckbox = b('label.form-switch-publish input')
     if (publishCheckbox) {
-      const span = B('label.form-switch-publish span')
+      const span = b('label.form-switch-publish span')
       publishCheckbox.on('click', function () {
         span.innerHTML = '<strong>action en cours...</strong>'
-        if (this.checked) {
+        if (publishCheckbox.checked) {
           window.location = `/events/${eventId}/publish`
         } else {
           window.location = `/events/${eventId}/publish?cancel=true`
