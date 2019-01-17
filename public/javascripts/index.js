@@ -33,13 +33,5 @@ if (fileUpload) {
   })
 }
 
-<<<<<<< HEAD
-account()
-
-loadEventsOrgasList(B('#events'), B('#orgas'), B('#orga-select'))
-initDates(B('#event-start'), B('#event-end'))
-addEventForm(B('#dp1'), B('#dp2'), B('.switch-publish-event'), B('#isrec'))
-=======
 initDates(b('#event-start'), b('#event-end'))
 addEventForm(b('#dp1'), b('#dp2'), b('.switch-publish-event'))
->>>>>>> f3742d9f76b6a836de76f6e1233f4a34ba7c8417

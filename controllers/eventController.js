@@ -5,10 +5,6 @@ const Organism = mongoose.model('Organism')
 // const { promisify } = require("es6-promisify");
 const store = require('store')
 const moment = require('moment-timezone')
-<<<<<<< HEAD
-=======
-//const nextDay = require('next-day')
->>>>>>> 8626895283e6dd559cd2426626099640b0562264
 const { getPagedItems, confirmOwner } = require('../handlers/tools')
 
 // exports.eventsPage = (req, res) => {
@@ -101,8 +97,6 @@ exports.create = async (req, res) => {
     )
     .notEmpty()
   req.checkBody('description', 'Veuillez saisir une description.').notEmpty()
-  
-
   const errors = req.validationErrors()
   if (errors) {
     store.set('form-errors', errors.map(err => err.param))
@@ -303,10 +297,8 @@ exports.getSearchResult = async (req, res) => {
     {
       _id: false,
       slug: 1,
-      occurring: 1,
       name: 1,
       start: 1,
-      end: 1,
       photo: 1,
       'location.coordinates': 1
     },

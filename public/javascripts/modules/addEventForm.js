@@ -43,57 +43,16 @@ function init (dp1, dp2) {
   })
 }
 
-function addEventForm (dp1, dp2, switchPublishEvent, isrec) {
+function addEventForm (dp1, dp2, switchPublishEvent) {
   init(dp1, dp2)
 
-  const date1 = document.getElementById("dp1")
-  const date2 = document.getElementById("dp2")
-
-
-  date1.addEventListener("change", (e)=>{
-    // console.log("Laisse moi toucher ta date de début !")
-    if (date2.value < date1.value) {
-      // console.log("la date de fin est avant la date de début")
-      date2.value = date1.value
-      // il faut changer aussi l'heure de fin
-      $("#endtime").val(starttime.value)
-    } 
-  })
-
-  const clock1 = document.getElementById("horloge1")
-  clock1.addEventListener("change", (e)=>{
-    // console.log("Je te touche enfoiré de clock!")
-    if (dp2.value > dp1.value) {
-      // console.log("on ne change pas l'heure de fin")
-    }else{
-      // console.log("Si la date de fin en plus tot de que la date de début alors on peux changer l'heure de début")
-      $("#endtime").val(starttime.value)
-    }
-  })
-
-  
-
-  const checkday = document.getElementById("checkday")
-
-  isrec.on('change', (e)=>{
-    console.log(isrec.checked)
-    if (isrec.checked) {
-      checkday.classList.toggle("hidden")
-    } else {
-      checkday.classList.toggle("hidden")
-      document.getElementById("monday").checked = false
-      document.getElementById("thuesday").checked = false
-      document.getElementById("wednesday").checked = false
-      document.getElementById("thursday").checked = false
-      document.getElementById("friday").checked = false
-      document.getElementById("saturday").checked = false
-      document.getElementById("sunday").checked = false
-      // uncheck all days
-
-    }
-  })
-
-
+  // const time1 = document.getElementById("horloge1");
+  // const time2 = document.getElementById('horloge2')
+  // $('#horloge1').change(e => {
+  //   console.log('Hello time !')
+  //   // console.log($(time1).val())
+  //   $('#endtime').val(starttime.value)
+  // })
 
   if (!switchPublishEvent) return
   let eventId = document.getElementById('id')

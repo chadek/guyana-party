@@ -1,7 +1,6 @@
 import Map from './olMap'
 import { b } from '../bling'
 import { axiosGet } from '../utils'
-var nextDay = require('next-day');
 
 const map = new Map({
   mouseWheelZoom: true,
@@ -84,26 +83,12 @@ function showEvents (search, lon, lat, maxDistance = 20000) {
 }
 
 function formatEventStart (isoStart) {
-<<<<<<< HEAD
-  let start = new Date(isoStart)
-  let month = start.getMonth()+1 
-  let srtStartDate = `Le ${('0' + start.getDate()).slice(-2)}/${(
-    '0' + month 
-=======
   const start = new Date(isoStart)
   return `Le ${('0' + start.getDate()).slice(-2)}/${(
     '0' + start.getMonth()
->>>>>>> f3742d9f76b6a836de76f6e1233f4a34ba7c8417
   ).slice(-2)}/${start.getFullYear()} à ${('0' + start.getHours()).slice(
     -2
-    )}:${('0' + start.getMinutes()).slice(-2)}`
-
-  // return `Le ${('0' + start.getDate()).slice(-2)}/${(
-  //   '0' + start.getMonth()
-  // ).slice(-2)}/${start.getFullYear()} à ${('0' + start.getHours()).slice(
-  //   -2
-  // )}:${('0' + start.getMinutes()).slice(-2)}`
-  return srtStartDate
+  )}:${('0' + start.getMinutes()).slice(-2)}`
 }
 
 function onEventHTMLFn (event) {
@@ -139,49 +124,6 @@ function userPosHTMLFn (coords, hdms) {
     </div>`
 }
 
-function lookForNextOccurring (event){
-  var NextDatesInTheWeek = []
-  var nextdate
-  const today = new Date()
-  const end = new Date(event.end)
-
-  // console.log("Date de début : " + event.start)
-  // console.log(event)
-
-  event.occurring.day.forEach(day =>{
-    var Day = day.charAt(0).toUpperCase() + day.slice(1)
-    var time = new Date(event.start)
-    // console.log("Récurence en majuscule "+Day)
-    nextdate = nextDay(today, nextDay[Day])
-    // console.log("Prochaine occurrence au format moche : " + nextdate.date)
-    var datetoiso = new Date(nextdate.date.toISOString())
-    // console.log("Date to iso : "+ new Date(datetoiso))
-    // maitenant il faut remettre la bonne heure!
-    var bonneD = new Date(datetoiso.getFullYear(), datetoiso.getMonth(), datetoiso.getDate(), time.getHours(), time.getMinutes(), time.getMilliseconds(), time.getTimezoneOffset() )
-    // console.log("tentative de bonne heure réussi ! "+ bonneD)
-    // console.log("iso to texte : "+formatEventStart(bonneD))
-
-    if (bonneD <= end){
-      // si la prochaine occurrence est bien dans la période
-      console.log("On passe de temps en temps dans le test")
-      NextDatesInTheWeek.push(bonneD)
-    }
-    
-  })
-
-  console.log("NextDatesInTheWeek : " + NextDatesInTheWeek)
-  if (NextDatesInTheWeek.length >= 1){
-    NextDatesInTheWeek.sort(function(a,b){return a.getTime() - b.getTime()});
-  }
-  // console.log("La prochaine date est : "+ NextDatesInTheWeek[0])
-  return formatEventStart(NextDatesInTheWeek[0])
-}
-
-//avant d'appeler la fonction formatEventStart, vérifier si l'évènement à quelque chose dans la liste 
-// event.occurring.day === undefined || event.occurring.day.length == 0 
-// si oui => chercher la date de la prochaine occurence puis retourner la date 
-
-
 function showEventsList (events) {
   const homeList = document.getElementById('resultelements')
   homeList.innerHTML = ''
@@ -189,18 +131,7 @@ function showEventsList (events) {
     const imgSrc = event.photo
       ? `/uploads/${event.photo}`
       : '/images/icons/logo.png'
-    var start = formatEventStart(event.start)
-
-    console.log(event.occurring.day)
-
-    if (event.occurring.day === undefined || event.occurring.day.length == 0){
-      console.log("Il n'y a aps d'occ ici")
-    }else{
-      // const nextocc = lookForNextOccurring(event)
-      start = lookForNextOccurring(event)
-      // console.log(nextocc)
-    }
-    
+    const start = formatEventStart(event.start)
     homeList.innerHTML += `
       <li class="pure-u-1 result-element"
         onclick="location.href='/event/${event.slug}'">
@@ -214,5 +145,3 @@ function showEventsList (events) {
       </li>`
   })
 }
-
-// <span>${nextocc}</span>

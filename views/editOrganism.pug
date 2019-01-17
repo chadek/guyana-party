@@ -19,7 +19,7 @@ block content
       if orga
         .pure-u-1.photo-orga-event
           //- Logo
-          img(src=(orga.photo ? `/uploads/${orga.photo}` : "/images/default.jpg") alt="Logo de l'organisme")
+          img(src=(orga.photo ? `/uploads/${orga.photo}` : "/images/default.jpg") alt="Flyer de l'évènement")
         .separator.top-space
       form.pure-u-1(action=`/organisms/add${orga?`/${orga._id}`:""}?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
         - const savedData = h.store.get("editorgas-form-data")
@@ -34,7 +34,7 @@ block content
           //- Name
           .pure-u-1.top-space-40
             span.pure-u-2-24.icon!= h.icon("clipboard-pencil")
-            input.pure-u-22-24( autocomplete="off" type="text" placeholder="Nom de votre groupe" name="name" value=`${savedData?savedData.name:(orga ? orga.name : "")}` class=`${errorData && errorData.includes("name")?"error":""}` required)
+            input.pure-u-22-24(type="text" placeholder="Nom de votre groupe" name="name" value=`${savedData?savedData.name:(orga ? orga.name : "")}` class=`${errorData && errorData.includes("name")?"error":""}` required)
           //- Logo input
           .pure-u-1.top-space-40.text-center
             label.pure-button.pure-button-primary(for="fileUpload") Logo du groupe
@@ -61,7 +61,7 @@ block content
           .pure-u-1.top-space-40
             label Description du groupe et de vos actions :
           .pure-u-1.top-space
-            textarea#md( autocomplete="off" name="description" value=`${savedData?savedData.description:(orga ? orga.description : "")}` placeholder="Donnez envie !") #{savedData?savedData.description:(orga ? orga.description : "")}
+            textarea#md(name="description" value=`${savedData?savedData.description:(orga ? orga.description : "")}` placeholder="Donnez envie !") #{savedData?savedData.description:(orga ? orga.description : "")}
           //-.pure-u-1.top-space
             label Où se situe votre siège social ?
             #map.no-events
