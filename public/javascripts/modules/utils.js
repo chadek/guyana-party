@@ -110,7 +110,7 @@ function addNewBtn (isGroup = false) {
     typeClass = 'card__new--group'
     title = 'Ajouter un groupe'
   }
-  return `<div class="">
+  return `<div>
     <div class="card card__new ${typeClass}" title="${title}"></div>
   </div>`
 }
