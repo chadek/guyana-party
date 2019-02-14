@@ -19,7 +19,8 @@
     "no-debugger": 0,
     "no-alert": 0,
     "no-console": 0,
-    "no-unused-vars": "error",
+    "no-var": "error",
+    "no-unused-vars": 1,
     "prefer-const": [
       "error",
       {
@@ -29,7 +30,7 @@
     "comma-dangle": 1,
     "import/prefer-default-export": 1,
     "babel/new-cap": 1,
-    "babel/no-invalid-this": 0,
+    "babel/no-invalid-this": 1,
     "babel/object-curly-spacing": 0,
     "babel/quotes": 0,
     "babel/semi": 0,

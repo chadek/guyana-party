@@ -43,7 +43,7 @@ userSchema.index({
 })
 
 userSchema.virtual('gravatar').get(function () {
-  const hash = md5(this.email)
+  const hash = md5(this.email) // eslint-disable-line babel/no-invalid-this
   return `https://gravatar.com/avatar/${hash}?s=200`
 })
 

@@ -39,5 +39,5 @@ if (app.get('env') !== 'production') {
 }
 
 const server = app.listen(app.get('port'), () => {
-  console.log(`Express running → PORT ${server.address().port}`)
+  console.log(`Express running → http://localhost:${server.address().port}`)
 })
