@@ -78,16 +78,17 @@ eventSchema.index({
 eventSchema.index({ location: '2dsphere' })
 
 eventSchema.pre('save', async function (next) {
-  if (!this.isModified('name')) {
+  const self = this // eslint-disable-line babel/no-invalid-this
+  if (!self.isModified('name')) {
     next() // skip it
     return // stop this function from running
   }
-  this.slug = slug(this.name)
+  self.slug = slug(self.name)
   // find other stores that have a slug of event, event-1, event-2
-  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i')
-  const eventsWithSlug = await this.constructor.find({ slug: slugRegEx })
+  const slugRegEx = new RegExp(`^(${self.slug})((-[0-9]*$)?)$`, 'i')
+  const eventsWithSlug = await self.constructor.find({ slug: slugRegEx })
   if (eventsWithSlug.length) {
-    this.slug = `${this.slug}-${eventsWithSlug.length + 1}`
+    self.slug = `${self.slug}-${eventsWithSlug.length + 1}`
   }
   next()
 })
@@ -101,7 +102,7 @@ eventSchema.statics.getTagsList = function () {
 }
 
 function autopopulate (next) {
-  this.populate('organism')
+  this.populate('organism') // eslint-disable-line babel/no-invalid-this
   next()
 }
 
