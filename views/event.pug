@@ -45,26 +45,38 @@ block content
         .pure-u-1.top-space.text-center.normaltext
           .u-sm-1: label= `Fuseau horaire : ${event.timezone}`
         //- Start date && time
-        .pure-u-1
-          label.pure-u-1-6 Début
-          //- .pure-u-1.top-space
-          .pure-u-5-12
-            span.pure-u-1-4.icon!= h.icon("calendar")
-            input.pure-u-3-4#startdate(type="text" readonly)
-          .pure-u-5-12
-            span.pure-u-1-4.icon!= h.icon("clock")
-            input.pure-u-3-4#starttime(type="text" readonly)
-        //- End date && time
-        .pure-u-1
-          label.pure-u-1-6 Fin
-          .pure-u-5-12
-            span.pure-u-1-4.icon!= h.icon("calendar")
-            input.pure-u-3-4#enddate(type="text" readonly)
-          .pure-u-5-12
-            span.pure-u-1-4.icon!= h.icon("clock")
-            input.pure-u-3-4#endtime(type="text" readonly)
-          input#event-start(type="hidden" value=`${event.start}`)
-          input#event-end(type="hidden" value=`${event.end}`)
+      
+
+        if (event.occurring === undefined || event.occurring.length == 0)
+          //- normal event
+          .pure-u-1
+            label.pure-u-1-6 Début
+            //- .pure-u-1.top-space
+            .pure-u-5-12
+              span.pure-u-1-4.icon!= h.icon("calendar")
+              input.pure-u-3-4#startdate(type="text" readonly)
+            .pure-u-5-12
+              span.pure-u-1-4.icon!= h.icon("clock")
+              input.pure-u-3-4#starttime(type="text" readonly)
+          //- End date && time
+          .pure-u-1
+            label.pure-u-1-6 Fin
+            .pure-u-5-12
+              span.pure-u-1-4.icon!= h.icon("calendar")
+              input.pure-u-3-4#enddate(type="text" readonly)
+            .pure-u-5-12
+              span.pure-u-1-4.icon!= h.icon("clock")
+              input.pure-u-3-4#endtime(type="text" readonly)
+            input#event-start(type="hidden" value=`${event.start}`)
+            input#event-end(type="hidden" value=`${event.end}`)
+        else
+          //- rec event
+          .pure-u-1
+            span.pure-u-1-8.iconRec.icon.text-justify!= h.icon("calendar")
+            p.pure-u-7-8.text-justify#nextTime(type="text" readonly)= event.nextTime
+
+          
+        
         .pure-u-1.normaltext
           p.text-center= event.location.address
       //- Event location
