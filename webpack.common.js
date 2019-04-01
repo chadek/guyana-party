@@ -69,7 +69,8 @@ const config = {
     rules: [javascript, styles]
   },
   plugins: [
-    new CleanWebpackPlugin(['public/dist']),
+    // new CleanWebpackPlugin(['public/dist']),
+    new CleanWebpackPlugin(),
     // here is where we tell it to output our css to a separate file
     new MiniCssExtractPlugin({
       filename: '[name].style.css'
