@@ -31,9 +31,9 @@ block content
           //- publishing checkbox
           if event
             .pure-u-1.text-center.top-space
+              //- Edit & Archive buttons
               +switchPublishEvent(event)
               br
-              //- Edit & Archive buttons
               a(href=`/event/${event.slug}?remove=true` title="Archiver")
                 span.icon!= h.icon("archive")
           //- Name
