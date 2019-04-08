@@ -6,6 +6,7 @@ include mixins/_customMapScript
 include mixins/_customMdeScript
 include mixins/_switchPublishEvent
 
+
 block customStyle
   +customMapStyle()
   +customMdeStyle()
@@ -31,9 +32,9 @@ block content
           //- publishing checkbox
           if event
             .pure-u-1.text-center.top-space
+              //- Edit & Archive buttons
               +switchPublishEvent(event)
               br
-              //- Edit & Archive buttons
               a(href=`/event/${event.slug}?remove=true` title="Archiver")
                 span.icon!= h.icon("archive")
           //- Name
@@ -170,11 +171,13 @@ block content
 
           
           
-          
-          
-          
-          //- Date && Time
-          .pure-u-1.l-wrap.top-space-40
+          //- Chronicle Date
+          //- Comment gérer l'édition des évènements récurrents ? En cas de clic sur isrec
+          //- Choisir une période (annee/mois/jour) et choisir une durée (heures de début et de fin) 
+          //- if(event && isrec || isrec )
+            //- En cas de réccurrence pour une création ou une modification
+
+          .pure-u-1.l-wrap.top-space-40#pointtime
             //- Start date && time
             .pure-u-1: label Début :
             .pure-u-1.top-space
@@ -184,7 +187,7 @@ block content
               .u-sm-5-12.l-content
                 .clockpicker#horloge1(data-placement="bottom" data-align="top" data-autoclose="true")
                   span.pure-u-1-8.icon!= h.icon("clock")
-                  input.pure-u-7-8#starttime(type="text" name="starttime")
+                  input.pure-u-7-8#starttime(type="text" name="starttime" autocomplete="off")
                   input#start(type="hidden" name="start" value=`${savedData?savedData.start:(event?event.start:"")}`)
             //- End date && time
             .pure-u-1.top-space: label Fin :
@@ -195,8 +198,43 @@ block content
               .u-sm-5-12.l-content
                 .clockpicker#horloge2(data-placement="bottom" data-align="top" data-autoclose="true")
                   span.pure-u-1-8.icon!= h.icon("clock")
-                  input.pure-u-7-8#endtime(type="text" name="endtime")
+                  input.pure-u-7-8#endtime(type="text" name="endtime" autocomplete="off")
                   input#end(type="hidden" name="end" value=`${savedData?savedData.end:(event?event.end:"")}`)
+                  
+
+          //- .pure-u-1.l-wrap.top-space-40#chronictime
+          //-   .pure-u-1: label Période de récurrence :
+          //-   .pure-u-1.top-space
+          //-     .u-sm-5-12.l-content
+          //-       span.pure-u-1-8.icon!=h.icon("calendar")
+          //-       input.pure-u-7-8#dp1(type="date" name="startdate")
+          //-     .u-sm-5-12.l-content
+          //-       span.pure-u-1-8.icon!= h.icon("calendar")
+          //-       input.pure-u-7-8#dp2(type="date" name="enddate")
+            
+          //-   .pure-u-1.top-space: label Durée :
+          //-   .pure-u-1.top-space
+          //-     .u-sm-5-12.l-content
+          //-       .clockpicker#horloge1(data-placement="bottom" data-align="top" data-autoclose="true")
+          //-         span.pure-u-1-8.icon!= h.icon("clock")
+          //-         input.pure-u-7-8#starttime(type="text" name="starttime" autocomplete="off")
+          //-         input#start(type="hidden" name="start" value=`${savedData?savedData.start:(event?event.start:"")}`)
+          //-     .u-sm-5-12.l-content
+          //-       .clockpicker#horloge2(data-placement="bottom" data-align="top" data-autoclose="true")
+          //-         span.pure-u-1-8.icon!= h.icon("clock")
+          //-         input.pure-u-7-8#endtime(type="text" name="endtime" autocomplete="off")
+          //-         input#end(type="hidden" name="end" value=`${savedData?savedData.end:(event?event.end:"")}`)
+              
+
+          //- else
+            //- En cas de création sans récurrence et sans récurrence
+
+          //- Date && Time
+
+          
+          
+          
+          
           //- Description
           .pure-u-1.top-space-40
             label Description :
