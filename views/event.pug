@@ -69,7 +69,8 @@ block content
           .pure-u-1
             span.pure-u-1-8.iconRec.icon.text-justify!= h.icon("calendar")
             p.pure-u-7-8.text-justify#nextTime(type="text" readonly)= event.nextTime
-
+          //- afficher la période de la récurrence algo(date de la première occurrence et dernière occurrence)
+          //- afficher la durée aevc heure de début et heure de fin
           .pure-u-1
             label.pure-u-1= `Récurrence de l'évènement :`
             ul.ul-daysdisabled

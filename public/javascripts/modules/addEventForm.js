@@ -38,7 +38,7 @@ function init (dp1, dp2) {
     dp2.value = str
   }
 
-  //- TEST des dates et heures  
+  //- TEST des dates 
   dp1.on('change', e => {
     if(dp2.value < dp1.value){
       dp2.value = dp1.value
@@ -55,19 +55,35 @@ function init (dp1, dp2) {
 
 function addEventForm (dp1, dp2, switchPublishEvent) {
   init(dp1, dp2)
-
   const checkday = document.getElementById("checkday")
   if (!checkday)return
 
   const checkrec = document.getElementById("isrec")
   if (!checkrec)return
-  console.log(checkrec)
+  // console.log(checkrec)
+
+  // const chronictime = document.getElementById("chronictime")
+  // const pointtime = document.getElementById("pointtime")
+
+  // if (checkrec.checked){
+  //   chronictime.classList.remove("hidden")
+  //   pointtime.classList.add("hidden")
+  // }else{
+  //   chronictime.classList.add("hidden")
+  //   pointtime.classList.remove("hidden")
+  // }
+
+
 
   checkrec.on('change', (e)=>{
     if (checkrec.checked){
       checkday.classList.toggle("hidden")
+      // chronictime.classList.toggle("hidden")
+      // pointtime.classList.toogle("hidden")
     }else{
       checkday.classList.toggle("hidden")
+      // pointtime.classList.toogle("hidden")
+      // chronictime.classList.toogle("hidden")
       document.getElementById("monday").checked = false
       document.getElementById("tuesday").checked = false
       document.getElementById("wednesday").checked = false
