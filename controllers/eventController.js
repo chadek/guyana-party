@@ -240,10 +240,13 @@ exports.getEvents = async (req, res) => {
   const archived = req.queryString('archived')
   // We want events by status, organism (if available) otherwise by author
   const status = archived ? '^archived$' : '^((?!archived).)*$'
+  // sans connexion(voir que les events public) 
   const find = orga
     ? {
       organism: orga,
-      status: { $regex: status, $options: 'i' }
+      // status: { $regex: status, $options: 'i' },
+      status: "published",
+      public : true 
     }
     : {
       author: req.user._id,
