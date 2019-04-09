@@ -15,7 +15,10 @@ exports.getPagedItems = async (model, page, limit, find, projection, sort) => {
     .skip(skip)
     .limit(limit)
     .sort(sort)
-  const [items, count] = await Promise.all([itemsPromise, model.count(find)])
+  const [items, count] = await Promise.all([
+    itemsPromise,
+    model.countDocuments(find)
+  ])
   return {
     items,
     page,
