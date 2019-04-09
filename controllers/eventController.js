@@ -284,13 +284,18 @@ exports.getSearchResult = async (req, res) => {
     public: true
   }
   if (lon && lat) {
+    // find.location = {
+    //   $near: {
+    //     $geometry: {
+    //       type: 'Point',
+    //       coordinates: [lon, lat].map(parseFloat)
+    //     },
+    //     $maxDistance: maxDistance
+    //   }
+    // }
     find.location = {
-      $near: {
-        $geometry: {
-          type: 'Point',
-          coordinates: [lon, lat].map(parseFloat)
-        },
-        $maxDistance: maxDistance
+      $geoWithin: {
+        $center: [[lon, lat].map(parseFloat), maxDistance]
       }
     }
   }
