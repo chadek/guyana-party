@@ -6,6 +6,7 @@ include mixins/_customMapScript
 include mixins/_customMdeScript
 include mixins/_switchPublishEvent
 
+
 block customStyle
   +customMapStyle()
   +customMdeStyle()
@@ -31,9 +32,9 @@ block content
           //- publishing checkbox
           if event
             .pure-u-1.text-center.top-space
+              //- Edit & Archive buttons
               +switchPublishEvent(event)
               br
-              //- Edit & Archive buttons
               a(href=`/event/${event.slug}?remove=true` title="Archiver")
                 span.icon!= h.icon("archive")
           //- Name
@@ -58,8 +59,125 @@ block content
             select#tz-select(name="tz")
               each tz in tzList
                 option(value=tz.value selected=(event ? tz.label == event.timezone : tz.selected))= tz.label
-          //- Date && Time
-          .pure-u-1.l-wrap.top-space-40
+          
+          //- Chronique Time
+
+
+          if(event)
+            //-Modification
+            if !(event.occurring === undefined || event.occurring.length == 0)
+              - const mondayChecked = savedData ? savedData.occurring.includes(1) : (event ? event.occurring.includes(1) : false)
+              - const tuesdayChecked = savedData ? savedData.occurring.includes(2) : (event ? event.occurring.includes(2) : false)
+              - const wednesdayChecked = savedData ? savedData.occurring.includes(3) : (event ? event.occurring.includes(3) : false)
+              - const thursdayChecked = savedData ? savedData.occurring.includes(4) : (event ? event.occurring.includes(4) : false)
+              - const fridayChecked = savedData ? savedData.occurring.includes(5) : (event ? event.occurring.includes(5) : false)
+              - const saturdayChecked = savedData ? savedData.occurring.includes(6) : (event ? event.occurring.includes(6) : false)
+              - const sundayChecked = savedData ? savedData.occurring.includes(7) : (event ? event.occurring.includes(7) : false)
+              .top-space
+                .pure-u-1
+                  label.pure-u-1= `Répétition de l'évènement :`
+                    input(type="checkbox" id="isrec" name="isrec" checked)
+                  ul.ul-daysdisabled#checkday
+                    if mondayChecked
+                      li.li-daydisabled
+                        input(type="checkbox" id="monday" name="occurring[]" value="1" checked)
+                        label(for="monday") Lundi &nbsp;
+                    else
+                      li.li-daydisabled
+                        input(type="checkbox" id="monday" name="occurring[]" value="1")
+                        label(for="monday") Lundi &nbsp;
+
+                    if tuesdayChecked
+                      li.li-daydisabled
+                        input(type="checkbox" id="tuesday" name="occurring[]" value="2" checked)  
+                        label(for="tuesday") Mardi &nbsp;
+                    else
+                      li.li-daydisabled
+                        input(type="checkbox" id="tuesday" name="occurring[]" value="2")
+                        label(for="tuesday") Mardi &nbsp;
+
+                    if wednesdayChecked
+                      li.li-daydisabled
+                        input(type="checkbox" id="wednesday" name="occurring[]" value="3" checked)
+                        label(for="wednesday") Mercredi &nbsp;
+                    else
+                      li.li-daydisabled
+                        input(type="checkbox" id="wednesday" name="occurring[]" value="3")
+                        label(for="wednesday") Mercredi &nbsp;
+
+                    if thursdayChecked
+                      li.li-daydisabled
+                        input(type="checkbox" id="thursday" name="occurring[]" value="4" checked)
+                        label(for="thursday") Jeudi &nbsp;
+                    else
+                      li.li-daydisabled
+                        input(type="checkbox" id="thursday" name="occurring[]" value="4")
+                        label(for="thursday") Jeudi &nbsp;
+
+                    if fridayChecked
+                      li.li-daydisabled
+                        input(type="checkbox" id="friday" name="occurring[]" value="5" checked)
+                        label(for="friday") Vendredi &nbsp;
+                    else
+                      li.li-daydisabled
+                        input(type="checkbox" id="friday" name="occurring[]" value="5")
+                        label(for="friday") Vendredi &nbsp;
+                    
+                    if saturdayChecked
+                      li.li-daydisabled
+                        input(type="checkbox" id="saturday" name="occurring[]" value="6" checked)
+                        label(for="saturday") Samedi &nbsp;
+                    else
+                      li.li-daydisabled
+                        input(type="checkbox" id="saturday" name="occurring[]" value="6")
+                        label(for="saturday") Samedi &nbsp;
+                    
+                    if sundayChecked
+                      li.li-daydisabled
+                        input(type="checkbox" id="sunday" name="occurring[]" value="7" checked)
+                        label(for="sunday") Dimanche &nbsp;
+                    else
+                      li.li-daydisabled
+                        input(type="checkbox" id="sunday" name="occurring[]" value="7")
+                        label(for="sunday") Dimanche &nbsp;
+          else
+            //- Création d'un évènement, juste une liste des checkboxs
+            .pure-u-1
+              label.pure-u-1= `Répétition de l'évènement :`
+                input(type="checkbox" id="isrec" name="isrec")
+              ul.ul-daysdisabled#checkday(class="hidden")
+                li.li-daydisabled
+                  input(type="checkbox" id="monday" name="occurring[]" value="1")
+                  label(for="monday") Lundi &nbsp;
+                li.li-daydisabled
+                  input(type="checkbox" id="tuesday" name="occurring[]" value="2")
+                  label(for="tuesday") Mardi &nbsp;
+                li.li-daydisabled
+                  input(type="checkbox" id="wednesday" name="occurring[]" value="3")
+                  label(for="wednesday") Mercredi &nbsp;
+                li.li-daydisabled
+                  input(type="checkbox" id="thursday" name="occurring[]" value="4")
+                  label(for="thursday") Jeudi &nbsp;
+                li.li-daydisabled
+                  input(type="checkbox" id="friday" name="occurring[]" value="5")
+                  label(for="friday") Vendredi &nbsp;
+                li.li-daydisabled
+                  input(type="checkbox" id="saturday" name="occurring[]" value="6")
+                  label(for="saturday") Samedi &nbsp;
+                li.li-daydisabled
+                  input(type="checkbox" id="sunday" name="occurring[]" value="7")
+                  label(for="sunday") Dimanche &nbsp;
+
+
+          
+          
+          //- Chronicle Date
+          //- Comment gérer l'édition des évènements récurrents ? En cas de clic sur isrec
+          //- Choisir une période (annee/mois/jour) et choisir une durée (heures de début et de fin) 
+          //- if(event && isrec || isrec )
+            //- En cas de réccurrence pour une création ou une modification
+
+          .pure-u-1.l-wrap.top-space-40#pointtime
             //- Start date && time
             .pure-u-1: label Début :
             .pure-u-1.top-space
@@ -69,7 +187,7 @@ block content
               .u-sm-5-12.l-content
                 .clockpicker#horloge1(data-placement="bottom" data-align="top" data-autoclose="true")
                   span.pure-u-1-8.icon!= h.icon("clock")
-                  input.pure-u-7-8#starttime(type="text" name="starttime")
+                  input.pure-u-7-8#starttime(type="text" name="starttime" autocomplete="off")
                   input#start(type="hidden" name="start" value=`${savedData?savedData.start:(event?event.start:"")}`)
             //- End date && time
             .pure-u-1.top-space: label Fin :
@@ -80,8 +198,43 @@ block content
               .u-sm-5-12.l-content
                 .clockpicker#horloge2(data-placement="bottom" data-align="top" data-autoclose="true")
                   span.pure-u-1-8.icon!= h.icon("clock")
-                  input.pure-u-7-8#endtime(type="text" name="endtime")
+                  input.pure-u-7-8#endtime(type="text" name="endtime" autocomplete="off")
                   input#end(type="hidden" name="end" value=`${savedData?savedData.end:(event?event.end:"")}`)
+                  
+
+          //- .pure-u-1.l-wrap.top-space-40#chronictime
+          //-   .pure-u-1: label Période de récurrence :
+          //-   .pure-u-1.top-space
+          //-     .u-sm-5-12.l-content
+          //-       span.pure-u-1-8.icon!=h.icon("calendar")
+          //-       input.pure-u-7-8#dp1(type="date" name="startdate")
+          //-     .u-sm-5-12.l-content
+          //-       span.pure-u-1-8.icon!= h.icon("calendar")
+          //-       input.pure-u-7-8#dp2(type="date" name="enddate")
+            
+          //-   .pure-u-1.top-space: label Durée :
+          //-   .pure-u-1.top-space
+          //-     .u-sm-5-12.l-content
+          //-       .clockpicker#horloge1(data-placement="bottom" data-align="top" data-autoclose="true")
+          //-         span.pure-u-1-8.icon!= h.icon("clock")
+          //-         input.pure-u-7-8#starttime(type="text" name="starttime" autocomplete="off")
+          //-         input#start(type="hidden" name="start" value=`${savedData?savedData.start:(event?event.start:"")}`)
+          //-     .u-sm-5-12.l-content
+          //-       .clockpicker#horloge2(data-placement="bottom" data-align="top" data-autoclose="true")
+          //-         span.pure-u-1-8.icon!= h.icon("clock")
+          //-         input.pure-u-7-8#endtime(type="text" name="endtime" autocomplete="off")
+          //-         input#end(type="hidden" name="end" value=`${savedData?savedData.end:(event?event.end:"")}`)
+              
+
+          //- else
+            //- En cas de création sans récurrence et sans récurrence
+
+          //- Date && Time
+
+          
+          
+          
+          
           //- Description
           .pure-u-1.top-space-40
             label Description :
@@ -108,5 +261,12 @@ block customScripts
   +customMdeScript()
   script(type="text/javascript").
     $(document).ready(function() {
-      $(".clockpicker").clockpicker();
+      $(".clockpicker").clockpicker({
+        //- donetext : 'Done',
+        //- autoclose: true,
+        afterDone: function() {
+          console.log("after done:",this);
+          
+        }
+      });
     });

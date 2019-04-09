@@ -8,6 +8,18 @@
 //   height: auto;
 // }
 
+.ul-daysdisabled{
+  // div pour la checkbox et le label pour qu'il reste sur la même ligne en responsive
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.li-daydisabled{
+  float: left;
+  list-style-type: none;
+}
+
 .avatar {
   width: 30px;
   height: 30px;
