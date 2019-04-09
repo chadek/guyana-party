@@ -5,7 +5,11 @@ const Organism = mongoose.model('Organism')
 // const { promisify } = require("es6-promisify");
 const store = require('store')
 const moment = require('moment-timezone')
-const { getPagedItems, confirmOwner, lookForNextOcurring } = require('../handlers/tools')
+const {
+  getPagedItems,
+  confirmOwner,
+  lookForNextOcurring
+} = require('../handlers/tools')
 
 // exports.eventsPage = (req, res) => {
 //   const search = req.bodyString('search') || req.queryString('q') || ''
@@ -240,13 +244,13 @@ exports.getEvents = async (req, res) => {
   const archived = req.queryString('archived')
   // We want events by status, organism (if available) otherwise by author
   const status = archived ? '^archived$' : '^((?!archived).)*$'
-  // sans connexion(voir que les events public) 
+  // sans connexion(voir que les events public)
   const find = orga
     ? {
       organism: orga,
       // status: { $regex: status, $options: 'i' },
-      status: "published",
-      public : true 
+      status: 'published',
+      public: true
     }
     : {
       author: req.user._id,
