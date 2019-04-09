@@ -5,7 +5,7 @@ const Organism = mongoose.model('Organism')
 // const { promisify } = require("es6-promisify");
 const store = require('store')
 const moment = require('moment-timezone')
-const { getPagedItems, confirmOwner } = require('../handlers/tools')
+const { getPagedItems, confirmOwner, lookForNextOcurring } = require('../handlers/tools')
 
 // exports.eventsPage = (req, res) => {
 //   const search = req.bodyString('search') || req.queryString('q') || ''
@@ -219,6 +219,9 @@ exports.getEventBySlug = async (req, res, next) => {
   const orga = await Organism.findOne({ _id: event.organism })
   if (!orga) return next()
   const isOwner = req.user && event.author.equals(req.user._id)
+
+  event.nextTime = lookForNextOcurring(event)
+
   res.render('event', {
     event,
     orga,
@@ -237,10 +240,13 @@ exports.getEvents = async (req, res) => {
   const archived = req.queryString('archived')
   // We want events by status, organism (if available) otherwise by author
   const status = archived ? '^archived$' : '^((?!archived).)*$'
+  // sans connexion(voir que les events public) 
   const find = orga
     ? {
       organism: orga,
-      status: { $regex: status, $options: 'i' }
+      // status: { $regex: status, $options: 'i' },
+      status: "published",
+      public : true 
     }
     : {
       author: req.user._id,
@@ -304,7 +310,9 @@ exports.getSearchResult = async (req, res) => {
       slug: 1,
       name: 1,
       start: 1,
+      end: 1,
       photo: 1,
+      occurring: 1,
       'location.coordinates': 1
     },
     { start: 1 }

@@ -23,16 +23,11 @@ block content
         h2= event.name
           span.normaltext &nbsp; par
           a(href=`/organism/${orga.slug}`)= ` ${orga.name}`
-
-        //- Switches, Edit & Archive buttons
-      if isOwner
-        .pure-u-1.top-space.text-center
-          +switchPublishEvent(event)
-          br
-          a(href=`/events/${event.id}/edit` title="Modifier" style="margin-right: 10px;")
-            span.icon!= h.icon("edit")
-          a(href=`/event/${event.slug}?remove=true` title="Archiver")
-            span.icon!= h.icon("archive")
+          if isOwner
+            a(href=`/events/${event.id}/edit` title="Modifier" style="margin-right: 10px;")
+              span.icon!= h.icon("edit")
+            a(href=`/event/${event.slug}?remove=true` title="Archiver")
+              span.icon!= h.icon("archive")
         //- p Organisateur :
         //-   a(href=`/organism/${orga.slug}`)= ` ${orga.name}`
       //- Description
@@ -45,26 +40,106 @@ block content
         .pure-u-1.top-space.text-center.normaltext
           .u-sm-1: label= `Fuseau horaire : ${event.timezone}`
         //- Start date && time
-        .pure-u-1
-          label.pure-u-1-6 Début
-          //- .pure-u-1.top-space
-          .pure-u-5-12
-            span.pure-u-1-4.icon!= h.icon("calendar")
-            input.pure-u-3-4#startdate(type="text" readonly)
-          .pure-u-5-12
-            span.pure-u-1-4.icon!= h.icon("clock")
-            input.pure-u-3-4#starttime(type="text" readonly)
-        //- End date && time
-        .pure-u-1
-          label.pure-u-1-6 Fin
-          .pure-u-5-12
-            span.pure-u-1-4.icon!= h.icon("calendar")
-            input.pure-u-3-4#enddate(type="text" readonly)
-          .pure-u-5-12
-            span.pure-u-1-4.icon!= h.icon("clock")
-            input.pure-u-3-4#endtime(type="text" readonly)
-          input#event-start(type="hidden" value=`${event.start}`)
-          input#event-end(type="hidden" value=`${event.end}`)
+      
+
+        if (event.occurring === undefined || event.occurring.length == 0)
+          //- normal event
+          .pure-u-1
+            label.pure-u-1-6 Début
+            //- .pure-u-1.top-space
+            .pure-u-5-12
+              span.pure-u-1-4.icon!= h.icon("calendar")
+              input.pure-u-3-4#startdate(type="text" readonly)
+            .pure-u-5-12
+              span.pure-u-1-4.icon!= h.icon("clock")
+              input.pure-u-3-4#starttime(type="text" readonly)
+          //- End date && time
+          .pure-u-1
+            label.pure-u-1-6 Fin
+            .pure-u-5-12
+              span.pure-u-1-4.icon!= h.icon("calendar")
+              input.pure-u-3-4#enddate(type="text" readonly)
+            .pure-u-5-12
+              span.pure-u-1-4.icon!= h.icon("clock")
+              input.pure-u-3-4#endtime(type="text" readonly)
+            input#event-start(type="hidden" value=`${event.start}`)
+            input#event-end(type="hidden" value=`${event.end}`)
+        else
+          //- rec event
+          .pure-u-1
+            span.pure-u-1-8.iconRec.icon.text-justify!= h.icon("calendar")
+            p.pure-u-7-8.text-justify#nextTime(type="text" readonly)= event.nextTime
+          //- afficher la période de la récurrence algo(date de la première occurrence et dernière occurrence)
+          //- afficher la durée aevc heure de début et heure de fin
+          .pure-u-1
+            label.pure-u-1= `Récurrence de l'évènement :`
+            ul.ul-daysdisabled
+            if event.occurring.includes(1)
+              li.li-daydisabled
+                input(type="checkbox" id="monday" name="day" value="monday" checked disabled)
+                label(for="monday") Lundi &nbsp;
+            //- else
+            //-   li.li-daydisabled
+            //-     input(type="checkbox" id="monday" name="day" value="monday" disabled)
+            //-     label(for="monday") Lundi &nbsp;
+
+            if event.occurring.includes(2)
+              li.li-daydisabled
+                input(type="checkbox" id="tuesday" name="day" value="tuesday" checked disabled)
+                label(for="tuesday") Mardi &nbsp;
+            //- else
+            //-   li.li-daydisabled
+            //-     input(type="checkbox" id="tuesday" name="day" value="tuesday" disabled)
+            //-     label(for="tuesday") Mardi &nbsp;
+
+            if event.occurring.includes(3)
+              li.li-daydisabled
+                input(type="checkbox" id="wednesday" name="day" value="wednesday" checked disabled)
+                label(for="wednesday") Mercredi &nbsp;
+            //- else
+            //-   li.li-daydisabled
+            //-     input(type="checkbox" id="wednesday" name="day" value="wednesday" disabled)
+            //-     label(for="wednesday") Mercredi &nbsp;
+            
+            if event.occurring.includes(4)
+              li.li-daydisabled
+                input(type="checkbox" id="thursday" name="day" value="thursday" checked disabled)
+                label(for="thursday") Jeudi &nbsp;
+            //- else
+            //-   li.li-daydisabled
+            //-     input(type="checkbox" id="thursday" name="day" value="thursday" disabled)
+            //-     label(for="thursday") Jeudi &nbsp;
+
+            if event.occurring.includes(5)
+              li.li-daydisabled
+                input(type="checkbox" id="friday" name="day" value="friday" checked disabled)
+                label(for="friday") Vendredi &nbsp;
+            //- else
+            //-   li.li-daydisabled
+            //-     input(type="checkbox" id="friday" name="day" value="friday" disabled)
+            //-     label(for="friday") Vendredi &nbsp;
+            
+            if event.occurring.includes(6)
+              li.li-daydisabled
+                input(type="checkbox" id="saturday" name="day" value="saturday" checked disabled)
+                label(for="saturday") Samedi &nbsp;
+            //- else
+            //-   li.li-daydisabled
+            //-     input(type="checkbox" id="saturday" name="day" value="saturday" disabled)
+            //-     label(for="saturday") Samedi &nbsp;
+
+            if event.occurring.includes(7)
+              li.li-daydisabled
+                input(type="checkbox" id="sunday" name="day" value="sunday" checked disabled)
+                label(for="sunday") Dimanche &nbsp;
+            //- else
+            //-   li.li-daydisabled
+            //-     input(type="checkbox" id="sunday" name="day" value="sunday" disabled)
+            //-     label(for="sunday") Dimanche &nbsp;
+          
+
+          
+        
         .pure-u-1.normaltext
           p.text-center= event.location.address
       //- Event location
