@@ -211,6 +211,7 @@ class Map {
       // Calculate the distance between center and border to get approximate radius
       const distance = distanceBetweenPoints(center, border)
 
+      console.log(distance)
       callbackFn(toLonLat(center), distance)
     })
   }

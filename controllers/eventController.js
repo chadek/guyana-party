@@ -283,23 +283,17 @@ exports.getSearchResult = async (req, res) => {
       { description: { $regex: search, $options: 'i' } }
     ],
     status: 'published',
-    // start: { $lte: Date.now() },
     end: { $gte: Date.now() },
     public: true
   }
   if (lon && lat) {
-    // find.location = {
-    //   $near: {
-    //     $geometry: {
-    //       type: 'Point',
-    //       coordinates: [lon, lat].map(parseFloat)
-    //     },
-    //     $maxDistance: maxDistance
-    //   }
-    // }
+    // TODO: content the map's corner
     find.location = {
       $geoWithin: {
-        $center: [[lon, lat].map(parseFloat), maxDistance]
+        $centerSphere: [
+          [lon, lat].map(parseFloat),
+          maxDistance / 1609.34 / 3963.2 // conversion meter to miles and divided by the earth's radius (miles)
+        ]
       }
     }
   }

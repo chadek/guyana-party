@@ -1,7 +1,7 @@
 import Map from './olMap'
 import { b } from '../bling'
 import { axiosGet } from '../utils'
-var nextDay = require('next-day');
+const nextDay = require('next-day')
 
 const map = new Map({
   mouseWheelZoom: true,
@@ -86,7 +86,8 @@ function showEvents (search, lon, lat, maxDistance = 20000) {
 function formatEventStart (isoStart) {
   const start = new Date(isoStart)
   return `Le ${('0' + start.getDate()).slice(-2)}/${(
-    '0' + (start.getMonth()+1)
+    '0' +
+    (start.getMonth() + 1)
   ).slice(-2)}/${start.getFullYear()} à ${('0' + start.getHours()).slice(
     -2
   )}:${('0' + start.getMinutes()).slice(-2)}`
@@ -125,63 +126,68 @@ function userPosHTMLFn (coords, hdms) {
     </div>`
 }
 
-
-function lookForNextOccurring(event){
-  var NextDatesInTheWeek = []
-  var nextdate
+function lookForNextOccurring (event) {
+  const NextDatesInTheWeek = []
+  let nextdate
   const today = new Date()
   const end = new Date(event.end)
 
-  console.log("Date de début : " + event.start)
+  console.log('Date de début : ' + event.start)
   // console.log(event)
-  console.log("Datede fin ", event.end)
-  var time = new Date(event.start)
+  console.log('Datede fin ', event.end)
+  const time = new Date(event.start)
 
-  event.occurring.forEach(day =>{
-    
-
+  event.occurring.forEach(day => {
     nextdate = nextDay(today, day)
     console.log(nextdate)
-    var datetoiso = new Date(nextdate.date.toISOString())
-    console.log("date to iso", datetoiso)
-    var bonneD = new Date(datetoiso.getFullYear(), datetoiso.getMonth(), datetoiso.getDate(), time.getHours(), time.getMinutes(), time.getMilliseconds(), time.getTimezoneOffset() )
-    console.log("bonne Date", bonneD)
+    const datetoiso = new Date(nextdate.date.toISOString())
+    console.log('date to iso', datetoiso)
+    const bonneD = new Date(
+      datetoiso.getFullYear(),
+      datetoiso.getMonth(),
+      datetoiso.getDate(),
+      time.getHours(),
+      time.getMinutes(),
+      time.getMilliseconds(),
+      time.getTimezoneOffset()
+    )
+    console.log('bonne Date', bonneD)
 
-    if (bonneD <= end){
+    if (bonneD <= end) {
       NextDatesInTheWeek.push(bonneD)
     }
-    
   })
 
-  console.log("Les occ",  NextDatesInTheWeek)
+  console.log('Les occ', NextDatesInTheWeek)
 
-  if (NextDatesInTheWeek.length >= 1){
-    NextDatesInTheWeek.sort(function(a,b){return a.getTime() - b.getTime()});
+  if (NextDatesInTheWeek.length >= 1) {
+    NextDatesInTheWeek.sort(function (a, b) {
+      return a.getTime() - b.getTime()
+    })
   }
-  return formatEventStartEnd(NextDatesInTheWeek[0],event.end)
+  return formatEventStartEnd(NextDatesInTheWeek[0], event.end)
 }
 
-function formatEventStartEnd (isoStart,isoEnd) {
-  console.log(isoStart,isoEnd)
-  let start = new Date(isoStart)
-  let end = new Date(isoEnd)
-  let month = start.getMonth()+1 
-  let srtStartDate = `Le ${('0' + start.getDate()).slice(-2)}/${(
-    '0' + month 
+function formatEventStartEnd (isoStart, isoEnd) {
+  console.log(isoStart, isoEnd)
+  const start = new Date(isoStart)
+  const end = new Date(isoEnd)
+  const month = start.getMonth() + 1
+  const srtStartDate = `Le ${('0' + start.getDate()).slice(-2)}/${(
+    '0' + month
   ).slice(-2)}/${start.getFullYear()} de ${('0' + start.getHours()).slice(
     -2
-    )}:${('0' + start.getMinutes()).slice(-2)} à ${('0' + end.getHours()).slice(
-      -2
-      )}:${('0' + end.getMinutes()).slice(-2)}`
+  )}:${('0' + start.getMinutes()).slice(-2)} à ${('0' + end.getHours()).slice(
+    -2
+  )}:${('0' + end.getMinutes()).slice(-2)}`
 
   return srtStartDate
 }
 
-
 function showEventsList (events) {
   const homeList = document.getElementById('resultelements')
   homeList.innerHTML = ''
-  console.log('toto',events)
+  console.log('toto', events)
   events.forEach(event => {
     const imgSrc = event.photo
       ? `/uploads/${event.photo}`
@@ -189,13 +195,12 @@ function showEventsList (events) {
 
     let start = formatEventStart(event.start)
 
-    if (event.occurring != undefined && event.occurring.length != 0){
+    if (event.occurring !== undefined && event.occurring.length !== 0) {
       // const nextocc = lookForNextOccurring(event)
       start = lookForNextOccurring(event)
-      console.log("HHello rec event")
+      console.log('HHello rec event')
       // console.log(nextocc)
     }
-
 
     homeList.innerHTML += `
       <li class="pure-u-1 result-element"
