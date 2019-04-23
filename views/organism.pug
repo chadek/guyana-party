@@ -23,6 +23,9 @@ block content
             span.icon!= h.icon("edit")
           a(href=`/organism/${orga.slug}?remove=true` title="Archiver")
             span.icon!= h.icon("archive")
+      if isNotMember
+        .pure-u-1.top-space.text-center
+          button.pure-button.button.userRequestBtn#userRequest(title="Pending Request") Pending Request
       //- Description
       .pure-u-1.top-space-40
         label Description&nbsp;:

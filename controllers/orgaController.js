@@ -151,7 +151,8 @@ exports.getOrgaBySlug = async (req, res, next) => {
     remove: req.queryString('remove'),
     community,
     isMember: confirmMember(community, req.user),
-    isAdmin: isAdminMember(community, req.user)
+    isAdmin: isAdminMember(community, req.user),
+    isNotMember: !confirmMember(community, req.user)
   })
 }
 
@@ -171,4 +172,29 @@ exports.getOrganisms = async (req, res) => {
     { created: 'desc' }
   )
   res.json(result)
+}
+
+/* Community */
+
+/** route: /organism/:groupId/community/add */
+exports.addPendingRequest = async (req, res) => {
+  const orga = await Organism.findOneAndUpdate(
+    { _id: req.paramString('id') },
+    {
+      $addToSet: {
+        community: {
+          userId: req.user._id,
+          role: {
+            type: 'pending_request'
+          }
+        }
+      }
+    },
+    {
+      returnNewDocument: true, // return the new organism instead of the old one
+      runValidators: true
+    }
+  ).exec()
+  req.flash('success', 'Demande envoyée avec succès')
+  res.redirect(`/organisms/${orga._id}`)
 }

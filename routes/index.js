@@ -80,6 +80,11 @@ router.get(
 )
 router.get('/organism/:slug', catchErrors(orgaController.getOrgaBySlug))
 router.get('/organism/id/:id', catchErrors(orgaController.getOrgaById))
+router.get(
+  '/organism/:groupId/community/add',
+  authController.isLoggedIn,
+  catchErrors(orgaController.addPendingRequest)
+)
 
 /* Events */
 
