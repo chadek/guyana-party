@@ -113,17 +113,14 @@ exports.remove = async (req, res, next) => {
   res.redirect('/account')
 }
 
-const confirmMember = (community, user) => {
-  if (!user) return false
-  return undefined !== community.find(o => o._id.equals(user._id))
-}
-
-const isAdminMember = (community, user) => {
-  if (!user) return false
-  return (
-    undefined !==
-    community.find(o => o._id.equals(user._id) && o.role === 'admin')
-  )
+const confirmMember = (user, community, role) => {
+  if (!user || !community) return false
+  if (role) {
+    return (
+      undefined !==
+      community.find(o => o._id.equals(user._id) && o.role === role)
+    )
+  } else return undefined !== community.find(o => o._id.equals(user._id))
 }
 
 exports.getOrgaBySlug = async (req, res, next) => {
@@ -150,9 +147,9 @@ exports.getOrgaBySlug = async (req, res, next) => {
     csrfToken: req.csrfToken(),
     remove: req.queryString('remove'),
     community,
-    isMember: confirmMember(community, req.user),
-    isAdmin: isAdminMember(community, req.user),
-    isNotMember: !confirmMember(community, req.user)
+    isMember: confirmMember(req.user, community),
+    isAdmin: confirmMember(req.user, community, 'admin'),
+    isPendingMember: confirmMember(req.user, community, 'pending_request')
   })
 }
 
@@ -176,7 +173,6 @@ exports.getOrganisms = async (req, res) => {
 
 /* Community */
 
-/** route: /organism/:groupId/community/add */
 exports.addPendingRequest = async (req, res) => {
   const orga = await Organism.findOneAndUpdate(
     { _id: req.paramString('groupId') },
@@ -194,5 +190,25 @@ exports.addPendingRequest = async (req, res) => {
     }
   ).exec()
   req.flash('success', "Demande d'adhésion envoyée avec succès !")
+  res.redirect(`/organism/${orga.slug}`)
+}
+
+exports.removePendingRequest = async (req, res) => {
+  const orga = await Organism.findOneAndUpdate(
+    { _id: req.paramString('groupId') },
+    {
+      $pull: {
+        community: {
+          user: req.user._id,
+          role: 'pending_request'
+        }
+      }
+    },
+    {
+      new: true, // return the new organism instead of the old one
+      runValidators: true
+    }
+  ).exec()
+  req.flash('success', "Votre demande d'adhésion a été annulée !")
   res.redirect(`/organism/${orga.slug}`)
 }

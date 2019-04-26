@@ -11,10 +11,18 @@ const orgaId = b('#orga-id')
 })()
 // Add a user request
 ;(() => {
-  const userReqBtn = b('#userRequest')
-  if (userReqBtn && orgaId && orgaId.value) {
-    userReqBtn.on('click', () => {
-      window.location = `/organism/${orgaId.value}/community/add`
-    })
+  if (orgaId && orgaId.value) {
+    const userReqBtn = b('#userRequest')
+    if (userReqBtn) {
+      userReqBtn.on('click', () => {
+        window.location = `/organism/${orgaId.value}/community/add`
+      })
+    }
+    const userRemoveReqBtn = b('#userRemoveRequest')
+    if (userRemoveReqBtn) {
+      userRemoveReqBtn.on('click', () => {
+        window.location = `/organism/${orgaId.value}/community/remove`
+      })
+    }
   }
 })()

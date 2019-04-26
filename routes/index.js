@@ -85,6 +85,11 @@ router.get(
   authController.isLoggedIn,
   catchErrors(orgaController.addPendingRequest)
 )
+router.get(
+  '/organism/:groupId/community/remove',
+  authController.isLoggedIn,
+  catchErrors(orgaController.removePendingRequest)
+)
 
 /* Events */
 
