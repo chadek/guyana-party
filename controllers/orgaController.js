@@ -193,6 +193,6 @@ exports.addPendingRequest = async (req, res) => {
       runValidators: true
     }
   ).exec()
-  req.flash('success', 'Demande envoyée avec succès')
+  req.flash('success', "Demande d'adhésion envoyée avec succès !")
   res.redirect(`/organism/${orga.slug}`)
 }
