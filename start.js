@@ -13,10 +13,11 @@ if (major < 7 || (major === 7 && minor <= 5)) {
 require('dotenv').config({ path: 'variables.env' })
 
 // Connect to our Database and handle any bad connections
-mongoose.connect(
-  process.env.DATABASE,
-  { useNewUrlParser: true }
-)
+mongoose.connect(process.env.DATABASE, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false
+})
 mongoose.Promise = global.Promise // Tell Mongoose to use ES6 promises
 mongoose.connection.on('error', err => {
   console.error(`Mongoose connection error → ${err.message}`)

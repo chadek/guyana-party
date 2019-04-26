@@ -179,22 +179,20 @@ exports.getOrganisms = async (req, res) => {
 /** route: /organism/:groupId/community/add */
 exports.addPendingRequest = async (req, res) => {
   const orga = await Organism.findOneAndUpdate(
-    { _id: req.paramString('id') },
+    { _id: req.paramString('groupId') },
     {
-      $addToSet: {
+      $push: {
         community: {
-          userId: req.user._id,
-          role: {
-            type: 'pending_request'
-          }
+          user: req.user._id,
+          role: 'pending_request'
         }
       }
     },
     {
-      returnNewDocument: true, // return the new organism instead of the old one
+      new: true, // return the new organism instead of the old one
       runValidators: true
     }
   ).exec()
   req.flash('success', 'Demande envoyée avec succès')
-  res.redirect(`/organisms/${orga._id}`)
+  res.redirect(`/organism/${orga.slug}`)
 }
