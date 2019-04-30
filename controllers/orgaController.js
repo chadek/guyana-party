@@ -157,7 +157,7 @@ exports.getOrganisms = async (req, res) => {
   const page = req.queryInt('page') || 1
   const limit = req.queryInt('limit') || 7
   const find = {
-    author: req.user._id,
+    $or: [{ author: req.user._id }, { 'community.user': req.user._id }],
     status: { $regex: '^((?!archived).)*$', $options: 'i' }
   }
   const result = await getPagedItems(

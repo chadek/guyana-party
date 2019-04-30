@@ -187,7 +187,6 @@ function formatEventStartEnd (isoStart, isoEnd) {
 function showEventsList (events) {
   const homeList = document.getElementById('resultelements')
   homeList.innerHTML = ''
-  console.log('toto', events)
   events.forEach(event => {
     const imgSrc = event.photo
       ? `/uploads/${event.photo}`
