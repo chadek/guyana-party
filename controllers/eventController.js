@@ -5,7 +5,11 @@ const Organism = mongoose.model('Organism')
 // const { promisify } = require("es6-promisify");
 const store = require('store')
 const moment = require('moment-timezone')
-const { getPagedItems, confirmOwner, lookForNextOcurring } = require('../handlers/tools')
+const {
+  getPagedItems,
+  confirmOwner,
+  lookForNextOcurring
+} = require('../handlers/tools')
 
 // exports.eventsPage = (req, res) => {
 //   const search = req.bodyString('search') || req.queryString('q') || ''
@@ -240,13 +244,13 @@ exports.getEvents = async (req, res) => {
   const archived = req.queryString('archived')
   // We want events by status, organism (if available) otherwise by author
   const status = archived ? '^archived$' : '^((?!archived).)*$'
-  // sans connexion(voir que les events public) 
+  // sans connexion(voir que les events public)
   const find = orga
     ? {
       organism: orga,
       // status: { $regex: status, $options: 'i' },
-      status: "published",
-      public : true 
+      status: 'published',
+      public: true
     }
     : {
       author: req.user._id,
@@ -279,23 +283,17 @@ exports.getSearchResult = async (req, res) => {
       { description: { $regex: search, $options: 'i' } }
     ],
     status: 'published',
-    // start: { $lte: Date.now() },
     end: { $gte: Date.now() },
     public: true
   }
   if (lon && lat) {
-    // find.location = {
-    //   $near: {
-    //     $geometry: {
-    //       type: 'Point',
-    //       coordinates: [lon, lat].map(parseFloat)
-    //     },
-    //     $maxDistance: maxDistance
-    //   }
-    // }
+    // TODO: content the map's corner
     find.location = {
       $geoWithin: {
-        $center: [[lon, lat].map(parseFloat), maxDistance]
+        $centerSphere: [
+          [lon, lat].map(parseFloat),
+          maxDistance / 1609.34 / 3963.2 // conversion meter to miles and divided by the earth's radius (miles)
+        ]
       }
     }
   }

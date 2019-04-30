@@ -1,17 +1,33 @@
 import { b, bb } from '../bling'
 import { axiosGet, data2HTML, sliceStr, addNewBtn, pagination } from '../utils'
 
+function formatStatus (rawStatus) {
+  switch (rawStatus) {
+    case 'admin':
+      return 'Admin'
+    case 'pending_request':
+      return "En attente d'approbation"
+    default:
+      return 'unknown'
+  }
+}
+
 function groupCardFormat (item) {
+  const name = sliceStr(item.name)
   const imgSrc = item.photo ? `/uploads/${item.photo}` : `/images/default.jpg`
-  const typeLabel = item.type
-    ? `<strong>Type d'organisme :</strong> ${item.type}`
-    : ''
-  const addressLabel = item.location.address
-    ? `<br><strong>Adresse :</strong> ${item.location.address}`
-    : ''
+  let status
+  const uid = b('#uid')
+  if (uid) {
+    item.community.forEach(c => {
+      if (c.user === uid.value) status = c.role
+    })
+  }
   const editLabel = `<a href="/organisms/${item.id}/edit">Modifier</a>`
-  const archiveLabel = `
-    <a href="/organism/${item.slug}?remove=true">Archiver</a>`
+  const archiveLabel = `<a href="/organism/${
+    item.slug
+  }?remove=true">Archiver</a>`
+  const conf = status === 'admin' ? `${editLabel} | ${archiveLabel}` : ''
+  const color = status === 'pending_request' ? 'style="color: orange;"' : ''
 
   return `
     <div class="card">
@@ -19,18 +35,16 @@ function groupCardFormat (item) {
         <img src="${imgSrc}" alt="photo organisme">
         <div class="card__header--content">
           <p>
-            ${typeLabel}<br>
             <a href="/organism/${item.slug}#events">
               Voir évènements associés
             </a>
             <br><a href="/organism/${item.slug}#community">Voir communauté</a>
-            ${addressLabel}
-            <br>${editLabel} | ${archiveLabel}
+            <br>(${formatStatus(status)}) ${conf}
           </p>
         </div>
       </div>
       <div class="card__section">
-        <p><a href="/organism/${item.slug}">${sliceStr(item.name)}</a></p>
+        <p><a href="/organism/${item.slug}" ${color}>${name}</a></p>
       </div>
     </div>`
 }

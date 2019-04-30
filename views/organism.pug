@@ -23,6 +23,12 @@ block content
             span.icon!= h.icon("edit")
           a(href=`/organism/${orga.slug}?remove=true` title="Archiver")
             span.icon!= h.icon("archive")
+      .pure-u-1.top-space.text-center
+        if !isMember
+          button.pure-button.button.userRequestBtn#userRequest(title="Faire une demande d'adhésion au groupe") Demande d'adhésion
+        else if isPendingMember
+          button.pure-button.button.userRequestBtn#userRemoveRequest(title="Annuler votre demande d'adhésion au groupe") Annuler votre demande d'adhésion
+
       //- Description
       .pure-u-1.top-space-40
         label Description&nbsp;:
@@ -45,7 +51,7 @@ block content
     if orga
       input#orga-id(type="hidden" value=`${orga._id}`)
 
-    if isMember && community
+    if isMember && !isPendingMember && community
       .pure-u-1.top-space-40.text-center
         h3 La communauté
       .pure-u-1.top-space-40.content#community

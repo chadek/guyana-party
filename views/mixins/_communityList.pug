@@ -16,9 +16,13 @@ mixin communityList(communityList, isAdmin, showAction=true)
           //- Role
           td.text-center
             if member.role=="admin"
-              strong admin
-            else
-              #{member.role}
+              strong Admin
+            else if member.role=="pending_request"
+              span(style="color: #adb3b9;") En attente
+            else if member.role=="guest"
+              span(style="color: #adb3b9;") Invité
+            else if member.role=="member"
+              | Membre
           //- Actions
           if isAdmin && showAction
             td

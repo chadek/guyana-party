@@ -113,17 +113,14 @@ exports.remove = async (req, res, next) => {
   res.redirect('/account')
 }
 
-const confirmMember = (community, user) => {
-  if (!user) return false
-  return undefined !== community.find(o => o._id.equals(user._id))
-}
-
-const isAdminMember = (community, user) => {
-  if (!user) return false
-  return (
-    undefined !==
-    community.find(o => o._id.equals(user._id) && o.role === 'admin')
-  )
+const confirmMember = (user, community, role) => {
+  if (!user || !community) return false
+  if (role) {
+    return (
+      undefined !==
+      community.find(o => o._id.equals(user._id) && o.role === role)
+    )
+  } else return undefined !== community.find(o => o._id.equals(user._id))
 }
 
 exports.getOrgaBySlug = async (req, res, next) => {
@@ -150,8 +147,9 @@ exports.getOrgaBySlug = async (req, res, next) => {
     csrfToken: req.csrfToken(),
     remove: req.queryString('remove'),
     community,
-    isMember: confirmMember(community, req.user),
-    isAdmin: isAdminMember(community, req.user)
+    isMember: confirmMember(req.user, community),
+    isAdmin: confirmMember(req.user, community, 'admin'),
+    isPendingMember: confirmMember(req.user, community, 'pending_request')
   })
 }
 
@@ -159,7 +157,7 @@ exports.getOrganisms = async (req, res) => {
   const page = req.queryInt('page') || 1
   const limit = req.queryInt('limit') || 7
   const find = {
-    author: req.user._id,
+    $or: [{ author: req.user._id }, { 'community.user': req.user._id }],
     status: { $regex: '^((?!archived).)*$', $options: 'i' }
   }
   const result = await getPagedItems(
@@ -171,4 +169,46 @@ exports.getOrganisms = async (req, res) => {
     { created: 'desc' }
   )
   res.json(result)
+}
+
+/* Community */
+
+exports.addPendingRequest = async (req, res) => {
+  const orga = await Organism.findOneAndUpdate(
+    { _id: req.paramString('groupId') },
+    {
+      $push: {
+        community: {
+          user: req.user._id,
+          role: 'pending_request'
+        }
+      }
+    },
+    {
+      new: true, // return the new organism instead of the old one
+      runValidators: true
+    }
+  ).exec()
+  req.flash('success', "Demande d'adhésion envoyée avec succès !")
+  res.redirect(`/organism/${orga.slug}`)
+}
+
+exports.removePendingRequest = async (req, res) => {
+  const orga = await Organism.findOneAndUpdate(
+    { _id: req.paramString('groupId') },
+    {
+      $pull: {
+        community: {
+          user: req.user._id,
+          role: 'pending_request'
+        }
+      }
+    },
+    {
+      new: true, // return the new organism instead of the old one
+      runValidators: true
+    }
+  ).exec()
+  req.flash('success', "Votre demande d'adhésion a été annulée !")
+  res.redirect(`/organism/${orga.slug}`)
 }

@@ -210,7 +210,6 @@ class Map {
       const border = this.map.getCoordinateFromPixel([half, 0])
       // Calculate the distance between center and border to get approximate radius
       const distance = distanceBetweenPoints(center, border)
-
       callbackFn(toLonLat(center), distance)
     })
   }

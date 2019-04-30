@@ -1,11 +1,28 @@
 import { b } from './bling'
 import getEvents from './account/eventsList'
 
-function loadEvents () {
+const orgaId = b('#orga-id')
+
+// Get events
+;(() => {
   const eventsDiv = b('.orga-events#events')
-  const orgaId = b('#orga-id')
   if (!eventsDiv || !orgaId) return
   getEvents(eventsDiv, orgaId)
-}
-
-loadEvents()
+})()
+// Add a user request
+;(() => {
+  if (orgaId && orgaId.value) {
+    const userReqBtn = b('#userRequest')
+    if (userReqBtn) {
+      userReqBtn.on('click', () => {
+        window.location = `/organism/${orgaId.value}/community/add`
+      })
+    }
+    const userRemoveReqBtn = b('#userRemoveRequest')
+    if (userRemoveReqBtn) {
+      userRemoveReqBtn.on('click', () => {
+        window.location = `/organism/${orgaId.value}/community/remove`
+      })
+    }
+  }
+})()

@@ -38,28 +38,27 @@ function init (dp1, dp2) {
     dp2.value = str
   }
 
-  //- TEST des dates 
+  // - TEST des dates
   dp1.on('change', e => {
-    if(dp2.value < dp1.value){
+    if (dp2.value < dp1.value) {
       dp2.value = dp1.value
-      console.log("Endvalue " + endValue)
+      console.log('Endvalue ' + endValue)
     }
   })
-  
-  dp2.on("change", e => {
-    if(dp2.value < dp1.value){
+
+  dp2.on('change', e => {
+    if (dp2.value < dp1.value) {
       dp1.value = dp2.value
     }
   })
 }
 
-function addEventForm (dp1, dp2, switchPublishEvent) {
-  init(dp1, dp2)
-  const checkday = document.getElementById("checkday")
-  if (!checkday)return
+function addRec () {
+  const checkday = document.getElementById('checkday')
+  if (!checkday) return
 
-  const checkrec = document.getElementById("isrec")
-  if (!checkrec)return
+  const checkrec = document.getElementById('isrec')
+  if (!checkrec) return
   // console.log(checkrec)
 
   // const chronictime = document.getElementById("chronictime")
@@ -73,27 +72,30 @@ function addEventForm (dp1, dp2, switchPublishEvent) {
   //   pointtime.classList.remove("hidden")
   // }
 
-
-
-  checkrec.on('change', (e)=>{
-    if (checkrec.checked){
-      checkday.classList.toggle("hidden")
+  checkrec.on('change', e => {
+    if (checkrec.checked) {
+      checkday.classList.toggle('hidden')
       // chronictime.classList.toggle("hidden")
       // pointtime.classList.toogle("hidden")
-    }else{
-      checkday.classList.toggle("hidden")
+    } else {
+      checkday.classList.toggle('hidden')
       // pointtime.classList.toogle("hidden")
       // chronictime.classList.toogle("hidden")
-      document.getElementById("monday").checked = false
-      document.getElementById("tuesday").checked = false
-      document.getElementById("wednesday").checked = false
-      document.getElementById("thursday").checked = false
-      document.getElementById("friday").checked = false
-      document.getElementById("saturday").checked = false
-      document.getElementById("sunday").checked = false
+      document.getElementById('monday').checked = false
+      document.getElementById('tuesday').checked = false
+      document.getElementById('wednesday').checked = false
+      document.getElementById('thursday').checked = false
+      document.getElementById('friday').checked = false
+      document.getElementById('saturday').checked = false
+      document.getElementById('sunday').checked = false
       // unchecked all to not save it
     }
   })
+}
+
+function addEventForm (dp1, dp2, switchPublishEvent) {
+  init(dp1, dp2)
+  addRec()
 
   if (!switchPublishEvent) return
   let eventId = document.getElementById('id')
@@ -102,7 +104,7 @@ function addEventForm (dp1, dp2, switchPublishEvent) {
     const publicCheckbox = b('label.form-switch-public input')
     if (publicCheckbox) {
       const span = b('label.form-switch-public span')
-      publicCheckbox.on('click', function () {
+      publicCheckbox.on('click', () => {
         span.innerHTML = '<strong>action en cours...</strong>'
         if (publicCheckbox.checked) {
           window.location = `/events/${eventId}/gopublic`
@@ -114,7 +116,7 @@ function addEventForm (dp1, dp2, switchPublishEvent) {
     const publishCheckbox = b('label.form-switch-publish input')
     if (publishCheckbox) {
       const span = b('label.form-switch-publish span')
-      publishCheckbox.on('click', function () {
+      publishCheckbox.on('click', () => {
         span.innerHTML = '<strong>action en cours...</strong>'
         if (publishCheckbox.checked) {
           window.location = `/events/${eventId}/publish`
