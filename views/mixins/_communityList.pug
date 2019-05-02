@@ -25,7 +25,13 @@ mixin communityList(communityList, isAdmin, showAction=true)
               | Membre
           //- Actions
           if isAdmin && showAction
-            td
+            td.text-center
+              if member.role=="pending_request"
+                button.pure-button.button.adminUserRequestBtn#acceptUserRequest(title="Accepter la demande" data-id=`${member.id}`) Accepter
+                button.pure-button.button.adminUserRequestBtn#denyUserRequest(title="Refuser la demande" data-id=`${member.id}`) Refuser
+              if member.role=="denied"
+                button.pure-button.button.adminUserRequestBtn#grantUserRequest(title="Débloquer" data-id=`${member.id}`) Débloquer
+
 
   //- script(src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous")
   //- script(src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js")

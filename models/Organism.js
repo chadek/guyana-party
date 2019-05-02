@@ -49,10 +49,10 @@ const OrganismSchema = new mongoose.Schema(
           required: "La référence de l'utilisateur est requise."
         },
         role: {
-          type: String, // guest | admin | pending_request | member
+          type: String, // admin | pending_request | member | denied
           default: 'guest'
         },
-        requestDate: {
+        memberDate: {
           type: Date,
           default: Date.now
         }

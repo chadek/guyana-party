@@ -7,6 +7,10 @@ function formatStatus (rawStatus) {
       return 'Admin'
     case 'pending_request':
       return "En attente d'approbation"
+    case 'denied':
+      return 'Demande refusée'
+    case 'member':
+      return 'Membre'
     default:
       return 'unknown'
   }
@@ -27,7 +31,8 @@ function groupCardFormat (item) {
     item.slug
   }?remove=true">Archiver</a>`
   const conf = status === 'admin' ? `${editLabel} | ${archiveLabel}` : ''
-  const color = status === 'pending_request' ? 'style="color: orange;"' : ''
+  let color = status === 'pending_request' ? 'style="color: orange;"' : ''
+  color = status === 'denied' ? 'style="color: red;"' : ''
 
   return `
     <div class="card">
