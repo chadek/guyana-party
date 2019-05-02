@@ -24,10 +24,15 @@ block content
           a(href=`/organism/${orga.slug}?remove=true` title="Archiver")
             span.icon!= h.icon("archive")
       .pure-u-1.top-space.text-center
-        if !isMember
+        if !inCommunity
           button.pure-button.button.userRequestBtn#userRequest(title="Faire une demande d'adhésion au groupe") Demande d'adhésion
+        else if isMember
+          button.pure-button.button.userRequestBtn#userQuit(title="Quitter le groupe") Quitter le groupe
         else if isPendingMember
+          p(style="color: green;") Votre demande est en cours de traitement.
           button.pure-button.button.userRequestBtn#userRemoveRequest(title="Annuler votre demande d'adhésion au groupe") Annuler votre demande d'adhésion
+        else if isDenied
+          p(style="color: red;") Votre demande a été refusée.
 
       //- Description
       .pure-u-1.top-space-40
@@ -51,7 +56,7 @@ block content
     if orga
       input#orga-id(type="hidden" value=`${orga._id}`)
 
-    if isMember && !isPendingMember && community
+    if inCommunity && !isDenied && !isPendingMember && community
       .pure-u-1.top-space-40.text-center
         h3 La communauté
       .pure-u-1.top-space-40.content#community

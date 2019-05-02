@@ -147,9 +147,11 @@ exports.getOrgaBySlug = async (req, res, next) => {
     csrfToken: req.csrfToken(),
     remove: req.queryString('remove'),
     community,
-    isMember: confirmMember(req.user, community),
+    inCommunity: confirmMember(req.user, community),
+    isMember: confirmMember(req.user, community, 'member'),
     isAdmin: confirmMember(req.user, community, 'admin'),
-    isPendingMember: confirmMember(req.user, community, 'pending_request')
+    isPendingMember: confirmMember(req.user, community, 'pending_request'),
+    isDenied: confirmMember(req.user, community, 'denied')
   })
 }
 
@@ -211,4 +213,89 @@ exports.removePendingRequest = async (req, res) => {
   ).exec()
   req.flash('success', "Votre demande d'adhésion a été annulée !")
   res.redirect(`/organism/${orga.slug}`)
+}
+
+exports.acceptPendingRequest = async (req, res) => {
+  const orga = await Organism.findOneAndUpdate(
+    {
+      _id: req.paramString('groupId'),
+      'community.user': req.paramString('userId'),
+      'community.role': 'pending_request'
+    },
+    {
+      $set: {
+        'community.$.role': 'member',
+        'community.$.memberDate': Date.now()
+      }
+    },
+    {
+      new: true, // return the new organism instead of the old one
+      runValidators: true
+    }
+  ).exec()
+  req.flash('success', "Demande d'adhésion envoyée avec succès !")
+  res.redirect(`/organism/${orga.slug}`)
+}
+
+exports.denyPendingRequest = async (req, res) => {
+  const orga = await Organism.findOneAndUpdate(
+    {
+      _id: req.paramString('groupId'),
+      'community.user': req.paramString('userId'),
+      'community.role': 'pending_request'
+    },
+    {
+      $set: {
+        'community.$.role': 'denied',
+        'community.$.memberDate': Date.now()
+      }
+    },
+    {
+      new: true, // return the new organism instead of the old one
+      runValidators: true
+    }
+  ).exec()
+  req.flash('success', "Demande d'adhésion envoyée avec succès !")
+  res.redirect(`/organism/${orga.slug}`)
+}
+
+exports.grantPendingRequest = async (req, res) => {
+  const orga = await Organism.findOneAndUpdate(
+    {
+      _id: req.paramString('groupId'),
+      'community.user': req.paramString('userId'),
+      'community.role': 'denied'
+    },
+    {
+      $set: {
+        'community.$.role': 'pending_request',
+        'community.$.memberDate': Date.now()
+      }
+    },
+    {
+      new: true, // return the new organism instead of the old one
+      runValidators: true
+    }
+  ).exec()
+  req.flash('success', "Demande d'adhésion envoyée avec succès !")
+  res.redirect(`/organism/${orga.slug}`)
+}
+
+exports.quitRequest = async (req, res) => {
+  await Organism.findOneAndUpdate(
+    { _id: req.paramString('groupId') },
+    {
+      $pull: {
+        community: {
+          user: req.user._id
+        }
+      }
+    },
+    {
+      new: true, // return the new organism instead of the old one
+      runValidators: true
+    }
+  ).exec()
+  req.flash('success', 'Vous avez quitter le groupe')
+  res.redirect(`/account`)
 }

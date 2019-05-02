@@ -85,10 +85,33 @@ router.get(
   authController.isLoggedIn,
   catchErrors(orgaController.addPendingRequest)
 )
+
 router.get(
   '/organism/:groupId/community/remove',
   authController.isLoggedIn,
   catchErrors(orgaController.removePendingRequest)
+)
+router.get(
+  '/organism/:groupId/community/:userId/accept',
+  authController.isLoggedIn,
+  catchErrors(orgaController.acceptPendingRequest)
+)
+router.get(
+  '/organism/:groupId/community/:userId/deny',
+  authController.isLoggedIn,
+  catchErrors(orgaController.denyPendingRequest)
+)
+
+router.get(
+  '/organism/:groupId/community/:userId/grant',
+  authController.isLoggedIn,
+  catchErrors(orgaController.grantPendingRequest)
+)
+
+router.get(
+  '/organism/:groupId/community/quit',
+  authController.isLoggedIn,
+  catchErrors(orgaController.quitRequest)
 )
 
 /* Events */
