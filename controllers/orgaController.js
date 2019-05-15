@@ -151,7 +151,7 @@ exports.getOrgaBySlug = async (req, res, next) => {
     isMember: confirmMember(req.user, community, 'member'),
     isAdmin: confirmMember(req.user, community, 'admin'),
     isPendingMember: confirmMember(req.user, community, 'pending_request'),
-    isDenied: confirmMember(req.user, community, 'denied')
+    isDenied: confirmMember(req.user, community, 'denied'),
   })
 }
 
@@ -233,7 +233,7 @@ exports.acceptPendingRequest = async (req, res) => {
       runValidators: true
     }
   ).exec()
-  req.flash('success', "Demande d'adhésion envoyée avec succès !")
+  req.flash('success', "Adhésion acceptée avec succès !")
   res.redirect(`/organism/${orga.slug}`)
 }
 
@@ -242,7 +242,7 @@ exports.denyPendingRequest = async (req, res) => {
     {
       _id: req.paramString('groupId'),
       'community.user': req.paramString('userId'),
-      'community.role': 'pending_request'
+      'community.role': {$in: ['pending_request', 'member', 'admin' ]}
     },
     {
       $set: {
@@ -255,7 +255,7 @@ exports.denyPendingRequest = async (req, res) => {
       runValidators: true
     }
   ).exec()
-  req.flash('success', "Demande d'adhésion envoyée avec succès !")
+  req.flash('success', "Utilisateur bloqué avec succès !")
   res.redirect(`/organism/${orga.slug}`)
 }
 
@@ -277,7 +277,51 @@ exports.grantPendingRequest = async (req, res) => {
       runValidators: true
     }
   ).exec()
-  req.flash('success', "Demande d'adhésion envoyée avec succès !")
+  req.flash('success', "Utilisateur débloqué avec succès !")
+  res.redirect(`/organism/${orga.slug}`)
+}
+
+exports.giveAdminRightRequest = async (req, res) => {
+  const orga = await Organism.findOneAndUpdate(
+    {
+      _id: req.paramString('groupId'),
+      'community.user': req.paramString('userId'),
+      'community.role': 'member'
+    },
+    {
+      $set: {
+        'community.$.role': 'admin',
+        'community.$.memberDate': Date.now()
+      }
+    },
+    {
+      new: true, // return the new organism instead of the old one
+      runValidators: true
+    }
+  ).exec()
+  req.flash('success', "Nouvel(le) administrateur ajouter avec succès !")
+  res.redirect(`/organism/${orga.slug}`)
+}
+
+exports.removeAdminRightRequest = async (req, res) => {
+  const orga = await Organism.findOneAndUpdate(
+    {
+      _id: req.paramString('groupId'),
+      'community.user': req.paramString('userId'),
+      'community.role': 'admin'
+    },
+    {
+      $set: {
+        'community.$.role': 'member',
+        'community.$.memberDate': Date.now()
+      }
+    },
+    {
+      new: true, // return the new organism instead of the old one
+      runValidators: true
+    }
+  ).exec()
+  req.flash('success', "Administrateur retiré avec succès !")
   res.redirect(`/organism/${orga.slug}`)
 }
 

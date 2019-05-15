@@ -109,6 +109,18 @@ router.get(
 )
 
 router.get(
+  '/organism/:groupId/community/:userId/giveadminright',
+  authController.isLoggedIn,
+  catchErrors(orgaController.giveAdminRightRequest)
+)
+
+router.get(
+  '/organism/:groupId/community/:userId/removeadminright',
+  authController.isLoggedIn,
+  catchErrors(orgaController.removeAdminRightRequest)
+)
+
+router.get(
   '/organism/:groupId/community/quit',
   authController.isLoggedIn,
   catchErrors(orgaController.quitRequest)
