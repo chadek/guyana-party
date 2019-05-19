@@ -30,42 +30,53 @@ const orgaId = b('#orga-id')
     // Valid or deny member request
     const adminValidUserReqBtn = b('#acceptUserRequest')
     if (adminValidUserReqBtn) {
-      bb('#acceptUserRequest').on('click', () => {
+      b('#acceptUserRequest').on('click', () => {
         const dataId = adminValidUserReqBtn.getAttribute('data-id')
         window.location = `/organism/${orgaId.value}/community/${dataId}/accept`
       })
     }
     //bloquer un user
     const adminDenyUserReqBtn = b('#denyUserRequest')
-    if (adminDenyUserReqBtn) {
-      bb('#denyUserRequest').on('click', () => {
-        const dataId = adminDenyUserReqBtn.getAttribute('data-id')
-        window.location = `/organism/${orgaId.value}/community/${dataId}/deny`
-      })
+    console.log("b : ", adminDenyUserReqBtn)
+    const adminDenyUserReqBtnbb = bb('#denyUserRequest')
+    console.log("BB : ", adminDenyUserReqBtnbb)
+    if (adminDenyUserReqBtnbb) {
+      console.log("Do not pass!")
+
+      adminDenyUserReqBtnbb.forEach(blockbb => {
+        blockbb.on('click', () => {
+          console.log("i'am button : ",blockbb)
+          const dataId = blockbb.getAttribute('data-id')
+          console.log("Id n° : ", dataId)
+          window.location = `/organism/${orgaId.value}/community/${dataId}/deny`
+        })
+      });
     }
 
     //débloquer et mettre en attente 
     const adminGrantUserReqBtn = b('#grantUserRequest')
     if (adminGrantUserReqBtn) {
-      bb('#grantUserRequest').on('click', () => {
+      b('#grantUserRequest').on('click', () => {
         const dataId = adminGrantUserReqBtn.getAttribute('data-id')
         console.log(dataId)
         window.location = `/organism/${orgaId.value}/community/${dataId}/grant`
       })
     }
 
+    //donner les droits admin
     const adminGiveAdminRightReqBtn = b('#giveAdminRightRequest')
     if(adminGiveAdminRightReqBtn){
-      bb('#giveAdminRightRequest').on('click', () => {
+      b('#giveAdminRightRequest').on('click', () => {
         const dataId = adminGiveAdminRightReqBtn.getAttribute('data-id')
         console.log(dataId)
         window.location = `/organism/${orgaId.value}/community/${dataId}/giveadminright`
       })
     }
 
+    // retirer les droits admin
     const adminRemoveAdminRightReqBtn = b('.removeAdminRightRequest')
     if(adminRemoveAdminRightReqBtn){
-      bb('.removeAdminRightRequest').on('click', () => {
+      b('.removeAdminRightRequest').on('click', () => {
         const dataId = adminRemoveAdminRightReqBtn.getAttribute('data-id')
         console.log(dataId)
         window.location = `/organism/${orgaId.value}/community/${dataId}/removeadminright`

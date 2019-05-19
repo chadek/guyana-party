@@ -238,6 +238,7 @@ exports.acceptPendingRequest = async (req, res) => {
 }
 
 exports.denyPendingRequest = async (req, res) => {
+  console.log("CONTROLLEUR DENY : ", req.paramString('userId'))
   const orga = await Organism.findOneAndUpdate(
     {
       _id: req.paramString('groupId'),
