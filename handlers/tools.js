@@ -35,6 +35,18 @@ exports.confirmOwner = function (model, user) {
     throw Error('Vous ne pouvez pas effectuer cet action !')
   }
 }
+// TODO confirme si l'utilisateur est admin du groupe de l'évènement
+
+exports.confirmMember = (user, community, role) => {
+  if (!user || !community) return false
+  if (role) {
+    return (
+      undefined !==
+      community.find(o => o._id.equals(user._id) && o.role === role)
+    )
+  } else return undefined !== community.find(o => o._id.equals(user._id))
+}
+
 
 exports.asyncForEach = async function (array, callback) {
   for (let index = 0; index < array.length; index++) {

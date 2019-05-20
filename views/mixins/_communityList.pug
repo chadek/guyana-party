@@ -27,16 +27,15 @@ mixin communityList(communityList, isAdmin, showAction=true)
           if isAdmin && showAction
             td.text-center
               if member.role=="pending_request"
-                button.pure-button.button.adminUserRequestBtn#acceptUserRequest(title="Accepter la demande" data-id=`${member.id}`) Accepter
-                button.pure-button.button.adminUserRequestBtn#denyUserRequest(title="Refuser la demande" data-id=`${member.id}`) Refuser
+                button.pure-button.button.adminUserRequestBtn.acceptUserRequest(title="Accepter la demande" data-id=`${member.id}`) Accepter
+                button.pure-button.button.adminUserRequestBtn.denyUserRequest(title="Refuser la demande" data-id=`${member.id}`) Refuser
               if member.role=="denied"
-                button.pure-button.button.adminUserRequestBtn#grantUserRequest(title="Débloquer" data-id=`${member.id}`) Débloquer
+                button.pure-button.button.adminUserRequestBtn.grantUserRequest(title="Débloquer" data-id=`${member.id}`) Débloquer
               if member.role=="member"
-                button.pure-button.button.adminUserRequestBtn#giveAdminRightRequest(title="Nommer l'administrateur" data-id=`${member.id}`) Donner les droits admin
-                button.pure-button.button.adminUserRequestBtn#denyUserRequest(title="Bloquer" data-id=`${member.id}`) Bloquer
+                button.pure-button.button.adminUserRequestBtn.giveAdminRightRequest(title="Nommer l'administrateur" data-id=`${member.id}`) Donner les droits admin
+                button.pure-button.button.adminUserRequestBtn.denyUserRequest(title="Bloquer" data-id=`${member.id}`) Bloquer
               if member.role=="admin"
                 button.pure-button.button.adminUserRequestBtn.removeAdminRightRequest(title="Retirer l'administrateur" data-id=`${member.id}`) Retirer les droits admin
-                button.pure-button.button.adminUserRequestBtn#denyUserRequest(title="Bloquer" data-id=`${member.id}`) Bloquer
 
           
                 
