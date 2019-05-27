@@ -26,13 +26,13 @@ block content
       .pure-u-1.top-space.text-center
         if !inCommunity
           button.pure-button.button.userRequestBtn#userRequest(title="Faire une demande d'adhésion au groupe") Demande d'adhésion
-        else if isMember
+        else if isMember || isAdmin
           button.pure-button.button.userRequestBtn#userQuit(title="Quitter le groupe") Quitter le groupe
         else if isPendingMember
           p(style="color: green;") Votre demande est en cours de traitement.
           button.pure-button.button.userRequestBtn#userRemoveRequest(title="Annuler votre demande d'adhésion au groupe") Annuler votre demande d'adhésion
         else if isDenied
-          p(style="color: red;") Votre demande a été refusée.
+          p(style="color: red;") Vous avez été bloqué.
 
       //- Description
       .pure-u-1.top-space-40
