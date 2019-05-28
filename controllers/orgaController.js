@@ -11,6 +11,11 @@ const Organism = mongoose.model('Organism')
 const Event = mongoose.model('Event')
 const User = mongoose.model('User')
 
+const returnNextUpdatedOptions = {
+  new: true, // return the new organism instead of the old one
+  runValidators: true
+}
+
 exports.addPage = (req, res) => {
   res.render('editOrganism', {
     title: "Création d'un Groupe",
@@ -74,10 +79,7 @@ exports.updateOrga = async (req, res) => {
   const orga = await Organism.findOneAndUpdate(
     { _id: req.paramString('id') },
     req.body,
-    {
-      new: true, // return the new organism instead of the old one
-      runValidators: true
-    }
+    returnNextUpdatedOptions
   ).exec()
   req.flash(
     'success',
@@ -114,24 +116,25 @@ exports.remove = async (req, res, next) => {
   res.redirect('/account')
 }
 
-// const confirmMember = (user, community, role) => {
-//   if (!user || !community) return false
-//   if (role) {
-//     return (
-//       undefined !==
-//       community.find(o => o._id.equals(user._id) && o.role === role)
-//     )
-//   } else return undefined !== community.find(o => o._id.equals(user._id))
-// }
-
 exports.getOrgaBySlug = async (req, res, next) => {
   const orga = await Organism.findOne({ slug: req.paramString('slug') })
 
   if (!orga) return next()
   if (orga.status !== 'published') confirmOwner(orga, req.user) // we can't see an event if it's not published and we don't own it
 
+  const inCommunity = confirmMember(req.user, orga.community)
+  const isMember = confirmMember(req.user, orga.community, 'member')
+  const isAdmin = confirmMember(req.user, orga.community, 'admin')
+  const isPendingMember = confirmMember(
+    req.user,
+    orga.community,
+    'pending_request'
+  )
+  const isDenied = confirmMember(req.user, orga.community, 'denied')
+
   const community = []
 
+  // Get user object for each community member
   await asyncForEach(orga.community, async member => {
     const found = await User.findById(member.user)
     if (found) {
@@ -148,11 +151,11 @@ exports.getOrgaBySlug = async (req, res, next) => {
     csrfToken: req.csrfToken(),
     remove: req.queryString('remove'),
     community,
-    inCommunity: confirmMember(req.user, community),
-    isMember: confirmMember(req.user, community, 'member'),
-    isAdmin: confirmMember(req.user, community, 'admin'),
-    isPendingMember: confirmMember(req.user, community, 'pending_request'),
-    isDenied: confirmMember(req.user, community, 'denied'),
+    inCommunity,
+    isMember,
+    isAdmin,
+    isPendingMember,
+    isDenied
   })
 }
 
@@ -176,197 +179,129 @@ exports.getOrganisms = async (req, res) => {
 
 /* Community */
 
-exports.addPendingRequest = async (req, res) => {
-  const orga = await Organism.findOneAndUpdate(
-    { _id: req.paramString('groupId') },
-    {
-      $push: {
-        community: {
-          user: req.user._id,
-          role: 'pending_request'
-        }
-      }
-    },
-    {
-      new: true, // return the new organism instead of the old one
-      runValidators: true
+const pendingRequestUpdate = (action, user, role) => {
+  const result = {
+    [action]: {
+      community: { user }
     }
+  }
+  if (role) result[action].community.role = role
+  return result
+}
+
+const pendingRequestUpdateMember = async (req, action, role) => {
+  return Organism.findOneAndUpdate(
+    { _id: req.paramString('groupId') },
+    pendingRequestUpdate(action, req.user._id, role),
+    returnNextUpdatedOptions
   ).exec()
+}
+
+/**  Demande d'adhésion */
+exports.addPendingRequest = async (req, res) => {
+  const orga = await pendingRequestUpdateMember(req, '$push', 'pending_request')
   req.flash('success', "Demande d'adhésion envoyée avec succès !")
   res.redirect(`/organism/${orga.slug}`)
 }
 
+/** Retirer demande d'adhésion */
 exports.removePendingRequest = async (req, res) => {
-  const orga = await Organism.findOneAndUpdate(
-    { _id: req.paramString('groupId') },
-    {
-      $pull: {
-        community: {
-          user: req.user._id,
-          role: 'pending_request'
-        }
-      }
-    },
-    {
-      new: true, // return the new organism instead of the old one
-      runValidators: true
-    }
-  ).exec()
+  const orga = await pendingRequestUpdateMember(req, '$pull', 'pending_request')
   req.flash('success', "Votre demande d'adhésion a été annulée !")
   res.redirect(`/organism/${orga.slug}`)
 }
-
+/** Quit the group */
 exports.quitRequest = async (req, res) => {
-  await Organism.findOneAndUpdate(
-    { _id: req.paramString('groupId') },
-    {
-      $pull: {
-        community: {
-          user: req.user._id
-        }
-      }
-    },
-    {
-      new: true, // return the new organism instead of the old one
-      runValidators: true
-    }
-  ).exec()
+  await pendingRequestUpdateMember(req, '$pull')
   req.flash('success', 'Vous avez quitter le groupe')
   res.redirect(`/account`)
 }
 
+/*  Admin */
 
-//admin
-exports.acceptPendingRequest = async (req, res) => {
-  const orga = await Organism.findOneAndUpdate(
+exports.isAdmin = async (req, res, next) => {
+  const orga = await Organism.findOne({ _id: req.paramString('groupId') })
+  const isAdmin = orga && confirmMember(req.user, orga.community, 'admin')
+  // orga.community.find(o => o.user.equals(req.user._id) && o.role === 'admin')
+  if (isAdmin) {
+    next() // carry on! They are admin!
+    return
+  }
+  req.flash('error', 'Vous ne pouvez pas effectuer cette action !')
+  res.redirect(`/organism/${orga.slug}`)
+}
+
+exports.hasMoreThanOneAdmins = async (req, res, next) => {
+  const orga = await Organism.findOne({ _id: req.paramString('groupId') })
+  const count = orga.community.reduce((n, o) => n + (o.role === 'admin'), 0)
+  if (count > 1) {
+    next() // carry on, there is at least another commander !
+    return
+  }
+  req.flash('info', 'Vous êtes le seul admin ! Voulez-vous archiver ce group ?')
+  res.redirect(`/organism/${orga.slug}?remove=true`)
+}
+
+const pendingRequestUpdateAdmin = async (req, roleIn, newRole) => {
+  return Organism.findOneAndUpdate(
     {
       _id: req.paramString('groupId'),
-      'community': {$elemMatch : { 
-        'user': req.paramString('userId'),
-        'role': {$in: ['pending_request']} 
-      }}
-    },
-    {
-      $set: {
-        'community.$.role': 'member',
-        'community.$.memberDate': Date.now()
+      community: {
+        $elemMatch: {
+          user: req.paramString('userId'),
+          role: { $in: roleIn }
+        }
       }
     },
     {
-      new: true, // return the new organism instead of the old one
-      runValidators: true
-    }
+      $set: {
+        'community.$.role': newRole,
+        'community.$.memberDate': Date.now()
+      }
+    },
+    returnNextUpdatedOptions
   ).exec()
-  req.flash('success', "Adhésion acceptée avec succès !")
-  res.redirect(`/organism/${orga.slug}`)
+}
+
+exports.acceptPendingRequest = async (req, res) => {
+  const orga = await pendingRequestUpdateAdmin(
+    req,
+    ['pending_request'],
+    'member'
+  )
+  req.flash('success', 'Adhésion acceptée avec succès !')
+  res.redirect(`/organism/${orga.slug}#community`)
 }
 
 exports.denyPendingRequest = async (req, res) => {
-  const orga = await Organism.findOneAndUpdate(
-    {
-      _id: req.paramString('groupId'),
-      'community': {$elemMatch : { 
-        'user': req.paramString('userId'),
-        'role': {$in: ['pending_request', 'member', 'admin' ] } 
-      }}
-    },
-    {
-      $set: {
-        'community.$.role': 'denied',
-        'community.$.memberDate': Date.now()
-      }
-    },
-    {
-      new: true, // return the new organism instead of the old one
-      runValidators: true
-    }
-  ).exec()
-  req.flash('success', "Utilisateur bloqué avec succès !")
-  res.redirect(`/organism/${orga.slug}`)
+  const orga = await pendingRequestUpdateAdmin(
+    req,
+    ['pending_request', 'member', 'admin'],
+    'denied'
+  )
+  req.flash('success', 'Utilisateur bloqué avec succès !')
+  res.redirect(`/organism/${orga.slug}#community`)
 }
 
+/** Débloquer et mettre en attente */
 exports.grantPendingRequest = async (req, res) => {
-  const orga = await Organism.findOneAndUpdate(
-    {
-      _id: req.paramString('groupId'),
-      'community': {$elemMatch : { 
-        'user': req.paramString('userId'),
-        'role': {$in: ['denied' ] } 
-      }}
-    },
-    {
-      $set: {
-        'community.$.role': 'pending_request',
-        'community.$.memberDate': Date.now()
-      }
-    },
-    {
-      new: true, // return the new organism instead of the old one
-      runValidators: true
-    }
-  ).exec()
-  req.flash('success', "Utilisateur débloqué avec succès !")
-  res.redirect(`/organism/${orga.slug}`)
+  const orga = await pendingRequestUpdateAdmin(
+    req,
+    ['denied'],
+    'pending_request'
+  )
+  req.flash('success', 'Utilisateur débloqué avec succès !')
+  res.redirect(`/organism/${orga.slug}#community`)
 }
 
 exports.giveAdminRightRequest = async (req, res) => {
-  const orga = await Organism.findOneAndUpdate(
-    {
-      _id: req.paramString('groupId'),
-      'community': {$elemMatch : { 
-        'user': req.paramString('userId'),
-        'role': {$in: ['member' ] } 
-      }}
-    },
-    {
-      $set: {
-        'community.$.role': 'admin',
-        'community.$.memberDate': Date.now()
-      }
-    },
-    {
-      new: true, // return the new organism instead of the old one
-      runValidators: true
-    }
-  ).exec()
-  req.flash('success', "Nouvel(le) administrateur ajouter avec succès !")
-  res.redirect(`/organism/${orga.slug}`)
+  const orga = await pendingRequestUpdateAdmin(req, ['member'], 'admin')
+  req.flash('success', 'Nouvel administrateur ajouté avec succès !')
+  res.redirect(`/organism/${orga.slug}#community`)
 }
 
 exports.removeAdminRightRequest = async (req, res, next) => {
-  let orga = await Organism.findOne({ _id: req.paramString('groupId') })
-  if (!orga) return next()
-  if(confirmMember(req.user, orga.community, 'admin')) {
-    // si nbAdmin > 1
-    //   enlever les droits
-    // sinon 
-    //   demande de suppression de groupe
-    
-    orga = await Organism.updateOne(
-      {
-        _id: req.paramString('groupId'),
-        'community': {$elemMatch : { 
-          'user': req.paramString('userId'),
-          'role': {$in: ['admin']} 
-        }}
-      },
-      {
-        $set: {
-          'community.$.role': 'member',
-          'community.$.memberDate': Date.now()
-        }
-      },
-      {
-        new: true, // return the new organism instead of the old one
-        runValidators: true
-      }
-    ).exec()
-    req.flash('success', "Administrateur retiré avec succès !")
-    res.redirect(`/organism/${orga.slug}`)
-  } else {
-    req.flash('error', "Vous ne pouvez pas effectuer cet action !")
-    res.redirect(`/organism/${orga.slug}`)
-  }
+  const orga = await pendingRequestUpdateAdmin(req, ['admin'], 'member')
+  req.flash('success', 'Administrateur retiré avec succès !')
+  res.redirect(`/organism/${orga.slug}#community`)
 }
-
-

@@ -42,11 +42,10 @@ exports.confirmMember = (user, community, role) => {
   if (role) {
     return (
       undefined !==
-      community.find(o => o._id.equals(user._id) && o.role === role)
+      community.find(o => o.user.equals(user._id) && o.role === role)
     )
-  } else return undefined !== community.find(o => o._id.equals(user._id))
+  } else return undefined !== community.find(o => o.user.equals(user._id))
 }
-
 
 exports.asyncForEach = async function (array, callback) {
   for (let index = 0; index < array.length; index++) {
