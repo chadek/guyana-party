@@ -9,11 +9,11 @@ const {
 } = require('../handlers/tools')
 
 const Event = mongoose.model('Event')
-const Organism = mongoose.model('Organism')
+const Group = mongoose.model('Group')
 
 exports.isAdmin = async (req, res, next) => {
   const event = await Event.findOne({ _id: req.paramString('id') })
-  const isAdmin = event && confirmMember(req.user, event.organism, 'admin')
+  const isAdmin = event && confirmMember(req.user, event.group, 'admin')
   if (isAdmin) {
     next() // carry on! They are admin!
     return
@@ -23,9 +23,9 @@ exports.isAdmin = async (req, res, next) => {
 }
 
 exports.addPage = (req, res) => {
-  const orga = req.queryString('orga')
+  const group = req.queryString('group')
   res.render('editEvent', {
-    orga,
+    group,
     tzList: getTZList(),
     title: "Création d'un évènement",
     csrfToken: req.csrfToken()
@@ -76,7 +76,7 @@ exports.create = async (req, res) => {
   if (errors) {
     store.set('form-errors', errors.map(err => err.param))
     req.flash('error', errors.map(err => err.msg))
-    return res.redirect('/events/add')
+    return res.redirect('/event/add')
   }
   req.body.author = req.user._id
   req.body = bodyFormatDateTime(req)
@@ -131,7 +131,7 @@ exports.updateEvent = async (req, res, next) => {
       event.slug
     }">Voir</a>`
   )
-  res.redirect(`/events/${event._id}/edit`)
+  res.redirect(`/event/${event._id}/edit`)
 }
 
 exports.publish = async (req, res, next) => {
@@ -190,7 +190,7 @@ exports.getEventBySlug = async (req, res, next) => {
   // we can't see an event if it's not published and we don't own it
   if (
     event.status !== 'published' &&
-    !confirmMember(req.user, event.organism, 'admin')
+    !confirmMember(req.user, event.group, 'admin')
   ) {
     req.flash('error', 'Vous ne pouvez pas effectuer cet action !')
     return next()
@@ -199,15 +199,15 @@ exports.getEventBySlug = async (req, res, next) => {
   let remove = false
   if (req.queryString('remove')) remove = true
 
-  const orga = await Organism.findOne({ _id: event.organism })
-  if (!orga) return next()
+  const group = await Group.findOne({ _id: event.group })
+  if (!group) return next()
   const isOwner = req.user && event.author.equals(req.user._id)
 
   event.nextTime = lookForNextOcurring(event)
 
   res.render('event', {
     event,
-    orga,
+    group,
     title: event.name,
     csrfToken: req.csrfToken(),
     remove,
@@ -219,14 +219,14 @@ exports.getEventBySlug = async (req, res, next) => {
 exports.getEvents = async (req, res) => {
   const page = req.queryInt('page') || 1
   const limit = req.queryInt('limit') || 7
-  const orga = req.queryString('orga')
+  const group = req.queryString('group')
   const archived = req.queryString('archived')
-  // We want events by status, organism (if available) otherwise by author
+  // We want events by status, group (if available) otherwise by author
   const status = archived ? '^archived$' : '^((?!archived).)*$'
   // sans connexion(voir que les events public)
-  const find = orga
+  const find = group
     ? {
-      organism: orga,
+      group: group,
       // status: { $regex: status, $options: 'i' },
       status: 'published',
       public: true

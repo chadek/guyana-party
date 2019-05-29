@@ -1,36 +1,36 @@
 import { b, bb } from './bling'
 import getEvents from './account/eventsList'
 
-const orgaId = b('#orga-id')
+const groupId = b('#group-id')
 
 // Get events
 ;(() => {
-  const eventsDiv = b('.orga-events#events')
-  if (!eventsDiv || !orgaId) return
-  getEvents(eventsDiv, orgaId)
+  const eventsDiv = b('.group-events#events')
+  if (!eventsDiv || !groupId) return
+  getEvents(eventsDiv, groupId)
 })()
 ;(() => {
   // Add a user request
-  if (orgaId && orgaId.value) {
+  if (groupId && groupId.value) {
     // Demande d'adhésion
     const userReqBtn = b('#userRequest')
     if (userReqBtn) {
       userReqBtn.on('click', () => {
-        window.location = `/organism/${orgaId.value}/community/add`
+        window.location = `/group/${groupId.value}/community/add`
       })
     }
     // Retirer demande d'adhésion
     const userRemoveReqBtn = b('#userRemoveRequest')
     if (userRemoveReqBtn) {
       userRemoveReqBtn.on('click', () => {
-        window.location = `/organism/${orgaId.value}/community/remove`
+        window.location = `/group/${groupId.value}/community/remove`
       })
     }
     // Quit the group
     const UserQuitReqBtn = b('#userQuit')
     if (UserQuitReqBtn) {
       UserQuitReqBtn.on('click', () => {
-        window.location = `/organism/${orgaId.value}/community/quit`
+        window.location = `/group/${groupId.value}/community/quit`
       })
     }
 
@@ -41,8 +41,8 @@ const orgaId = b('#orga-id')
         buttons.forEach(btn => {
           btn.on('click', () => {
             const dataId = btn.getAttribute('data-id')
-            window.location = `/organism/${
-              orgaId.value
+            window.location = `/group/${
+              groupId.value
             }/community/${dataId}/${req}`
           })
         })

@@ -15,8 +15,8 @@ function eventCardFormat (item) {
   let end = formatDateTime(item.end)
   start = `${start.date} à ${start.time}`
   end = `${end.date} à ${end.time}`
-  const orgaSlug = item.organism.slug
-  const orgaName = sliceStr(item.organism.name)
+  const groupSlug = item.group.slug
+  const groupName = sliceStr(item.group.name)
   const address = sliceStr(item.location.address, 90)
   const titleClass =
     item.status !== 'published' && item.status !== 'archived'
@@ -29,7 +29,7 @@ function eventCardFormat (item) {
       ? '<br><strong>Evènement privé</strong>'
       : ''
     const actions = `
-      <a href="/events/${item.id}/edit">Modifier</a> |
+      <a href="/event/${item.id}/edit">Modifier</a> |
       <a href="/event/${item.slug}?remove=true">Archiver</a>`
     actionsLabel =
       item.status !== 'published'
@@ -43,7 +43,7 @@ function eventCardFormat (item) {
         <img src="${imgSrc}" alt="photo évènement">
         <div class="card__header--content">
           <p>
-            <strong>Organisateur :</strong>&nbsp<a href="/organism/${orgaSlug}">${orgaName}</a>
+            <strong>Organisateur :</strong>&nbsp<a href="/group/${groupSlug}">${groupName}</a>
             <br><strong>Début :</strong>&nbsp${start}
             <br><strong>Fin :</strong>&nbsp${end}
             <br><strong>Adresse :</strong>&nbsp${address}
@@ -62,10 +62,10 @@ function eventCardFormat (item) {
     </div>`
 }
 
-function getEvents (eventsDiv, orgaId = null, page = 1, archived = false) {
+function getEvents (eventsDiv, groupId = null, page = 1, archived = false) {
   if (!eventsDiv) return
-  if (orgaId !== null && (!orgaId || !orgaId.value)) return
-  const groupInUrl = orgaId ? `&orga=${orgaId.value}` : ''
+  if (groupId !== null && (!groupId || !groupId.value)) return
+  const groupInUrl = groupId ? `&group=${groupId.value}` : ''
   const archivedInUrl = archived ? `&archived=true` : ''
   axiosGet(`/api/events?page=${page}${groupInUrl}${archivedInUrl}`, data => {
     if (!data) return
@@ -92,12 +92,12 @@ function getEvents (eventsDiv, orgaId = null, page = 1, archived = false) {
         } else if (page === '»' || page === `&raquo;`) {
           page = currentPage + 1
         }
-        getEvents(eventsDiv, orgaId, page)
+        getEvents(eventsDiv, groupId, page)
       })
     }
     // Add click event on new button
     b('.card__new--event').on('click', () => {
-      location.href = `/events/add${orgaId ? `?orga=${orgaId.value}` : ''}`
+      location.href = `/event/add${groupId ? `?group=${groupId.value}` : ''}`
     })
   })
 }

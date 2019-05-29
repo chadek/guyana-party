@@ -51,7 +51,7 @@ if (randomBtn) {
 
 const newBtn = document.getElementById('new')
 if (newBtn) {
-  newBtn.on('click', () => (window.location = '/events/add'))
+  newBtn.on('click', () => (window.location = '/event/add'))
 }
 
 map.onMove((coords, distance) => {
@@ -98,7 +98,7 @@ function onEventHTMLFn (event) {
   return `
     <div style="font-size:.8em">
       <font size="4">${event.get('name')}</font>
-      <br><br>Organisateur: <a href="/organism/${event.get('author').slug}">${
+      <br><br>Organisateur: <a href="/group/${event.get('author').slug}">${
   event.get('author').name
 }</a><br><br>${start}
       <br><br><a href="/event/${event.get('slug')}">Plus d'info</a>
@@ -109,7 +109,7 @@ function onZoomMaxHTMLFn (events) {
   let content = `<div style="font-size:.8em">`
   events.forEach(event => {
     content += `<a href="/event/${event.get('slug')}">
-            ${event.get('name')}</a> organisé par <a href="/organism/${
+            ${event.get('name')}</a> organisé par <a href="/group/${
   event.get('author').slug
 }">${event.get('author').name}</a><br>`
   })
@@ -207,7 +207,7 @@ function showEventsList (events) {
         <div><img src="${imgSrc}" alt="${event.name}"></div>
         <div>
           <h4>${event.name}</h4>
-          <h4>${event.organism.name}</h4>
+          <h4>${event.group.name}</h4>
           <span>${start}</span>
           <br><code>${map.getGPSToHDMS(event.location.coordinates)}</code>
         </div>

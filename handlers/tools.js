@@ -36,14 +36,14 @@ const getPagedItems = async (model, page, limit, find, projection, sort) => {
   }
 }
 
-const confirmMember = (user, orga, role) => {
-  if (!user || !orga || !orga.community) return false
+const confirmMember = (user, group, role) => {
+  if (!user || !group || !group.community) return false
   if (role) {
     return (
       undefined !==
-      orga.community.find(o => o.user.equals(user._id) && o.role === role)
+      group.community.find(o => o.user.equals(user._id) && o.role === role)
     )
-  } else return undefined !== orga.community.find(o => o.user.equals(user._id))
+  } else return undefined !== group.community.find(o => o.user.equals(user._id))
 }
 
 const formatEventStartEnd = (isoStart, isoEnd) => {

@@ -21,10 +21,10 @@ block content
     .pure-u-1.content
       if event
         //- Flyer
-        .pure-u-1.photo-orga-event
+        .pure-u-1.photo-group-event
           img(src=(event.photo ? `/uploads/${event.photo}` : "/images/default.jpg") alt="Flyer de l'évènement")
         .separator.top-space
-      form.pure-u-1(action=`/events/add${event?`/${event._id}`:""}?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
+      form.pure-u-1(action=`/event/add${event?`/${event._id}`:""}?_csrf=${csrfToken}` method="POST" enctype="multipart/form-data")
         - const savedData = h.store.get("editevents-form-data")
         - const errorData = h.store.get("form-errors")
         - h.store.remove("form-errors")
@@ -46,20 +46,20 @@ block content
             label.pure-button.pure-button-primary(for="fileUpload") Flyer de l'évènement
             input.show-for-sr#fileUpload(type="file" name="photo" accept="image/gif, image/png, image/jpeg")
             .file-upload-filename
-          //- Organism author of the event
+          //- Group author of the event
           .pure-u-1.top-space-40
             .u-md-3-8
-              label: strong Organisme créateur de l'évènement&nbsp;:
+              label: strong Groupe créateur de l'évènement&nbsp;:
             .u-md-5-8
-              select#orga-select(name="organism")
-              input#orga-id(type="hidden" value=`${event ? event.organism.id : orga}`)
+              select#group-select(name="group")
+              input#group-id(type="hidden" value=`${event ? event.group.id : group}`)
           //- Timezone
           .pure-u-1.top-space-40: label
             | Fuseau horaire&nbsp;:&nbsp;
             select#tz-select(name="tz")
               each tz in tzList
                 option(value=tz.value selected=(event ? tz.label == event.timezone : tz.selected))= tz.label
-          
+
           //- Chronique Time
 
 
@@ -89,7 +89,7 @@ block content
 
                     if tuesdayChecked
                       li.li-daydisabled
-                        input(type="checkbox" id="tuesday" name="occurring[]" value="2" checked)  
+                        input(type="checkbox" id="tuesday" name="occurring[]" value="2" checked)
                         label(for="tuesday") Mardi &nbsp;
                     else
                       li.li-daydisabled
@@ -122,7 +122,7 @@ block content
                       li.li-daydisabled
                         input(type="checkbox" id="friday" name="occurring[]" value="5")
                         label(for="friday") Vendredi &nbsp;
-                    
+
                     if saturdayChecked
                       li.li-daydisabled
                         input(type="checkbox" id="saturday" name="occurring[]" value="6" checked)
@@ -131,7 +131,7 @@ block content
                       li.li-daydisabled
                         input(type="checkbox" id="saturday" name="occurring[]" value="6")
                         label(for="saturday") Samedi &nbsp;
-                    
+
                     if sundayChecked
                       li.li-daydisabled
                         input(type="checkbox" id="sunday" name="occurring[]" value="7" checked)
@@ -169,11 +169,11 @@ block content
                   label(for="sunday") Dimanche &nbsp;
 
 
-          
-          
+
+
           //- Chronicle Date
           //- Comment gérer l'édition des évènements récurrents ? En cas de clic sur isrec
-          //- Choisir une période (annee/mois/jour) et choisir une durée (heures de début et de fin) 
+          //- Choisir une période (annee/mois/jour) et choisir une durée (heures de début et de fin)
           //- if(event && isrec || isrec )
             //- En cas de réccurrence pour une création ou une modification
 
@@ -200,7 +200,7 @@ block content
                   span.pure-u-1-8.icon!= h.icon("clock")
                   input.pure-u-7-8#endtime(type="text" name="endtime" autocomplete="off")
                   input#end(type="hidden" name="end" value=`${savedData?savedData.end:(event?event.end:"")}`)
-                  
+
 
           //- .pure-u-1.l-wrap.top-space-40#chronictime
           //-   .pure-u-1: label Période de récurrence :
@@ -211,7 +211,7 @@ block content
           //-     .u-sm-5-12.l-content
           //-       span.pure-u-1-8.icon!= h.icon("calendar")
           //-       input.pure-u-7-8#dp2(type="date" name="enddate")
-            
+
           //-   .pure-u-1.top-space: label Durée :
           //-   .pure-u-1.top-space
           //-     .u-sm-5-12.l-content
@@ -224,17 +224,17 @@ block content
           //-         span.pure-u-1-8.icon!= h.icon("clock")
           //-         input.pure-u-7-8#endtime(type="text" name="endtime" autocomplete="off")
           //-         input#end(type="hidden" name="end" value=`${savedData?savedData.end:(event?event.end:"")}`)
-              
+
 
           //- else
             //- En cas de création sans récurrence et sans récurrence
 
           //- Date && Time
 
-          
-          
-          
-          
+
+
+
+
           //- Description
           .pure-u-1.top-space-40
             label Description :
@@ -266,7 +266,7 @@ block customScripts
         //- autoclose: true,
         afterDone: function() {
           console.log("after done:",this);
-          
+
         }
       });
     });

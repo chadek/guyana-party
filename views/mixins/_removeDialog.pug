@@ -10,5 +10,5 @@ mixin removeDialog(model, modelName)
       else
         | Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.
     .pure-u-1.text-center
-      button.pure-button.primary.button(onClick=`location="/${modelName}s/${model._id}/remove"`) Ok
+      button.pure-button.primary.button(onClick=`location="/${modelName}/${model._id}/remove"`) Ok
       button.pure-button.button#cancel(onClick=`location="/account"`) Annuler

@@ -230,8 +230,8 @@ class Map {
           slug: event.slug,
           name: event.name,
           author: {
-            name: event.organism.name,
-            slug: event.organism.slug
+            name: event.group.name,
+            slug: event.group.slug
           },
           start: event.start
         })

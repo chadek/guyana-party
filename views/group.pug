@@ -8,20 +8,20 @@ block content
   .pure-g#top
     .pure-u-1.content
       if remove
-        +removeDialog(orga, "organism")
+        +removeDialog(group, "group")
       //- Logo
-      .pure-u-1.photo-orga-event
-        img(src=(orga.photo ? `/uploads/${orga.photo}` : "/images/default.jpg") alt="Logo de l'organisme")
+      .pure-u-1.photo-group-event
+        img(src=(group.photo ? `/uploads/${group.photo}` : "/images/default.jpg") alt="Logo du groupe")
       .separator.top-space
       //- Name
       .pure-u-1.top-space.text-center
-        h2= orga.name
-        if orga.type
-          p= `(${orga.type})`
+        h2= group.name
+        if group.type
+          p= `(${group.type})`
         if isAdmin
-          a(href=`/organisms/${orga.id}/edit` title="Modifier" style="margin-right: 10px;")
+          a(href=`/group/${group.id}/edit` title="Modifier" style="margin-right: 10px;")
             span.icon!= h.icon("edit")
-          a(href=`/organism/${orga.slug}?remove=true` title="Archiver")
+          a(href=`/group/${group.slug}?remove=true` title="Archiver")
             span.icon!= h.icon("archive")
       .pure-u-1.top-space.text-center
         if !inCommunity
@@ -37,24 +37,24 @@ block content
       //- Description
       .pure-u-1.top-space-40
         label Description&nbsp;:
-        #md.readonly.top-space #{orga.description}
+        #md.readonly.top-space #{group.description}
       //- Location
-      //-if orga.location.address
+      //-if group.location.address
         .pure-u-1.top-space-40
           label L'adresse du siège social :
           #map.no-events.readonly.top-space
-          p.text-center= orga.location.address
-          input#longitude(type="hidden" value=(orga.location && orga.location.coordinates[0]))
-          input#latitude(type="hidden" value=(orga.location && orga.location.coordinates[1]))
+          p.text-center= group.location.address
+          input#longitude(type="hidden" value=(group.location && group.location.coordinates[0]))
+          input#latitude(type="hidden" value=(group.location && group.location.coordinates[1]))
     .pure-u-1.top-space-40
       .pure-u-1.text-center
         h3 Evènements en cours
           span.eventsCount
-      .pure-u-1.top-space.cardGrid.orga-events#events
+      .pure-u-1.top-space.cardGrid.group-events#events
         p.top-space.text-center Chargement...
       .pure-u-1.l-wrap.top-space#eventsPagination
-    if orga
-      input#orga-id(type="hidden" value=`${orga._id}`)
+    if group
+      input#group-id(type="hidden" value=`${group._id}`)
 
     if inCommunity && !isDenied && !isPendingMember && community
       .pure-u-1.top-space-40.text-center

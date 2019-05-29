@@ -17,7 +17,7 @@
 //   )
 //   req.flash(
 //     'success',
-//     "Bravo, vous venez de souscrire à l'offre Gratuite ! Commencez dès maintenant la création de votre organisme !"
+//     "Bravo, vous venez de souscrire à l'offre Gratuite ! Commencez dès maintenant la création de votre groupe !"
 //   )
 //   res.redirect('/account')
 // }
