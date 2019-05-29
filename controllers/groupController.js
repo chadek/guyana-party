@@ -236,7 +236,8 @@ exports.quitRequest = async (req, res) => {
 exports.hasMoreThanOneAdmins = async (req, res, next) => {
   const group = await Group.findOne({ _id: req.paramString('id') })
   const count = group.community.reduce((n, o) => n + (o.role === 'admin'), 0)
-  if (count > 1) {
+  // We are not admin OR there are more than 1 admin
+  if (!confirmMember(req.user, group, 'admin') || count > 1) {
     next() // carry on, there is at least another commander !
     return
   }

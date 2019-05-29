@@ -54,7 +54,7 @@ router.get(
 router.get(
   '/:id/community/quit',
   authController.isLoggedIn,
-  catchErrors(groupController.isAdmin),
+  catchErrors(groupController.hasMoreThanOneAdmins),
   catchErrors(groupController.quitRequest)
 )
 
@@ -89,7 +89,7 @@ router.get(
   '/:id/community/:userId/removeadminright',
   authController.isLoggedIn,
   groupController.isAdmin,
-  groupController.hasMoreThanOneAdmins,
+  catchErrors(groupController.hasMoreThanOneAdmins),
   catchErrors(groupController.removeAdminRightRequest)
 )
 

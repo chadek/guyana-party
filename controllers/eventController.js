@@ -234,11 +234,15 @@ exports.getEvents = async (req, res) => {
     // We are here on group page: we filter by groupId
     find = { group: groupId }
     if (req.user) {
-      // We are connected, we're gonna check we are admin
+      // We are connected, we're gonna check that we are admin
       const group = await Group.findOne({ _id: groupId })
-      if (!(group && confirmMember(req.user, group, 'admin'))) {
-        // We are not admin (only member): we see only published
+      if (!confirmMember(req.user, group, 'admin')) {
+        // We are not admin (perhaps member): we see only published
         find.status = 'published'
+        if (!confirmMember(req.user, group, 'member')) {
+          // We are not member: the event has to be public
+          find.public = true
+        }
       }
     } else {
       // We are not connected: we see only published and public events
