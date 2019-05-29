@@ -219,22 +219,24 @@ exports.getEventBySlug = async (req, res, next) => {
 exports.getEvents = async (req, res) => {
   const page = req.queryInt('page') || 1
   const limit = req.queryInt('limit') || 7
-  const group = req.queryString('group')
+  const groupId = req.queryString('group')
   const archived = req.queryString('archived')
   // We want events by status, group (if available) otherwise by author
   const status = archived ? '^archived$' : '^((?!archived).)*$'
-  // sans connexion(voir que les events public)
-  const find = group
-    ? {
-      group: group,
-      // status: { $regex: status, $options: 'i' },
-      status: 'published',
-      public: true
+
+  let find = {
+    author: req.user ? req.user._id : '',
+    status: { $regex: status, $options: 'i' }
+  }
+
+  if (groupId) {
+    const group = await Group.findOne({ _id: groupId })
+    find = {
+      group: groupId,
+      public: !(group && confirmMember(req.user, group, 'admin'))
     }
-    : {
-      author: req.user._id,
-      status: { $regex: status, $options: 'i' }
-    }
+  }
+
   // Paginate the events list
   const result = await getPagedItems(
     Event,
