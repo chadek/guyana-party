@@ -1,51 +1,25 @@
 const mongoose = require('mongoose')
-
-const Event = mongoose.model('Event')
-const Organism = mongoose.model('Organism')
-// const { promisify } = require("es6-promisify");
 const store = require('store')
 const moment = require('moment-timezone')
 const {
   getPagedItems,
-  confirmOwner,
+  getTZList,
+  confirmMember,
   lookForNextOcurring
 } = require('../handlers/tools')
 
-// exports.eventsPage = (req, res) => {
-//   const search = req.bodyString('search') || req.queryString('q') || ''
-//   const around = req.bodyString('aroundValue') || ''
-//   res.render('events', {
-//     title: 'Les évènements sur la carte',
-//     search,
-//     around,
-//     csrfToken: req.csrfToken()
-//   })
-// }
+const Event = mongoose.model('Event')
+const Organism = mongoose.model('Organism')
 
-const getTZList = () => {
-  const time = Date.now()
-  const moment = require('moment-timezone')
-  // const moment = moment.tz.pack(require("../public/vendor/timezone/latest.json"));
-  moment.tz.load(require('../public/vendor/timezone/timezone.json'))
-  // conlole.log(momenttz);
-  const tzNamesList = moment.tz.names()
-  const tzList = []
-  for (let i = 0; i < tzNamesList.length; i++) {
-    const zone = moment.tz.zone(tzNamesList[i])
-    const tzValue = moment.tz(time, zone.name).format('Z')
-    const selected = moment.tz.guess() === zone.name
-
-    tzList.push({
-      id: zone.utcOffset(time),
-      label: `(UTC${tzValue}) ${zone.name}`,
-      value: zone.name,
-      selected
-    })
+exports.isAdmin = async (req, res, next) => {
+  const event = await Event.findOne({ _id: req.paramString('id') })
+  const isAdmin = event && confirmMember(req.user, event.organism, 'admin')
+  if (isAdmin) {
+    next() // carry on! They are admin!
+    return
   }
-  tzList.sort((a, b) => b.id - a.id)
-  // TODO: filter the values to remove bad ones
-  // ...
-  return tzList
+  req.flash('error', 'Vous ne pouvez pas effectuer cette action !')
+  res.redirect(`/event/${event.slug}`)
 }
 
 exports.addPage = (req, res) => {
@@ -59,11 +33,8 @@ exports.addPage = (req, res) => {
 }
 
 exports.editEventPage = async (req, res) => {
-  // 1. Find the event given the ID
   const event = await Event.findOne({ _id: req.paramString('id') })
-  // 2. confirm they are the owner of the event
-  confirmOwner(event, req.user)
-  // 3. render out the edit form so the user can update their event
+
   res.render('editEvent', {
     event,
     tzList: getTZList(),
@@ -168,10 +139,11 @@ exports.publish = async (req, res, next) => {
     'author'
   )
   if (!event) return next()
-  confirmOwner(event, req.user) // we can't (un)publish an event if we don't own it
+
   const published = !req.queryString('cancel')
   event.status = published ? 'published' : 'paused'
   await event.save()
+
   req.flash(
     'success',
     `Votre évènement est <strong>${
@@ -186,10 +158,11 @@ exports.goPublic = async (req, res, next) => {
     'author'
   )
   if (!event) return next()
-  confirmOwner(event, req.user) // we can't (un)publish an event if we don't own it
+
   const isPublic = !req.queryString('cancel')
   event.public = isPublic
   await event.save()
+
   req.flash(
     'success',
     `Votre évènement est <strong>${isPublic ? 'public' : 'privé'}</strong>.`
@@ -202,24 +175,30 @@ exports.remove = async (req, res, next) => {
     'author'
   )
   if (!event) return next()
-  confirmOwner(event, req.user) // we can't remove an event if we don't own it
+
   event.status = 'archived'
   await event.save()
-  req.flash('success', `Votre évènement a été archivé.`)
+
+  req.flash('success', 'Votre évènement a été archivé.')
   res.redirect('/account')
 }
 
 exports.getEventBySlug = async (req, res, next) => {
   const event = await Event.findOne({ slug: req.paramString('slug') })
-  // .populate(
-  //   'author'
-  // )
   if (!event) return next()
-  if (event.status !== 'published') confirmOwner(event, req.user) // we can't see an event if it's not published and we don't own it
-  let remove = false
-  if (req.queryString('remove')) {
-    remove = true
+
+  // we can't see an event if it's not published and we don't own it
+  if (
+    event.status !== 'published' &&
+    !confirmMember(req.user, event.organism, 'admin')
+  ) {
+    req.flash('error', 'Vous ne pouvez pas effectuer cet action !')
+    return next()
   }
+
+  let remove = false
+  if (req.queryString('remove')) remove = true
+
   const orga = await Organism.findOne({ _id: event.organism })
   if (!orga) return next()
   const isOwner = req.user && event.author.equals(req.user._id)

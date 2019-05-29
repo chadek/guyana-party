@@ -2,7 +2,6 @@ const mongoose = require('mongoose') /* .set('debug', true) */
 const store = require('store')
 const {
   getPagedItems,
-  confirmOwner,
   confirmMember,
   asyncForEach
 } = require('../handlers/tools')
@@ -16,6 +15,17 @@ const returnNextUpdatedOptions = {
   runValidators: true
 }
 
+exports.isAdmin = async (req, res, next) => {
+  const orga = await Organism.findOne({ _id: req.paramString('id') })
+  const isAdmin = orga && confirmMember(req.user, orga, 'admin')
+  if (isAdmin) {
+    next() // carry on! They are admin!
+    return
+  }
+  req.flash('error', 'Vous ne pouvez pas effectuer cette action !')
+  res.redirect(`/organism/${orga.slug}`)
+}
+
 exports.addPage = (req, res) => {
   res.render('editOrganism', {
     title: "Création d'un Groupe",
@@ -24,11 +34,8 @@ exports.addPage = (req, res) => {
 }
 
 exports.editOrgaPage = async (req, res) => {
-  // 1. Find the organism given the ID
   const orga = await Organism.findOne({ _id: req.paramString('id') })
-  // 2. confirm they are the owner of the organism
-  confirmOwner(orga, req.user)
-  // 3. render out the edit form so the user can update their organism
+
   res.render('editOrganism', {
     orga,
     title: 'Edition du Groupe',
@@ -95,7 +102,6 @@ exports.remove = async (req, res, next) => {
     'author'
   )
   if (!orga) return next()
-  confirmOwner(orga, req.user) // we can't remove a groupe if we don't own it
 
   orga.status = 'archived'
   const orgaResult = await orga.save()
@@ -112,25 +118,25 @@ exports.remove = async (req, res, next) => {
     await event.save()
   })
 
-  req.flash('success', `Votre groupe a été archivé.`)
+  req.flash('success', 'Votre groupe a été archivé.')
   res.redirect('/account')
 }
 
 exports.getOrgaBySlug = async (req, res, next) => {
   const orga = await Organism.findOne({ slug: req.paramString('slug') })
-
   if (!orga) return next()
-  if (orga.status !== 'published') confirmOwner(orga, req.user) // we can't see an event if it's not published and we don't own it
 
-  const inCommunity = confirmMember(req.user, orga.community)
-  const isMember = confirmMember(req.user, orga.community, 'member')
-  const isAdmin = confirmMember(req.user, orga.community, 'admin')
-  const isPendingMember = confirmMember(
-    req.user,
-    orga.community,
-    'pending_request'
-  )
-  const isDenied = confirmMember(req.user, orga.community, 'denied')
+  // we can't see an event if it's not published and we don't own it
+  const isAdmin = confirmMember(req.user, orga, 'admin')
+  if (orga.status !== 'published' && !isAdmin) {
+    req.flash('error', 'Vous ne pouvez pas effectuer cet action !')
+    return next()
+  }
+
+  const inCommunity = confirmMember(req.user, orga)
+  const isMember = confirmMember(req.user, orga, 'member')
+  const isPendingMember = confirmMember(req.user, orga, 'pending_request')
+  const isDenied = confirmMember(req.user, orga, 'denied')
 
   const community = []
 
@@ -191,7 +197,7 @@ const pendingRequestUpdate = (action, user, role) => {
 
 const pendingRequestUpdateMember = async (req, action, role) => {
   return Organism.findOneAndUpdate(
-    { _id: req.paramString('groupId') },
+    { _id: req.paramString('id') },
     pendingRequestUpdate(action, req.user._id, role),
     returnNextUpdatedOptions
   ).exec()
@@ -219,20 +225,8 @@ exports.quitRequest = async (req, res) => {
 
 /*  Admin */
 
-exports.isAdmin = async (req, res, next) => {
-  const orga = await Organism.findOne({ _id: req.paramString('groupId') })
-  const isAdmin = orga && confirmMember(req.user, orga.community, 'admin')
-  // orga.community.find(o => o.user.equals(req.user._id) && o.role === 'admin')
-  if (isAdmin) {
-    next() // carry on! They are admin!
-    return
-  }
-  req.flash('error', 'Vous ne pouvez pas effectuer cette action !')
-  res.redirect(`/organism/${orga.slug}`)
-}
-
 exports.hasMoreThanOneAdmins = async (req, res, next) => {
-  const orga = await Organism.findOne({ _id: req.paramString('groupId') })
+  const orga = await Organism.findOne({ _id: req.paramString('id') })
   const count = orga.community.reduce((n, o) => n + (o.role === 'admin'), 0)
   if (count > 1) {
     next() // carry on, there is at least another commander !
@@ -245,7 +239,7 @@ exports.hasMoreThanOneAdmins = async (req, res, next) => {
 const pendingRequestUpdateAdmin = async (req, roleIn, newRole) => {
   return Organism.findOneAndUpdate(
     {
-      _id: req.paramString('groupId'),
+      _id: req.paramString('id'),
       community: {
         $elemMatch: {
           user: req.paramString('userId'),

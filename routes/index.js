@@ -64,6 +64,7 @@ router.post(
 router.post(
   '/organisms/add/:id',
   authController.isLoggedIn,
+  catchErrors(orgaController.isAdmin),
   mainController.upload,
   catchErrors(mainController.resize),
   catchErrors(orgaController.updateOrga)
@@ -71,60 +72,66 @@ router.post(
 router.get(
   '/organisms/:id/edit',
   authController.isLoggedIn,
+  catchErrors(orgaController.isAdmin),
   catchErrors(orgaController.editOrgaPage)
 )
 router.get(
   '/organisms/:id/remove',
   authController.isLoggedIn,
+  catchErrors(orgaController.isAdmin),
   catchErrors(orgaController.remove)
 )
 router.get('/organism/:slug', catchErrors(orgaController.getOrgaBySlug))
 router.get('/organism/id/:id', catchErrors(orgaController.getOrgaById))
 // Demande d'adhésion
 router.get(
-  '/organism/:groupId/community/add',
+  '/organism/:id/community/add',
   authController.isLoggedIn,
   catchErrors(orgaController.addPendingRequest)
 )
 // Retirer demande d'adhésion
 router.get(
-  '/organism/:groupId/community/remove',
+  '/organism/:id/community/remove',
   authController.isLoggedIn,
   catchErrors(orgaController.removePendingRequest)
 )
 // Quit the group
 router.get(
-  '/organism/:groupId/community/quit',
+  '/organism/:id/community/quit',
   authController.isLoggedIn,
+  catchErrors(orgaController.isAdmin),
   catchErrors(orgaController.quitRequest)
 )
 
 router.get(
-  '/organism/:groupId/community/:userId/accept',
+  '/organism/:id/community/:userId/accept',
   authController.isLoggedIn,
+  catchErrors(orgaController.isAdmin),
   catchErrors(orgaController.acceptPendingRequest)
 )
 router.get(
-  '/organism/:groupId/community/:userId/deny',
+  '/organism/:id/community/:userId/deny',
   authController.isLoggedIn,
+  catchErrors(orgaController.isAdmin),
   catchErrors(orgaController.denyPendingRequest)
 )
 
 router.get(
-  '/organism/:groupId/community/:userId/grant',
+  '/organism/:id/community/:userId/grant',
   authController.isLoggedIn,
+  catchErrors(orgaController.isAdmin),
   catchErrors(orgaController.grantPendingRequest)
 )
 
 router.get(
-  '/organism/:groupId/community/:userId/giveadminright',
+  '/organism/:id/community/:userId/giveadminright',
   authController.isLoggedIn,
-  orgaController.isAdmin,
+  catchErrors(orgaController.isAdmin),
   catchErrors(orgaController.giveAdminRightRequest)
 )
 
 router.get(
-  '/organism/:groupId/community/:userId/removeadminright',
+  '/organism/:id/community/:userId/removeadminright',
   authController.isLoggedIn,
   orgaController.isAdmin,
   orgaController.hasMoreThanOneAdmins,
@@ -150,7 +157,7 @@ router.post(
 router.post(
   '/events/add/:id',
   authController.isLoggedIn,
-  catchErrors(userController.hasOrganism),
+  catchErrors(eventController.isAdmin),
   mainController.upload,
   catchErrors(mainController.resize),
   catchErrors(eventController.updateEvent)
@@ -158,21 +165,25 @@ router.post(
 router.get(
   '/events/:id/edit',
   authController.isLoggedIn,
+  catchErrors(eventController.isAdmin),
   catchErrors(eventController.editEventPage)
 )
 router.get(
   '/events/:id/publish',
   authController.isLoggedIn,
+  catchErrors(eventController.isAdmin),
   catchErrors(eventController.publish)
 )
 router.get(
   '/events/:id/gopublic',
   authController.isLoggedIn,
+  catchErrors(eventController.isAdmin),
   catchErrors(eventController.goPublic)
 )
 router.get(
   '/events/:id/remove',
   authController.isLoggedIn,
+  catchErrors(eventController.isAdmin),
   catchErrors(eventController.remove)
 )
 router.get('/event/:slug', catchErrors(eventController.getEventBySlug))
