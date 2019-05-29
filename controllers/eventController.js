@@ -224,16 +224,26 @@ exports.getEvents = async (req, res) => {
   // We want events by status, group (if available) otherwise by author
   const status = archived ? '^archived$' : '^((?!archived).)*$'
 
+  // By default we are on account page:  we filter by author and status
   let find = {
     author: req.user ? req.user._id : '',
     status: { $regex: status, $options: 'i' }
   }
 
   if (groupId) {
-    const group = await Group.findOne({ _id: groupId })
-    find = {
-      group: groupId,
-      public: !(group && confirmMember(req.user, group, 'admin'))
+    // We are here on group page: we filter by groupId
+    find = { group: groupId }
+    if (req.user) {
+      // We are connected, we're gonna check we are admin
+      const group = await Group.findOne({ _id: groupId })
+      if (!(group && confirmMember(req.user, group, 'admin'))) {
+        // We are not admin (only member): we see only published
+        find.status = 'published'
+      }
+    } else {
+      // We are not connected: we see only published and public events
+      find.status = 'published'
+      find.public = true
     }
   }
 
