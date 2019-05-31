@@ -131,7 +131,7 @@ exports.updateEvent = async (req, res, next) => {
       event.slug
     }">Voir</a>`
   )
-  res.redirect(`/event/${event._id}/edit`)
+  res.redirect(`/event/${event.slug}`)
 }
 
 exports.publish = async (req, res, next) => {
