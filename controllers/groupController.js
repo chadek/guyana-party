@@ -94,7 +94,7 @@ exports.updateGroup = async (req, res) => {
       group.slug
     }">Voir</a>`
   )
-  res.redirect(`/group/${group._id}/edit`)
+  res.redirect(`/group/${group.slug}`)
 }
 
 exports.remove = async (req, res, next) => {
