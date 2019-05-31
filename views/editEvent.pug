@@ -5,6 +5,8 @@ include mixins/_customMdeStyle
 include mixins/_customMapScript
 include mixins/_customMdeScript
 include mixins/_switchPublishEvent
+include mixins/_checkExistingRecDays
+include mixins/_checkRecDays
 
 
 block customStyle
@@ -61,112 +63,16 @@ block content
                 option(value=tz.value selected=(event ? tz.label == event.timezone : tz.selected))= tz.label
 
           //- Chronique Time
-
-
           if(event)
             //-Modification
             if !(event.occurring === undefined || event.occurring.length == 0)
-              - const mondayChecked = savedData ? savedData.occurring.includes(1) : (event ? event.occurring.includes(1) : false)
-              - const tuesdayChecked = savedData ? savedData.occurring.includes(2) : (event ? event.occurring.includes(2) : false)
-              - const wednesdayChecked = savedData ? savedData.occurring.includes(3) : (event ? event.occurring.includes(3) : false)
-              - const thursdayChecked = savedData ? savedData.occurring.includes(4) : (event ? event.occurring.includes(4) : false)
-              - const fridayChecked = savedData ? savedData.occurring.includes(5) : (event ? event.occurring.includes(5) : false)
-              - const saturdayChecked = savedData ? savedData.occurring.includes(6) : (event ? event.occurring.includes(6) : false)
-              - const sundayChecked = savedData ? savedData.occurring.includes(7) : (event ? event.occurring.includes(7) : false)
-              .top-space
-                .pure-u-1
-                  label.pure-u-1= `Répétition de l'évènement :`
-                    input(type="checkbox" id="isrec" name="isrec" checked)
-                  ul.ul-daysdisabled#checkday
-                    if mondayChecked
-                      li.li-daydisabled
-                        input(type="checkbox" id="monday" name="occurring[]" value="1" checked)
-                        label(for="monday") Lundi &nbsp;
-                    else
-                      li.li-daydisabled
-                        input(type="checkbox" id="monday" name="occurring[]" value="1")
-                        label(for="monday") Lundi &nbsp;
-
-                    if tuesdayChecked
-                      li.li-daydisabled
-                        input(type="checkbox" id="tuesday" name="occurring[]" value="2" checked)
-                        label(for="tuesday") Mardi &nbsp;
-                    else
-                      li.li-daydisabled
-                        input(type="checkbox" id="tuesday" name="occurring[]" value="2")
-                        label(for="tuesday") Mardi &nbsp;
-
-                    if wednesdayChecked
-                      li.li-daydisabled
-                        input(type="checkbox" id="wednesday" name="occurring[]" value="3" checked)
-                        label(for="wednesday") Mercredi &nbsp;
-                    else
-                      li.li-daydisabled
-                        input(type="checkbox" id="wednesday" name="occurring[]" value="3")
-                        label(for="wednesday") Mercredi &nbsp;
-
-                    if thursdayChecked
-                      li.li-daydisabled
-                        input(type="checkbox" id="thursday" name="occurring[]" value="4" checked)
-                        label(for="thursday") Jeudi &nbsp;
-                    else
-                      li.li-daydisabled
-                        input(type="checkbox" id="thursday" name="occurring[]" value="4")
-                        label(for="thursday") Jeudi &nbsp;
-
-                    if fridayChecked
-                      li.li-daydisabled
-                        input(type="checkbox" id="friday" name="occurring[]" value="5" checked)
-                        label(for="friday") Vendredi &nbsp;
-                    else
-                      li.li-daydisabled
-                        input(type="checkbox" id="friday" name="occurring[]" value="5")
-                        label(for="friday") Vendredi &nbsp;
-
-                    if saturdayChecked
-                      li.li-daydisabled
-                        input(type="checkbox" id="saturday" name="occurring[]" value="6" checked)
-                        label(for="saturday") Samedi &nbsp;
-                    else
-                      li.li-daydisabled
-                        input(type="checkbox" id="saturday" name="occurring[]" value="6")
-                        label(for="saturday") Samedi &nbsp;
-
-                    if sundayChecked
-                      li.li-daydisabled
-                        input(type="checkbox" id="sunday" name="occurring[]" value="7" checked)
-                        label(for="sunday") Dimanche &nbsp;
-                    else
-                      li.li-daydisabled
-                        input(type="checkbox" id="sunday" name="occurring[]" value="7")
-                        label(for="sunday") Dimanche &nbsp;
+              +checkExistingRecDays()
+            else
+              //- (occurring occurring undef || occurring size > 0
+              +checkRecDays()
           else
             //- Création d'un évènement, juste une liste des checkboxs
-            .pure-u-1
-              label.pure-u-1= `Répétition de l'évènement :`
-                input(type="checkbox" id="isrec" name="isrec")
-              ul.ul-daysdisabled#checkday(class="hidden")
-                li.li-daydisabled
-                  input(type="checkbox" id="monday" name="occurring[]" value="1")
-                  label(for="monday") Lundi &nbsp;
-                li.li-daydisabled
-                  input(type="checkbox" id="tuesday" name="occurring[]" value="2")
-                  label(for="tuesday") Mardi &nbsp;
-                li.li-daydisabled
-                  input(type="checkbox" id="wednesday" name="occurring[]" value="3")
-                  label(for="wednesday") Mercredi &nbsp;
-                li.li-daydisabled
-                  input(type="checkbox" id="thursday" name="occurring[]" value="4")
-                  label(for="thursday") Jeudi &nbsp;
-                li.li-daydisabled
-                  input(type="checkbox" id="friday" name="occurring[]" value="5")
-                  label(for="friday") Vendredi &nbsp;
-                li.li-daydisabled
-                  input(type="checkbox" id="saturday" name="occurring[]" value="6")
-                  label(for="saturday") Samedi &nbsp;
-                li.li-daydisabled
-                  input(type="checkbox" id="sunday" name="occurring[]" value="7")
-                  label(for="sunday") Dimanche &nbsp;
+            +checkRecDays()
 
 
 
