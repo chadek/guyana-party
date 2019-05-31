@@ -119,11 +119,16 @@ exports.getGroupBySlug = async (req, res, next) => {
   const group = await Group.findOne({ slug: req.paramString('slug') })
   if (!group) return next()
 
-  // we can't see an event if it's not published and we don't own it
   const isAdmin = confirmMember(req.user, group, 'admin')
-  if (group.status !== 'published' && !isAdmin) {
+
+  let remove = false
+  if (req.queryString('remove')) remove = true
+
+  // we can't see an group if it's not published and we don't own it
+  //   or we can't remove the group if not admin
+  if ((group.status !== 'published' || remove) && !isAdmin) {
     req.flash('error', 'Vous ne pouvez pas effectuer cet action !')
-    return next()
+    return res.redirect(`/group/${group.slug}`)
   }
 
   const inCommunity = confirmMember(req.user, group)
@@ -145,16 +150,16 @@ exports.getGroupBySlug = async (req, res, next) => {
   group.community = [] // Remove old community data
 
   res.render('group', {
-    group,
     title: group.name,
     csrfToken: req.csrfToken(),
-    remove: req.queryString('remove'),
+    group,
     community,
     inCommunity,
-    isMember,
     isAdmin,
+    isMember,
     isPendingMember,
-    isDenied
+    isDenied,
+    remove
   })
 }
 

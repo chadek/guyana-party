@@ -194,7 +194,13 @@ exports.getEventBySlug = async (req, res, next) => {
 
   event.nextTime = lookForNextOcurring(event)
 
-  res.render('event', { title: event.name, event, remove, isAdmin })
+  res.render('event', {
+    title: event.name,
+    csrfToken: req.csrfToken(),
+    event,
+    isAdmin,
+    remove
+  })
 }
 
 /** route: /api/events */

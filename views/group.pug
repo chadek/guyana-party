@@ -7,7 +7,7 @@ include mixins/_communityList
 block content
   .pure-g#top
     .pure-u-1.content
-      if remove
+      if remove && isAdmin
         +removeDialog(group, "group")
       //- Logo
       .pure-u-1.photo-group-event
