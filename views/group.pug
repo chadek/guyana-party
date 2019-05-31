@@ -38,23 +38,17 @@ block content
       .pure-u-1.top-space-40
         label Description&nbsp;:
         #md.readonly.top-space #{group.description}
-      //- Location
-      //-if group.location.address
-        .pure-u-1.top-space-40
-          label L'adresse du siège social :
-          #map.no-events.readonly.top-space
-          p.text-center= group.location.address
-          input#longitude(type="hidden" value=(group.location && group.location.coordinates[0]))
-          input#latitude(type="hidden" value=(group.location && group.location.coordinates[1]))
+
     .pure-u-1.top-space-40
       .pure-u-1.text-center
         h3 Evènements en cours
-          span.eventsCount
+          span.eventsCount  (0)
       .pure-u-1.top-space.cardGrid.group-events#events
         p.top-space.text-center Chargement...
       .pure-u-1.l-wrap.top-space#eventsPagination
     if group
       input#group-id(type="hidden" value=`${group._id}`)
+      input#group-event-add(type="hidden" value=`${isAdmin}`)
 
     if inCommunity && !isDenied && !isPendingMember && community
       .pure-u-1.top-space-40.text-center

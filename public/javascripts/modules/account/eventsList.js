@@ -76,10 +76,16 @@ function getEvents (eventsDiv, groupId = null, page = 1, archived = false) {
 
     // adding the count
     if (count) b('.eventsCount').innerHTML = ` (${count})`
-    else b('.eventsCount').innerHTML = ''
+
+    const isAdminInput = b('#group-event-add')
+    let isAdmin = false
+    if (isAdminInput && isAdminInput.value) isAdmin = isAdminInput.value
 
     // Add the events to the events div container
-    eventsDiv.innerHTML = data2HTML(data, eventCardFormat, addNewBtn())
+    if (isAdmin === 'true' || !groupId) {
+      eventsDiv.innerHTML = data2HTML(data, eventCardFormat, addNewBtn())
+    } else eventsDiv.innerHTML = data2HTML(data, eventCardFormat, '')
+
     // Add the pagination
     const paginationDiv = b('#eventsPagination')
     if (paginationDiv && count > limit) {
@@ -96,9 +102,12 @@ function getEvents (eventsDiv, groupId = null, page = 1, archived = false) {
       })
     }
     // Add click event on new button
-    b('.card__new--event').on('click', () => {
-      location.href = `/event/add${groupId ? `?group=${groupId.value}` : ''}`
-    })
+    const newBtn = b('.card__new--event')
+    if (newBtn) {
+      b('.card__new--event').on('click', () => {
+        location.href = `/event/add${groupId ? `?group=${groupId.value}` : ''}`
+      })
+    }
   })
 }
 

@@ -166,10 +166,16 @@ exports.getGroupBySlug = async (req, res, next) => {
 exports.getGroups = async (req, res) => {
   const page = req.queryInt('page') || 1
   const limit = req.queryInt('limit') || 7
+  const onEvent = req.queryString('onevent') || false
   const find = {
-    $or: [{ author: req.user._id }, { 'community.user': req.user._id }],
+    community: { $elemMatch: { user: req.user._id } },
     status: { $regex: '^((?!archived).)*$', $options: 'i' }
   }
+  if (onEvent) {
+    find.community = { $elemMatch: { user: req.user._id, role: 'admin' } }
+  }
+
+  console.log(find)
   const result = await getPagedItems(
     Group,
     page,
