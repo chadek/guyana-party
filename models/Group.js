@@ -3,12 +3,12 @@ const slug = require('slugs')
 
 mongoose.Promise = global.Promise
 
-const OrganismSchema = new mongoose.Schema(
+const GroupSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       trim: true,
-      required: "Veuillez saisir le nom de l'organisme."
+      required: 'Veuillez saisir le nom du groupe.'
     },
     slug: String,
     description: {
@@ -32,14 +32,14 @@ const OrganismSchema = new mongoose.Schema(
       },
       address: {
         type: String
-        // required: "Veuillez sélectionner le l'adresse de l'organisme sur la carte, ou saisir une adresse."
+        // required: "Veuillez sélectionner le l'adresse du groupe sur la carte, ou saisir une adresse."
       }
     },
     photo: String,
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: "L'auteur de l'organisme est requis."
+      required: "L'auteur du groupe est requis."
     },
     community: [
       {
@@ -71,14 +71,14 @@ const OrganismSchema = new mongoose.Schema(
 )
 
 // Define our indexes
-OrganismSchema.index({
+GroupSchema.index({
   name: 'text',
   description: 'text'
 })
 
-OrganismSchema.index({ location: '2dsphere' })
+GroupSchema.index({ location: '2dsphere' })
 
-OrganismSchema.pre('save', async function (next) {
+GroupSchema.pre('save', async function (next) {
   const self = this // eslint-disable-line babel/no-invalid-this
   if (!self.isModified('name')) {
     next() // skip it
@@ -94,4 +94,4 @@ OrganismSchema.pre('save', async function (next) {
   next()
 })
 
-module.exports = mongoose.model('Organism', OrganismSchema)
+module.exports = mongoose.model('Group', GroupSchema)

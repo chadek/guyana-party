@@ -49,10 +49,10 @@ const eventSchema = new mongoose.Schema(
       ref: 'User',
       required: "L'auteur de l'évènement est requis."
     },
-    organism: {
+    group: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Organism'
-      // required: "L'organisme de l'évènement est requis."
+      ref: 'Group'
+      // required: "Le groupe de l'évènement est requis."
     },
     timezone: String, // ex: "(UTC-03:00) America/Cayenne"
     status: {
@@ -103,7 +103,7 @@ eventSchema.statics.getTagsList = function () {
 }
 
 function autopopulate (next) {
-  this.populate('organism') // eslint-disable-line babel/no-invalid-this
+  this.populate('group') // eslint-disable-line babel/no-invalid-this
   next()
 }
 

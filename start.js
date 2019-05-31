@@ -27,8 +27,8 @@ mongoose.connect(process.env.DATABASE, {
 
 // import all of our models
 require('./models/User')
+require('./models/Group')
 require('./models/Event')
-require('./models/Organism')
 
 // Start our app!
 const app = require('./app')

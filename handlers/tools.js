@@ -1,7 +1,13 @@
 /* Tools for controllers */
 const nextDay = require('next-day')
 
-exports.getPagedItems = async (model, page, limit, find, projection, sort) => {
+const asyncForEach = async function (array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array)
+  }
+}
+
+const getPagedItems = async (model, page, limit, find, projection, sort) => {
   page = parseInt(page)
   limit = parseInt(limit)
   if (isNaN(page) || isNaN(limit)) {
@@ -30,19 +36,30 @@ exports.getPagedItems = async (model, page, limit, find, projection, sort) => {
   }
 }
 
-exports.confirmOwner = function (model, user) {
-  if (!user || !model.author.equals(user._id)) {
-    throw Error('Vous ne pouvez pas effectuer cet action !')
-  }
+const confirmMember = (user, group, role) => {
+  if (!user || !group || !group.community) return false
+  if (role) {
+    return (
+      undefined !==
+      group.community.find(o => o.user.equals(user._id) && o.role === role)
+    )
+  } else return undefined !== group.community.find(o => o.user.equals(user._id))
 }
 
-exports.asyncForEach = async function (array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array)
+const isAdminCheck = async (req, res, next, model, modelType = 'group') => {
+  const foundModel = await model.findOne({ _id: req.paramString('id') })
+  let group = foundModel
+  if (modelType === 'event') group = foundModel.group
+  const isAdmin = foundModel && confirmMember(req.user, group, 'admin')
+  if (isAdmin) {
+    next() // carry on! They are admin!
+    return
   }
+  req.flash('error', 'Vous ne pouvez pas effectuer cette action !')
+  res.redirect(`/${modelType}/${foundModel.slug}`)
 }
 
-function formatEventStartEnd (isoStart, isoEnd) {
+const formatEventStartEnd = (isoStart, isoEnd) => {
   const start = new Date(isoStart)
   const end = new Date(isoEnd)
   const month = start.getMonth() + 1
@@ -62,7 +79,7 @@ function formatEventStartEnd (isoStart, isoEnd) {
   return srtStartDate
 }
 
-exports.lookForNextOcurring = function (event) {
+const lookForNextOcurring = function (event) {
   const NextDatesInTheWeek = []
   let nextdate
   const today = new Date()
@@ -97,5 +114,39 @@ exports.lookForNextOcurring = function (event) {
     })
   }
   return formatEventStartEnd(NextDatesInTheWeek[0], event.end)
-  // return "blabla"
+}
+
+const getTZList = () => {
+  const time = Date.now()
+  const moment = require('moment-timezone')
+  // const moment = moment.tz.pack(require("../public/vendor/timezone/latest.json"));
+  moment.tz.load(require('../public/vendor/timezone/timezone.json'))
+  // conlole.log(momenttz);
+  const tzNamesList = moment.tz.names()
+  const tzList = []
+  for (let i = 0; i < tzNamesList.length; i++) {
+    const zone = moment.tz.zone(tzNamesList[i])
+    const tzValue = moment.tz(time, zone.name).format('Z')
+    const selected = moment.tz.guess() === zone.name
+
+    tzList.push({
+      id: zone.utcOffset(time),
+      label: `(UTC${tzValue}) ${zone.name}`,
+      value: zone.name,
+      selected
+    })
+  }
+  tzList.sort((a, b) => b.id - a.id)
+  // TODO: filter the values to remove bad ones
+  // ...
+  return tzList
+}
+
+module.exports = {
+  asyncForEach,
+  getPagedItems,
+  confirmMember,
+  isAdminCheck,
+  lookForNextOcurring,
+  getTZList
 }

@@ -12,24 +12,22 @@ block customStyle
 block content
   .pure-g
     .pure-u-1.content
-      if remove
+      if remove && isAdmin
         +removeDialog(event, "event")
       //- Flyer
-      .pure-u-1.photo-orga-event
+      .pure-u-1.photo-group-event
         img(src=(event.photo ? `/uploads/${event.photo}` : "/images/default.jpg") alt="Flyer de l'évènement")
       .separator.top-space
       //- Name
       .pure-u-1.text-center
-        h2= event.name
+        h2= title
           span.normaltext &nbsp; par
-          a(href=`/organism/${orga.slug}`)= ` ${orga.name}`
-          if isOwner
-            a(href=`/events/${event.id}/edit` title="Modifier" style="margin-right: 10px;")
+          a(href=`/group/${event.group.slug}`)= ` ${event.group.name}`
+          if isAdmin
+            a(href=`/event/${event.id}/edit` title="Modifier" style="margin-right: 10px;")
               span.icon!= h.icon("edit")
             a(href=`/event/${event.slug}?remove=true` title="Archiver")
               span.icon!= h.icon("archive")
-        //- p Organisateur :
-        //-   a(href=`/organism/${orga.slug}`)= ` ${orga.name}`
       //- Description
       .pure-u-1
         //- label Description de l'évènement&nbsp;:
@@ -40,7 +38,6 @@ block content
         .pure-u-1.top-space.text-center.normaltext
           .u-sm-1: label= `Fuseau horaire : ${event.timezone}`
         //- Start date && time
-      
 
         if (event.occurring === undefined || event.occurring.length == 0)
           //- normal event
@@ -100,7 +97,7 @@ block content
             //-   li.li-daydisabled
             //-     input(type="checkbox" id="wednesday" name="day" value="wednesday" disabled)
             //-     label(for="wednesday") Mercredi &nbsp;
-            
+
             if event.occurring.includes(4)
               li.li-daydisabled
                 input(type="checkbox" id="thursday" name="day" value="thursday" checked disabled)
@@ -118,7 +115,7 @@ block content
             //-   li.li-daydisabled
             //-     input(type="checkbox" id="friday" name="day" value="friday" disabled)
             //-     label(for="friday") Vendredi &nbsp;
-            
+
             if event.occurring.includes(6)
               li.li-daydisabled
                 input(type="checkbox" id="saturday" name="day" value="saturday" checked disabled)
@@ -136,10 +133,10 @@ block content
             //-   li.li-daydisabled
             //-     input(type="checkbox" id="sunday" name="day" value="sunday" disabled)
             //-     label(for="sunday") Dimanche &nbsp;
-          
 
-          
-        
+
+
+
         .pure-u-1.normaltext
           p.text-center= event.location.address
       //- Event location
@@ -151,7 +148,7 @@ block content
         input#latitude(type="hidden" value=(event.location && event.location.coordinates[1]))
       //- unless remove
       //-   .pure-u-1.top-space-40
-      //-     button.pure-button.success.button.expanded(onClick=`location="/events/${event._id}/edit"`) Modifier
+      //-     button.pure-button.success.button.expanded(onClick=`location="/event/${event._id}/edit"`) Modifier
 
 block customScripts
   +customMapScript()

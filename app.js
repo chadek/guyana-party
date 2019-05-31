@@ -15,6 +15,9 @@ const flash = require('connect-flash')
 const { promisify } = require('es6-promisify')
 const helpers = require('./helpers')
 const routes = require('./routes/index')
+const accountRoutes = require('./routes/account')
+const groupRoutes = require('./routes/group')
+const eventRoutes = require('./routes/event')
 const errorHandlers = require('./handlers/errorHandlers')
 require('./handlers/passport')
 
@@ -91,6 +94,9 @@ if (devMode) {
 
 // After allllll that above middleware, we finally handle our own routes!
 app.use('/', routes)
+app.use('/account', accountRoutes)
+app.use('/group', groupRoutes)
+app.use('/event', eventRoutes)
 
 // CSRF token validation error handler
 app.use(errorHandlers.csrfErrors)

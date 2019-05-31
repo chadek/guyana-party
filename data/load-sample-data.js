@@ -14,7 +14,7 @@ mongoose.Promise = global.Promise // Tell Mongoose to use ES6 promises
 
 // import all of our models - they need to be imported only once
 const Event = require('../models/Event')
-const Organism = require('../models/Organism')
+const Group = require('../models/Group')
 const User = require('../models/User')
 
 const events = JSON.parse(
@@ -44,7 +44,7 @@ function deleteData (packed = false) {
     // Then remove data
     console.log('\n😢😢 Goodbye Data...')
     await Event.remove()
-    await Organism.remove()
+    await Group.remove()
     await User.remove()
     console.log('\n👍 Data Deleted.')
     console.log('\nTo restore data, run\n\t"npm run restore"')
@@ -98,7 +98,7 @@ let error
 async function loadData () {
   console.log('Loading data...')
   await catchPromiseErrors(() => Event.insertMany(events))
-  await catchPromiseErrors(() => Organism.insertMany(groups))
+  await catchPromiseErrors(() => Group.insertMany(groups))
   await catchPromiseErrors(() => User.insertMany(users))
   if (!error) {
     console.log('👍 Done!\n')

@@ -107,9 +107,9 @@ function addEventForm (dp1, dp2, switchPublishEvent) {
       publicCheckbox.on('click', () => {
         span.innerHTML = '<strong>action en cours...</strong>'
         if (publicCheckbox.checked) {
-          window.location = `/events/${eventId}/gopublic`
+          window.location = `/event/${eventId}/gopublic`
         } else {
-          window.location = `/events/${eventId}/gopublic?cancel=true`
+          window.location = `/event/${eventId}/gopublic?cancel=true`
         }
       })
     }
@@ -119,9 +119,9 @@ function addEventForm (dp1, dp2, switchPublishEvent) {
       publishCheckbox.on('click', () => {
         span.innerHTML = '<strong>action en cours...</strong>'
         if (publishCheckbox.checked) {
-          window.location = `/events/${eventId}/publish`
+          window.location = `/event/${eventId}/publish`
         } else {
-          window.location = `/events/${eventId}/publish?cancel=true`
+          window.location = `/event/${eventId}/publish?cancel=true`
         }
       })
     }

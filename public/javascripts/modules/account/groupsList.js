@@ -26,10 +26,8 @@ function groupCardFormat (item) {
       if (c.user === uid.value) status = c.role
     })
   }
-  const editLabel = `<a href="/organisms/${item.id}/edit">Modifier</a>`
-  const archiveLabel = `<a href="/organism/${
-    item.slug
-  }?remove=true">Archiver</a>`
+  const editLabel = `<a href="/group/${item.id}/edit">Modifier</a>`
+  const archiveLabel = `<a href="/group/${item.slug}?remove=true">Archiver</a>`
   const conf = status === 'admin' ? `${editLabel} | ${archiveLabel}` : ''
   let color = status === 'pending_request' ? 'style="color: orange;"' : ''
   color = status === 'denied' ? 'style="color: red;"' : ''
@@ -37,26 +35,26 @@ function groupCardFormat (item) {
   return `
     <div class="card">
       <div class="card__header">
-        <img src="${imgSrc}" alt="photo organisme">
+        <img src="${imgSrc}" alt="photo groupe">
         <div class="card__header--content">
           <p>
-            <a href="/organism/${item.slug}#events">
+            <a href="/group/${item.slug}#events">
               Voir évènements associés
             </a>
-            <br><a href="/organism/${item.slug}#community">Voir communauté</a>
+            <br><a href="/group/${item.slug}#community">Voir communauté</a>
             <br>(${formatStatus(status)}) ${conf}
           </p>
         </div>
       </div>
       <div class="card__section">
-        <p><a href="/organism/${item.slug}" ${color}>${name}</a></p>
+        <p><a href="/group/${item.slug}" ${color}>${name}</a></p>
       </div>
     </div>`
 }
 
 function getGroups (groupsDiv, page = 1) {
   if (!groupsDiv) return
-  axiosGet(`/api/organisms?page=${page}`, data => {
+  axiosGet(`/api/groups?page=${page}`, data => {
     if (!data) return
     const currentPage = data.page
     const pages = data.pages
@@ -84,7 +82,7 @@ function getGroups (groupsDiv, page = 1) {
       })
     }
     // Add click event on new button
-    b('.card__new--group').on('click', () => (location.href = '/organisms/add'))
+    b('.card__new--group').on('click', () => (location.href = '/group/add'))
   })
 }
 

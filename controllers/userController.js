@@ -4,7 +4,7 @@ const store = require('store')
 const slug = require('slugs')
 
 const User = mongoose.model('User')
-const Organism = mongoose.model('Organism')
+const Group = mongoose.model('Group')
 
 exports.loginForm = (req, res) =>
   res.render('login', { title: 'Se connecter', csrfToken: req.csrfToken() })
@@ -67,17 +67,17 @@ exports.account = (req, res) => {
   res.render('account', { title: 'Votre compte', csrfToken: req.csrfToken() })
 }
 
-exports.hasOrganism = async (req, res, next) => {
-  const orga = await Organism.findOne({
+exports.hasGroup = async (req, res, next) => {
+  const group = await Group.findOne({
     author: req.user._id,
     status: { $regex: '^((?!archived).)*$', $options: 'i' }
   })
-  if (!orga) {
+  if (!group) {
     req.flash(
       'error',
       'Vous devez créer un groupe avant de créer votre évènement.'
     )
-    res.redirect('/organisms/add')
+    res.redirect('/group/add')
     return
   }
   next()
@@ -91,7 +91,7 @@ exports.hasOrganism = async (req, res, next) => {
 //     }
 //   });
 //   if (!user) {
-//     req.flash("error", "Choisissez une souscription pour la création de votre organisme.");
+//     req.flash("error", "Choisissez une souscription pour la création de votre groupe.");
 //     res.redirect("/souscriptions");
 //     return;
 //   }

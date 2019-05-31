@@ -131,16 +131,16 @@ function pagination (currentPage, pages) {
   return `${content}</ul></div>`
 }
 
-// Organisms dropdown in event edit page
-function initOrgaDropdown (orgasSelect, orgaId) {
-  axiosGet('/api/organisms', data => {
+// Groups dropdown in event edit page
+function initGroupDropdown (groupsSelect, groupId) {
+  axiosGet('/api/groups', data => {
     if (data) {
       const format = item => {
         return `<option value="${item._id}"${
-          orgaId.value && item._id === orgaId.value ? ' selected' : ''
+          groupId.value && item._id === groupId.value ? ' selected' : ''
         }>${sliceStr(item.name, 30)}</option>`
       }
-      orgasSelect.innerHTML = data2HTML(data, format, '')
+      groupsSelect.innerHTML = data2HTML(data, format, '')
     }
   })
 }
@@ -154,5 +154,5 @@ export {
   sliceStr,
   addNewBtn,
   pagination,
-  initOrgaDropdown
+  initGroupDropdown
 }
