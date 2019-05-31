@@ -12,7 +12,7 @@ block customStyle
 block content
   .pure-g
     .pure-u-1.content
-      if remove
+      if remove && isAdmin
         +removeDialog(event, "event")
       //- Flyer
       .pure-u-1.photo-group-event
@@ -20,16 +20,14 @@ block content
       .separator.top-space
       //- Name
       .pure-u-1.text-center
-        h2= event.name
+        h2= title
           span.normaltext &nbsp; par
-          a(href=`/group/${group.slug}`)= ` ${group.name}`
-          if isOwner
+          a(href=`/group/${event.group.slug}`)= ` ${event.group.name}`
+          if isAdmin
             a(href=`/event/${event.id}/edit` title="Modifier" style="margin-right: 10px;")
               span.icon!= h.icon("edit")
             a(href=`/event/${event.slug}?remove=true` title="Archiver")
               span.icon!= h.icon("archive")
-        //- p Organisateur :
-        //-   a(href=`/group/${group.slug}`)= ` ${group.name}`
       //- Description
       .pure-u-1
         //- label Description de l'évènement&nbsp;:
@@ -40,7 +38,6 @@ block content
         .pure-u-1.top-space.text-center.normaltext
           .u-sm-1: label= `Fuseau horaire : ${event.timezone}`
         //- Start date && time
-
 
         if (event.occurring === undefined || event.occurring.length == 0)
           //- normal event

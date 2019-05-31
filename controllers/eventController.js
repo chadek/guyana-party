@@ -5,22 +5,15 @@ const {
   getPagedItems,
   getTZList,
   confirmMember,
+  isAdminCheck,
   lookForNextOcurring
 } = require('../handlers/tools')
 
 const Event = mongoose.model('Event')
 const Group = mongoose.model('Group')
 
-exports.isAdmin = async (req, res, next) => {
-  const event = await Event.findOne({ _id: req.paramString('id') })
-  const isAdmin = event && confirmMember(req.user, event.group, 'admin')
-  if (isAdmin) {
-    next() // carry on! They are admin!
-    return
-  }
-  req.flash('error', 'Vous ne pouvez pas effectuer cette action !')
-  res.redirect(`/event/${event.slug}`)
-}
+exports.isAdmin = async (req, res, next) =>
+  isAdminCheck(req, res, next, Event, 'event')
 
 exports.addPage = (req, res) => {
   const group = req.queryString('group')
@@ -187,32 +180,21 @@ exports.getEventBySlug = async (req, res, next) => {
   const event = await Event.findOne({ slug: req.paramString('slug') })
   if (!event) return next()
 
-  // we can't see an event if it's not published and we don't own it
-  if (
-    event.status !== 'published' &&
-    !confirmMember(req.user, event.group, 'admin')
-  ) {
-    req.flash('error', 'Vous ne pouvez pas effectuer cet action !')
-    return next()
-  }
+  const isAdmin = confirmMember(req.user, event.group, 'admin')
 
   let remove = false
   if (req.queryString('remove')) remove = true
 
-  const group = await Group.findOne({ _id: event.group })
-  if (!group) return next()
-  const isOwner = req.user && event.author.equals(req.user._id)
+  // we can't see an event if it's not published and we don't own it
+  //   or we can't remove the event if not admin
+  if ((event.status !== 'published' || remove) && !isAdmin) {
+    req.flash('error', 'Vous ne pouvez pas effectuer cet action !')
+    return res.redirect(`/event/${event.slug}`)
+  }
 
   event.nextTime = lookForNextOcurring(event)
 
-  res.render('event', {
-    event,
-    group,
-    title: event.name,
-    csrfToken: req.csrfToken(),
-    remove,
-    isOwner
-  })
+  res.render('event', { title: event.name, event, remove, isAdmin })
 }
 
 /** route: /api/events */

@@ -3,6 +3,7 @@ const store = require('store')
 const {
   getPagedItems,
   confirmMember,
+  isAdminCheck,
   asyncForEach
 } = require('../handlers/tools')
 
@@ -15,16 +16,8 @@ const returnNextUpdatedOptions = {
   runValidators: true
 }
 
-exports.isAdmin = async (req, res, next) => {
-  const group = await Group.findOne({ _id: req.paramString('id') })
-  const isAdmin = group && confirmMember(req.user, group, 'admin')
-  if (isAdmin) {
-    next() // carry on! They are admin!
-    return
-  }
-  req.flash('error', 'Vous ne pouvez pas effectuer cette action !')
-  res.redirect(`/group/${group.slug}`)
-}
+exports.isAdmin = async (req, res, next) =>
+  isAdminCheck(req, res, next, Group, 'group')
 
 exports.addPage = (req, res) => {
   res.render('editGroup', {
