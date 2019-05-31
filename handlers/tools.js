@@ -46,6 +46,19 @@ const confirmMember = (user, group, role) => {
   } else return undefined !== group.community.find(o => o.user.equals(user._id))
 }
 
+const isAdminCheck = async (req, res, next, model, modelType = 'group') => {
+  const foundModel = await model.findOne({ _id: req.paramString('id') })
+  let group = foundModel
+  if (modelType === 'event') group = foundModel.group
+  const isAdmin = foundModel && confirmMember(req.user, group, 'admin')
+  if (isAdmin) {
+    next() // carry on! They are admin!
+    return
+  }
+  req.flash('error', 'Vous ne pouvez pas effectuer cette action !')
+  res.redirect(`/${modelType}/${foundModel.slug}`)
+}
+
 const formatEventStartEnd = (isoStart, isoEnd) => {
   const start = new Date(isoStart)
   const end = new Date(isoEnd)
@@ -133,6 +146,7 @@ module.exports = {
   asyncForEach,
   getPagedItems,
   confirmMember,
+  isAdminCheck,
   lookForNextOcurring,
   getTZList
 }
