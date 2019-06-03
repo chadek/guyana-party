@@ -256,10 +256,12 @@ exports.getSearchResult = async (req, res) => {
   const page = req.queryInt('page') || 1
   const limit = req.queryInt('limit') || 10
   const search = req.queryString('q')
-  const lon = req.queryString('lon')
-  const lat = req.queryString('lat')
-  const maxDistance = req.queryInt('maxdistance') || 10000 // 10km
-  // We want published events by location (if available), name or description
+  const cbx = req.queryFloat('cbx')
+  const cby = req.queryFloat('cby')
+  const chx = req.queryFloat('chx')
+  const chy = req.queryFloat('chy')
+
+ // We want published events by location (if available), name or description
   const find = {
     $or: [
       { name: { $regex: search, $options: 'i' } },
@@ -269,13 +271,15 @@ exports.getSearchResult = async (req, res) => {
     end: { $gte: Date.now() },
     public: true
   }
-  if (lon && lat) {
+  if (cbx && cby && chx && chy) {
+    
+    console.log(cbx, cby,chx, chy)
     // TODO: content the map's corner
     find.location = {
       $geoWithin: {
-        $centerSphere: [
-          [lon, lat].map(parseFloat),
-          maxDistance / 1609.34 / 3963.2 // conversion meter to miles and divided by the earth's radius (miles)
+        $box: [
+          [cby, cbx],
+          [chy, chx]
         ]
       }
     }
@@ -298,5 +302,8 @@ exports.getSearchResult = async (req, res) => {
     },
     { start: 1 }
   )
+
+  console.log(pagedEvents)
+
   res.json(pagedEvents)
 }

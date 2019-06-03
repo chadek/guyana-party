@@ -140,7 +140,11 @@ class Map {
       startGeolocation(
         pos => {
           const lonlat = [pos.coords.longitude, pos.coords.latitude]
-          this.addSinglePoint(fromLonLat(lonlat), callbackFn, lonlat)
+          this.addSinglePoint(
+            fromLonLat(lonlat), 
+            callbackFn, 
+            lonlat
+          )
         },
         // Error
         () => {
@@ -176,6 +180,9 @@ class Map {
   }
 
   addSinglePoint (position, callbackFn, gpsCoord, center = true, show = true) {
+    console.log("addSinglePoint olMap")
+    console.log("Position : ", position)
+    console.log("GPS coord : ", gpsCoord)
     if (show) {
       let styleMark = this.defaultStyleMark
       if (!this.single) {
@@ -191,7 +198,10 @@ class Map {
 
       if (center) this.view.setCenter(position)
     }
-    callbackFn(gpsCoord, show)
+
+    const box = this.getBox(position)
+
+    callbackFn(box, show)
   }
 
   onMove (callbackFn) {
@@ -204,13 +214,9 @@ class Map {
       this.layers = []
       // Get center position
       const center = this.view.getCenter()
-      // Get half of the width of the map div and
-      //  get the letf border coordinates from pixel position
-      const half = document.getElementById(`${this.target}`).offsetWidth / 2
-      const border = this.map.getCoordinateFromPixel([half, 0])
-      // Calculate the distance between center and border to get approximate radius
-      const distance = distanceBetweenPoints(center, border)
-      callbackFn(toLonLat(center), distance)
+
+      const box = this.getBox(center)
+      callbackFn(box)
     })
   }
 
@@ -345,6 +351,30 @@ class Map {
   /** Get a geographic coordinate with the hemisphere, degrees, minutes, and seconds. */
   getGPSToHDMS (gps) {
     return toStringHDMS(gps)
+  }
+
+  getBox(center){
+    console.log("CENTER : ", toLonLat(center))
+    const halfW = document.getElementById(`${this.target}`).offsetWidth / 2
+    const halfH = document.getElementById(`${this.target}`).offsetHeight / 2
+    console.log("HALFs : ", halfH, halfW)
+    
+    // const border = this.map.getCoordinateFromPixel([half, 0])
+    
+    const borderW = this.map.getCoordinateFromPixel([halfW, 0])
+    const borderH = this.map.getCoordinateFromPixel([halfH, 0])
+    console.log("BORDER W : ", borderW , " BORDER H : ", borderH)
+    // loc: { $geoWithin: { $box:  [ [ 0, 0 ], [ 100, 100 ] ] } }
+
+    // const cb = toLonLat([center[0]-halfW, center[1]-halfH])
+    // const ch = toLonLat([center[0]+halfW, center[1]+halfH])
+    
+    const cb = toLonLat([center[0]-halfW, center[1]-halfH])
+    const ch = toLonLat([center[0]+halfW, center[1]+halfH])
+    console.log("CB : ", cb)
+    console.log("CH : ", ch)
+    
+    return {cb, ch}
   }
 } // Class End
 
