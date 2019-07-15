@@ -12,10 +12,10 @@ const searchInput = b('.search__input')
 let searchInputValue = ''
 
 //coords = [-52.2967199, 4.9119332]
-map.singleShowPoint(({ cb, ch }) => {
+map.singleShowPoint(box => {
   if (searchInput) {
-    const [cbx, cby] = cb
-    const [chx, chy] = ch
+    const [cbx, cby] = box.cornerDL
+    const [chx, chy] = box.cornerUR
     console.log("CBX : ", cbx, " CBY : ", cby)
     console.log("CBX : ", chx, " CBY : ", chy)
 
@@ -57,8 +57,21 @@ if (aroundBtn) {
 const randomBtn = document.getElementById('random')
 if (randomBtn) {
   randomBtn.on('click', () => {
-    map.goRandom(coords => {
-      showEvents(searchInputValue, coords[0].toString(), coords[1].toString())
+    map.goRandom(box => {
+      // const {cb, ch} = box
+      console.log("Callback dans RANDOM box.CDL: ", box.cornerDL, " bor.CUR ", box.cornerUR)
+
+      // pas de variable cb ni ch
+      const [cbx, cby] = box.cornerDL
+      const [chx, chy] = box.cornerUR
+      
+      showEvents(
+        searchInputValue,
+        cbx,
+        cby, 
+        chx,
+        chy
+      )
     })
   })
 }
@@ -68,9 +81,9 @@ if (newBtn) {
   newBtn.on('click', () => (window.location = '/event/add'))
 }
 
-map.onMove(({ cb, ch }) => {
-  const [cbx, cby] = cb
-  const [chx, chy] = ch
+map.onMove(box => {
+  const [cbx, cby] = box.cornerDL
+  const [chx, chy] = box.cornerUR
   console.log("FRAICHE !!")
   showEvents(
     searchInputValue,

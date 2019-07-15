@@ -14,7 +14,7 @@ import dompurify from 'dompurify'
 
 const ZOOM = 14
 const CLUSTER_DISTANCE = 10
-const MAXZOOM = 20
+const MAXZOOM = 15
 const MINZOOM = 2
 const RANDOM_POINTS = [
   [-52.3009, 4.931609], // Cayenne
@@ -123,8 +123,11 @@ class Map {
   }
 
   goRandom (callbackFn) {
+    
     this.setDefaultRandomPosition()
     const position = this.defaultPos
+    console.log("JE SUIS DANS GORANDOM : ",toLonLat(position))
+    this.view.setCenter(position)
     this.addSinglePoint(
       position,
       callbackFn,
@@ -132,7 +135,7 @@ class Map {
       true, // center on point
       false // hidden point
     )
-    this.view.setCenter(position)
+    
   }
 
   singleShowPoint (callbackFn) {
@@ -199,23 +202,30 @@ class Map {
       if (center) this.view.setCenter(position)
     }
 
-    const box = this.getBox(position)
+    console.log("TESTING......")
+    var pixel = this.map.getPixelFromCoordinate(gpsCoord);
+
+    var view = this.map.getView();
+    var width = map.extent.getWidth(this.view.getProjection().getExtent()) / this.view.getResolution();
+    // var pixelX = ((pixel[0] % width) + width) % width;
+    // var pixelY = pixel[1];
+
+
+    console.log(".............. STOP TEST")
+    
+    const box = this.map.getExtent().toGeometry().toString()
+    // const box = this.getBox()
+    console.log("add single show point ; box : ", box)
 
     callbackFn(box, show)
   }
 
   onMove (callbackFn) {
     this.map.on('moveend', e => {
-      // this.map.getLayers().forEach(layer => {
-      //   console.log(layer.getSource().getState(), layer.getVisible())
-      // })
-      // Remove existing layers
       this.layers.forEach(layer => this.map.removeLayer(layer))
       this.layers = []
-      // Get center position
-      const center = this.view.getCenter()
-
-      const box = this.getBox(center)
+      const box = this.getBox()
+      console.log("BOX : ", box)
       callbackFn(box)
     })
   }
@@ -353,28 +363,23 @@ class Map {
     return toStringHDMS(gps)
   }
 
-  getBox(center){
-    console.log("CENTER : ", toLonLat(center))
+  getBox(){
+    console.log("GET BOX")
     const halfW = document.getElementById(`${this.target}`).offsetWidth / 2
     const halfH = document.getElementById(`${this.target}`).offsetHeight / 2
-    console.log("HALFs : ", halfH, halfW)
-    
-    // const border = this.map.getCoordinateFromPixel([half, 0])
-    
-    const borderW = this.map.getCoordinateFromPixel([halfW, 0])
-    const borderH = this.map.getCoordinateFromPixel([halfH, 0])
-    console.log("BORDER W : ", borderW , " BORDER H : ", borderH)
-    // loc: { $geoWithin: { $box:  [ [ 0, 0 ], [ 100, 100 ] ] } }
 
-    // const cb = toLonLat([center[0]-halfW, center[1]-halfH])
-    // const ch = toLonLat([center[0]+halfW, center[1]+halfH])
-    
-    const cb = toLonLat([center[0]-halfW, center[1]-halfH])
-    const ch = toLonLat([center[0]+halfW, center[1]+halfH])
-    console.log("CB : ", cb)
-    console.log("CH : ", ch)
-    
-    return {cb, ch}
+    console.log("Mon HTML : ", document.getElementById(`${this.target}`))
+    console.log("HALFs : demie largeur :", halfW)
+    console.log(" demie hauteur : ", halfH)
+    // const HC = toLonLat([halfW,halfH])
+    const cornerDL = toLonLat(this.map.getCoordinateFromPixel([0, 0]))
+    const cornerUR = toLonLat(this.map.getCoordinateFromPixel([halfW, halfH]))
+
+    console.log("Coin bas gauche : ", cornerDL)
+    console.log("coin haut droite : ", cornerUR)
+    console.log("END GET BOX")
+
+    return {cornerDL, cornerUR}
   }
 } // Class End
 
