@@ -80,6 +80,8 @@ exports.create = async (req, res) => {
   req.flash('success', `Evènement "${event.name}" créé avec succès !`)
   res.redirect(`/event/${event.slug}`)
 }
+// controlleur pour l'ajout d'un signalement
+// exports.report = 
 
 exports.updateEvent = async (req, res, next) => {
   store.set('editevents-form-data', req.body) // store body to prefill the register form
@@ -182,14 +184,22 @@ exports.getEventBySlug = async (req, res, next) => {
 
   const isAdmin = confirmMember(req.user, event.group, 'admin')
 
+  const isMember = confirmMember(req.user, event.group, 'member')
+
+  // vérifier si l'utilisateur est connecté..
+
+  // const isConnected
+
   let remove = false
   if (req.queryString('remove')) remove = true
 
   // we can't see an event if it's not published and we don't own it
   //   or we can't remove the event if not admin
-  if ((event.status !== 'published' || remove) && !isAdmin) {
-    req.flash('error', 'Vous ne pouvez pas effectuer cet action !')
-    return res.redirect(`/event/${event.slug}`)
+
+
+  if ( !( isAdmin || (isMember && (event.status == 'published' || remove) ) || (event.status == 'published' && (event.public) ) )) {
+    req.flash('error', 'Vous ne pouvez pas accéder aux informations de cet évènement !')
+    return res.redirect('back')
   }
 
   event.nextTime = lookForNextOcurring(event)
@@ -202,6 +212,13 @@ exports.getEventBySlug = async (req, res, next) => {
     remove
   })
 }
+
+// exports.getEventReportBySlug = async (req, res, next) => {
+//   // to code the new page there
+
+//   //récuperer les infos sur l'évènement
+  
+// }
 
 /** route: /api/events */
 exports.getEvents = async (req, res) => {
@@ -284,7 +301,9 @@ exports.getSearchResult = async (req, res) => {
       }
     }
   }
-  // Paginate the events list
+  // Paginate the events list newfeaturing
+  // Add detail for
+
   const pagedEvents = await getPagedItems(
     Event,
     page,
@@ -297,7 +316,8 @@ exports.getSearchResult = async (req, res) => {
       start: 1,
       end: 1,
       photo: 1,
-      occurring: 1,
+      occurring: 1,// juste here
+      created: 1,
       'location.coordinates': 1
     },
     { start: 1 }
