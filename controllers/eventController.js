@@ -182,14 +182,16 @@ exports.getEventBySlug = async (req, res, next) => {
 
   const isAdmin = confirmMember(req.user, event.group, 'admin')
 
+  const isMember = confirmMember(req.user, event.group, 'member')
+
   let remove = false
   if (req.queryString('remove')) remove = true
 
   // we can't see an event if it's not published and we don't own it
   //   or we can't remove the event if not admin
-  if ((event.status !== 'published' || remove) && !isAdmin) {
-    req.flash('error', 'Vous ne pouvez pas effectuer cet action !')
-    return res.redirect(`/event/${event.slug}`)
+  if ( !( isAdmin || (isMember && (event.status == 'published' || remove) ) || (event.status == 'published' && (event.public) ) )) {
+    req.flash('error', 'Vous ne pouvez pas accéder aux informations de cet évènement !')
+    return res.redirect('back')
   }
 
   event.nextTime = lookForNextOcurring(event)
