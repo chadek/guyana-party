@@ -28,7 +28,8 @@ block content
               span.icon!= h.icon("edit")
             a(href=`/event/${event.slug}?remove=true` title="Archiver")
               span.icon!= h.icon("archive")
-        +statusEvent(event)
+        if isAdmin
+          +statusEvent(event)
       //- Description
       .pure-u-1
         //- label Description de l'évènement&nbsp;:

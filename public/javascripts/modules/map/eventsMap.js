@@ -11,18 +11,11 @@ const map = new Map({
 const searchInput = b('.search__input')
 let searchInputValue = ''
 
-//coords = [-52.2967199, 4.9119332]
 map.singleShowPoint(box => {
   if (searchInput) {
 
     const { CBG: [cbx, cby], CHD: [chx, chy] } = box
 
-    console.log("CBX : ", cbx, " CBY : ", cby)
-    console.log("CBX : ", chx, " CBY : ", chy)
-
-    // const lon = coords[0].toString()
-    // const lat = coords[1].toString()
-    // console.log("map.singeShowpoint lon : ", lon,  " lat : ", lat)
     searchInput.on('keydown', e => {
       if (e.key === 'Enter' || e.keyCode === 13) {
         // showEvents(e.target.value, lon, lat)
@@ -80,7 +73,6 @@ if (newBtn) {
 
 map.onMove(box => {
   const { CBG: [cbx, cby], CHD: [chx, chy] } = box
-  console.log("FRAICHE !!")
   showEvents(
     searchInputValue,
     cbx,

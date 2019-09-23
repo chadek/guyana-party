@@ -180,9 +180,6 @@ class Map {
   }
 
   addSinglePoint (position, callbackFn, gpsCoord, center = true, show = true) {
-    console.log("addSinglePoint olMap")
-    console.log("Position : ", position)
-    console.log("GPS coord : ", gpsCoord)
     if (show) {
       let styleMark = this.defaultStyleMark
       if (!this.single) {
@@ -351,17 +348,9 @@ class Map {
 
   getBox(){
     const corners = this.view.calculateExtent()
-    console.log("Recherche des coordonnées des coins de l'affichage de la carte")
-    console.log(corners)
-    // [113209.30117152954, 5731203.3518888205, 162740.49550032374, 5781422.479472181]
+    
     const CBG = toLonLat([corners[0], corners[1]])
     const CHD = toLonLat([corners[2], corners[3]])
-    console.log("EN GPS : => ")
-    console.log(CBG, CHD)
-    // [1.0169764554687504, 45.69246882533639]
-    // [1.4619227445312502, 46.00669697076859]
-
-
     return {CBG, CHD}
   }
 } // Class End
