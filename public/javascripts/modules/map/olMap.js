@@ -199,9 +199,7 @@ class Map {
       if (center) this.view.setCenter(position)
     }
 
-    const box = this.getBox()
-
-    callbackFn(box, show)
+    callbackFn(gpsCoord, show)
   }
 
   onMove (callbackFn) {
