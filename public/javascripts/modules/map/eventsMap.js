@@ -14,8 +14,9 @@ let searchInputValue = ''
 //coords = [-52.2967199, 4.9119332]
 map.singleShowPoint(box => {
   if (searchInput) {
-    const [cbx, cby] = box.cornerDL
-    const [chx, chy] = box.cornerUR
+
+    const { CBG: [cbx, cby], CHD: [chx, chy] } = box
+
     console.log("CBX : ", cbx, " CBY : ", cby)
     console.log("CBX : ", chx, " CBY : ", chy)
 
@@ -58,12 +59,8 @@ const randomBtn = document.getElementById('random')
 if (randomBtn) {
   randomBtn.on('click', () => {
     map.goRandom(box => {
-      // const {cb, ch} = box
-      console.log("Callback dans RANDOM box.CDL: ", box.cornerDL, " bor.CUR ", box.cornerUR)
-
-      // pas de variable cb ni ch
-      const [cbx, cby] = box.cornerDL
-      const [chx, chy] = box.cornerUR
+      
+      const { CBG: [cbx, cby], CHD: [chx, chy] } = box
       
       showEvents(
         searchInputValue,
@@ -82,8 +79,7 @@ if (newBtn) {
 }
 
 map.onMove(box => {
-  const [cbx, cby] = box.cornerDL
-  const [chx, chy] = box.cornerUR
+  const { CBG: [cbx, cby], CHD: [chx, chy] } = box
   console.log("FRAICHE !!")
   showEvents(
     searchInputValue,

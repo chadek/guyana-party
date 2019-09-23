@@ -278,8 +278,8 @@ exports.getSearchResult = async (req, res) => {
     find.location = {
       $geoWithin: {
         $box: [
-          [cby, cbx],
-          [chy, chx]
+          [cbx, cby],
+          [chx, chy]
         ]
       }
     }
