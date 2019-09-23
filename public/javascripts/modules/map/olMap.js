@@ -14,7 +14,7 @@ import dompurify from 'dompurify'
 
 const ZOOM = 14
 const CLUSTER_DISTANCE = 10
-const MAXZOOM = 15
+const MAXZOOM = 20
 const MINZOOM = 2
 const RANDOM_POINTS = [
   [-52.3009, 4.931609], // Cayenne
@@ -123,11 +123,8 @@ class Map {
   }
 
   goRandom (callbackFn) {
-    
     this.setDefaultRandomPosition()
     const position = this.defaultPos
-    console.log("JE SUIS DANS GORANDOM : ",toLonLat(position))
-    this.view.setCenter(position)
     this.addSinglePoint(
       position,
       callbackFn,
@@ -135,7 +132,7 @@ class Map {
       true, // center on point
       false // hidden point
     )
-    
+    this.view.setCenter(position)
   }
 
   singleShowPoint (callbackFn) {
@@ -202,30 +199,21 @@ class Map {
       if (center) this.view.setCenter(position)
     }
 
-    console.log("TESTING......")
-    var pixel = this.map.getPixelFromCoordinate(gpsCoord);
-
-    var view = this.map.getView();
-    var width = map.extent.getWidth(this.view.getProjection().getExtent()) / this.view.getResolution();
-    // var pixelX = ((pixel[0] % width) + width) % width;
-    // var pixelY = pixel[1];
-
-
-    console.log(".............. STOP TEST")
-    
-    const box = this.map.getExtent().toGeometry().toString()
-    // const box = this.getBox()
-    console.log("add single show point ; box : ", box)
+    const box = this.getBox()
 
     callbackFn(box, show)
   }
 
   onMove (callbackFn) {
     this.map.on('moveend', e => {
+      // this.map.getLayers().forEach(layer => {
+      //   console.log(layer.getSource().getState(), layer.getVisible())
+      // })
+      // Remove existing layers
       this.layers.forEach(layer => this.map.removeLayer(layer))
       this.layers = []
+
       const box = this.getBox()
-      console.log("BOX : ", box)
       callbackFn(box)
     })
   }
@@ -364,22 +352,19 @@ class Map {
   }
 
   getBox(){
-    console.log("GET BOX")
-    const halfW = document.getElementById(`${this.target}`).offsetWidth / 2
-    const halfH = document.getElementById(`${this.target}`).offsetHeight / 2
+    const corners = this.view.calculateExtent()
+    console.log("Recherche des coordonnées des coins de l'affichage de la carte")
+    console.log(corners)
+    // [113209.30117152954, 5731203.3518888205, 162740.49550032374, 5781422.479472181]
+    const CBG = toLonLat([corners[0], corners[1]])
+    const CHD = toLonLat([corners[2], corners[3]])
+    console.log("EN GPS : => ")
+    console.log(CBG, CHD)
+    // [1.0169764554687504, 45.69246882533639]
+    // [1.4619227445312502, 46.00669697076859]
 
-    console.log("Mon HTML : ", document.getElementById(`${this.target}`))
-    console.log("HALFs : demie largeur :", halfW)
-    console.log(" demie hauteur : ", halfH)
-    // const HC = toLonLat([halfW,halfH])
-    const cornerDL = toLonLat(this.map.getCoordinateFromPixel([0, 0]))
-    const cornerUR = toLonLat(this.map.getCoordinateFromPixel([halfW, halfH]))
 
-    console.log("Coin bas gauche : ", cornerDL)
-    console.log("coin haut droite : ", cornerUR)
-    console.log("END GET BOX")
-
-    return {cornerDL, cornerUR}
+    return {CBG, CHD}
   }
 } // Class End
 
