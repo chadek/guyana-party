@@ -12,9 +12,11 @@ const searchInput = b('.search__input')
 let searchInputValue = ''
 
 map.singleShowPoint(box => {
+  console.log("Appel à singleShowPoint")
   if (searchInput) {
-
     const { CBG: [cbx, cby], CHD: [chx, chy] } = box
+    // const lon = coords[0].toString()
+    // const lat = coords[1].toString()
 
     searchInput.on('keydown', e => {
       if (e.key === 'Enter' || e.keyCode === 13) {
@@ -36,14 +38,23 @@ map.singleShowPoint(box => {
 const aroundBtn = document.getElementById('around')
 if (aroundBtn) {
   aroundBtn.on('click', () => {
-    map.goAround((coords, show, err) => {
+    map.goAround((box, show, err) => {
+      const { CBG: [cbx, cby], CHD: [chx, chy] } = box
       if (err) {
         console.info(
           'Le suivit de position géographique a été bloqué pour cette page'
         )
         return
       }
-      showEvents(searchInputValue, coords[0].toString(), coords[1].toString())
+      showEvents(
+        searchInputValue,
+        // coords[0].toString(),
+        // coords[1].toString(),
+        cbx,
+        cby, 
+        chx,
+        chy
+      )
     })
   })
 }
@@ -53,6 +64,9 @@ if (randomBtn) {
   randomBtn.on('click', () => {
     map.goRandom(box => {
       
+      // const lon = coords[0].toString()
+      // const lat = coords[1].toString()
+
       const { CBG: [cbx, cby], CHD: [chx, chy] } = box
       
       showEvents(

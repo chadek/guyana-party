@@ -13,6 +13,10 @@ const map = new Map({
 })
 
 map.singleShowPoint((coords, showPoint) => {
+  console.log("COORDS : ", coords)
+  console.log("ShowPoint : ", showPoint)
+  // les coordonnées sont la boite de la carte
+  // Demander les coordonnées centrale
   if (showPoint) updateAddress(coords)
 })
 

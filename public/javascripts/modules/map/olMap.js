@@ -116,15 +116,26 @@ class Map {
     startGeolocation(
       pos => {
         const lonlat = [pos.coords.longitude, pos.coords.latitude]
-        this.addSinglePoint(fromLonLat(lonlat), callbackFn, lonlat)
+        console.log("Into StartGeolocation")
+        console.log(lonlat)
+        this.addSinglePoint(
+          fromLonLat(lonlat), 
+          callbackFn, 
+          lonlat
+        )
       },
-      () => callbackFn(toLonLat(this.defaultPos), true, true) // Error
+      () => {
+        this.view.setCenter(this.defaultPos)
+        callbackFn(this.getBox(), true, true)
+        // callbackFn(toLonLat(this.defaultPos), true, true) // Error
+      }
     )
   }
 
   goRandom (callbackFn) {
     this.setDefaultRandomPosition()
     const position = this.defaultPos
+    this.view.setCenter(position)
     this.addSinglePoint(
       position,
       callbackFn,
@@ -132,14 +143,17 @@ class Map {
       true, // center on point
       false // hidden point
     )
-    this.view.setCenter(position)
+    // this.view.setCenter(position) // anciennement
   }
 
   singleShowPoint (callbackFn) {
+    console.log("singleShowPoint")
     if (!this.singlePos) {
+      console.log("singlePos NOP")
       startGeolocation(
         pos => {
           const lonlat = [pos.coords.longitude, pos.coords.latitude]
+          this.view.setCenter(lonlat)
           this.addSinglePoint(
             fromLonLat(lonlat), 
             callbackFn, 
@@ -159,7 +173,13 @@ class Map {
         }
       )
     } else {
-      this.addSinglePoint(this.singlePos, callbackFn, toLonLat(this.singlePos))
+      console.log("singlePos OK")
+      console.log(this.singlePos)
+      this.addSinglePoint(
+        this.singlePos,
+        callbackFn,
+        toLonLat(this.singlePos)
+      )
     }
   }
 
@@ -195,8 +215,15 @@ class Map {
 
       if (center) this.view.setCenter(position)
     }
+    // const box = this.getBox
+    console.log("Passage dans addSinglePoint")
 
-    callbackFn(gpsCoord, show)
+    // callbackFn(gpsCoord, show)
+    callbackFn(this.getBox(), show)
+
+    //Donner la box au lieu des coordoners du centre
+
+
   }
 
   onMove (callbackFn) {
