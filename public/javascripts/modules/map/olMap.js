@@ -146,18 +146,21 @@ class Map {
     // this.view.setCenter(position) // anciennement
   }
 
-  singleShowPoint (callbackFn) {
+  singleShowPoint (callbackFn, Boxing = true) {
     console.log("singleShowPoint")
     if (!this.singlePos) {
       console.log("singlePos NOP")
       startGeolocation(
         pos => {
           const lonlat = [pos.coords.longitude, pos.coords.latitude]
-          this.view.setCenter(lonlat)
+          // this.view.setCenter(lonlat)
           this.addSinglePoint(
             fromLonLat(lonlat), 
             callbackFn, 
-            lonlat
+            lonlat,
+            true,
+            true,
+            Boxing
           )
         },
         // Error
@@ -168,7 +171,8 @@ class Map {
             callbackFn,
             toLonLat(position),
             true, // center on point
-            false // hidden point
+            false, // hidden point
+            Boxing
           )
         }
       )
@@ -178,12 +182,15 @@ class Map {
       this.addSinglePoint(
         this.singlePos,
         callbackFn,
-        toLonLat(this.singlePos)
+        toLonLat(this.singlePos),
+        true,
+        true,
+        Boxing
       )
     }
   }
 
-  singleOnClick (callbackFn) {
+  singleOnClick (callbackFn, Boxing) {
     if (!this.single || this.readOnly) return
     this.map.on('click', e => {
       this.singlePos = e.coordinate
@@ -194,12 +201,14 @@ class Map {
         this.singlePos,
         callbackFn,
         toLonLat(this.singlePos),
-        false
+        false,
+        true,
+        Boxing
       )
     })
   }
 
-  addSinglePoint (position, callbackFn, gpsCoord, center = true, show = true) {
+  addSinglePoint (position, callbackFn, gpsCoord, center = true, show = true, Boxing = true) {
     if (show) {
       let styleMark = this.defaultStyleMark
       if (!this.single) {
@@ -218,10 +227,16 @@ class Map {
     // const box = this.getBox
     console.log("Passage dans addSinglePoint")
 
+    if (Boxing){
+      callbackFn(this.getBox(), show)
+    }else{
+      callbackFn(gpsCoord, show)
+    }
     // callbackFn(gpsCoord, show)
-    callbackFn(this.getBox(), show)
+    
 
     //Donner la box au lieu des coordoners du centre
+    // mais pas pour la création ni la modification d'évènement
 
 
   }
