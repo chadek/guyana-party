@@ -116,15 +116,26 @@ class Map {
     startGeolocation(
       pos => {
         const lonlat = [pos.coords.longitude, pos.coords.latitude]
-        this.addSinglePoint(fromLonLat(lonlat), callbackFn, lonlat)
+        console.log("Into StartGeolocation")
+        console.log(lonlat)
+        this.addSinglePoint(
+          fromLonLat(lonlat), 
+          callbackFn, 
+          lonlat
+        )
       },
-      () => callbackFn(toLonLat(this.defaultPos), true, true) // Error
+      () => {
+        this.view.setCenter(this.defaultPos)
+        callbackFn(this.getBox(), true, true)
+        // callbackFn(toLonLat(this.defaultPos), true, true) // Error
+      }
     )
   }
 
   goRandom (callbackFn) {
     this.setDefaultRandomPosition()
     const position = this.defaultPos
+    this.view.setCenter(position)
     this.addSinglePoint(
       position,
       callbackFn,
@@ -132,15 +143,25 @@ class Map {
       true, // center on point
       false // hidden point
     )
-    this.view.setCenter(position)
+    // this.view.setCenter(position) // anciennement
   }
 
-  singleShowPoint (callbackFn) {
+  singleShowPoint (callbackFn, Boxing = true) {
+    console.log("singleShowPoint")
     if (!this.singlePos) {
+      console.log("singlePos NOP")
       startGeolocation(
         pos => {
           const lonlat = [pos.coords.longitude, pos.coords.latitude]
-          this.addSinglePoint(fromLonLat(lonlat), callbackFn, lonlat)
+          // this.view.setCenter(lonlat)
+          this.addSinglePoint(
+            fromLonLat(lonlat), 
+            callbackFn, 
+            lonlat,
+            true,
+            true,
+            Boxing
+          )
         },
         // Error
         () => {
@@ -150,16 +171,26 @@ class Map {
             callbackFn,
             toLonLat(position),
             true, // center on point
-            false // hidden point
+            false, // hidden point
+            Boxing
           )
         }
       )
     } else {
-      this.addSinglePoint(this.singlePos, callbackFn, toLonLat(this.singlePos))
+      console.log("singlePos OK")
+      console.log(this.singlePos)
+      this.addSinglePoint(
+        this.singlePos,
+        callbackFn,
+        toLonLat(this.singlePos),
+        true,
+        true,
+        Boxing
+      )
     }
   }
 
-  singleOnClick (callbackFn) {
+  singleOnClick (callbackFn, Boxing) {
     if (!this.single || this.readOnly) return
     this.map.on('click', e => {
       this.singlePos = e.coordinate
@@ -170,12 +201,14 @@ class Map {
         this.singlePos,
         callbackFn,
         toLonLat(this.singlePos),
-        false
+        false,
+        true,
+        Boxing
       )
     })
   }
 
-  addSinglePoint (position, callbackFn, gpsCoord, center = true, show = true) {
+  addSinglePoint (position, callbackFn, gpsCoord, center = true, show = true, Boxing = true) {
     if (show) {
       let styleMark = this.defaultStyleMark
       if (!this.single) {
@@ -191,7 +224,21 @@ class Map {
 
       if (center) this.view.setCenter(position)
     }
-    callbackFn(gpsCoord, show)
+    // const box = this.getBox
+    console.log("Passage dans addSinglePoint")
+
+    if (Boxing){
+      callbackFn(this.getBox(), show)
+    }else{
+      callbackFn(gpsCoord, show)
+    }
+    // callbackFn(gpsCoord, show)
+    
+
+    //Donner la box au lieu des coordoners du centre
+    // mais pas pour la création ni la modification d'évènement
+
+
   }
 
   onMove (callbackFn) {
@@ -202,15 +249,9 @@ class Map {
       // Remove existing layers
       this.layers.forEach(layer => this.map.removeLayer(layer))
       this.layers = []
-      // Get center position
-      const center = this.view.getCenter()
-      // Get half of the width of the map div and
-      //  get the letf border coordinates from pixel position
-      const half = document.getElementById(`${this.target}`).offsetWidth / 2
-      const border = this.map.getCoordinateFromPixel([half, 0])
-      // Calculate the distance between center and border to get approximate radius
-      const distance = distanceBetweenPoints(center, border)
-      callbackFn(toLonLat(center), distance)
+
+      const box = this.getBox()
+      callbackFn(box)
     })
   }
 
@@ -345,6 +386,14 @@ class Map {
   /** Get a geographic coordinate with the hemisphere, degrees, minutes, and seconds. */
   getGPSToHDMS (gps) {
     return toStringHDMS(gps)
+  }
+
+  getBox(){
+    const corners = this.view.calculateExtent()
+    
+    const CBG = toLonLat([corners[0], corners[1]])
+    const CHD = toLonLat([corners[2], corners[3]])
+    return {CBG, CHD}
   }
 } // Class End
 

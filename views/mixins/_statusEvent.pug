@@ -1,0 +1,14 @@
+mixin statusEvent(event)
+  .switch-publish-event
+    label.form-switch.form-switch-public
+      span Évènement &nbsp;
+      if event.public
+        span: strong public
+      else
+        span: strong privé
+    label.form-switch.form-switch-publish(style="margin-left: 20px;")
+      span Status &nbsp;
+      if event.status == "published"
+        span: strong publié
+      else
+        span: strong.unpublished-color non publié
