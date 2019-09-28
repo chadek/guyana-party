@@ -182,14 +182,17 @@ exports.getEventBySlug = async (req, res, next) => {
 
   const isAdmin = confirmMember(req.user, event.group, 'admin')
 
+  const isMember = confirmMember(req.user, event.group, 'member')
+
   let remove = false
   if (req.queryString('remove')) remove = true
 
   // we can't see an event if it's not published and we don't own it
   //   or we can't remove the event if not admin
-  if ((event.status !== 'published' || remove) && !isAdmin) {
-    req.flash('error', 'Vous ne pouvez pas effectuer cet action !')
-    return res.redirect(`/event/${event.slug}`)
+  if ( !( isAdmin || (isMember && (event.status == 'published' || remove) ) || (event.status == 'published' && (event.public) ) )) {
+    req.flash('error', 'Vous ne pouvez pas accéder aux informations de cet évènement !')
+    return res.redirect('back')
+
   }
 
   event.nextTime = lookForNextOcurring(event)
@@ -256,10 +259,12 @@ exports.getSearchResult = async (req, res) => {
   const page = req.queryInt('page') || 1
   const limit = req.queryInt('limit') || 10
   const search = req.queryString('q')
-  const lon = req.queryString('lon')
-  const lat = req.queryString('lat')
-  const maxDistance = req.queryInt('maxdistance') || 10000 // 10km
-  // We want published events by location (if available), name or description
+  const cbx = req.queryFloat('cbx')
+  const cby = req.queryFloat('cby')
+  const chx = req.queryFloat('chx')
+  const chy = req.queryFloat('chy')
+
+ // We want published events by location (if available), name or description
   const find = {
     $or: [
       { name: { $regex: search, $options: 'i' } },
@@ -269,13 +274,15 @@ exports.getSearchResult = async (req, res) => {
     end: { $gte: Date.now() },
     public: true
   }
-  if (lon && lat) {
+  if (cbx && cby && chx && chy) {
+    
+    console.log(cbx, cby,chx, chy)
     // TODO: content the map's corner
     find.location = {
       $geoWithin: {
-        $centerSphere: [
-          [lon, lat].map(parseFloat),
-          maxDistance / 1609.34 / 3963.2 // conversion meter to miles and divided by the earth's radius (miles)
+        $box: [
+          [cbx, cby],
+          [chx, chy]
         ]
       }
     }
@@ -298,5 +305,8 @@ exports.getSearchResult = async (req, res) => {
     },
     { start: 1 }
   )
+
+  console.log(pagedEvents)
+
   res.json(pagedEvents)
 }

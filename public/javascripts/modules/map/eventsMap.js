@@ -11,31 +11,50 @@ const map = new Map({
 const searchInput = b('.search__input')
 let searchInputValue = ''
 
-map.singleShowPoint(coords => {
+map.singleShowPoint(box => {
+  console.log("Appel à singleShowPoint")
   if (searchInput) {
-    const lon = coords[0].toString()
-    const lat = coords[1].toString()
+    const { CBG: [cbx, cby], CHD: [chx, chy] } = box
+    // const lon = coords[0].toString()
+    // const lat = coords[1].toString()
+
     searchInput.on('keydown', e => {
       if (e.key === 'Enter' || e.keyCode === 13) {
-        showEvents(e.target.value, lon, lat)
+        // showEvents(e.target.value, lon, lat)
+        showEvents(
+          e.target.value, 
+          cbx,
+          cby, 
+          chx,
+          chy
+        )
       }
     })
     searchInput.on('change', e => (searchInputValue = e.target.value))
-    showEvents('', lon, lat)
+    showEvents('', cbx, cby, chx, chy)
   }
 })
 
 const aroundBtn = document.getElementById('around')
 if (aroundBtn) {
   aroundBtn.on('click', () => {
-    map.goAround((coords, show, err) => {
+    map.goAround((box, show, err) => {
+      const { CBG: [cbx, cby], CHD: [chx, chy] } = box
       if (err) {
         console.info(
           'Le suivit de position géographique a été bloqué pour cette page'
         )
         return
       }
-      showEvents(searchInputValue, coords[0].toString(), coords[1].toString())
+      showEvents(
+        searchInputValue,
+        // coords[0].toString(),
+        // coords[1].toString(),
+        cbx,
+        cby, 
+        chx,
+        chy
+      )
     })
   })
 }
@@ -43,8 +62,20 @@ if (aroundBtn) {
 const randomBtn = document.getElementById('random')
 if (randomBtn) {
   randomBtn.on('click', () => {
-    map.goRandom(coords => {
-      showEvents(searchInputValue, coords[0].toString(), coords[1].toString())
+    map.goRandom(box => {
+      
+      // const lon = coords[0].toString()
+      // const lat = coords[1].toString()
+
+      const { CBG: [cbx, cby], CHD: [chx, chy] } = box
+      
+      showEvents(
+        searchInputValue,
+        cbx,
+        cby, 
+        chx,
+        chy
+      )
     })
   })
 }
@@ -54,12 +85,14 @@ if (newBtn) {
   newBtn.on('click', () => (window.location = '/event/add'))
 }
 
-map.onMove((coords, distance) => {
+map.onMove(box => {
+  const { CBG: [cbx, cby], CHD: [chx, chy] } = box
   showEvents(
     searchInputValue,
-    coords[0].toString(),
-    coords[1].toString(),
-    distance
+    cbx,
+    cby, 
+    chx,
+    chy
   )
 })
 
@@ -71,9 +104,11 @@ map.eventsOnClick(
   coords => {}
 )
 
-function showEvents (search, lon, lat, maxDistance = 20000) {
+
+// changer la parametre (lon, lat, maxdistance) en => (cbx cby chx chy)
+function showEvents (search, cbx, cby, chx, chy ) {
   axiosGet(
-    `/api/search?q=${search}&lon=${lon}&lat=${lat}&maxdistance=${maxDistance}`,
+    `/api/search?q=${search}&cbx=${cbx}&cby=${cby}&chx=${chx}&chy=${chy}`,
     data => {
       if (data && data.items) {
         map.showEvents(data.items)
@@ -132,16 +167,16 @@ function lookForNextOccurring (event) {
   const today = new Date()
   const end = new Date(event.end)
 
-  console.log('Date de début : ' + event.start)
+  // console.log('Date de début : ' + event.start)
   // console.log(event)
-  console.log('Datede fin ', event.end)
+  // console.log('Datede fin ', event.end)
   const time = new Date(event.start)
 
   event.occurring.forEach(day => {
     nextdate = nextDay(today, day)
-    console.log(nextdate)
+    // console.log(nextdate)
     const datetoiso = new Date(nextdate.date.toISOString())
-    console.log('date to iso', datetoiso)
+    // console.log('date to iso', datetoiso)
     const bonneD = new Date(
       datetoiso.getFullYear(),
       datetoiso.getMonth(),
@@ -151,14 +186,14 @@ function lookForNextOccurring (event) {
       time.getMilliseconds(),
       time.getTimezoneOffset()
     )
-    console.log('bonne Date', bonneD)
+    // console.log('bonne Date', bonneD)
 
     if (bonneD <= end) {
       NextDatesInTheWeek.push(bonneD)
     }
   })
 
-  console.log('Les occ', NextDatesInTheWeek)
+  // console.log('Les occ', NextDatesInTheWeek)
 
   if (NextDatesInTheWeek.length >= 1) {
     NextDatesInTheWeek.sort(function (a, b) {
@@ -197,7 +232,7 @@ function showEventsList (events) {
     if (event.occurring !== undefined && event.occurring.length !== 0) {
       // const nextocc = lookForNextOccurring(event)
       start = lookForNextOccurring(event)
-      console.log('HHello rec event')
+      // console.log('HHello rec event')
       // console.log(nextocc)
     }
 
