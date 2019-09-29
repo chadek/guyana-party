@@ -34,3 +34,4 @@ You need to have [Node.js](https://nodejs.org/) and [MongoDB](https://docs.mongo
 4. Start MongoDB database: `sudo service mongod start`.
 5. Run for development: `npm run dev`.
 6. Run for production: `npm run build` then `npm start`.
+7. Run unit tests: `npm test` or `npm run test:watch`
