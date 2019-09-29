@@ -41,8 +41,6 @@
     "md5": "^2.2.1",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.26",
-    "mongodb-backup": "^1.6.9",
-    "mongodb-restore": "^1.6.2",
     "mongoose": "^5.7.1",
     "mongoose-mongodb-errors": "^0.0.2",
     "morgan": "^1.9.1",
