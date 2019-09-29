@@ -20,4 +20,4 @@ exports.profilePhotoSrc = user =>
   user.photo ? `/uploads/${user.photo}` : `${user.gravatar}&d=retro`
 
 // Some details about the site
-exports.siteName = `Guyana Party`
+exports.siteName = 'Guyana Party'

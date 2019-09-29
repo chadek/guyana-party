@@ -13,7 +13,12 @@ const router = express.Router() // eslint-disable-line babel/new-cap
 router.get('/', mainController.homePage)
 router.get('/login', userController.loginForm)
 router.get('/logout', authController.logout)
-router.post('/login', authController.preLogin, authController.login)
+router.post(
+  '/login',
+  authController.emailValidator,
+  authController.preLogin,
+  authController.login
+)
 router.get('/signup', userController.signupForm)
 router.post(
   '/signup',
@@ -22,7 +27,11 @@ router.post(
   authController.login
 )
 router.get('/forgot', userController.forgotForm)
-router.post('/forgot', catchErrors(authController.forgot))
+router.post(
+  '/forgot',
+  authController.emailValidator,
+  catchErrors(authController.forgot)
+)
 router.get('/reset/:token', catchErrors(authController.reset))
 router.post(
   '/reset/:token',

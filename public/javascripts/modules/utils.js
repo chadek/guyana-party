@@ -5,7 +5,7 @@ function axiosGet (url, callback) {
   axios
     .get(url)
     .then(res => callback(res.data))
-    .catch(err => console.error(err))
+    .catch(err => callback(err))
 }
 
 function data2HTML (data, formatFn, concatFormat) {
@@ -116,9 +116,9 @@ function addNewBtn (isGroup = false) {
 }
 
 function pagination (currentPage, pages) {
-  let content = `<div class="pagination text-center"><ul>`
+  let content = '<div class="pagination text-center"><ul>'
   if (currentPage > 1) {
-    content += `<li class="pageBtn" title="page précédente">&laquo;</li>`
+    content += '<li class="pageBtn" title="page précédente">&laquo;</li>'
   }
   for (let i = 1; i <= pages; i++) {
     content += `<li class="${
@@ -126,7 +126,7 @@ function pagination (currentPage, pages) {
     }" title="page ${i}">${i}</li>`
   }
   if (currentPage < pages) {
-    content += `<li class="pageBtn" title="page suivante">&raquo;</li>`
+    content += '<li class="pageBtn" title="page suivante">&raquo;</li>'
   }
   return `${content}</ul></div>`
 }

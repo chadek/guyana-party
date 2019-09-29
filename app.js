@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const path = require('path')
 const helmet = require('helmet')
 const compression = require('compression')
-const expressValidator = require('express-validator')
+// const expressValidator = require('express-validator')
 const cookieParser = require('cookie-parser')
 const csrf = require('csurf')
 const session = require('express-session')
@@ -39,7 +39,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // Exposes a bunch of methods for validating data. Used heavily on userController.validateRegister
-app.use(expressValidator())
+// app.use(expressValidator())
 
 // populates req.cookies with any cookies that came along with the request
 app.use(cookieParser())

@@ -20,7 +20,8 @@ mongoose.connection.on('error', err => {
 mongoose.connect(process.env.DATABASE, {
   useNewUrlParser: true,
   useCreateIndex: true,
-  useFindAndModify: false
+  useFindAndModify: false,
+  useUnifiedTopology: true
 })
 
 // READY?! Let's go!

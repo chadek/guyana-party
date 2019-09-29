@@ -5,9 +5,9 @@
 */
 
 const path = require('path')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const autoprefixer = require('autoprefixer')
+// const autoprefixer = require('autoprefixer')
 
 // This is our JavaScript rule that specifies what to do with .js files
 const javascript = {
@@ -33,9 +33,10 @@ const styles = {
       loader: 'postcss-loader',
       options: {
         sourceMap: true,
-        plugins () {
-          return [autoprefixer({ browsers: 'last 3 versions' })]
-        }
+        plugins: [require('autoprefixer')]
+        // plugins () {
+        //   return [autoprefixer({ browsers: 'last 3 versions' })]
+        // }
       }
     }
   ]
