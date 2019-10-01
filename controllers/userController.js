@@ -68,10 +68,18 @@ exports.account = (req, res) => {
 }
 
 exports.hasGroup = async (req, res, next) => {
-  const group = await Group.findOne({
-    author: req.user._id,
+  const group = await Group.find(
+  {
+    community : {
+      "$elemMatch" : { user : req.user._id, role : "admin"}
+    },
     status: { $regex: '^((?!archived).)*$', $options: 'i' }
-  })
+  },
+  {
+    name : 1,
+  }
+  )
+  
   if (!group) {
     req.flash(
       'error',
