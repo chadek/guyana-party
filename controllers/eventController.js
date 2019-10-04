@@ -121,7 +121,7 @@ exports.updateEvent = async (req, res, next) => {
   req.flash(
     'success',
     `Evènement <strong>${event.name}</strong> mis à jour. <a href="/event/${
-      event.slug
+    event.slug
     }">Voir</a>`
   )
   res.redirect(`/event/${event.slug}`)
@@ -140,7 +140,7 @@ exports.publish = async (req, res, next) => {
   req.flash(
     'success',
     `Votre évènement est <strong>${
-      published ? 'publié' : 'non publié'
+    published ? 'publié' : 'non publié'
     }</strong>.`
   )
   res.redirect('back')
@@ -189,7 +189,7 @@ exports.getEventBySlug = async (req, res, next) => {
 
   // we can't see an event if it's not published and we don't own it
   //   or we can't remove the event if not admin
-  if ( !( isAdmin || (isMember && (event.status == 'published' || remove) ) || (event.status == 'published' && (event.public) ) )) {
+  if (!(isAdmin || (isMember && (event.status == 'published' || remove)) || (event.status == 'published' && (event.public)))) {
     req.flash('error', 'Vous ne pouvez pas accéder aux informations de cet évènement !')
     return res.redirect('back')
   }
@@ -263,7 +263,64 @@ exports.getSearchResult = async (req, res) => {
   const chx = req.queryFloat('chx')
   const chy = req.queryFloat('chy')
 
- // We want published events by location (if available), name or description
+  // console.log("L'utilisateur est : ", req.user)
+
+  if (req.user) {
+    console.log("le user est", req.user.name, "avec l'id", req.user.id, req.user._id)
+    // rechercher les groupes dans lequel ce dernier est 
+    const adminGroups = await Group.find(
+      {
+        community: {
+          "$elemMatch": { user: req.user._id, role: "admin" }
+        },
+      },
+      {
+        name: 1,
+      }
+
+    )
+
+    // console.log("adminGroups de", req.user.name,)
+    // adminGroups.forEach(group => {
+    //   console.log(group.name)
+    // });
+    console.log("Mes admingroup : ", adminGroups)
+    // [
+    //   {
+    //     _id: 5d91d5988a30760cfc3416fe,
+    //     name: 'new',
+    //     id: '5d91d5988a30760cfc3416fe'
+    //   },
+    //   {
+    //     _id: 5d927d96a8b78e671e8960de,
+    //     name: 'troisième groupe',
+    //     id: '5d927d96a8b78e671e8960de'
+    //   }
+    // ]
+
+
+    const memberGroups = await Group.find({
+      community: {
+        "$elemMatch": { user: req.user._id, role: "member" }
+      },
+    },
+      {
+        name: 1
+      })
+
+    console.log("Mes membergroup : ", memberGroups)
+
+    // console.log("memberGroups de", req.user.name)
+    // memberGroups.forEach(group => {
+    //   console.log(group.name)
+    // });
+
+  } else {
+    console.log("Pas d'utilisateur connecté")
+  }
+
+  // We want published events by location (if available), name or description
+
   const find = {
     $or: [
       { name: { $regex: search, $options: 'i' } },
@@ -274,17 +331,30 @@ exports.getSearchResult = async (req, res) => {
     public: true
   }
   if (cbx && cby && chx && chy) {
-    
-    console.log(cbx, cby,chx, chy)
-    // TODO: content the map's corner
     find.location = {
       $geoWithin: {
-        $box: [
-          [cbx, cby],
-          [chx, chy]
-        ]
+        $geometry: {
+          type: "Polygon",
+          coordinates: [
+            [[cbx, cby], [chx, cby], [chx, chy], [cbx, chy], [cbx, cby]]
+          ],
+          crs: {
+            type: "name",
+            properties: { name: "urn:x-mongodb:crs:strictwinding:EPSG:4326" }
+          }
+        }
       }
     }
+
+    //ou 
+    // find.location = {
+    //   $geoWithin: {
+    //     $box: [[cbx, cby],[chx, chy]
+    //     ]
+    //   }
+    // }
+    // ou 
+
   }
   // Paginate the events list
   const pagedEvents = await getPagedItems(
@@ -305,7 +375,7 @@ exports.getSearchResult = async (req, res) => {
     { start: 1 }
   )
 
+  console.log("pages event : ")
   console.log(pagedEvents)
-
   res.json(pagedEvents)
 }
