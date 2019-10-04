@@ -192,6 +192,7 @@ exports.getEventBySlug = async (req, res, next) => {
   if (!(isAdmin || (isMember && (event.status == 'published' || remove)) || (event.status == 'published' && (event.public)))) {
     req.flash('error', 'Vous ne pouvez pas accéder aux informations de cet évènement !')
     return res.redirect('back')
+
   }
 
   event.nextTime = lookForNextOcurring(event)
