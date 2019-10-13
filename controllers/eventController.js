@@ -265,6 +265,7 @@ exports.getSearchResult = async (req, res) => {
   const chy = req.queryFloat('chy')
 
   // console.log("L'utilisateur est : ", req.user)
+  let find = {}
 
   if (req.user) {
     console.log("le user est", req.user.name, "avec l'id", req.user.id, req.user._id)
@@ -276,28 +277,19 @@ exports.getSearchResult = async (req, res) => {
         },
       },
       {
-        name: 1,
+        id: true,
       }
 
     )
 
-    // console.log("adminGroups de", req.user.name,)
-    // adminGroups.forEach(group => {
-    //   console.log(group.name)
-    // });
-    console.log("Mes admingroup : ", adminGroups)
-    // [
-    //   {
-    //     _id: 5d91d5988a30760cfc3416fe,
-    //     name: 'new',
-    //     id: '5d91d5988a30760cfc3416fe'
-    //   },
-    //   {
-    //     _id: 5d927d96a8b78e671e8960de,
-    //     name: 'troisième groupe',
-    //     id: '5d927d96a8b78e671e8960de'
-    //   }
-    // ]
+    let arrayAdmin = []
+    
+    adminGroups.forEach(element => {
+      if (!arrayAdmin.includes(element.id)) {
+        arrayAdmin.push(element.id)
+      }
+    });
+    console.log("arrayAdmin :", arrayAdmin)
 
 
     const memberGroups = await Group.find({
@@ -306,31 +298,62 @@ exports.getSearchResult = async (req, res) => {
       },
     },
       {
-        name: 1
+       id : true
       })
 
-    console.log("Mes membergroup : ", memberGroups)
 
-    // console.log("memberGroups de", req.user.name)
-    // memberGroups.forEach(group => {
-    //   console.log(group.name)
-    // });
+    let arrayMember = []
+    
+    memberGroups.forEach(element => {
+      // console.log(element.id)
+      if (!arrayMember.includes(element.id)) {
+        arrayMember.push(element.id)
+      }
+    });
+    console.log("arrayMember :", arrayMember)
+
+    find = {
+    
+
+      // ajouter les events des groups dans arrayMember et arrayAdmin
+      // attention aux status particuliers en fonction des droit des utilisateurs
+      $or: [
+        { name: { $regex: search, $options: 'i' }, status: 'published', end:{ $gte: Date.now()}, public: true },
+        { description: { $regex: search, $options: 'i' }, status: 'published', end:{ $gte: Date.now()}, public: true},
+        { $and: [
+            {$elemMatch:{ groupe: {$in : memberGroups}}},
+            {status: 'puplished'}, 
+            {end: { $gte: Date.now()}}, 
+            {public: false}
+          ]
+        },
+        // { $elemMatch: {groupe: {$in : adminGroups}, end: { $gte: Date.now()}}}
+      ],
+      // status: 'published',
+      // end: { $gte: Date.now() },
+      // public: true
+    }
 
   } else {
     console.log("Pas d'utilisateur connecté")
+    find = {
+    
+
+      // ajouter les events des groups dans arrayMember et arrayAdmin
+      // attention aux status particuliers en fonction des droit des utilisateurs
+      $or: [
+        { name: { $regex: search, $options: 'i' }, status: 'published', end:{ $gte: Date.now()}, public: true },
+        { description: { $regex: search, $options: 'i' }, status: 'published', end:{ $gte: Date.now()}, public: true},
+      ],
+      // status: 'published',
+      // end: { $gte: Date.now() },
+      // public: true
+    }
   }
 
-  // We want published events by location (if available), name or description
 
-  const find = {
-    $or: [
-      { name: { $regex: search, $options: 'i' } },
-      { description: { $regex: search, $options: 'i' } }
-    ],
-    status: 'published',
-    end: { $gte: Date.now() },
-    public: true
-  }
+
+
   if (cbx && cby && chx && chy) {
     find.location = {
       $geoWithin: {
@@ -375,8 +398,6 @@ exports.getSearchResult = async (req, res) => {
     },
     { start: 1 }
   )
-
-  console.log("pages event : ")
   console.log(pagedEvents)
   res.json(pagedEvents)
 }
