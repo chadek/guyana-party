@@ -164,7 +164,6 @@ exports.getGroupBySlug = async (req, res, next) => {
 }
 
 exports.getGroups = async (req, res) => {
-  console.log("Appel à getGroups")
   const page = req.queryInt('page') || 1
   const limit = req.queryInt('limit') || 7
   const find = {
