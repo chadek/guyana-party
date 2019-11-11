@@ -167,7 +167,26 @@ exports.getGroups = async (req, res) => {
   const page = req.queryInt('page') || 1
   const limit = req.queryInt('limit') || 7
   const find = {
-    $or: [{ author: req.user._id }, { 'community.user': req.user._id }],
+    "community.user" : req.user._id,
+    status: { $regex: '^((?!archived).)*$', $options: 'i' }
+  }
+  const result = await getPagedItems(
+    Group,
+    page,
+    limit,
+    find,
+    {},
+    { created: 'desc' }
+  )
+  res.json(result)
+}
+
+exports.getAdminGroups = async (req, res) => {
+  console.log("Appel à getAdminGroups")
+  const page = req.queryInt('page') || 1
+  const limit = req.queryInt('limit') || 7
+  const find = {
+    community : { "$elemMatch" : { user : req.user._id, role : "admin"}}, 
     status: { $regex: '^((?!archived).)*$', $options: 'i' }
   }
   const result = await getPagedItems(

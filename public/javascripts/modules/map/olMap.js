@@ -15,7 +15,7 @@ import dompurify from 'dompurify'
 const ZOOM = 14
 const CLUSTER_DISTANCE = 10
 const MAXZOOM = 20
-const MINZOOM = 2
+const MINZOOM = 4
 const RANDOM_POINTS = [
   [-52.3009, 4.931609], // Cayenne
   [-61.05878, 14.616065], // Fort-de-France
@@ -147,9 +147,7 @@ class Map {
   }
 
   singleShowPoint (callbackFn, Boxing = true) {
-    console.log("singleShowPoint")
     if (!this.singlePos) {
-      console.log("singlePos NOP")
       startGeolocation(
         pos => {
           const lonlat = [pos.coords.longitude, pos.coords.latitude]
@@ -177,8 +175,6 @@ class Map {
         }
       )
     } else {
-      console.log("singlePos OK")
-      console.log(this.singlePos)
       this.addSinglePoint(
         this.singlePos,
         callbackFn,
@@ -224,21 +220,12 @@ class Map {
 
       if (center) this.view.setCenter(position)
     }
-    // const box = this.getBox
-    console.log("Passage dans addSinglePoint")
 
     if (Boxing){
       callbackFn(this.getBox(), show)
     }else{
       callbackFn(gpsCoord, show)
     }
-    // callbackFn(gpsCoord, show)
-    
-
-    //Donner la box au lieu des coordoners du centre
-    // mais pas pour la création ni la modification d'évènement
-
-
   }
 
   onMove (callbackFn) {
@@ -249,7 +236,6 @@ class Map {
       // Remove existing layers
       this.layers.forEach(layer => this.map.removeLayer(layer))
       this.layers = []
-
       const box = this.getBox()
       callbackFn(box)
     })
@@ -431,9 +417,9 @@ function showPopup (popupDiv, popup, coords, html) {
   popup.setPosition(coords)
 }
 
-function distanceBetweenPoints (lonlat1, lonlat2) {
-  const line = new LineString([lonlat1, lonlat2])
-  return Math.round(line.getLength() * 100) / 100
-}
+// function distanceBetweenPoints (lonlat1, lonlat2) {
+//   const line = new LineString([lonlat1, lonlat2])
+//   return Math.round(line.getLength() * 100) / 100
+// }
 
 export default Map

@@ -12,12 +12,8 @@ const searchInput = b('.search__input')
 let searchInputValue = ''
 
 map.singleShowPoint(box => {
-  console.log("Appel à singleShowPoint")
   if (searchInput) {
     const { CBG: [cbx, cby], CHD: [chx, chy] } = box
-    // const lon = coords[0].toString()
-    // const lat = coords[1].toString()
-
     searchInput.on('keydown', e => {
       if (e.key === 'Enter' || e.keyCode === 13) {
         // showEvents(e.target.value, lon, lat)
@@ -48,8 +44,6 @@ if (aroundBtn) {
       }
       showEvents(
         searchInputValue,
-        // coords[0].toString(),
-        // coords[1].toString(),
         cbx,
         cby, 
         chx,
@@ -63,9 +57,6 @@ const randomBtn = document.getElementById('random')
 if (randomBtn) {
   randomBtn.on('click', () => {
     map.goRandom(box => {
-      
-      // const lon = coords[0].toString()
-      // const lat = coords[1].toString()
 
       const { CBG: [cbx, cby], CHD: [chx, chy] } = box
       
