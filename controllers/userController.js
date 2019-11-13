@@ -69,18 +69,29 @@ exports.account = (req, res) => {
 
 exports.hasGroup = async (req, res, next) => {
   const group = await Group.find(
-  {
-    community : {
-      "$elemMatch" : { user : req.user._id, role : "admin"}
+    {
+      community : {
+        "$elemMatch" : { user : req.user._id, role : "admin"}
+      },
+      status: { $regex: '^((?!archived).)*$', $options: 'i' }
     },
-    status: { $regex: '^((?!archived).)*$', $options: 'i' }
-  },
-  {
-    name : 1,
-  }
+    {
+      name : 1,
+    }
   )
+
+  console.log("Dis moi, quels sont tes groupes ?", group)
+
+  let arrayAdminGroup = []
+    
+    group.forEach(element => {
+      if (!group.includes(element.id)) {
+        arrayAdminGroup.push(element.id)
+      }
+    });
+
   
-  if (!group) {
+  if (arrayAdminGroup.length == 0) {
     req.flash(
       'error',
       'Vous devez créer un groupe avant de créer votre évènement.'
