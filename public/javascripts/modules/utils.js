@@ -133,7 +133,7 @@ function pagination (currentPage, pages) {
 
 // Groups dropdown in event edit page
 function initGroupDropdown (groupsSelect, groupId) {
-  axiosGet('/api/groups', data => {
+  axiosGet('/api/admingroups', data => {
     if (data) {
       const format = item => {
         return `<option value="${item._id}"${
