@@ -42,6 +42,7 @@ router.post(
 /* API */
 
 router.get('/api/groups', catchErrors(groupController.getGroups))
+router.get('/api/admingroups', catchErrors(groupController.getAdminGroups))
 router.get('/api/events', catchErrors(eventController.getEvents))
 router.get('/api/search', catchErrors(eventController.getSearchResult))
 router.get(

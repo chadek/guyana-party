@@ -83,9 +83,7 @@ exports.updateGroup = async (req, res) => {
   ).exec()
   req.flash(
     'success',
-    `Groupe <strong>${group.name}</strong> mis à jour. <a href="/group/${
-      group.slug
-    }">Voir</a>`
+    `Groupe <strong>${group.name}</strong> mis à jour. <a href="/group/${group.slug}">Voir</a>`
   )
   res.redirect(`/group/${group.slug}`)
 }
@@ -166,16 +164,35 @@ exports.getGroupBySlug = async (req, res, next) => {
 exports.getGroups = async (req, res) => {
   const page = req.queryInt('page') || 1
   const limit = req.queryInt('limit') || 7
-  const onEvent = req.queryString('onevent') || false
   const find = {
-    community: { $elemMatch: { user: req.user._id } },
+    'community.user': req.user._id,
     status: { $regex: '^((?!archived).)*$', $options: 'i' }
   }
+  const result = await getPagedItems(
+    Group,
+    page,
+    limit,
+    find,
+    {},
+    { created: 'desc' }
+  )
+  res.json(result)
+}
+
+exports.getAdminGroups = async (req, res) => {
+  console.log('Appel à getAdminGroups')
+  const page = req.queryInt('page') || 1
+  const limit = req.queryInt('limit') || 7
+  const onEvent = req.queryString('onevent') || false
+  const find = {
+    community: { $elemMatch: { user: req.user._id, role: 'admin' } },
+    status: { $regex: '^((?!archived).)*$', $options: 'i' }
+  }
+
   if (onEvent) {
     find.community = { $elemMatch: { user: req.user._id, role: 'admin' } }
   }
 
-  console.log(find)
   const result = await getPagedItems(
     Group,
     page,
@@ -232,7 +249,7 @@ exports.removePendingRequest = async (req, res) => {
 exports.quitRequest = async (req, res) => {
   await pendingRequestUpdateMember(req, '$pull')
   req.flash('success', 'Vous avez quitter le groupe')
-  res.redirect(`/account`)
+  res.redirect('/account')
 }
 
 /*  Admin */

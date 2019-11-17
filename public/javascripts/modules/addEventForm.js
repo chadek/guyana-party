@@ -47,8 +47,15 @@ function init (dp1, dp2) {
   })
 
   dp2.on('change', e => {
+  
     if (dp2.value < dp1.value) {
-      dp1.value = dp2.value
+      if (new Date(dp2.value) == 'Invalid Date') {
+        console.log("Mais mauvaise valeur man ")
+        
+      }else{
+        dp1.value = dp2.value
+      }
+      
     }
   })
 }
