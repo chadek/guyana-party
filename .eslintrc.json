@@ -3,37 +3,45 @@
   "extends": ["eslint:recommended", "standard"],
   "parser": "babel-eslint",
   "parserOptions": {
-    "ecmaVersion": 9,
-    "ecmaFeatures": {
-      "impliedStrict": true
-    }
+    "ecmaVersion": 2019,
+    "sourceType": "module"
   },
   "env": {
+    "es6": true,
     "browser": true,
     "node": true,
-    "jquery": true,
     "jest": true
   },
   "plugins": ["babel"],
   "rules": {
-    "no-debugger": 0,
+    "no-debugger": 1,
     "no-alert": 0,
     "no-console": 0,
     "no-var": "error",
-    "no-unused-vars": 1,
     "prefer-const": [
       "error",
       {
         "destructuring": "all"
       }
     ],
-    "comma-dangle": 1,
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
     "import/prefer-default-export": 1,
+    "radix": ["error", "as-needed"],
+    "no-shadow": [
+      2,
+      {
+        "hoist": "all",
+        "allow": ["resolve", "reject", "done", "next", "err", "error"]
+      }
+    ],
+    "indent": 0,
     "babel/new-cap": 1,
     "babel/no-invalid-this": 1,
-    "babel/object-curly-spacing": 0,
-    "babel/quotes": 0,
-    "babel/semi": 0,
     "babel/no-unused-expressions": 1,
     "babel/valid-typeof": 1
   }
