@@ -6,7 +6,7 @@ class Connection {
     mongoose
       .connect(env.mongoDB_URI, {
         useCreateIndex: true,
-        // useFindAndModify: false,
+        useFindAndModify: false,
         useNewUrlParser: true,
         useUnifiedTopology: true
       })

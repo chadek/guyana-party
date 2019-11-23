@@ -5,6 +5,7 @@ import server from '../config/server'
 const request = supertest(server)
 let auth = ''
 let userId = ''
+const route = '/api/users'
 
 beforeAll(() => {
   return request
@@ -20,8 +21,6 @@ beforeAll(() => {
 afterAll(done => mongoose.disconnect(done))
 
 describe('GET /api/users', () => {
-  const route = '/api/users'
-
   it('should get data correctly', () => {
     return request
       .get(route)

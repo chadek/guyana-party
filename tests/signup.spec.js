@@ -2,15 +2,27 @@ import supertest from 'supertest'
 import { mongoose } from '../config/database'
 import server from '../config/server'
 
-afterAll(done => mongoose.disconnect(done))
+const request = supertest(server)
+const route = '/api/auth/signup'
+const name = 'Chris'
+const email = 'signup@mail.com'
+const password = 'azer1234'
+
+afterAll(done => {
+  return request
+    .post('/api/auth/login')
+    .send({ email, password })
+    .expect(200)
+    .then(({ body }) => {
+      return request
+        .delete(`/api/users/${body.userId}`)
+        .set('Authorization', `bearer ${body.token}`)
+        .expect(200)
+    })
+    .finally(() => mongoose.disconnect(done))
+})
 
 describe('POST /api/auth/signup', () => {
-  const request = supertest(server)
-  const route = '/api/auth/signup'
-  const name = 'Chris'
-  const email = 'tmp@mail.com'
-  const password = 'azer1234'
-
   it('should NOT signup without required `name` field', () => {
     return request
       .post(route)
@@ -71,19 +83,7 @@ describe('POST /api/auth/signup', () => {
       .expect(500, {
         status: 500,
         error:
-          'User validation failed: email: Error, expected `email` to be unique. Value: `tmp@mail.com`'
-      })
-      .then(() => {
-        return request
-          .post('/api/auth/login')
-          .send({ email, password })
-          .expect(200)
-          .then(({ body }) => {
-            return request
-              .delete(`/api/users/${body.userId}`)
-              .set('Authorization', `bearer ${body.token}`)
-              .expect(200)
-          })
+          'User validation failed: email: Error, expected `email` to be unique. Value: `signup@mail.com`'
       })
   })
 })
