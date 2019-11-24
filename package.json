@@ -8,7 +8,7 @@
     "dev": "clear; nodemon --exec babel-node index.js --ignore tests/",
     "test": "NODE_ENV=test jest --watch --testTimeout=10000",
     "test:cov": "NODE_ENV=test jest --watchAll --coverage",
-    "lint": "eslint --ignore-pattern '/node_modules/*' -o ./eslint_result.html -f html ."
+    "lint": "eslint --ignore-pattern '/node_modules/*' --ignore-pattern '/bak/*' -o ./eslint_result.html -f html ."
   },
   "dependencies": {
     "bcrypt": "^3.0.7",

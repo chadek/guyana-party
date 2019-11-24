@@ -1,10 +1,10 @@
 import mongoose from 'mongoose'
-import env from './env'
+import { mongoDBUri } from './env'
 
 class Connection {
   constructor () {
     mongoose
-      .connect(env.mongoDB_URI, {
+      .connect(mongoDBUri, {
         useCreateIndex: true,
         useFindAndModify: false,
         useNewUrlParser: true,

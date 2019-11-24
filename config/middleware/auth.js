@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken'
-import env from '../env'
+import { secret } from '../env'
 
 export default (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1]
-    const decodedToken = jwt.verify(token, env.secret)
+    const decodedToken = jwt.verify(token, secret)
     if (req.body.userId && req.body.userId !== decodedToken.userId) {
       const error = new Error('Invalid user ID')
       error.status = 401

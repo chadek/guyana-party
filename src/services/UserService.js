@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import Service from './Service'
-import env from '../../config/env'
+import { secret } from '../../config/env'
 
 class UserService extends Service {
   constructor (model) {
@@ -35,9 +35,7 @@ class UserService extends Service {
     const valid = await bcrypt.compare(password, user.password)
     if (!valid) return fallback({ message: 'Incorrect password' })
 
-    const token = jwt.sign({ userId: user._id }, env.secret, {
-      expiresIn: '24h'
-    })
+    const token = jwt.sign({ userId: user._id }, secret, { expiresIn: '24h' })
     next({ userId: user._id, token })
   }
 }
