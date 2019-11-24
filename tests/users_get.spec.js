@@ -1,15 +1,15 @@
 import supertest from 'supertest'
 import { mongoose } from '../config/database'
-import server from '../config/server'
+import server, { api } from '../config/server'
 
 const request = supertest(server)
 let auth = ''
 let userId = ''
-const route = '/api/users'
+const route = `${api}/users`
 
 beforeAll(() => {
   return request
-    .post('/api/auth/login')
+    .post(`${api}/auth/login`)
     .send({ email: 'test@mail.com', password: 'azer1234' })
     .expect(200)
     .then(({ body }) => {
@@ -20,7 +20,7 @@ beforeAll(() => {
 
 afterAll(done => mongoose.disconnect(done))
 
-describe('GET /api/users', () => {
+describe('GET /users', () => {
   it('should get data correctly', () => {
     return request
       .get(route)

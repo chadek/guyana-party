@@ -8,8 +8,6 @@ class Group extends Model {
       {
         name: { type: String, trim: true, required: true },
         description: { type: String, trim: true, required: true },
-        slug: String,
-        photo: String,
         location: {
           type: { type: String, default: 'Point' },
           coordinates: [Number],
@@ -20,6 +18,8 @@ class Group extends Model {
           ref: 'User',
           required: true
         },
+        slug: String,
+        photo: String,
         status: { type: String, default: 'published' }, // published | archived
         community: [
           {

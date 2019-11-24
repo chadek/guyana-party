@@ -1,28 +1,28 @@
 import supertest from 'supertest'
 import { mongoose } from '../config/database'
-import server from '../config/server'
+import server, { api } from '../config/server'
 
 const request = supertest(server)
-const route = '/api/auth/signup'
+const route = `${api}/auth/signup`
 const name = 'Chris'
 const email = 'signup@mail.com'
 const password = 'azer1234'
 
 afterAll(done => {
   return request
-    .post('/api/auth/login')
+    .post(`${api}/auth/login`)
     .send({ email, password })
     .expect(200)
     .then(({ body }) => {
       return request
-        .delete(`/api/users/${body.userId}`)
+        .delete(`${api}/users/${body.userId}`)
         .set('Authorization', `bearer ${body.token}`)
         .expect(200)
     })
     .finally(() => mongoose.disconnect(done))
 })
 
-describe('POST /api/auth/signup', () => {
+describe('POST /auth/signup', () => {
   it('should NOT signup without required `name` field', () => {
     return request
       .post(route)

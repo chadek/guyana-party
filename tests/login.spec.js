@@ -1,12 +1,12 @@
 import supertest from 'supertest'
 import { mongoose } from '../config/database'
-import server from '../config/server'
+import server, { api } from '../config/server'
 
 afterAll(done => mongoose.disconnect(done))
 
-describe('POST /api/auth/login', () => {
+describe('POST /auth/login', () => {
   const request = supertest(server)
-  const route = '/api/auth/login'
+  const route = `${api}/auth/login`
   const email = 'test@mail.com'
   const password = 'azer1234'
 

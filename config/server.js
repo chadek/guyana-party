@@ -3,7 +3,7 @@ import helmet from 'helmet'
 import compression from 'compression'
 import morgan from 'morgan'
 import path from 'path'
-import { isDev, isProd, port } from './env'
+import { api, isDev, isProd, port } from './env'
 import setRoutes from './routes'
 import cors from './middleware/cors'
 import { notFound, devErrors, prodErrors } from './middleware/errorHandlers'
@@ -33,4 +33,4 @@ server.use(prodErrors) // manage production errors
 
 export default server
 
-export { port }
+export { api, port }
