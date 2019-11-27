@@ -16,6 +16,7 @@ server.use(helmet()) // cleaning http headers
 server.use(cors) // preventing cors errors
 server.use(compression()) // gzip compression of the response body
 server.use(express.json()) // for parsing application/json
+server.use(express.urlencoded({ extended: true }))
 
 if (isProd) server.set('trust proxy', 1) // trust first proxy
 
