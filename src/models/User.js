@@ -5,7 +5,7 @@ import md5 from 'md5'
 import Model from './Model'
 
 class User extends Model {
-  initSchema () {
+  initSchema() {
     const schema = new Schema(
       {
         name: { type: String, trim: true, required: true },
@@ -17,9 +17,10 @@ class User extends Model {
           trim: true,
           validate: [isEmail, 'Email invalide']
         },
-        password: { type: String, required: true },
+        password: String,
         photo: String,
-        valid: { type: Boolean, default: false }
+        valid: { type: Boolean, default: false },
+        provider: String
       },
       { timestamps: true }
     )

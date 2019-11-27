@@ -25,6 +25,16 @@ class UserController extends Controller {
       err => next({ ...err, status: 401 })
     )
   }
+
+  tokensignin = async (req, res, next) => {
+    this.service.tokensignin(
+      req.body,
+      ({ userId, token }) => {
+        res.status(200).json(this.format({ custom: { userId, token } }))
+      },
+      err => next({ ...err, status: 401 })
+    )
+  }
 }
 
 const userService = new UserService(new User().getInstance())
