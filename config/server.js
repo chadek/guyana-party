@@ -5,7 +5,7 @@ import morgan from 'morgan'
 import path from 'path'
 import { api, isDev, isProd, port } from './env'
 import setRoutes from './routes'
-import cors from './middleware/cors'
+import cors from 'cors'
 import { notFound, devErrors, prodErrors } from './middleware/errorHandlers'
 
 const server = express()
@@ -13,7 +13,7 @@ const server = express()
 if (!isProd) console.log(`Environment: ${server.get('env')}`)
 
 server.use(helmet()) // cleaning http headers
-server.use(cors) // preventing cors errors
+server.use(cors()) // preventing cors errors
 server.use(compression()) // gzip compression of the response body
 server.use(express.json()) // for parsing application/json
 server.use(express.urlencoded({ extended: true }))
