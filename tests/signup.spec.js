@@ -15,7 +15,7 @@ afterAll(done => {
     .expect(200)
     .then(({ body }) => {
       return request
-        .delete(`${api}/users/${body.userId}`)
+        .delete(`${api}/users/${body.user._id}`)
         .set('Authorization', `bearer ${body.token}`)
         .expect(200)
     })
