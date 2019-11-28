@@ -19,8 +19,8 @@ class UserController extends Controller {
   login = async (req, res, next) => {
     this.service.login(
       req.body,
-      ({ userId, token }) => {
-        res.status(200).json(this.format({ custom: { userId, token } }))
+      ({ user, token }) => {
+        res.status(200).json(this.format({ custom: { user, token } }))
       },
       err => next({ ...err, status: 401 })
     )
@@ -29,8 +29,8 @@ class UserController extends Controller {
   tokensignin = async (req, res, next) => {
     this.service.tokensignin(
       req.body,
-      ({ userId, token }) => {
-        res.status(200).json(this.format({ custom: { userId, token } }))
+      ({ user, token }) => {
+        res.status(200).json(this.format({ custom: { user, token } }))
       },
       err => next({ ...err, status: 401 })
     )
