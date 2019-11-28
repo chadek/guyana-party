@@ -14,7 +14,7 @@ beforeAll(() => {
     .expect(200)
     .then(({ body }) => {
       auth = `bearer ${body.token}`
-      userId = body.userId
+      userId = body.user._id
     })
 })
 

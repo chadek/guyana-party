@@ -53,7 +53,7 @@ describe('POST /auth/login', () => {
       .expect(200)
       .then(({ body }) => {
         expect(body.status).toBe(200)
-        expect(body.userId).toBeDefined()
+        expect(body.user).toBeDefined()
         expect(body.token).toBeDefined()
       })
   })
