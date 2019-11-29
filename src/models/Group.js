@@ -19,7 +19,7 @@ class Group extends Model {
           required: true
         },
         slug: String,
-        photo: String,
+        photos: [String],
         status: { type: String, default: 'published' }, // published | archived
         community: [
           {
