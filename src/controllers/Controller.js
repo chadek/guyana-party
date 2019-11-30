@@ -21,7 +21,7 @@ class Controller {
 
   create = async (req, res, next) => {
     this.service.create(
-      { ...req.body, photos: req.files.map(photo => photo.path) },
+      req.body,
       data => res.status(201).json(this.format({ data, status: 201 })),
       err => next({ ...err, status: 400 })
     )
