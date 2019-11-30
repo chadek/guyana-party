@@ -58,6 +58,7 @@ class Service {
   }
 
   delete = (id, next, fallback) => {
+    // TODO: delete photos
     this.model
       .findByIdAndDelete(id)
       .then(data => {
@@ -66,6 +67,24 @@ class Service {
       })
       .catch(fallback)
   }
+
+  // delete = async (id, next, fallback) => {
+  //   const post = await this.model.findById(id)
+  //   if (post) {
+  //     const filename = post.imageUrl.split('/uploads/')[1]
+  //     fs.unlink('uploads/' + filename, () => {
+  //       this.model
+  //         .findByIdAndDelete(id)
+  //         .then(data => {
+  //           if (!data) return fallback({ message: 'not found', status: 404 })
+  //           next(data)
+  //         })
+  //         .catch(fallback)
+  //     })
+  //   } else {
+  //     fallback({ message: 'not found', status: 404 })
+  //   }
+  // }
 }
 
 export default Service

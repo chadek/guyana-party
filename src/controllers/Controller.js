@@ -21,7 +21,7 @@ class Controller {
 
   create = async (req, res, next) => {
     this.service.create(
-      req.body,
+      { ...req.body, photos: req.files.map(photo => photo.path) },
       data => res.status(201).json(this.format({ data, status: 201 })),
       err => next({ ...err, status: 400 })
     )
@@ -52,11 +52,6 @@ class Controller {
     data,
     ...custom
   })
-
-  getImgUrl (req) {
-    if (!req.file) return ''
-    return `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
-  }
 }
 
 export default Controller

@@ -8,11 +8,6 @@ class Group extends Model {
       {
         name: { type: String, trim: true, required: true },
         description: { type: String, trim: true, required: true },
-        location: {
-          type: { type: String, default: 'Point' },
-          coordinates: [Number],
-          address: String
-        },
         author: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
@@ -35,8 +30,6 @@ class Group extends Model {
       },
       { timestamps: true }
     )
-
-    schema.index({ location: '2dsphere' })
 
     schema.plugin(uniqueValidator)
 

@@ -1,6 +1,6 @@
 import auth from '../middleware/auth'
 import { catchErrors } from '../middleware/errorHandlers'
-import multer from '../middleware/multer-config'
+import upload from '../middleware/upload'
 import { api } from '../env'
 import eventController from '../../src/controllers/eventController'
 
@@ -10,13 +10,13 @@ export default server => {
   server.post(
     `${api}/events/`,
     auth,
-    multer,
+    upload,
     catchErrors(eventController.create)
   )
   server.put(
     `${api}/events/:id`,
     auth,
-    multer,
+    upload,
     catchErrors(eventController.update)
   )
   server.delete(`${api}/events/:id`, auth, catchErrors(eventController.delete))

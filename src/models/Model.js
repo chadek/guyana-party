@@ -16,7 +16,7 @@ class Model {
     if (!this.isModified('name')) {
       return next()
     }
-    this.slug = slugify(this.name)
+    this.slug = slugify(this.name, { lower: true })
     const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i')
     const eventsWithSlug = await this.constructor.find({ slug: slugRegEx })
     if (eventsWithSlug.length) {
