@@ -15,7 +15,7 @@ class Group extends Model {
         },
         slug: String,
         photos: [{ data: Buffer, contentType: String }],
-        status: { type: String, default: 'published' }, // published | archived
+        status: { type: String, default: 'online' }, // online | archived
         community: [
           {
             user: {
