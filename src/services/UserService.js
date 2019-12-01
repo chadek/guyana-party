@@ -5,7 +5,7 @@ import Service from './Service'
 import { googleClientId, secret } from '../../config/env'
 
 class UserService extends Service {
-  constructor (model) {
+  constructor(model) {
     super(model)
     this.model = model
   }
@@ -69,9 +69,8 @@ class UserService extends Service {
           return next({ user, token })
         } else {
           this.model
-            .create({ email, name, photo, provider })
+            .create({ email, name, photo, provider, valid: true })
             .then(data => {
-              console.log(data)
               token = jwt.sign({ userId: data._id }, secret, {
                 expiresIn: '24h'
               })
