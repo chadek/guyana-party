@@ -1,14 +1,4 @@
 import multer from 'multer'
-// import uuid from 'uuid/v4'
-
-// const storage = multer.diskStorage({
-//   destination: (req, file, callback) => {
-//     callback(null, 'uploads')
-//   },
-//   filename: (req, file, callback) => {
-//     callback(null, `${uuid()}.${file.mimetype.split('/')[1]}`)
-//   }
-// })
 
 const options = {
   storage: multer.memoryStorage(),

@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 import uniqueValidator from 'mongoose-unique-validator'
 import isEmail from 'validator/lib/isEmail'
-import md5 from 'md5'
 import Model from './Model'
 
 class User extends Model {
@@ -26,10 +25,6 @@ class User extends Model {
     )
 
     schema.plugin(uniqueValidator)
-
-    schema
-      .virtual('gravatar')
-      .get(() => `https://gravatar.com/avatar/${md5(User.email)}?s=200`)
 
     this.model = mongoose.model('User', schema)
   }
