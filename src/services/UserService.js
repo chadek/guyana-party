@@ -5,7 +5,7 @@ import Service from './Service'
 import { googleClientId, secret } from '../../config/env'
 
 class UserService extends Service {
-  constructor(model) {
+  constructor (model) {
     super(model)
     this.model = model
   }
@@ -45,8 +45,7 @@ class UserService extends Service {
       const valid = await bcrypt.compare(password, user.password)
       if (!valid) return fallback({ message: 'Incorrect password' })
 
-      const token = jwt.sign({ userId: user._id }, secret, { expiresIn: '24h' })
-      next({ user, token })
+      next({ user, token: sign(user._id) })
     } catch (error) {
       fallback(error)
     }
@@ -63,19 +62,14 @@ class UserService extends Service {
         })
         const { email, name, picture: photo } = ticket.getPayload()
         const user = await this.model.findOne({ email })
-        let token
         if (user) {
-          token = jwt.sign({ userId: user._id }, secret, { expiresIn: '24h' })
-          return next({ user, token })
+          return next({ user, token: sign(user._id) })
         } else {
           this.model
             .create({ email, name, photo, provider, valid: true })
             .then(data => {
-              token = jwt.sign({ userId: data._id }, secret, {
-                expiresIn: '24h'
-              })
               delete data.password
-              next({ user: data, token })
+              next({ user: data, token: sign(data._id) })
             })
             .catch(fallback)
         }
@@ -85,5 +79,7 @@ class UserService extends Service {
     }
   }
 }
+
+const sign = userId => jwt.sign({ userId }, secret, { expiresIn: '24h' })
 
 export default UserService
