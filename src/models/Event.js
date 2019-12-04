@@ -31,7 +31,7 @@ class Event extends Model {
         // },
         // public: { type: Boolean, default: false },
         // status: { type: String, default: 'paused' } // paused | published | archived
-        private: { type: Boolean, default: true },
+        isPrivate: { type: Boolean, default: true },
         status: { type: String, default: 'waiting' } // waiting | online | archived
       },
       { timestamps: true }
