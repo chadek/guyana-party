@@ -8,9 +8,9 @@ class Event extends Model {
       {
         name: { type: String, trim: true, required: true },
         description: { type: String, trim: true, required: true },
-        start: { type: Date, required: true },
-        end: { type: Date, required: true },
-        timezone: { type: String, required: true }, // ex: "(UTC-03:00) America/Cayenne"
+        startDate: { type: Date, required: true },
+        endDate: { type: Date, required: true },
+        // timezone: { type: String, required: true }, // ex: "(UTC-03:00) America/Cayenne"
         location: {
           type: { type: String, default: 'Point' },
           coordinates: [Number],
@@ -22,15 +22,17 @@ class Event extends Model {
           required: true
         },
         slug: String,
-        occurring: [Number],
-        photo: String,
+        occurrence: String, // Stringified JSON object ex: {"mon": true, "tue":false, etc...}
+        photos: [{ data: Buffer, contentType: String }],
         group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' },
-        published: {
-          date: Date,
-          publisher: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
-        },
-        public: { type: Boolean, default: false },
-        status: { type: String, default: 'paused' } // paused | published | archived
+        // published: {
+        //   date: Date,
+        //   publisher: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+        // },
+        // public: { type: Boolean, default: false },
+        // status: { type: String, default: 'paused' } // paused | published | archived
+        private: { type: Boolean, default: true },
+        status: { type: String, default: 'waiting' } // waiting | online | archived
       },
       { timestamps: true }
     )
