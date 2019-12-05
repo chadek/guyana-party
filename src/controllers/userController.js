@@ -8,6 +8,31 @@ class UserController extends Controller {
     this.service = service
   }
 
+  readAll = async (req, res, next) => {
+    this.service.readAll(
+      req.query,
+      users => {
+        const newUsers = users.map(u => {
+          const { password, ...userWithoutPassword } = u.toObject()
+          return userWithoutPassword
+        })
+        res.json(this.format({ data: newUsers, total: newUsers.length }))
+      },
+      err => next({ ...err, status: 400 })
+    )
+  }
+
+  read = async (req, res, next) => {
+    this.service.read(
+      req.params.id,
+      user => {
+        const { password, ...userWithoutPassword } = user.toObject()
+        res.json(this.format({ data: userWithoutPassword }))
+      },
+      err => next({ ...err, status: 400 })
+    )
+  }
+
   signup = async (req, res, next) => {
     this.service.signup(
       req.body,

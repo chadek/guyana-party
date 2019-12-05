@@ -46,22 +46,19 @@ describe('GET /users', () => {
         expect(body.data._id).toBeDefined()
         expect(body.data.name).toBeDefined()
         expect(body.data.email).toBeDefined()
-        expect(body.data.password).toBeDefined()
+        expect(body.data.password).toBeUndefined()
         expect(body.data.createdAt).toBeDefined()
         expect(body.data.updatedAt).toBeDefined()
         expect(body.data.__v).toBeDefined()
       })
   })
 
-  it('should return null data (by id params)', () => {
+  it('should return no data (by id params)', () => {
     return request
-      .get(`${route}/5dd6d01613fcbb0aefd7c742`)
+      .get(`${route}/5dd6d01613fcbb0aefd7c742`) // wrong
       .set('Authorization', auth)
       .expect('Content-Type', /json/)
-      .expect(200, {
-        status: 200,
-        data: null
-      })
+      .expect(400, { status: 400 })
   })
 
   it('should NOT get data (by id params)', () => {
@@ -91,7 +88,7 @@ describe('GET /users', () => {
         expect(data._id).toBeDefined()
         expect(data.name).toBeDefined()
         expect(data.email).toBeDefined()
-        expect(data.password).toBeDefined()
+        expect(data.password).toBeUndefined()
         expect(data.createdAt).toBeDefined()
         expect(data.updatedAt).toBeDefined()
         expect(data.__v).toBeDefined()
@@ -103,11 +100,7 @@ describe('GET /users', () => {
       .get(route + '?_id=5dd5f4092551f17f2877760a')
       .set('Authorization', auth)
       .expect('Content-Type', /json/)
-      .expect(200, {
-        status: 200,
-        total: 0,
-        data: []
-      })
+      .expect(200, { status: 200, total: 0, data: [] })
   })
 
   it('should NOT get data (by `_id` query)', () => {
@@ -116,9 +109,7 @@ describe('GET /users', () => {
       .set('Authorization', auth)
       .expect('Content-Type', /json/)
       .expect(400)
-      .then(({ body }) => {
-        expect(body.status).toBe(400)
-      })
+      .then(({ body }) => expect(body.status).toBe(400))
   })
 
   it('should get one item (by `limit` filter)', () => {

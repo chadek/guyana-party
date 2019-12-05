@@ -45,7 +45,8 @@ class UserService extends Service {
       const valid = await bcrypt.compare(password, user.password)
       if (!valid) return fallback({ message: 'Incorrect password' })
 
-      next({ user, token: sign(user._id) })
+      const { password: p, ...userWithoutPassword } = user.toObject()
+      next({ user: userWithoutPassword, token: sign(user._id) })
     } catch (error) {
       fallback(error)
     }
@@ -67,10 +68,7 @@ class UserService extends Service {
         } else {
           this.model
             .create({ email, name, photo, provider, valid: true })
-            .then(data => {
-              delete data.password
-              next({ user: data, token: sign(data._id) })
-            })
+            .then(data => next({ user: data, token: sign(data._id) }))
             .catch(fallback)
         }
       } else fallback({ message: 'Error: token id and provider are required.' })
