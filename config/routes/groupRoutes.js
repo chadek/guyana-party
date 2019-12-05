@@ -13,6 +13,7 @@ export default server => {
     upload,
     catchErrors(groupController.create)
   )
+  server.put(`${api}/groups`, auth, upload, catchErrors(groupController.update))
   server.put(
     `${api}/groups/:id`,
     auth,

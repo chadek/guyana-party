@@ -23,7 +23,7 @@ class Group extends Model {
               ref: 'User',
               required: true
             },
-            role: { type: String, default: 'guest' }, // admin | pending_request | member | denied
+            role: { type: String, default: 'guest' }, // admin | pending_request | member | denied | guest (default)
             memberDate: { type: Date, default: Date.now }
           }
         ]
@@ -34,8 +34,15 @@ class Group extends Model {
     schema.plugin(uniqueValidator)
 
     schema.pre('save', this.setSlug, err => console.log(err))
+    schema.pre('find', this.autopopulate)
+    // schema.pre('findOne', this.autopopulate)
 
     this.model = mongoose.model('Group', schema)
+  }
+
+  autopopulate (next) {
+    this.populate('community.user')
+    next()
   }
 }
 

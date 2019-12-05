@@ -49,7 +49,7 @@ class Service {
 
   update = (id, body, next, fallback) => {
     this.model
-      .findByIdAndUpdate(id, body, { new: true })
+      .findByIdAndUpdate(id, body, { new: true, runValidators: true })
       .then(data => {
         if (!data) return fallback({ message: 'not found', status: 404 })
         next(data)

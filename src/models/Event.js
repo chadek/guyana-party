@@ -42,8 +42,15 @@ class Event extends Model {
     schema.plugin(uniqueValidator)
 
     schema.pre('save', this.setSlug, err => console.log(err))
+    schema.pre('find', this.autopopulate)
+    schema.pre('findOne', this.autopopulate)
 
     this.model = mongoose.model('Event', schema)
+  }
+
+  autopopulate (next) {
+    this.populate('group')
+    next()
   }
 }
 
