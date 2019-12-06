@@ -8,12 +8,12 @@ class Event extends Model {
       {
         name: { type: String, trim: true, required: true },
         description: { type: String, trim: true, required: true },
-        startDate: { type: Date, required: true },
+        timezone: { type: String, required: true }, // ex: "America/Cayenne"
+        startDate: { type: Date, required: true }, // UTC ISO date
         endDate: { type: Date, required: true },
-        // timezone: { type: String, required: true }, // ex: "(UTC-03:00) America/Cayenne"
         location: {
           type: { type: String, default: 'Point' },
-          coordinates: [Number],
+          coordinates: [Number], // [lng, lat]
           address: { type: String, required: true }
         },
         author: {
@@ -25,12 +25,10 @@ class Event extends Model {
         occurrence: String, // Stringified JSON object ex: {"mon": true, "tue":false, etc...}
         photos: [{ data: Buffer, contentType: String }],
         group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' },
-        // published: {
-        //   date: Date,
-        //   publisher: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
-        // },
-        // public: { type: Boolean, default: false },
-        // status: { type: String, default: 'paused' } // paused | published | archived
+        published: {
+          date: Date,
+          user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+        },
         isPrivate: { type: Boolean, default: true },
         status: { type: String, default: 'waiting' } // waiting | online | archived
       },
