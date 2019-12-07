@@ -9,51 +9,51 @@ class EventService extends Service {
 
   search = async (query, next, fallback) => {
     const { skip, limit, sort, search, uid, box } = query
+    let find = {}
 
-    let find = {
-      $or: [
-        { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } }
-      ],
-      status: 'online',
-      isPrivate: false,
-      endDate: { $gte: Date.now() }
-    }
+    const searchQuery = [
+      { name: { $regex: search, $options: 'i' } },
+      { description: { $regex: search, $options: 'igm' } }
+    ]
 
     if (uid) {
       const Group = mongoose.model('Group')
 
-      let adminGroups = await Group.find(
+      const adminGroups = await Group.find(
         { community: { $elemMatch: { user: uid, role: 'admin' } } },
         { id: true }
       )
-      adminGroups = adminGroups.map(g => g.id)
 
-      let memberGroups = await Group.find(
+      const memberGroups = await Group.find(
         { community: { $elemMatch: { user: uid, role: 'member' } } },
         { id: true }
       )
-      memberGroups = memberGroups.map(g => g.id)
 
       find = {
         $or: [
           {
-            name: { $regex: search, $options: 'i' },
+            $or: searchQuery,
             status: 'online',
             isPrivate: false
           },
           {
-            description: { $regex: search, $options: 'i' },
-            status: 'online',
-            isPrivate: false
+            group: { $in: adminGroups.map(g => g.id) },
+            $or: searchQuery
           },
-          { group: { $in: adminGroups } },
           {
-            group: { $in: memberGroups },
+            group: { $in: memberGroups.map(g => g.id) },
+            $or: searchQuery,
             status: 'online',
             isPrivate: true
           }
         ],
+        endDate: { $gte: Date.now() }
+      }
+    } else {
+      find = {
+        $or: searchQuery,
+        status: 'online',
+        isPrivate: false,
         endDate: { $gte: Date.now() }
       }
     }
