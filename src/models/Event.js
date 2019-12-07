@@ -1,5 +1,4 @@
 import mongoose, { Schema } from 'mongoose'
-import uniqueValidator from 'mongoose-unique-validator'
 import Model from './Model'
 
 class Event extends Model {
@@ -35,13 +34,11 @@ class Event extends Model {
       { timestamps: true }
     )
 
+    schema.index({ name: 'text', description: 'text' })
     schema.index({ location: '2dsphere' })
-
-    schema.plugin(uniqueValidator)
 
     schema.pre('save', this.setSlug, err => console.log(err))
     schema.pre('find', this.autopopulate)
-    schema.pre('findOne', this.autopopulate)
 
     this.model = mongoose.model('Event', schema)
   }

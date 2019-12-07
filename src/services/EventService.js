@@ -61,7 +61,15 @@ class EventService extends Service {
     if (box) find.location = { $geoWithin: { $box: box } }
 
     this.model
-      .find(find)
+      .find(find, {
+        _id: false,
+        slug: 1,
+        name: 1,
+        startDate: 1,
+        endDate: 1,
+        photos: 1,
+        'location.coordinates': 1
+      })
       .skip(skip)
       .limit(limit)
       .sort(sort)

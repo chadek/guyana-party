@@ -1,5 +1,4 @@
 import mongoose, { Schema } from 'mongoose'
-import uniqueValidator from 'mongoose-unique-validator'
 import Model from './Model'
 
 class Group extends Model {
@@ -31,11 +30,8 @@ class Group extends Model {
       { timestamps: true }
     )
 
-    schema.plugin(uniqueValidator)
-
     schema.pre('save', this.setSlug, err => console.log(err))
     schema.pre('find', this.autopopulate)
-    // schema.pre('findOne', this.autopopulate)
 
     this.model = mongoose.model('Group', schema)
   }
