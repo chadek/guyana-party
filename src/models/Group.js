@@ -32,6 +32,7 @@ class Group extends Model {
 
     schema.pre('save', this.setSlug, err => console.log(err))
     schema.pre('find', this.autopopulate)
+    schema.pre('findOne', this.autopopulate)
 
     this.model = mongoose.model('Group', schema)
   }
