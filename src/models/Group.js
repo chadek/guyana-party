@@ -22,7 +22,7 @@ class Group extends Model {
               ref: 'User',
               required: true
             },
-            role: { type: String, default: 'guest' }, // admin | pending_request | member | denied | guest (default)
+            role: { type: String, default: 'pending_request' }, // admin | pending_request | member | denied | guest (default)
             memberDate: { type: Date, default: Date.now }
           }
         ]

@@ -38,7 +38,8 @@ class EventService extends Service {
           },
           {
             group: { $in: adminGroups.map(g => g.id) },
-            $or: searchQuery
+            $or: searchQuery,
+            status: { $in: ['waiting', 'online'] }
           },
           {
             group: { $in: memberGroups.map(g => g.id) },
@@ -61,15 +62,7 @@ class EventService extends Service {
     if (box) find.location = { $geoWithin: { $box: box } }
 
     this.model
-      .find(find, {
-        _id: false,
-        slug: 1,
-        name: 1,
-        startDate: 1,
-        endDate: 1,
-        photos: 1,
-        'location.coordinates': 1
-      })
+      .find(find)
       .skip(skip)
       .limit(limit)
       .sort(sort)
