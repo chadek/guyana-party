@@ -4,7 +4,7 @@ import compression from 'compression'
 import morgan from 'morgan'
 // import path from 'path'
 import { api, isDev, isProd, port } from './env'
-import setRoutes from './routes'
+import setRoutes from './routes/index'
 import cors from 'cors'
 import { notFound, devErrors, prodErrors } from './middleware/errorHandlers'
 

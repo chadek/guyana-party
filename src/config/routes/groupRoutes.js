@@ -2,7 +2,7 @@ import auth from '../middleware/auth'
 import { catchErrors } from '../middleware/errorHandlers'
 import upload from '../middleware/upload'
 import { api } from '../env'
-import groupController from '../../src/controllers/groupController'
+import groupController from '../../controllers/groupController'
 
 export default server => {
   server.get(`${api}/groups`, catchErrors(groupController.readAll))

@@ -1,7 +1,7 @@
 import auth from '../middleware/auth'
 import { catchErrors } from '../middleware/errorHandlers'
 import { api } from '../env'
-import userController from '../../src/controllers/userController'
+import userController from '../../controllers/userController'
 
 export default server => {
   server.get(`${api}/users`, auth, catchErrors(userController.readAll))

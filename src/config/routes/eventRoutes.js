@@ -2,7 +2,7 @@ import auth from '../middleware/auth'
 import { catchErrors } from '../middleware/errorHandlers'
 import upload from '../middleware/upload'
 import { api } from '../env'
-import eventController from '../../src/controllers/eventController'
+import eventController from '../../controllers/eventController'
 
 export default server => {
   server.get(`${api}/search`, catchErrors(eventController.search))
