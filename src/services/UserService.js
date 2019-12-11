@@ -5,7 +5,7 @@ import Service from './Service'
 import { googleClientId, secret } from '../config/env'
 
 class UserService extends Service {
-  constructor(model) {
+  constructor (model) {
     super(model)
     this.model = model
   }

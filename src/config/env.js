@@ -1,6 +1,4 @@
-import dotenv from 'dotenv'
-
-dotenv.config()
+require('dotenv').config()
 
 export const mongoDBUri =
   process.env.NODE_ENV === 'test'

@@ -2,11 +2,10 @@
   "name": "guyana-party",
   "version": "1.0.0",
   "description": "site d'évènements en guyane",
-  "main": "src/index.js",
+  "main": "start.js",
   "scripts": {
-    "build": "rollup -c",
-    "start": "node ./dist/bundle.js",
-    "dev": "clear; nodemon --exec 'babel-node src/index.js --debug' --ignore tests/",
+    "start": "node start.js",
+    "dev": "clear; nodemon start.js --ignore tests/",
     "test": "NODE_ENV=test jest --watch --testTimeout=10000",
     "test:cov": "NODE_ENV=test jest --watchAll --coverage",
     "lint": "eslint --ignore-pattern '/node_modules/*' --ignore-pattern '/dist/*' -o ./eslint_result.html -f html ."
@@ -19,7 +18,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
-    "google-auth-library": "^5.6.1",
+    "google-auth-library": "^5.7.0",
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.0",
@@ -32,10 +31,10 @@
   },
   "devDependencies": {
     "@babel/core": "^7.7.5",
-    "@babel/node": "^7.7.4",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.6",
+    "@babel/register": "^7.7.4",
     "@babel/runtime": "^7.7.6",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
@@ -50,9 +49,6 @@
     "jest": "^24.9.0",
     "nodemon": "^2.0.1",
     "prettier": "^1.19.1",
-    "rollup": "^1.27.9",
-    "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-terser": "^5.1.2",
     "supertest": "^4.0.2"
   },
   "prettier": {
