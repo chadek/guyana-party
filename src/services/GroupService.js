@@ -8,16 +8,18 @@ class GroupService extends Service {
   }
 
   readAll = (query, next, fallback) => {
-    let { skip, limit, sort, uid } = query
+    let { skip, limit, sort, uid, admin } = query
 
     skip = skip ? Number(skip) : 0
     limit = limit ? Number(limit) : 10
     sort = sort || '-createdAt'
+    admin = Boolean(admin)
 
     delete query.skip
     delete query.limit
     delete query.sort
     delete query.uid
+    delete query.admin
 
     if (query._id) {
       try {
@@ -37,6 +39,8 @@ class GroupService extends Service {
         }
       }
     }
+
+    if (admin) query.community.$elemMatch = { user: uid, role: 'admin' }
 
     this.model
       .find(query)

@@ -20,9 +20,6 @@ pids
 *.seed
 *.pid.lock
 
-# Build output
-dist/
-
 # Coverage directory used by jest
 coverage/
 
