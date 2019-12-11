@@ -18,7 +18,8 @@ class EventController extends Controller {
       sw1: req.queryFloat('sw1'),
       sw2: req.queryFloat('sw2'),
       ne1: req.queryFloat('ne1'),
-      ne2: req.queryFloat('ne2')
+      ne2: req.queryFloat('ne2'),
+      isapp: Boolean(req.queryString('isapp'))
     }
 
     const { sw1, sw2, ne1, ne2 } = query

@@ -8,7 +8,7 @@ class EventService extends Service {
   }
 
   search = async (query, next, fallback) => {
-    const { skip, limit, sort, search, uid, box } = query
+    const { skip, limit, sort, search, uid, box, isapp } = query
     let find = {}
 
     const searchQuery = [
@@ -20,22 +20,23 @@ class EventService extends Service {
       const Group = mongoose.model('Group')
 
       const adminGroups = await Group.find(
-        { community: { $elemMatch: { user: uid, role: 'admin' } } },
+        {
+          status: 'online',
+          community: { $elemMatch: { user: uid, role: 'admin' } }
+        },
         { id: true }
       )
 
       const memberGroups = await Group.find(
-        { community: { $elemMatch: { user: uid, role: 'member' } } },
+        {
+          status: 'online',
+          community: { $elemMatch: { user: uid, role: 'member' } }
+        },
         { id: true }
       )
 
       find = {
         $or: [
-          {
-            $or: searchQuery,
-            status: 'online',
-            isPrivate: false
-          },
           {
             group: { $in: adminGroups.map(g => g.id) },
             $or: searchQuery,
@@ -44,11 +45,17 @@ class EventService extends Service {
           {
             group: { $in: memberGroups.map(g => g.id) },
             $or: searchQuery,
-            status: 'online',
-            isPrivate: true
+            status: 'online'
           }
         ],
         endDate: { $gte: Date.now() }
+      }
+      if (!isapp) {
+        find.$or.push({
+          $or: searchQuery,
+          status: 'online',
+          isPrivate: false
+        })
       }
     } else {
       find = {
