@@ -7,7 +7,7 @@ class EventService extends Service {
     this.model = model
   }
 
-  search = async (query, next, fallback) => {
+  search = async query => {
     const { skip, limit, sort, search, uid, box, isapp } = query
     let find = {}
 
@@ -68,13 +68,11 @@ class EventService extends Service {
 
     if (box) find.location = { $geoWithin: { $box: box } }
 
-    this.model
+    return this.model
       .find(find)
       .skip(skip)
       .limit(limit)
       .sort(sort)
-      .then(next)
-      .catch(fallback)
   }
 }
 

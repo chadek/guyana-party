@@ -30,11 +30,9 @@ class EventController extends Controller {
       ]
     }
 
-    this.service.search(
-      query,
-      data => res.json(this.format({ data, total: data.length })),
-      err => next({ ...err, status: 400 })
-    )
+    const data = await this.service.search(query)
+
+    res.json(this.format({ data, total: data.length }))
   }
 }
 
