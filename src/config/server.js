@@ -2,7 +2,6 @@ import express from 'express'
 import helmet from 'helmet'
 import compression from 'compression'
 import morgan from 'morgan'
-// import path from 'path'
 import { api, isDev, isProd, port } from './env'
 import setRoutes from './routes'
 import cors from 'cors'
@@ -24,9 +23,9 @@ if (isProd) server.set('trust proxy', 1) // trust first proxy
 
 if (isDev) server.use(morgan('dev')) // HTTP request logger
 
-// server.use('/uploads', express.static(path.join(__dirname, 'uploads')))
-
 setRoutes(server)
+
+server.use('/static', express.static('uploads'))
 
 server.use(notFound) // manage 404 errors
 

@@ -22,7 +22,8 @@ class Event extends Model {
         },
         slug: String,
         occurrence: String, // Stringified JSON object ex: {"mon": true, "tue":false, etc...}
-        photos: [{ data: Buffer, contentType: String }],
+        // photos: [{ data: Buffer, contentType: String }],
+        photos: [String],
         group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' },
         published: {
           date: Date,

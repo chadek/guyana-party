@@ -35,3 +35,7 @@ node_modules/
 
 # Eslint result output
 eslint_result.html
+
+# Upload folders to keep
+uploads/*
+!uploads/.gitkeep

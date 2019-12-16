@@ -13,7 +13,8 @@ class Group extends Model {
           required: true
         },
         slug: String,
-        photos: [{ data: Buffer, contentType: String }],
+        // photos: [{ data: Buffer, contentType: String }],
+        photos: [String],
         status: { type: String, default: 'online' }, // online | archived
         community: [
           {
