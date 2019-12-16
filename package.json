@@ -5,7 +5,7 @@
   "main": "start.js",
   "scripts": {
     "start": "node start.js",
-    "dev": "clear; nodemon start.js --ignore tests/",
+    "dev": "clear; nodemon start.js --ignore tests/ --ignore uploads/",
     "test": "NODE_ENV=test jest --watch --testTimeout=10000",
     "test:cov": "NODE_ENV=test jest --watchAll --coverage",
     "lint": "eslint --ignore-pattern '/node_modules/*' -o ./eslint_result.html -f html ."
