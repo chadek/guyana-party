@@ -1,5 +1,5 @@
 class Controller {
-  constructor (service) {
+  constructor(service) {
     this.service = service
   }
 

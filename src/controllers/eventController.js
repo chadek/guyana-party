@@ -3,7 +3,7 @@ import EventService from '../services/EventService'
 import Event from '../models/Event'
 
 class EventController extends Controller {
-  constructor (service) {
+  constructor(service) {
     super(service)
     this.service = service
   }

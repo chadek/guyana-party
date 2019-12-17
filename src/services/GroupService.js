@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import Service from './Service'
 
 class GroupService extends Service {
-  constructor (model) {
+  constructor(model) {
     super(model)
     this.model = model
   }

@@ -3,7 +3,7 @@ import UserService from '../services/UserService'
 import User from '../models/User'
 
 class UserController extends Controller {
-  constructor (service) {
+  constructor(service) {
     super(service)
     this.service = service
   }
@@ -13,8 +13,9 @@ class UserController extends Controller {
       req.query,
       users => {
         const newUsers = users.map(u => {
-          const { password, ...userWithoutPassword } = u.toObject()
-          return userWithoutPassword
+          const userObj = u.toObject()
+          delete userObj.password
+          return userObj
         })
         res.json(this.format({ data: newUsers, total: newUsers.length }))
       },
@@ -26,8 +27,9 @@ class UserController extends Controller {
     this.service.read(
       req.params.id,
       user => {
-        const { password, ...userWithoutPassword } = user.toObject()
-        res.json(this.format({ data: userWithoutPassword }))
+        const data = user.toObject()
+        delete data.password
+        res.json(this.format({ data }))
       },
       err => next({ ...err, status: 400 })
     )

@@ -31,10 +31,7 @@ export const devErrors = (err, req, res, next) => {
   res.status(status).json({
     status,
     error: err.message,
-    stack: (err.stack || '').replace(
-      /[a-z_-\d]+.js:\d+:\d+/gi,
-      '<mark>$&</mark>'
-    )
+    stack: (err.stack || '').replace(/[a-z_-\d]+.js:\d+:\d+/gi, '<mark>$&</mark>')
   })
 }
 

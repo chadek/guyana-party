@@ -2,17 +2,18 @@ import mongoose from 'mongoose'
 import Service from './Service'
 
 class EventService extends Service {
-  constructor (model) {
+  constructor(model) {
     super(model)
     this.model = model
   }
 
-  search = async query => {
+  async search(query) {
     const { skip, limit, sort, search, uid, box, isapp } = query
     let find = {}
 
     const searchQuery = [
       { name: { $regex: search, $options: 'i' } },
+      { groupName: { $regex: search, $options: 'i' } },
       { description: { $regex: search, $options: 'igm' } }
     ]
 

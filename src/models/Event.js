@@ -1,8 +1,9 @@
 import mongoose, { Schema } from 'mongoose'
+import slugify from 'slugify'
 import Model from './Model'
 
 class Event extends Model {
-  initSchema () {
+  initSchema() {
     const schema = new Schema(
       {
         name: { type: String, trim: true, required: true },
@@ -25,6 +26,7 @@ class Event extends Model {
         // photos: [{ data: Buffer, contentType: String }],
         photos: [String],
         group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' },
+        groupName: String,
         published: {
           date: Date,
           user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
@@ -35,19 +37,52 @@ class Event extends Model {
       { timestamps: true }
     )
 
-    schema.index({ name: 'text', description: 'text' })
+    schema.index({ name: 'text', description: 'text', groupName: 'text' })
     schema.index({ location: '2dsphere' })
 
-    schema.pre('save', this.setSlug, err => console.log(err))
+    schema.pre('save', this.preSaveHook, err => console.log(err))
+    schema.pre('findOneAndUpdate', this.preUpdateHook, err => console.log(err))
     schema.pre('find', this.autopopulate)
     schema.pre('findOne', this.autopopulate)
 
     this.model = mongoose.model('Event', schema)
   }
 
-  autopopulate (next) {
+  autopopulate(next) {
     this.populate('group')
     next()
+  }
+
+  async preSaveHook(next) {
+    try {
+      if (this.isModified('name')) {
+        this.slug = slugify(this.name, { lower: true })
+        const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i')
+        const eventsWithSlug = await this.constructor.find({ slug: slugRegEx })
+        if (eventsWithSlug.length) {
+          this.slug = `${this.slug}-${eventsWithSlug.length + 1}`
+        }
+      }
+      const Group = mongoose.model('Group')
+      const g = await Group.findById(this.group)
+      if (g && g.name) this.groupName = g.name
+    } catch (error) {
+      console.error(error)
+    } finally {
+      next()
+    }
+  }
+
+  async preUpdateHook(next) {
+    try {
+      const Group = mongoose.model('Group')
+      const g = await Group.findById(this._update.group)
+      if (g && g.name) this._update.groupName = g.name
+    } catch (error) {
+      console.error(error)
+    } finally {
+      next()
+    }
   }
 }
 

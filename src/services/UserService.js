@@ -5,7 +5,7 @@ import Service from './Service'
 import { googleClientId, secret } from '../config/env'
 
 class UserService extends Service {
-  constructor (model) {
+  constructor(model) {
     super(model)
     this.model = model
   }
@@ -15,8 +15,7 @@ class UserService extends Service {
       const { name, email, password } = body
       if (!password) {
         return fallback({
-          message:
-            'User validation failed: password: Path `password` is required.'
+          message: 'User validation failed: password: Path `password` is required.'
         })
       }
       const hash = await bcrypt.hash(password, 10)
@@ -38,15 +37,15 @@ class UserService extends Service {
       }
       if (!password) {
         return fallback({
-          message:
-            'User validation failed: password: Path `password` is required.'
+          message: 'User validation failed: password: Path `password` is required.'
         })
       }
       const valid = await bcrypt.compare(password, user.password)
       if (!valid) return fallback({ message: 'Incorrect password' })
 
-      const { password: p, ...userWithoutPassword } = user.toObject()
-      next({ user: userWithoutPassword, token: sign(user._id) })
+      const userObj = user.toObject()
+      delete userObj.password
+      next({ user: userObj, token: sign(user._id) })
     } catch (error) {
       fallback(error)
     }

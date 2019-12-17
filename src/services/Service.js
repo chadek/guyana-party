@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 class Service {
-  constructor (model) {
+  constructor(model) {
     this.model = model
   }
 
