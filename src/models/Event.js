@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose'
 import slugify from 'slugify'
 import Model from './Model'
+import logger from '../core/logger'
 
 class Event extends Model {
   initSchema() {
@@ -40,8 +41,8 @@ class Event extends Model {
     schema.index({ name: 'text', description: 'text', groupName: 'text' })
     schema.index({ location: '2dsphere' })
 
-    schema.pre('save', this.preSaveHook, err => console.log(err))
-    schema.pre('findOneAndUpdate', this.preUpdateHook, err => console.log(err))
+    schema.pre('save', this.preSaveHook, err => logger.error(err))
+    schema.pre('findOneAndUpdate', this.preUpdateHook, err => logger.error(err))
     schema.pre('find', this.autopopulate)
     schema.pre('findOne', this.autopopulate)
 
@@ -67,7 +68,7 @@ class Event extends Model {
       const g = await Group.findById(this.group)
       if (g && g.name) this.groupName = g.name
     } catch (error) {
-      console.error(error)
+      logger.error(error)
     } finally {
       next()
     }
@@ -79,7 +80,7 @@ class Event extends Model {
       const g = await Group.findById(this._update.group)
       if (g && g.name) this._update.groupName = g.name
     } catch (error) {
-      console.error(error)
+      logger.error(error)
     } finally {
       next()
     }

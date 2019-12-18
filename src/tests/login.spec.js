@@ -1,6 +1,6 @@
 import supertest from 'supertest'
-import { mongoose } from '../config/database'
-import server, { api } from '../config/server'
+import { mongoose } from '../core/database'
+import server, { api } from '../core/server'
 
 afterAll(done => mongoose.disconnect(done))
 

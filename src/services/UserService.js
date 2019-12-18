@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { OAuth2Client } from 'google-auth-library'
 import Service from './Service'
-import { googleClientId, secret } from '../config/env'
+import { googleClientId, secret } from '../core/env'
 
 class UserService extends Service {
   constructor(model) {

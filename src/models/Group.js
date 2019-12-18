@@ -1,8 +1,9 @@
 import mongoose, { Schema } from 'mongoose'
 import Model from './Model'
+import logger from '../core/logger'
 
 class Group extends Model {
-  initSchema () {
+  initSchema() {
     const schema = new Schema(
       {
         name: { type: String, trim: true, required: true },
@@ -31,14 +32,14 @@ class Group extends Model {
       { timestamps: true }
     )
 
-    schema.pre('save', this.setSlug, err => console.log(err))
+    schema.pre('save', this.setSlug, err => logger.error(err))
     schema.pre('find', this.autopopulate)
     schema.pre('findOne', this.autopopulate)
 
     this.model = mongoose.model('Group', schema)
   }
 
-  autopopulate (next) {
+  autopopulate(next) {
     this.populate('community.user')
     next()
   }

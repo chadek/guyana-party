@@ -1,8 +1,9 @@
 import mongoose from 'mongoose'
 import { mongoDBUri } from './env'
+import logger from './logger'
 
 class Connection {
-  constructor () {
+  constructor() {
     mongoose
       .connect(mongoDBUri, {
         useCreateIndex: true,
@@ -11,8 +12,8 @@ class Connection {
         useUnifiedTopology: true
       })
       .catch(error => {
-        console.log('Unable to connect to database!')
-        console.error(error)
+        logger.error('Unable to connect to database!')
+        logger.error(error)
       })
   }
 }
