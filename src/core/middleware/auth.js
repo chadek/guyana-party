@@ -6,7 +6,7 @@ export default (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1]
     const decodedToken = jwt.verify(token, secret)
     if (req.body.userId && req.body.userId !== decodedToken.userId) {
-      const error = new Error('Invalid user ID')
+      const error = new Error('Invalid user ID!')
       error.status = 401
       throw error
     }

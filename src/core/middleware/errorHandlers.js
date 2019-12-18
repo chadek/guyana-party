@@ -1,3 +1,5 @@
+import logger from '../logger'
+
 /*
   Catch Errors Handler
 
@@ -15,9 +17,7 @@ export const catchErrors = fn => {
   If we hit a route that is not found, we mark it as 404 and pass it along to the next error handler to display
 */
 export const notFound = (req, res, next) => {
-  const err = new Error('Not Found')
-  err.status = 404
-  next(err)
+  next({ message: `Not Found: ${req.url}`, status: 404 })
 }
 
 /*
@@ -27,11 +27,13 @@ export const notFound = (req, res, next) => {
 */
 export const devErrors = (err, req, res, next) => {
   if (!err) return next(err)
-  const status = err.status || 500
+  err.status = err.status || 500
+  logger.error(err)
+  const { status, message: error, stack } = err
   res.status(status).json({
     status,
-    error: err.message,
-    stack: (err.stack || '').replace(/[a-z_-\d]+.js:\d+:\d+/gi, '<mark>$&</mark>')
+    error,
+    stack: (stack || '').replace(/[a-z_-\d]+.js:\d+:\d+/gi, '<mark>$&</mark>')
   })
 }
 
@@ -42,9 +44,8 @@ export const devErrors = (err, req, res, next) => {
 */
 export const prodErrors = (err, req, res, next) => {
   if (!err) return next(err)
-  const status = err.status || 500
-  res.status(status).json({
-    status,
-    error: err.message
-  })
+  err.status = err.status || 500
+  if (process.env.NODE_ENV !== 'test') logger.error(err)
+  const { status, message: error } = err
+  res.status(status).json({ status, error })
 }
