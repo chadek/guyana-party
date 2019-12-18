@@ -6,8 +6,8 @@ async function createDefaultUser() {
   try {
     const userInstance = new User().getInstance()
     const email = 'test@mail.com'
-    const user = await userInstance.find({ email })
-    if (!user || user.length === 0) {
+    const user = await userInstance.findOne({ email })
+    if (!user) {
       const userService = new UserService(userInstance)
       await userService.signup({ name: '-- DO NOT DELETE --', email, password: 'azer1234' })
       console.log('Default User Created!')
