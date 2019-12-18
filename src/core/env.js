@@ -1,7 +1,6 @@
 require('dotenv').config()
 
-export const mongoDBUri =
-  process.env.NODE_ENV === 'test' ? process.env.MONGODB_URI_TEST : process.env.MONGODB_URI
+export const dbUri = process.env.NODE_ENV === 'test' ? process.env.TEST_DB_URI : process.env.DB_URI
 export const port = process.env.PORT || 3000
 export const secret = process.env.SECRET
 export const api = process.env.API_ROUTE

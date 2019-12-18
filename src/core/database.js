@@ -1,11 +1,11 @@
 import mongoose from 'mongoose'
-import { mongoDBUri } from './env'
+import { dbUri } from './env'
 import logger from './logger'
 
 class Connection {
   constructor() {
     mongoose
-      .connect(mongoDBUri, {
+      .connect(dbUri, {
         useCreateIndex: true,
         useFindAndModify: false,
         useNewUrlParser: true,
