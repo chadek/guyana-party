@@ -51,7 +51,24 @@ class UserService extends Service {
     }
   }
 
-  tokensignin = async (body, next, fallback) => {
+  loginFacebook = async (body, next, fallback) => {
+    try {
+      const { name, email, photo, provider } = body
+      const user = await this.model.findOne({ email })
+      if (user) {
+        return next({ user, token: sign(user._id) })
+      } else {
+        this.model
+          .create({ email, name, photo, provider, valid: true })
+          .then(data => next({ user: data, token: sign(data._id) }))
+          .catch(fallback)
+      }
+    } catch (error) {
+      fallback(error)
+    }
+  }
+
+  loginGoogle = async (body, next, fallback) => {
     try {
       const { tokenId, provider } = body
       if (tokenId && provider) {

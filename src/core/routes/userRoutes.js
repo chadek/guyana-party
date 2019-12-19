@@ -10,8 +10,4 @@ export default server => {
   server.delete(`${api}/users/:id`, auth, catchErrors(userController.delete))
   server.post(`${api}/auth/signup`, catchErrors(userController.signup))
   server.post(`${api}/auth/login`, catchErrors(userController.login))
-  server.post(
-    `${api}/auth/tokensignin`,
-    catchErrors(userController.tokensignin)
-  )
 }

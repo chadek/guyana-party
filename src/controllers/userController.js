@@ -44,23 +44,18 @@ class UserController extends Controller {
   }
 
   login = async (req, res, next) => {
-    this.service.login(
-      req.body,
-      ({ user, token }) => {
-        res.status(200).json(this.format({ custom: { user, token } }))
-      },
-      err => next({ ...err, status: 401 })
-    )
-  }
+    const success = ({ user, token }) => {
+      res.status(200).json(this.format({ custom: { user, token } }))
+    }
+    const fallback = err => next({ ...err, status: 401 })
 
-  tokensignin = async (req, res, next) => {
-    this.service.tokensignin(
-      req.body,
-      ({ user, token }) => {
-        res.status(200).json(this.format({ custom: { user, token } }))
-      },
-      err => next({ ...err, status: 401 })
-    )
+    const { provider } = req.body
+    if (!provider) {
+      this.service.login(req.body, success, fallback)
+    } else {
+      const capProvider = provider.charAt(0).toUpperCase() + provider.slice(1)
+      this.service[`login${capProvider}`](req.body, success, fallback)
+    }
   }
 }
 
