@@ -5,12 +5,22 @@ import UserService from '../../services/UserService'
 async function createDefaultUser() {
   try {
     const userInstance = new User().getInstance()
-    const email = 'test@mail.com'
-    const user = await userInstance.findOne({ email })
+    const userService = new UserService(userInstance)
+    const params = {
+      name: '-- DO NOT DELETE --',
+      email: 'test@mail.com',
+      password: 'azer1234'
+    }
+    let user = await userInstance.findOne({ email: params.email })
     if (!user) {
-      const userService = new UserService(userInstance)
-      await userService.signup({ name: '-- DO NOT DELETE --', email, password: 'azer1234' })
-      console.log('Default User Created!')
+      await userService.signup(params)
+      console.log(`User ${params.email} Created!`)
+    }
+    params.email = 'users_put@mail.com'
+    user = await userInstance.findOne({ email: params.email })
+    if (!user) {
+      await userService.signup(params)
+      console.log(`User ${params.email} Created!`)
     }
   } catch (error) {
     console.error(error)
@@ -20,6 +30,6 @@ async function createDefaultUser() {
 ;(async () => {
   console.log('Executing pretest script...')
   await createDefaultUser()
-  console.log('Done.')
   mongoose.disconnect()
+  console.log('Done.')
 })()

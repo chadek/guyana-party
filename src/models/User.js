@@ -4,7 +4,7 @@ import isEmail from 'validator/lib/isEmail'
 import Model from './Model'
 
 class User extends Model {
-  initSchema () {
+  initSchema() {
     const schema = new Schema(
       {
         name: { type: String, trim: true, required: true },

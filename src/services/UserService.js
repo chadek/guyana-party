@@ -20,7 +20,7 @@ class UserService extends Service {
         })
       }
       const hash = await bcrypt.hash(password, 10)
-      this.model
+      return this.model
         .create({ name, email, password: hash })
         .then(next)
         .catch(fallback)
