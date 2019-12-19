@@ -1,4 +1,4 @@
-import logger from '../logger'
+import { logError } from '../logger'
 
 /*
   Catch Errors Handler
@@ -28,7 +28,7 @@ export const notFound = (req, res, next) => {
 export const devErrors = (err, req, res, next) => {
   if (!err) return next(err)
   err.status = err.status || 500
-  logger.error(err)
+  logError(err)
   const { status, message: error, stack } = err
   res.status(status).json({
     status,
@@ -45,7 +45,7 @@ export const devErrors = (err, req, res, next) => {
 export const prodErrors = (err, req, res, next) => {
   if (!err) return next(err)
   err.status = err.status || 500
-  if (process.env.NODE_ENV !== 'test') logger.error(err)
+  logError(err)
   const { status, message: error } = err
   res.status(status).json({ status, error })
 }

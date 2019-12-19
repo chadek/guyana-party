@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 import Model from './Model'
-import logger from '../core/logger'
+import { logError } from '../core/logger'
 
 class Group extends Model {
   initSchema() {
@@ -32,7 +32,7 @@ class Group extends Model {
       { timestamps: true }
     )
 
-    schema.pre('save', this.setSlug, err => logger.error(err))
+    schema.pre('save', this.setSlug, err => logError(err))
     schema.pre('find', this.autopopulate)
     schema.pre('findOne', this.autopopulate)
 

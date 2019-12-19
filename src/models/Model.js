@@ -1,5 +1,5 @@
 import slugify from 'slugify'
-import logger from '../core/logger'
+import { logError } from '../core/logger'
 
 class Model {
   constructor() {
@@ -23,7 +23,7 @@ class Model {
         this.slug = `${this.slug}-${eventsWithSlug.length + 1}`
       }
     } catch (error) {
-      logger.error(error)
+      logError(error)
     } finally {
       next()
     }

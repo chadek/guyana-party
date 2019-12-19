@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import { dbUri } from './env'
-import logger from './logger'
+import { logError } from './logger'
 
 class Connection {
   constructor() {
@@ -12,8 +12,8 @@ class Connection {
         useUnifiedTopology: true
       })
       .catch(error => {
-        logger.error('Unable to connect to database!')
-        logger.error(error)
+        logError('Unable to connect to database!')
+        logError(error)
       })
   }
 }

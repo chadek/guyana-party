@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import { OAuth2Client } from 'google-auth-library'
 import Service from './Service'
 import { googleClientId, secret } from '../core/env'
+import { logInfo } from '../core/logger'
 
 class UserService extends Service {
   constructor(model) {
@@ -31,9 +32,10 @@ class UserService extends Service {
   login = async (body, next, fallback) => {
     try {
       const { email, password } = body
+      logInfo(`Login: ${email}`)
       const user = await this.model.findOne({ email })
       if (!user) {
-        return fallback({ message: 'User not found' })
+        return fallback({ message: `User not found` })
       }
       if (!password) {
         return fallback({
@@ -41,19 +43,20 @@ class UserService extends Service {
         })
       }
       const valid = await bcrypt.compare(password, user.password)
-      if (!valid) return fallback({ message: 'Incorrect password' })
+      if (!valid) return fallback({ message: `Incorrect password` })
 
       const userObj = user.toObject()
       delete userObj.password
       next({ user: userObj, token: sign(user._id) })
-    } catch (error) {
-      fallback(error)
+    } catch {
+      fallback({ message: `Unauthorized user` })
     }
   }
 
   loginFacebook = async (body, next, fallback) => {
     try {
       const { name, email, photo, provider } = body
+      logInfo(`Login: ${email} Provider: ${provider}`)
       const user = await this.model.findOne({ email })
       if (user) {
         return next({ user, token: sign(user._id) })
@@ -78,6 +81,7 @@ class UserService extends Service {
           audience: googleClientId // if multiple clients access the backend: [CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
         })
         const { email, name, picture: photo } = ticket.getPayload()
+        logInfo(`Login: ${email} Provider: ${provider}`)
         const user = await this.model.findOne({ email })
         if (user) {
           return next({ user, token: sign(user._id) })

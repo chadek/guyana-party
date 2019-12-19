@@ -33,3 +33,11 @@ if (!isProd) {
 }
 
 export default logger
+
+export const logInfo = msg => {
+  if (process.env.NODE_ENV !== 'test') logger.info(msg)
+}
+
+export const logError = msg => {
+  if (process.env.NODE_ENV !== 'test') logger.error(msg)
+}
