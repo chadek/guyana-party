@@ -2,9 +2,9 @@ import express from 'express'
 import helmet from 'helmet'
 import compression from 'compression'
 import morgan from 'morgan'
+import cors from 'cors'
 import { api, isDev, isProd, port } from './env'
 import setRoutes from './routes'
-import cors from 'cors'
 import { notFound, devErrors, prodErrors } from './middleware/errorHandlers'
 
 const server = express()

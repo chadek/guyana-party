@@ -5,7 +5,7 @@ import { uuid } from 'uuidv4'
 const options = {
   storage: multer.memoryStorage(),
   limits: { fileSize: 1048576 }, // 1024 * 1024 * 1 (1Mo)
-  fileFilter (req, file, next) {
+  fileFilter(req, file, next) {
     if (file.mimetype.startsWith('image/')) {
       next(null, true)
     } else {
@@ -14,7 +14,7 @@ const options = {
   }
 }
 
-const asyncForEach = async function (array, callback) {
+const asyncForEach = async function(array, callback) {
   for (let index = 0; index < array.length; index++) {
     await callback(array[index], index, array)
   }

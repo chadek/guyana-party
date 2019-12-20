@@ -11,6 +11,21 @@ class UserService extends Service {
     this.model = model
   }
 
+  update = async (id, body, next, fallback) => {
+    try {
+      if (body.photos.length > 0) body.photo = body.photos[0]
+      this.model
+        .findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' })
+        .then(data => {
+          if (!data) return fallback({ message: 'not found', status: 404 })
+          next(data)
+        })
+        .catch(fallback)
+    } catch (error) {
+      fallback(error)
+    }
+  }
+
   signup = async (body, next, fallback) => {
     try {
       const { name, email, password } = body
@@ -55,14 +70,14 @@ class UserService extends Service {
 
   loginFacebook = async (body, next, fallback) => {
     try {
-      const { name, email, photo, provider } = body
+      const { name, email, provider } = body
       logInfo(`Login: ${email} Provider: ${provider}`)
       const user = await this.model.findOne({ email })
       if (user) {
         return next({ user, token: sign(user._id) })
       } else {
         this.model
-          .create({ email, name, photo, provider, valid: true })
+          .create({ email, name, provider, valid: true })
           .then(data => next({ user: data, token: sign(data._id) }))
           .catch(fallback)
       }
@@ -80,14 +95,14 @@ class UserService extends Service {
           idToken: tokenId,
           audience: googleClientId // if multiple clients access the backend: [CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
         })
-        const { email, name, picture: photo } = ticket.getPayload()
+        const { email, name } = ticket.getPayload()
         logInfo(`Login: ${email} Provider: ${provider}`)
         const user = await this.model.findOne({ email })
         if (user) {
           return next({ user, token: sign(user._id) })
         } else {
           this.model
-            .create({ email, name, photo, provider, valid: true })
+            .create({ email, name, provider, valid: true })
             .then(data => next({ user: data, token: sign(data._id) }))
             .catch(fallback)
         }
