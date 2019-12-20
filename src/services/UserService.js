@@ -13,7 +13,7 @@ class UserService extends Service {
 
   update = async (id, body, next, fallback) => {
     try {
-      if (body.photos.length > 0) body.photo = body.photos[0]
+      if (body.photos && body.photos.length > 0) body.photo = body.photos[0]
       this.model
         .findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' })
         .then(data => {
