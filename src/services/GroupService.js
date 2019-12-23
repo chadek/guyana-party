@@ -38,9 +38,8 @@ class GroupService extends Service {
           ]
         }
       }
+      if (admin) query.community.$elemMatch = { user: uid, role: 'admin' }
     }
-
-    if (admin) query.community.$elemMatch = { user: uid, role: 'admin' }
 
     this.model
       .find(query)
