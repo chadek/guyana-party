@@ -1,0 +1,6 @@
+export { default as FormInput } from './FormInput'
+export { default as If } from './If'
+export { default as Image } from './Image'
+export { default as Link } from './Link'
+export { default as Page } from './Page'
+export { default as Seo } from './Seo'

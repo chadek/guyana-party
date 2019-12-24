@@ -1,0 +1,89 @@
+{
+  "root": true,
+  "extends": [
+    // "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    "alloy",
+    "alloy/react"
+  ],
+  "parser": "babel-eslint",
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jest": true
+  },
+  "plugins": ["babel", "html", "react-hooks"],
+  "rules": {
+    "no-debugger": 1,
+    "no-alert": 0,
+    "no-console": 0,
+    "no-var": "error",
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "all"
+      }
+    ],
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
+    "radix": ["error", "as-needed"],
+    "no-shadow": [
+      2,
+      {
+        "hoist": "all",
+        "allow": ["resolve", "reject", "done", "next", "err", "error"]
+      }
+    ],
+    "indent": 0,
+    "no-invalid-this": 0, // for arrow functions
+    "babel/no-invalid-this": 1,
+    "babel/new-cap": 1,
+    "babel/no-unused-expressions": 1,
+    "babel/valid-typeof": 1,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
+    "jsx-a11y/no-noninteractive-element-interactions": 0,
+    "jsx-a11y/accessible-emoji": 1,
+    "react/display-name": 0,
+    "react/prop-types": "error",
+    "react/prefer-stateless-function": 0,
+    "react/forbid-prop-types": 0,
+    "react/require-default-props": 0,
+    "react/no-danger": 1,
+    "react/no-did-mount-set-state": 1,
+    "react/no-did-update-set-state": 1,
+    "react/no-multi-comp": 0,
+    "react/no-set-state": 0,
+    "react/prefer-es6-class": 1,
+    "react/require-extension": 0,
+    "react/sort-comp": 1,
+    "react/wrap-multilines": 0,
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
+    "react/jsx-closing-bracket-location": 1,
+    "react/jsx-handler-names": 1,
+    "react/jsx-max-props-per-line": 0,
+    "react/jsx-no-bind": 0,
+    "react/jsx-pascal-case": 1,
+    "react/jsx-sort-prop-types": 0,
+    "react/jsx-sort-props": [
+      1,
+      {
+        "ignoreCase": true
+      }
+    ],
+    "react-hooks/exhaustive-deps": 1,
+    "react-hooks/rules-of-hooks": "error"
+  },
+  "settings": { "react": { "version": "detect" } }
+}
