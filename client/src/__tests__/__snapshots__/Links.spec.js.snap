@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Links/> should render "external" links correctly 1`] = `
+<a
+  aria-label="https://www.google.com (s’ouvre dans un nouvel onglet)"
+  href="https://www.google.com"
+  rel="noreferrer noopener nofollow"
+  target="_blank"
+>
+  My Link
+</a>
+`;
+
+exports[`<Links/> should render "internal file" links correctly 1`] = `
+<a
+  href="/test.pdf"
+>
+  My Link
+</a>
+`;
+
+exports[`<Links/> should render "internal links with noprefetch" correctly 1`] = `
+<a
+  href="/lieu/id"
+>
+  My Link
+</a>
+`;
+
+exports[`<Links/> should render "internal" links correctly 1`] = `
+<mockConstructor
+  to="/"
+>
+  My Link
+</mockConstructor>
+`;
+
+exports[`<Links/> should render links with custom props 1`] = `
+<mockConstructor
+  prop1="other"
+  prop2="prop2"
+  prop3={[Function]}
+  to="/"
+>
+  My Link
+</mockConstructor>
+`;
