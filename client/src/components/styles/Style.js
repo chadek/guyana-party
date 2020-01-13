@@ -6,7 +6,8 @@ import { createGlobalStyle } from 'styled-components'
 
 export const theme = {
   headerHeight: '44px',
-  linkColor: '#0078a8',
+  // linkColor: '#0078a8',
+  linkColor: '#3f51b5',
   // black: 'rgb(72, 72, 72)',
   borderColor: 'rgba(151, 151, 151, 0.2)',
   errorColor: 'rgb(248, 99, 73)',

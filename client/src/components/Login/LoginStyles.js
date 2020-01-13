@@ -19,14 +19,14 @@ export const LoginWrapper = styled.div`
       margin-bottom: 15px;
     }
   }
-  .signup-link {
+  /* .signup-link {
     margin-bottom: 60px;
     a {
       color: rgb(73, 134, 248);
       text-decoration: none;
       font-size: 15px;
     }
-  }
+  } */
   .copy {
     font-size: 15px;
     height: 50px;
@@ -37,9 +37,9 @@ export const LoginWrapper = styled.div`
       max-width: inherit;
       padding: 10px;
     }
-    .signup-link {
+    /* .signup-link {
       margin-bottom: 40px;
-    }
+    } */
   }
 `
 
@@ -87,6 +87,49 @@ export const FormWrapper = styled.form`
     input {
       background-color: rgb(254, 245, 231);
       border-color: rgb(248, 187, 73);
+    }
+  }
+`
+
+export const LoginEmailWrapper = styled.div`
+  justify-content: center;
+  h2 {
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .email-sent-icon {
+    background-image: url(https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/success_status.png);
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: 64px 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+  }
+  ul,
+  li {
+    margin-bottom: 0;
+  }
+  .actions {
+    grid-template-columns: auto auto;
+    align-items: center;
+    padding: 0.5rem 0;
+    a:hover {
+      text-decoration: underline;
+    }
+    a,
+    button {
+      color: ${props => props.theme.linkColor};
+    }
+    button {
+      font-size: 14px;
+    }
+    .facebook,
+    .google {
+      margin: 1rem 0;
+      color: #000;
+    }
+    .facebook {
+      color: #fff;
     }
   }
 `

@@ -5,7 +5,7 @@ import { useAuth } from '../lib/services/authService'
 import { Link } from './addons'
 import Button from './Button'
 import { showSnack } from './Snack'
-import { FormWrapper, LoginWrapper as Wrapper } from './styles/LoginStyles'
+import { FormWrapper, LoginWrapper as Wrapper } from './Login/LoginStyles'
 
 function Signup() {
   const [name, setName] = useState('')

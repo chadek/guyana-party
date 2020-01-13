@@ -79,7 +79,9 @@ function useProvideAuth() {
     )
   }
 
-  const deleteUser = (id, next, fallback) => {}
+  const deleteUser = (id, next, fallback) => {
+    // TODO
+  }
 
   const loginFacebook = (res, next, fallback) => {
     const { name, email } = res
