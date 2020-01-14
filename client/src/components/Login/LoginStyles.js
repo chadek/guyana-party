@@ -19,14 +19,6 @@ export const LoginWrapper = styled.div`
       margin-bottom: 15px;
     }
   }
-  /* .signup-link {
-    margin-bottom: 60px;
-    a {
-      color: rgb(73, 134, 248);
-      text-decoration: none;
-      font-size: 15px;
-    }
-  } */
   .copy {
     font-size: 15px;
     height: 50px;
@@ -37,9 +29,6 @@ export const LoginWrapper = styled.div`
       max-width: inherit;
       padding: 10px;
     }
-    /* .signup-link {
-      margin-bottom: 40px;
-    } */
   }
 `
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { navigate } from 'gatsby'
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import GoogleLogin from 'react-google-login'
@@ -11,15 +11,38 @@ import { showSnack } from '../Snack'
 import { useAuth } from '../../lib/services/authService'
 
 function Login() {
-  const [email, setEmail] = useState('christopherservius@gmail.com')
-  // const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('')
   const [emailOk, setEmailOk] = useState(false)
   const [emailError, setEmailError] = useState('')
-  // const [passwordError, setPasswordError] = useState('')
   const [loading, setLoading] = useState(false)
   const [provider, setProvider] = useState(null)
 
-  const { loading: initializing, user, loginFacebook, loginGoogle, sendLinkEmail } = useAuth()
+  const {
+    loading: initializing,
+    user,
+    loginFacebook,
+    loginGoogle,
+    sendLinkEmail,
+    loginEmail
+  } = useAuth()
+
+  const hasEmailLogin = useRef(false)
+
+  useEffect(() => {
+    const token = typeof window !== 'undefined' && window.location.search.split('=')[1]
+    if (!hasEmailLogin.current && token && loginEmail) {
+      hasEmailLogin.current = true
+      loginEmail(
+        token,
+        () => navigate('/app'),
+        () =>
+          showSnack(
+            'Connexion impossible : Le lien de connexion a expiré ou est invalide !',
+            'error'
+          )
+      )
+    }
+  }, [loginEmail])
 
   const fbHandle = res => {
     setLoading(true)
@@ -90,15 +113,6 @@ function Login() {
     if (!isEmail(value)) return setEmailError("L'email est invalide")
   }
 
-  // const checkPassword = value => {
-  //   setPasswordError('')
-  //   if (!value) return setPasswordError('Le mot de passe est requis')
-  //   if (value.length < 8) {
-  //     return setPasswordError('Le mot de passe doit comporter au moins 8 caractères')
-  //   }
-  //   return true
-  // }
-
   const sendEmail = () => {
     setLoading(true)
     sendLinkEmail(
@@ -121,25 +135,6 @@ function Login() {
       setEmailOk(true)
       sendEmail()
     }
-    // else if (emailOk) {
-    //   setPasswordError('')
-    //   if (!checkPassword(password)) return
-    //   setLoading(true)
-    //   loginEmail(
-    //     { email, password },
-    //     () => {
-    //       const redirect = typeof window !== 'undefined' && window.location.search.split('=')[1]
-    //       if (redirect) return navigate(redirect)
-    //       navigate('/app')
-    //     },
-    //     error => {
-    //       setLoading(false)
-    //       setPassword('')
-    //       showSnack('La connexion a echoué !', 'error')
-    //       console.log(error)
-    //     }
-    //   )
-    // }
   }
 
   return (
@@ -182,32 +177,11 @@ function Login() {
                     value={email}
                   />
                 </div>
-                {/* <If condition={emailOk}>
-                <div className={`pass-section ${passwordError ? 'error' : ''}`}>
-                  <label htmlFor='password'>{passwordError || 'Mot de passe'}</label>
-                  <input
-                    disabled={loading}
-                    id='password'
-                    onBlur={e => checkPassword(e.target.value)}
-                    onChange={e => setPassword(e.target.value)}
-                    type='password'
-                    value={password}
-                  />
-                </div>
-              </If> */}
-                <Button
-                  disabled={loading}
-                  onClick={validate}
-                  // text={emailOk ? (loading ? 'Connexion...' : 'Se connecter') : 'Suivant'}
-                  text='Suivant'
-                />
+                <Button disabled={loading} onClick={validate} text='Suivant' />
               </FormWrapper>
             </>
           )}
         </div>
-        {/* <p className='signup-link center'>
-            <Link to='/signup'>Vous n&rsquo;avez pas de compte ?</Link>
-          </p> */}
         <div className='copy center'>© GuyanaParty</div>
       </If>
     </Wrapper>

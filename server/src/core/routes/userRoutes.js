@@ -9,7 +9,6 @@ export default server => {
   server.get(`${api}/users/:id`, auth, catchErrors(userController.read))
   server.put(`${api}/users/:id`, auth, upload, catchErrors(userController.update))
   server.delete(`${api}/users/:id`, auth, catchErrors(userController.delete))
-  // server.post(`${api}/auth/signup`, catchErrors(userController.signup))
   server.post(`${api}/auth/login`, catchErrors(userController.login))
   server.post(`${api}/auth/sendmail`, catchErrors(userController.sendEmail))
   server.post(`${api}/auth/loginmail`, catchErrors(userController.loginEmail))

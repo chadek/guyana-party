@@ -1,4 +1,3 @@
-// import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { OAuth2Client } from 'google-auth-library'
 import crypto from 'crypto'
@@ -27,48 +26,6 @@ class UserService extends Service {
       fallback(error)
     }
   }
-
-  // signup = async (body, next, fallback) => {
-  //   try {
-  //     const { name, email, password } = body
-  //     if (!password) {
-  //       return fallback({
-  //         message: 'User validation failed: password: Path `password` is required.'
-  //       })
-  //     }
-  //     const hash = await bcrypt.hash(password, 10)
-  //     return this.model
-  //       .create({ name, email, password: hash })
-  //       .then(next)
-  //       .catch(fallback)
-  //   } catch (error) {
-  //     fallback(error)
-  //   }
-  // }
-
-  // login = async (body, next, fallback) => {
-  //   try {
-  //     const { email, password } = body
-  //     logInfo(`Login: ${email}`)
-  //     const user = await this.model.findOne({ email })
-  //     if (!user) {
-  //       return fallback({ message: `User not found` })
-  //     }
-  //     if (!password) {
-  //       return fallback({
-  //         message: 'User validation failed: password: Path `password` is required.'
-  //       })
-  //     }
-  //     const valid = await bcrypt.compare(password, user.password)
-  //     if (!valid) return fallback({ message: `Incorrect password` })
-
-  //     const userObj = user.toObject()
-  //     delete userObj.password
-  //     next({ user: userObj, token: sign(user._id) })
-  //   } catch {
-  //     fallback({ message: `Unauthorized user` })
-  //   }
-  // }
 
   loginFacebook = async (body, next, fallback) => {
     try {
@@ -134,7 +91,7 @@ class UserService extends Service {
       })
     }
 
-    const linkURL = `${linkHost}/${authLinkToken}`
+    const linkURL = `${linkHost}?token=${authLinkToken}`
     await sendMail({
       to: user.email,
       subject: 'Connectez-vous à Guyana-Party',
@@ -149,8 +106,6 @@ class UserService extends Service {
       if (new Date() > new Date(user.authLinkExpires))
         return fallback({ message: `Token has expired.` })
       user.valid = true
-      user.authLinkToken = null
-      user.authLinkExpires = null
       await user.save()
       next({ user, token: sign(user._id) })
     } else {

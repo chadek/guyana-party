@@ -51,7 +51,10 @@ function useProvideAuth() {
   }
 
   const setNewUser = (newUser, token) => {
-    const config = { secure: process.env.NODE_ENV === 'production' } // https required in prod
+    const config = {
+      expires: Number(process.env.COOKIE_EXPIRES),
+      secure: process.env.NODE_ENV === 'production' // https required in prod
+    }
     Cookies.set('gp_jwt', token, config)
     Cookies.set('gp_uid', newUser._id, config)
     newUser.photo = newUser.photo
@@ -121,8 +124,7 @@ function useProvideAuth() {
   }
 
   const sendLinkEmail = (email, next, fallback) => {
-    console.log('SEND EMAIL:', email)
-    const linkHost = `http://localhost:8000/sendmail`
+    const linkHost = `${window.location.origin}/connexion`
     axios({
       method: 'POST',
       data: qs.stringify({ email, linkHost }),
@@ -138,11 +140,12 @@ function useProvideAuth() {
       .finally(() => setLoading(false))
   }
 
-  const loginEmail = ({ email, password }, next, fallback) => {
+  const loginEmail = (token, next, fallback) => {
+    if (!token) return fallback('Token missing')
     axios({
       method: 'POST',
-      data: qs.stringify({ email, password }),
-      url: `${process.env.API}/auth/login`
+      data: qs.stringify({ authLinkToken: token }),
+      url: `${process.env.API}/auth/loginmail`
     })
       .then(({ data }) => {
         if (data.status !== 200 || !data.token || !data.user._id) {
