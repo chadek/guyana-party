@@ -120,6 +120,24 @@ function useProvideAuth() {
       .finally(() => setLoading(false))
   }
 
+  const sendLinkEmail = (email, next, fallback) => {
+    console.log('SEND EMAIL:', email)
+    const linkHost = `http://localhost:8000/sendmail`
+    axios({
+      method: 'POST',
+      data: qs.stringify({ email, linkHost }),
+      url: `${process.env.API}/auth/sendmail`
+    })
+      .then(({ data }) => {
+        if (data.status !== 200) {
+          return fallback('Une erreur interne est survenue')
+        }
+        next(data.provider)
+      })
+      .catch(fallback)
+      .finally(() => setLoading(false))
+  }
+
   const loginEmail = ({ email, password }, next, fallback) => {
     axios({
       method: 'POST',
@@ -170,6 +188,7 @@ function useProvideAuth() {
     deleteUser,
     loginFacebook,
     loginGoogle,
+    sendLinkEmail,
     loginEmail,
     signEmail,
     signout

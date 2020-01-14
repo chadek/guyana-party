@@ -11,14 +11,15 @@ import { showSnack } from '../Snack'
 import { useAuth } from '../../lib/services/authService'
 
 function Login() {
-  const [email, setEmail] = useState('spidergon@gmail.com')
+  const [email, setEmail] = useState('christopherservius@gmail.com')
   // const [password, setPassword] = useState('')
   const [emailOk, setEmailOk] = useState(false)
   const [emailError, setEmailError] = useState('')
   // const [passwordError, setPasswordError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [provider, setProvider] = useState(null)
 
-  const { loading: initializing, user, loginFacebook, loginGoogle } = useAuth()
+  const { loading: initializing, user, loginFacebook, loginGoogle, sendLinkEmail } = useAuth()
 
   const fbHandle = res => {
     setLoading(true)
@@ -99,8 +100,18 @@ function Login() {
   // }
 
   const sendEmail = () => {
-    console.log('SEND EMAIL')
-    // setLoading(true)
+    setLoading(true)
+    sendLinkEmail(
+      email,
+      p => {
+        if (p) setProvider(p)
+        setLoading(false)
+      },
+      err => {
+        console.log(err)
+        setLoading(false)
+      }
+    )
   }
 
   const validate = e => {
@@ -146,7 +157,7 @@ function Login() {
               goBack={() => setEmailOk(false)}
               GoogleBtn={GoogleBtn}
               loading={loading}
-              // provider='Google'
+              provider={provider}
               sendEmail={sendEmail}
             />
           )) || (

@@ -49,7 +49,7 @@ function LoginEmail({ email, FacebookBtn, goBack, GoogleBtn, loading, provider, 
               {provider} pour continuer.
             </p>
             <div className='actions center'>
-              {(provider === 'Facebook' && <FacebookBtn />) || <GoogleBtn />}
+              {(provider === 'facebook' && <FacebookBtn />) || <GoogleBtn />}
               <Button onClick={goBack}>RETOUR</Button>
             </div>
           </>
