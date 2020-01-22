@@ -29,70 +29,7 @@ const Wrapper = styled.section`
 `
 
 const loadingMsg = (loading, isGroup) =>
-  loading ? (
-    <p>Chargement...</p>
-  ) : (
-    <p>{`Aucun ${isGroup ? 'groupe' : 'évènement'}.`}</p>
-  )
-
-const CardList = ({
-  addBtn,
-  title,
-  data,
-  isGroup,
-  loading,
-  className,
-  groupId,
-  conf,
-  noSlider,
-  isArchived
-}) => {
-  return (
-    <Wrapper className={className}>
-      <h2>
-        {`${title}${data.length > 0 ? ` (${data.length})` : ''}`}
-        {addBtn && groupId && (
-          <Button
-            aria-label='Ajouter un évènement'
-            onClick={() => navigate(`/app/event/new?group=${groupId}`)}
-            size='small'
-            title='Ajouter un évènement'
-            variant='contained'
-          >
-            Ajouter
-          </Button>
-        )}
-      </h2>
-      <div id='container'>
-        <If
-          condition={data.length !== 0}
-          otherwise={loadingMsg(loading, isGroup)}
-        >
-          {/* {(noSlider && (
-            <Grid container spacing={1}>
-              {data.map((d, index) => (
-                <Grid item key={d.slug + index}>
-                  <Card data={d} isArchived={isArchived} isGroup={isGroup} />
-                </Grid>
-              ))}
-            </Grid>
-          )) || ( */}
-          <Slider {...(conf || sliderConf)}>
-            {data.map((d, index) => (
-              <Card
-                data={d}
-                isArchived={isArchived}
-                isGroup={isGroup}
-                key={d.slug + index}
-              />
-            ))}
-          </Slider>
-          {/* )} */}
-        </If>
-      </div>
-    </Wrapper>
-  )
-}
+  loading ? <p>Chargement...</p> : <p>{`Aucun ${isGroup ? 'groupe' : 'évènement'}.`}</p>
 
 const sliderConf = {
   dots: true,
@@ -106,6 +43,44 @@ const sliderConf = {
     { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } }
   ]
 }
+
+const CardList = ({ addBtn, title, data, isGroup, loading, className, groupId, conf, isArchived }) => (
+  <Wrapper className={className}>
+    <h2>
+      {`${title}${data.length > 0 ? ` (${data.length})` : ''}`}
+      {addBtn && groupId && (
+        <Button
+          aria-label='Ajouter un évènement'
+          onClick={() => navigate(`/app/event/new?group=${groupId}`)}
+          size='small'
+          title='Ajouter un évènement'
+          variant='contained'
+        >
+          Ajouter
+        </Button>
+      )}
+    </h2>
+    <div id='container'>
+      <If condition={data.length !== 0} otherwise={loadingMsg(loading, isGroup)}>
+        {/* {(noSlider && (
+            <Grid container spacing={1}>
+              {data.map((d, index) => (
+                <Grid item key={d.slug + index}>
+                  <Card data={d} isArchived={isArchived} isGroup={isGroup} />
+                </Grid>
+              ))}
+            </Grid>
+          )) || ( */}
+        <Slider {...(conf || sliderConf)}>
+          {data.map((d, index) => (
+            <Card data={d} isArchived={isArchived} isGroup={isGroup} key={d.slug + index} />
+          ))}
+        </Slider>
+        {/* )} */}
+      </If>
+    </div>
+  </Wrapper>
+)
 
 CardList.propTypes = {
   addBtn: PropTypes.bool,

@@ -82,22 +82,18 @@ function Photos({ photos, setPhotos, disabled }) {
   const handlePreviewDrop = async (acceptedFiles, rejectedFiles) => {
     setDropError('')
     if (rejectedFiles.length > 0) {
-      return setDropError(
-        `Veuillez insérer une image valide (png, jpeg, etc.) de taille < ${limitSize}Mo.`
-      )
+      return setDropError(`Veuillez insérer une image valide (png, jpeg, etc.) de taille < ${limitSize}Mo.`)
     }
     if (photos.length + acceptedFiles.length > maxFiles) {
       return setDropError(
-        `Vous ne pouvez déposer qu${
-          maxFiles === 1 ? "'" : 'e '
-        }${maxFiles} image${maxFiles > 1 ? 's' : ''}.`
+        `Vous ne pouvez déposer qu${maxFiles === 1 ? "'" : 'e '}${maxFiles} image${maxFiles > 1 ? 's' : ''}.`
       )
     }
     setLoading(true)
 
     compress(acceptedFiles, data => {
       // const objUrls = []
-      const newPhotos = data.map(({ photo, info }, index) => {
+      const newPhotos = data.map(({ photo, info }) => {
         if (process.env.NODE_ENV !== 'production') {
           console.log(`Added "${photo.name}":`, info)
         }
@@ -120,30 +116,20 @@ function Photos({ photos, setPhotos, disabled }) {
     // URL.revokeObjectURL(photo.preview)
   }
 
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject
-  } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
     accept: 'image/*',
     disabled: loading,
-    maxSize: maxSize,
+    maxSize,
     onDrop: handlePreviewDrop
   })
 
   return (
     <Wrapper className='photos'>
-      <p className={dropError ? 'error' : ''}>
-        {dropError || 'Déposez vos photos dans la zone ci-dessous :'}
-      </p>
+      <p className={dropError ? 'error' : ''}>{dropError || 'Déposez vos photos dans la zone ci-dessous :'}</p>
       <div className='grid dropgrid'>
         <StyledDropArea
           {...getRootProps({
-            className: `dropzone ${
-              isDragAccept ? 'accepted' : isDragReject ? 'rejected' : ''
-            }`
+            className: `dropzone${isDragAccept ? ' accepted' : ''}${isDragReject ? ' rejected' : ''}`
           })}
         >
           <input disabled={disabled} {...getInputProps()} />
@@ -165,12 +151,7 @@ function Photos({ photos, setPhotos, disabled }) {
               {photos.map((p, index) => (
                 <Grid className='grid-item' item key={index}>
                   <img alt='Preview' className='preview' src={p.preview} />
-                  {!disabled && (
-                    <CloseIcon
-                      className='delete'
-                      onClick={() => deletePhoto(p)}
-                    />
-                  )}
+                  {!disabled && <CloseIcon className='delete' onClick={() => deletePhoto(p)} />}
                 </Grid>
               ))}
             </Grid>

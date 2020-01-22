@@ -3,7 +3,7 @@ import GroupService from '../services/GroupService'
 import Group from '../models/Group'
 
 class GroupController extends Controller {
-  constructor (service) {
+  constructor(service) {
     super(service)
     this.service = service
   }

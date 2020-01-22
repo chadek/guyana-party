@@ -56,7 +56,7 @@ function Profile() {
 
   const fileHandle = e => {
     e.persist()
-    const files = e.target.files
+    const { files } = e.target
     if (files.length > 0) {
       compress([...files], data => {
         const { photo: p, info } = data[0]
@@ -119,14 +119,7 @@ function Profile() {
           title='Cliquez pour modifier votre photo'
         />
         <FormWrapper onSubmit={save}>
-          <FormInput
-            accept='image/*'
-            disabled={loading}
-            hidden
-            id='file'
-            onChange={fileHandle}
-            type='file'
-          />
+          <FormInput accept='image/*' disabled={loading} hidden id='file' onChange={fileHandle} type='file' />
           <FormInput
             disabled={loading}
             error={nameError}
@@ -166,13 +159,7 @@ function Profile() {
         </FormWrapper>
       </Wrapper>
       <CardList data={events} isArchived loading={eventLoading} title='Mes évènements archivés' />
-      <CardList
-        data={groups}
-        isArchived
-        isGroup
-        loading={groupLoading}
-        title='Mes groupes archivés'
-      />
+      <CardList data={groups} isArchived isGroup loading={groupLoading} title='Mes groupes archivés' />
     </Page>
   )
 }

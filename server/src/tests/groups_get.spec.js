@@ -8,8 +8,8 @@ const route = `${api}/groups`
 afterAll(done => mongoose.disconnect(done))
 
 describe('GET /groups', () => {
-  it('should get data correctly', () => {
-    return request
+  it('should get data correctly', () =>
+    request
       .get(route)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -17,6 +17,5 @@ describe('GET /groups', () => {
         expect(body.status).toBe(200)
         expect(body.total).toBeGreaterThanOrEqual(0)
         expect(body.data).toBeDefined()
-      })
-  })
+      }))
 })

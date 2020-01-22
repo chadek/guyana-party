@@ -52,8 +52,7 @@ class UserController extends Controller {
     const { email, linkHost } = req.body
     this.service.sendEmail(
       { email, linkHost },
-      provider =>
-        res.status(200).json(this.format({ message: 'Ok', status: 200, custom: { provider } })),
+      provider => res.status(200).json(this.format({ message: 'Ok', status: 200, custom: { provider } })),
       err => next({ ...err, status: 400 })
     )
   }

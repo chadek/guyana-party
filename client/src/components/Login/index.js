@@ -17,14 +17,7 @@ function Login() {
   const [loading, setLoading] = useState(false)
   const [provider, setProvider] = useState(null)
 
-  const {
-    loading: initializing,
-    user,
-    loginFacebook,
-    loginGoogle,
-    sendLinkEmail,
-    loginEmail
-  } = useAuth()
+  const { loading: initializing, user, loginFacebook, loginGoogle, sendLinkEmail, loginEmail } = useAuth()
 
   const hasEmailLogin = useRef(false)
 
@@ -35,11 +28,7 @@ function Login() {
       loginEmail(
         token,
         () => navigate('/app'),
-        () =>
-          showSnack(
-            'Connexion impossible : Le lien de connexion a expiré ou est invalide !',
-            'error'
-          )
+        () => showSnack('Connexion impossible : Le lien de connexion a expiré ou est invalide !', 'error')
       )
     }
   }, [loginEmail])
@@ -97,12 +86,7 @@ function Login() {
       onFailure={googleHandle}
       onSuccess={googleHandle}
       render={({ onClick, disabled }) => (
-        <Button
-          className='google g_bg'
-          disabled={loading || disabled}
-          onClick={onClick}
-          text='Connexion avec Google'
-        />
+        <Button className='google g_bg' disabled={loading || disabled} onClick={onClick} text='Connexion avec Google' />
       )}
     />
   )

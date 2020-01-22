@@ -6,20 +6,15 @@ import qs from 'qs'
 import Cookies from 'js-cookie'
 import { gravatar, MISSING_TOKEN_ERR, reload, getUID, getToken, axiosPut } from '../utils'
 
-const authContext = createContext()
-
-export const AuthProvider = ({ children }) => (
-  <authContext.Provider value={useProvideAuth()}>{children}</authContext.Provider>
-)
-
-AuthProvider.propTypes = { children: PropTypes.node.isRequired }
-
-export const useAuth = () => useContext(authContext)
-
 function useProvideAuth() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [user, setUser] = useState(null)
+
+  const formatError = error => {
+    if (error) setError(error)
+    setLoading(false)
+  }
 
   useEffect(() => {
     if (user) return setLoading(false)
@@ -36,19 +31,12 @@ function useProvideAuth() {
         if (res.status !== 200 || !res.data) {
           return formatError('Une erreur interne est survenue')
         }
-        res.data.photo = res.data.photo
-          ? `${process.env.STATIC}/${res.data.photo}`
-          : gravatar(res.data.email)
+        res.data.photo = res.data.photo ? `${process.env.STATIC}/${res.data.photo}` : gravatar(res.data.email)
         setUser(res.data)
       })
       .catch(error => formatError(error))
       .finally(() => formatError())
   }, [user])
-
-  const formatError = error => {
-    if (error) setError(error)
-    setLoading(false)
-  }
 
   const setNewUser = (newUser, token) => {
     const config = {
@@ -57,9 +45,7 @@ function useProvideAuth() {
     }
     Cookies.set('gp_jwt', token, config)
     Cookies.set('gp_uid', newUser._id, config)
-    newUser.photo = newUser.photo
-      ? `${process.env.STATIC}/${newUser.photo}`
-      : gravatar(newUser.email)
+    newUser.photo = newUser.photo ? `${process.env.STATIC}/${newUser.photo}` : gravatar(newUser.email)
     setUser(newUser)
   }
 
@@ -80,10 +66,6 @@ function useProvideAuth() {
       },
       fallback
     )
-  }
-
-  const deleteUser = (id, next, fallback) => {
-    // TODO
   }
 
   const loginFacebook = (res, next, fallback) => {
@@ -188,7 +170,6 @@ function useProvideAuth() {
     error,
     user,
     updateUser,
-    deleteUser,
     loginFacebook,
     loginGoogle,
     sendLinkEmail,
@@ -197,3 +178,13 @@ function useProvideAuth() {
     signout
   }
 }
+
+const authContext = createContext()
+
+export const AuthProvider = ({ children }) => (
+  <authContext.Provider value={useProvideAuth()}>{children}</authContext.Provider>
+)
+
+AuthProvider.propTypes = { children: PropTypes.node.isRequired }
+
+export const useAuth = () => useContext(authContext)

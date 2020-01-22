@@ -6,7 +6,7 @@ class Model {
     this.model = null
   }
 
-  initSchema() {}
+  static initSchema() {}
 
   getInstance() {
     this.initSchema()

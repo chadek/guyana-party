@@ -18,8 +18,7 @@ const Wrapper = styled.div`
       padding: 8px;
     }
   }
-  @media screen and (max-width: ${({ theme }) => theme.xs}),
-    (max-height: ${({ theme }) => theme.xs}) {
+  @media screen and (max-width: ${({ theme }) => theme.xs}), (max-height: ${({ theme }) => theme.xs}) {
     .sub {
       height: ${({ theme }) => theme.headerXSHeight};
     }

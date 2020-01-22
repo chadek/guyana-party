@@ -15,39 +15,30 @@ const FormInput = ({
   onChange,
   hidden,
   title
-}) => {
-  return (
-    <If
-      condition={type === 'file'}
-      otherwise={
-        <div className={`input-section${error ? ' error' : ''}`}>
-          {label && <label htmlFor={id}>{error || label}</label>}
-          <input
-            accept={accept}
-            disabled={disabled}
-            hidden={hidden}
-            id={id}
-            onBlur={onBlur}
-            onChange={onChange}
-            placeholder={placeholder}
-            title={title}
-            type={type}
-            value={value}
-          />
-        </div>
-      }
-    >
-      <input
-        accept={accept}
-        disabled={disabled}
-        hidden={hidden}
-        id={id}
-        onChange={onChange}
-        type='file'
-      />
-    </If>
-  )
-}
+}) => (
+  <If
+    condition={type === 'file'}
+    otherwise={
+      <div className={`input-section${error ? ' error' : ''}`}>
+        {label && <label htmlFor={id}>{error || label}</label>}
+        <input
+          accept={accept}
+          disabled={disabled}
+          hidden={hidden}
+          id={id}
+          onBlur={onBlur}
+          onChange={onChange}
+          placeholder={placeholder}
+          title={title}
+          type={type}
+          value={value}
+        />
+      </div>
+    }
+  >
+    <input accept={accept} disabled={disabled} hidden={hidden} id={id} onChange={onChange} type='file' />
+  </If>
+)
 
 FormInput.propTypes = {
   accept: Proptypes.string,

@@ -15,12 +15,11 @@ transport.verify(error => {
   if (error) logError(error)
 })
 
-export const sendMail = async ({ to, subject, html }) => {
-  return transport.sendMail({
+export const sendMail = async ({ to, subject, html }) =>
+  transport.sendMail({
     from: `Guyana Party <noreply@guyanaparty.com>`,
     to,
     subject,
     html,
     text: htmlToText.fromString(html)
   })
-}

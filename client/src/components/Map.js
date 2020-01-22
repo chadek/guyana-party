@@ -18,7 +18,7 @@ class Map {
     this.mapId = id || 'map'
     this.map = null
     this.markerClusterGroup = new MarkerClusterGroup()
-    this.center = POINTS[0]
+    this.center = [4.931609, -52.3009] // Cayenne
     this.zoom = 14
     this.locateCircle = null
     this.isSingle = false
@@ -37,7 +37,7 @@ class Map {
       zoom: this.zoom,
       zoomControl: false, // remove default zoom control
       layers: [
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
           minZoom: 3,
           maxZoom: 19

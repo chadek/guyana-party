@@ -8,25 +8,6 @@ const Wrapper = styled.section`
   background: #fff;
 `
 
-const PhotoList = ({ photos, className, conf }) => (
-  <Wrapper className={className}>
-    {photos && photos.length > 0 && (
-      <Slider {...(conf || sliderConf)}>
-        {photos.map((p, index) => (
-          <Image
-            alt='photo'
-            className='cover'
-            height='200'
-            key={index}
-            loading='lazy'
-            src={p.preview || ''}
-          />
-        ))}
-      </Slider>
-    )}
-  </Wrapper>
-)
-
 const sliderConf = {
   dots: true,
   infinite: false,
@@ -38,6 +19,18 @@ const sliderConf = {
     { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } }
   ]
 }
+
+const PhotoList = ({ photos, className, conf }) => (
+  <Wrapper className={className}>
+    {photos && photos.length > 0 && (
+      <Slider {...(conf || sliderConf)}>
+        {photos.map((p, index) => (
+          <Image alt='photo' className='cover' height='200' key={index} loading='lazy' src={p.preview || ''} />
+        ))}
+      </Slider>
+    )}
+  </Wrapper>
+)
 
 PhotoList.propTypes = {
   photos: PropTypes.array.isRequired,

@@ -76,7 +76,7 @@ const Wrapper = styled.div`
 `
 
 function Card({
-  data: { author, name, photo, slug, _id, startDate, endDate, isPrivate, status, group, community },
+  data: { name, photo, slug, _id, startDate, endDate, isPrivate, status, group, community },
   isGroup,
   isArchived
 }) {

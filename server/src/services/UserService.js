@@ -6,6 +6,8 @@ import { googleClientId, secret } from '../core/env'
 import { logInfo } from '../core/logger'
 import { sendMail } from '../core/mail'
 
+const sign = userId => jwt.sign({ userId }, secret, { expiresIn: '15 days' })
+
 class UserService extends Service {
   constructor(model) {
     super(model)
@@ -14,7 +16,10 @@ class UserService extends Service {
 
   update = async (id, body, next, fallback) => {
     try {
-      if (body.photos && body.photos.length > 0) body.photo = body.photos[0]
+      if (body.photos && body.photos.length > 0) {
+        const [photo] = body.photos
+        body.photo = photo
+      }
       this.model
         .findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' })
         .then(data => {
@@ -34,12 +39,11 @@ class UserService extends Service {
       const user = await this.model.findOne({ email })
       if (user) {
         return next({ user, token: sign(user._id) })
-      } else {
-        this.model
-          .create({ email, name, provider, valid: true })
-          .then(data => next({ user: data, token: sign(data._id) }))
-          .catch(fallback)
       }
+      this.model
+        .create({ email, name, provider, valid: true })
+        .then(data => next({ user: data, token: sign(data._id) }))
+        .catch(fallback)
     } catch (error) {
       fallback(error)
     }
@@ -59,19 +63,18 @@ class UserService extends Service {
         const user = await this.model.findOne({ email })
         if (user) {
           return next({ user, token: sign(user._id) })
-        } else {
-          this.model
-            .create({ email, name, provider, valid: true })
-            .then(data => next({ user: data, token: sign(data._id) }))
-            .catch(fallback)
         }
+        this.model
+          .create({ email, name, provider, valid: true })
+          .then(data => next({ user: data, token: sign(data._id) }))
+          .catch(fallback)
       } else fallback({ message: 'Error: token id and provider are required.' })
     } catch (error) {
       fallback(error)
     }
   }
 
-  sendEmail = async ({ email, linkHost }, next, fallback) => {
+  sendEmail = async ({ email, linkHost }, next) => {
     let user = await this.model.findOne({ email })
 
     const authLinkToken = crypto.randomBytes(20).toString('hex')
@@ -103,8 +106,7 @@ class UserService extends Service {
   loginEmail = async (authLinkToken, next, fallback) => {
     const user = await this.model.findOne({ authLinkToken })
     if (user) {
-      if (new Date() > new Date(user.authLinkExpires))
-        return fallback({ message: `Token has expired.` })
+      if (new Date() > new Date(user.authLinkExpires)) return fallback({ message: `Token has expired.` })
       user.valid = true
       await user.save()
       next({ user, token: sign(user._id) })
@@ -113,7 +115,5 @@ class UserService extends Service {
     }
   }
 }
-
-const sign = userId => jwt.sign({ userId }, secret, { expiresIn: '24h' })
 
 export default UserService

@@ -61,57 +61,6 @@ const Wrapper = styled.header`
   }
 `
 
-function Header({ pathname }) {
-  const [mainClass, setMainClass] = useState('')
-  const [scrollDown, setScrollDown] = useState(false)
-  const [userMenuOpen, setUserMenuOpen] = useState(false)
-
-  const { loading, user, signout } = useAuth()
-
-  useEffect(() => scrollEffect(pathname, setScrollDown), [pathname])
-
-  useEffect(() => opaqueEffect(pathname, scrollDown, setMainClass), [pathname, scrollDown])
-
-  return (
-    <Wrapper className={`grid ${mainClass}`}>
-      <nav className='logo'>
-        <Link className='nav' to='/'>
-          <Logo />
-        </Link>
-      </nav>
-      <nav className='navs'>
-        <If condition={!!pathname.match(/^\/+$/)}>
-          <input
-            aria-label='filtrer'
-            className='bg search_bg'
-            placeholder='Filtrer...'
-            type='search'
-          />
-        </If>
-      </nav>
-      <nav className='profile flex'>
-        <If condition={!pathname.match('connexion') && !loading && !user}>
-          <LinkMenu name='Connexion' to='/connexion' />
-        </If>
-        {loading && !user && <CircularProgress size={36} />}
-        {user && (
-          <>
-            <Image alt='Profile' onClick={() => setUserMenuOpen(!userMenuOpen)} src={user.photo} />
-            <UserMenu
-              anchor={typeof document !== 'undefined' && document.querySelector('.profile img')}
-              hide={() => setUserMenuOpen(false)}
-              isOpen={userMenuOpen}
-              pathname={pathname}
-              signout={signout}
-              user={user}
-            />
-          </>
-        )}
-      </nav>
-    </Wrapper>
-  )
-}
-
 function scrollEffect(pathname, setScrollDown) {
   if (pathname.match(/^\/+$/)) {
     let down = false
@@ -137,8 +86,52 @@ function opaqueEffect(pathname, scrollDown, setMainClass) {
   setMainClass(opaque + app)
 }
 
-Header.propTypes = {
-  pathname: PropTypes.string.isRequired
+function Header({ pathname }) {
+  const [mainClass, setMainClass] = useState('')
+  const [scrollDown, setScrollDown] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
+
+  const { loading, user, signout } = useAuth()
+
+  useEffect(() => scrollEffect(pathname, setScrollDown), [pathname])
+
+  useEffect(() => opaqueEffect(pathname, scrollDown, setMainClass), [pathname, scrollDown])
+
+  return (
+    <Wrapper className={`grid ${mainClass}`}>
+      <nav className='logo'>
+        <Link className='nav' to='/'>
+          <Logo />
+        </Link>
+      </nav>
+      <nav className='navs'>
+        <If condition={!!pathname.match(/^\/+$/)}>
+          <input aria-label='filtrer' className='bg search_bg' placeholder='Filtrer...' type='search' />
+        </If>
+      </nav>
+      <nav className='profile flex'>
+        <If condition={!pathname.match('connexion') && !loading && !user}>
+          <LinkMenu name='Connexion' to='/connexion' />
+        </If>
+        {loading && !user && <CircularProgress size={36} />}
+        {user && (
+          <>
+            <Image alt='Profile' onClick={() => setUserMenuOpen(!userMenuOpen)} src={user.photo} />
+            <UserMenu
+              anchor={typeof document !== 'undefined' && document.querySelector('.profile img')}
+              hide={() => setUserMenuOpen(false)}
+              isOpen={userMenuOpen}
+              pathname={pathname}
+              signout={signout}
+              user={user}
+            />
+          </>
+        )}
+      </nav>
+    </Wrapper>
+  )
 }
+
+Header.propTypes = { pathname: PropTypes.string.isRequired }
 
 export default Header

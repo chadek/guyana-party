@@ -19,13 +19,13 @@ function LoginEmail({ email, FacebookBtn, goBack, GoogleBtn, loading, provider, 
               <li>Vérifiez votre connexion Internet.</li>
               <li>Vérifiez que votre adresse e-mail est correcte.</li>
               <li>
-                Vérifiez que votre boîte de réception n&rsquo;est pas pleine et que les paramètres
-                sont correctement définis.
+                Vérifiez que votre boîte de réception n&rsquo;est pas pleine et que les paramètres sont correctement
+                définis.
               </li>
             </ul>
             <p>
-              Si les étapes décrites plus haut n&rsquo;ont pas résolu le problème, vous pouvez
-              renvoyer l&rsquo;e-mail. Sachez que le lien du premier e-mail sera alors désactivé.
+              Si les étapes décrites plus haut n&rsquo;ont pas résolu le problème, vous pouvez renvoyer l&rsquo;e-mail.
+              Sachez que le lien du premier e-mail sera alors désactivé.
             </p>
             <div className='actions grid'>
               <a
@@ -45,8 +45,8 @@ function LoginEmail({ email, FacebookBtn, goBack, GoogleBtn, loading, provider, 
           <>
             <h2>Vous avez déjà un compte</h2>
             <p>
-              Vous avez déjà utilisé l&rsquo;adresse <strong>{email}</strong>. Connectez-vous avec{' '}
-              {provider} pour continuer.
+              Vous avez déjà utilisé l&rsquo;adresse <strong>{email}</strong>. Connectez-vous avec {provider} pour
+              continuer.
             </p>
             <div className='actions center'>
               {(provider === 'facebook' && <FacebookBtn />) || <GoogleBtn />}
@@ -58,8 +58,8 @@ function LoginEmail({ email, FacebookBtn, goBack, GoogleBtn, loading, provider, 
             <h2>E-mail de connexion envoyé</h2>
             <div className='email-sent-icon' />
             <p>
-              Un e-mail de connexion avec des instructions supplémentaires a été envoyé à{' '}
-              <strong>{email}</strong>. Consultez cet e-mail pour vous connecter.
+              Un e-mail de connexion avec des instructions supplémentaires a été envoyé à <strong>{email}</strong>.
+              Consultez cet e-mail pour vous connecter.
             </p>
             <div className='actions grid'>
               <a href='#resend-email' onClick={() => setResend(true)}>

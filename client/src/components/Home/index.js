@@ -115,12 +115,7 @@ function Home() {
           >
             Autour de moi
           </Button>
-          <Button
-            endIcon={<Shuffle />}
-            onClick={() => mapActions.random()}
-            size='small'
-            variant='outlined'
-          >
+          <Button endIcon={<Shuffle />} onClick={() => mapActions.random()} size='small' variant='outlined'>
             AléaTown
           </Button>
           {loading && (
@@ -132,11 +127,7 @@ function Home() {
         <div className='grid' id='events'>
           {markers &&
             markers.map((marker, index) => (
-              <ListItem
-                item={marker}
-                key={marker.slug + index}
-                selected={marker.slug === current}
-              />
+              <ListItem item={marker} key={marker.slug + index} selected={marker.slug === current} />
             ))}
         </div>
         <div id='add-btn'>
