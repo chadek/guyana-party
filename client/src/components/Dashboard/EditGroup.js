@@ -17,6 +17,7 @@ import { showSnack } from '../Snack'
 import Description from './Mde'
 import Page from './Page'
 import Photos from './Photos'
+import GoBack from './GoBack'
 
 const Wrapper = styled.div`
   #name {
@@ -119,6 +120,7 @@ function EditGroup({ id }) {
 
   return (
     <Wrapper>
+      <GoBack />
       <Page title={`${id ? 'Edition' : 'Création'} ${name ? `de ${name}` : "d'un groupe"}`}>
         <div id='name'>
           <Grid alignItems='flex-end' container spacing={1}>

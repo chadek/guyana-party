@@ -1,15 +1,6 @@
 import { useEffect, useState } from 'react'
-import {
-  axiosGet,
-  axiosPost,
-  axiosPut,
-  axiosDelete,
-  fetcher,
-  getUID,
-  formatResult,
-  MISSING_TOKEN_ERR
-} from '../utils'
 import useSWR from 'swr'
+import { axiosGet, axiosPost, axiosPut, axiosDelete, fetcher, getUID, formatResult, MISSING_TOKEN_ERR } from '../utils'
 
 export const createGroup = (payload, next, fallback) => {
   const uid = getUID()
@@ -86,6 +77,11 @@ export const useGroup = ({ id, slug }) => {
   const [error, setError] = useState(null)
   const [group, setGroup] = useState(null)
 
+  const formatError = error => {
+    if (error) setError(error)
+    setLoading(false)
+  }
+
   useEffect(() => {
     if ((!id && !slug) || group) return setLoading(false)
     axiosGet(
@@ -94,25 +90,21 @@ export const useGroup = ({ id, slug }) => {
         if (res.status !== 200 || !res.data) {
           return formatError('Une erreur interne est survenue')
         }
-        const parsePhoto = p => {
-          return { preview: `${process.env.STATIC}/${p}`, name: p }
-        }
+        const parsePhoto = p => ({ preview: `${process.env.STATIC}/${p}`, name: p })
+        const { data } = res
         if (slug) {
-          res.data[0].photos = res.data[0].photos.map(parsePhoto)
-          res.data = res.data[0]
+          // res.data[0].photos = res.data[0].photos.map(parsePhoto)
+          // res.data = res.data[0]
+          data[0].photos = data[0].photos.map(parsePhoto)
+          setGroup(data[0])
         } else {
-          res.data.photos = res.data.photos.map(parsePhoto)
+          data.photos = data.photos.map(parsePhoto)
+          setGroup(data)
         }
-        setGroup(res.data)
       },
       formatError
     ).finally(formatError)
   }, [group, id, slug])
-
-  const formatError = error => {
-    if (error) setError(error)
-    setLoading(false)
-  }
 
   return { loading, error, group }
 }

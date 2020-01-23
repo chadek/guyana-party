@@ -8,9 +8,11 @@ const Forbidden = () => {
   return null
 }
 
-export default () => (
+const event = () => (
   <Router>
     <Forbidden path='/event/*' />
     <EventPage path='/event/:slug' />
   </Router>
 )
+
+export default event

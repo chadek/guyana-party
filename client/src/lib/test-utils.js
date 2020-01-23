@@ -18,11 +18,11 @@ AllTheProviders.propTypes = {
   children: PropTypes.node.isRequired
 }
 
-const customRender = (ui, options) =>
-  render(ui, { wrapper: AllTheProviders, ...options })
+const customRender = (ui, options) => render(ui, { wrapper: AllTheProviders, ...options })
 
 // re-export everything
-export * from 'enzyme'
+// export * from 'enzyme'
+export { shallow } from 'enzyme'
 export { expect } from 'chai'
 
 // override render method

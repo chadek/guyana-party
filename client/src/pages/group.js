@@ -8,9 +8,11 @@ const Forbidden = () => {
   return null
 }
 
-export default () => (
+const group = () => (
   <Router>
     <Forbidden path='/group/*' />
     <GroupPage path='/group/:slug' />
   </Router>
 )
+
+export default group

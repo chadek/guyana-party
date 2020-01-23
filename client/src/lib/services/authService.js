@@ -6,20 +6,15 @@ import qs from 'qs'
 import Cookies from 'js-cookie'
 import { gravatar, MISSING_TOKEN_ERR, reload, getUID, getToken, axiosPut } from '../utils'
 
-const authContext = createContext()
-
-export const AuthProvider = ({ children }) => (
-  <authContext.Provider value={useProvideAuth()}>{children}</authContext.Provider>
-)
-
-AuthProvider.propTypes = { children: PropTypes.node.isRequired }
-
-export const useAuth = () => useContext(authContext)
-
 function useProvideAuth() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [user, setUser] = useState(null)
+
+  const formatError = error => {
+    if (error) setError(error)
+    setLoading(false)
+  }
 
   useEffect(() => {
     if (user) return setLoading(false)
@@ -36,27 +31,21 @@ function useProvideAuth() {
         if (res.status !== 200 || !res.data) {
           return formatError('Une erreur interne est survenue')
         }
-        res.data.photo = res.data.photo
-          ? `${process.env.STATIC}/${res.data.photo}`
-          : gravatar(res.data.email)
+        res.data.photo = res.data.photo ? `${process.env.STATIC}/${res.data.photo}` : gravatar(res.data.email)
         setUser(res.data)
       })
       .catch(error => formatError(error))
       .finally(() => formatError())
   }, [user])
 
-  const formatError = error => {
-    if (error) setError(error)
-    setLoading(false)
-  }
-
   const setNewUser = (newUser, token) => {
-    const config = { secure: process.env.NODE_ENV === 'production' } // https required in prod
+    const config = {
+      expires: Number(process.env.COOKIE_EXPIRES),
+      secure: process.env.NODE_ENV === 'production' // https required in prod
+    }
     Cookies.set('gp_jwt', token, config)
     Cookies.set('gp_uid', newUser._id, config)
-    newUser.photo = newUser.photo
-      ? `${process.env.STATIC}/${newUser.photo}`
-      : gravatar(newUser.email)
+    newUser.photo = newUser.photo ? `${process.env.STATIC}/${newUser.photo}` : gravatar(newUser.email)
     setUser(newUser)
   }
 
@@ -78,8 +67,6 @@ function useProvideAuth() {
       fallback
     )
   }
-
-  const deleteUser = (id, next, fallback) => {}
 
   const loginFacebook = (res, next, fallback) => {
     const { name, email } = res
@@ -118,11 +105,29 @@ function useProvideAuth() {
       .finally(() => setLoading(false))
   }
 
-  const loginEmail = ({ email, password }, next, fallback) => {
+  const sendLinkEmail = (email, next, fallback) => {
+    const linkHost = `${window.location.origin}/connexion`
     axios({
       method: 'POST',
-      data: qs.stringify({ email, password }),
-      url: `${process.env.API}/auth/login`
+      data: qs.stringify({ email, linkHost }),
+      url: `${process.env.API}/auth/sendmail`
+    })
+      .then(({ data }) => {
+        if (data.status !== 200) {
+          return fallback('Une erreur interne est survenue')
+        }
+        next(data.provider)
+      })
+      .catch(fallback)
+      .finally(() => setLoading(false))
+  }
+
+  const loginEmail = (token, next, fallback) => {
+    if (!token) return fallback('Token missing')
+    axios({
+      method: 'POST',
+      data: qs.stringify({ authLinkToken: token }),
+      url: `${process.env.API}/auth/loginmail`
     })
       .then(({ data }) => {
         if (data.status !== 200 || !data.token || !data.user._id) {
@@ -165,11 +170,21 @@ function useProvideAuth() {
     error,
     user,
     updateUser,
-    deleteUser,
     loginFacebook,
     loginGoogle,
+    sendLinkEmail,
     loginEmail,
     signEmail,
     signout
   }
 }
+
+const authContext = createContext()
+
+export const AuthProvider = ({ children }) => (
+  <authContext.Provider value={useProvideAuth()}>{children}</authContext.Provider>
+)
+
+AuthProvider.propTypes = { children: PropTypes.node.isRequired }
+
+export const useAuth = () => useContext(authContext)

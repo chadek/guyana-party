@@ -76,13 +76,7 @@ function Community({ group }) {
   }, [admin, adminNb, member])
 
   useEffect(() => {
-    setData(
-      group.community.map(m => [
-        m.user.name,
-        translate[m.role].label,
-        `${m.role}__${m.user._id}`
-      ])
-    )
+    setData(group.community.map(m => [m.user.name, translate[m.role].label, `${m.role}__${m.user._id}`]))
   }, [group.community])
 
   const doAction = (role, action, id) => {
@@ -110,25 +104,17 @@ function Community({ group }) {
             display: admin,
             filter: false,
             sort: false,
-            customBodyRender: (roleId, tableMeta, updateValue) => {
+            customBodyRender(roleId) {
               const [role, id] = roleId.split('__')
               if (!admin || (role === 'admin' && adminNb === 1)) return null
               const { action, action2 } = translate[role]
               return (
                 <>
-                  <Button
-                    onClick={() => doAction(role, action, id)}
-                    size='small'
-                    variant='contained'
-                  >
+                  <Button onClick={() => doAction(role, action, id)} size='small' variant='contained'>
                     {action}
                   </Button>
                   {action2 && (
-                    <Button
-                      onClick={() => doAction(role, action2, id)}
-                      size='small'
-                      variant='contained'
-                    >
+                    <Button onClick={() => doAction(role, action2, id)} size='small' variant='contained'>
                       {action2}
                     </Button>
                   )}
@@ -165,17 +151,12 @@ function Community({ group }) {
             filterType: 'dropdown',
             responsive: 'scrollMaxHeight'
           }}
-          title={
-            data.length > 0
-              ? `${data.length} membre${data.length > 1 ? 's' : ''}`
-              : ''
-          }
+          title={data.length > 0 ? `${data.length} membre${data.length > 1 ? 's' : ''}` : ''}
         />
       )) || (
         <p>
-          Vous souhaitez faire partie de la communauté, faites une demande
-          d&rsquo;adhésion en cliquant sur le bouton correspondant en haut de la
-          page.
+          Vous souhaitez faire partie de la communauté, faites une demande d&rsquo;adhésion en cliquant sur le bouton
+          correspondant en haut de la page.
         </p>
       )}
     </Wrapper>

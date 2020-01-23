@@ -5,18 +5,15 @@ import { axiosPut, reload, getUID } from '../utils'
 export const confirmMember = (community, role) => {
   const uid = getUID()
   if (!uid || !community) return false
-  if (role) {
-    return undefined !== community.find(o => o.user._id === uid && o.role === role)
-  } else return undefined !== community.find(o => o.user._id === uid)
+  if (role) return undefined !== community.find(o => o.user._id === uid && o.role === role)
+  return undefined !== community.find(o => o.user._id === uid)
 }
 
 export const isAdmin = community => confirmMember(community, 'admin')
 
 export const isMember = community => confirmMember(community, 'member')
 
-export const countAdmins = community => {
-  return community.filter(o => o.role === 'admin').length
-}
+export const countAdmins = community => community.filter(o => o.role === 'admin').length
 
 const getUserId = slug => {
   const uid = getUID()

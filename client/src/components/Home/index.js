@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { navigate } from 'gatsby'
 import styled from 'styled-components'
 import Button from '@material-ui/core/Button'
@@ -83,19 +83,18 @@ function Home() {
   const [current, setCurrent] = useState('')
   const [mapActions, setMapActions] = useState({})
 
-  const onMarkerClick = data => {
-    console.log(data)
-    setCurrent(data.slug)
-  }
+  const canUpdate = useRef(true)
+
+  useEffect(() => () => (canUpdate.current = false), [])
 
   return (
     <Wrapper className='grid'>
       <section id='map-section'>
         <If condition={typeof window !== 'undefined'}>
           <Map
-            onMarkerClick={onMarkerClick}
+            onMarkerClick={data => setCurrent(data.slug)}
             setActions={setMapActions}
-            setLoading={setLoading}
+            setLoading={isLoading => canUpdate.current && setLoading(isLoading)}
             setMarkers={setMarkers}
           />
         </If>
@@ -115,12 +114,7 @@ function Home() {
           >
             Autour de moi
           </Button>
-          <Button
-            endIcon={<Shuffle />}
-            onClick={() => mapActions.random()}
-            size='small'
-            variant='outlined'
-          >
+          <Button endIcon={<Shuffle />} onClick={() => mapActions.random()} size='small' variant='outlined'>
             AléaTown
           </Button>
           {loading && (
@@ -132,11 +126,7 @@ function Home() {
         <div className='grid' id='events'>
           {markers &&
             markers.map((marker, index) => (
-              <ListItem
-                item={marker}
-                key={marker.slug + index}
-                selected={marker.slug === current}
-              />
+              <ListItem item={marker} key={marker.slug + index} selected={marker.slug === current} />
             ))}
         </div>
         <div id='add-btn'>

@@ -13,13 +13,13 @@ async function createDefaultUser() {
     }
     let user = await userInstance.findOne({ email: params.email })
     if (!user) {
-      await userService.signup(params)
+      await userService.create(params)
       console.log(`User ${params.email} Created!`)
     }
     params.email = 'users_put@mail.com'
     user = await userInstance.findOne({ email: params.email })
     if (!user) {
-      await userService.signup(params)
+      await userService.create(params)
       console.log(`User ${params.email} Created!`)
     }
   } catch (error) {

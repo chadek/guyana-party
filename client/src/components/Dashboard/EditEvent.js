@@ -1,3 +1,6 @@
+import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import DateFnsUtils from '@date-io/date-fns'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -17,18 +20,10 @@ import EditIcon from '@material-ui/icons/Edit'
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import fr from 'date-fns/locale/fr'
 import { navigate } from 'gatsby'
-import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { days, toUTCIsoDate, toZonedTime, tzList, userTZ } from '../../lib/date'
+import { days, toUTCIsoDate, toZonedTime, userTZ } from '../../lib/date'
+import tzList from '../../lib/tzList'
 import { isAdmin } from '../../lib/services/communityService'
-import {
-  archiveEvent,
-  createEvent,
-  getAddressFromCoords,
-  updateEvent,
-  useEvent
-} from '../../lib/services/eventService'
+import { archiveEvent, createEvent, getAddressFromCoords, updateEvent, useEvent } from '../../lib/services/eventService'
 import { createGroup, useGroups } from '../../lib/services/groupService'
 import { scrollTo } from '../../lib/utils'
 import If from '../addons/If'
@@ -39,6 +34,7 @@ import Description from './Mde'
 import Page from './Page'
 import Photos from './Photos'
 import SingleMap from './SingleMap'
+import GoBack from './GoBack'
 
 const Wrapper = styled.div`
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
@@ -124,6 +120,16 @@ const Wrapper = styled.div`
   }
 `
 
+const initialOccurrence = {
+  mon: false,
+  tue: false,
+  wed: false,
+  thu: false,
+  fri: false,
+  sat: false,
+  sun: false
+}
+
 function NewEvent({ id }) {
   const [name, setName] = useState('')
   const [group, setGroup] = useState('new')
@@ -194,6 +200,7 @@ function NewEvent({ id }) {
 
   useEffect(() => {
     if (id) {
+      // eslint-disable-next-line no-restricted-syntax
       for (const d in days) {
         if ({}.hasOwnProperty.call(days, d)) {
           const { value } = days[d]
@@ -273,6 +280,19 @@ function NewEvent({ id }) {
       location: { coordinates, address }
     }
 
+    const processEvent = p => {
+      const fallback = error => {
+        console.log(error)
+        showSnack(`${id ? "L'édition" : 'La création'} de l'évènement a échoué !`, 'error')
+        setLoading(false)
+      }
+      if (!id) createEvent(p, slug => navigate(`/event/${slug}`), fallback)
+      else {
+        p.id = id
+        updateEvent(p, () => navigate(`/event/${event.slug}`), fallback)
+      }
+    }
+
     if (group === 'new' && newGroup) {
       createGroup(
         { name: newGroup, description: 'Veuillez saisir une description.' },
@@ -286,19 +306,6 @@ function NewEvent({ id }) {
         }
       )
     } else processEvent(payload)
-  }
-
-  const processEvent = payload => {
-    const fallback = error => {
-      console.log(error)
-      showSnack(`${id ? "L'édition" : 'La création'} de l'évènement a échoué !`, 'error')
-      setLoading(false)
-    }
-    if (!id) createEvent(payload, slug => navigate(`/event/${slug}`), fallback)
-    else {
-      payload.id = id
-      updateEvent(payload, () => navigate(`/event/${event.slug}`), fallback)
-    }
   }
 
   const archive = () => {
@@ -318,6 +325,7 @@ function NewEvent({ id }) {
 
   return (
     <Wrapper>
+      <GoBack />
       <Page title={`${id ? 'Edition' : 'Création'} ${name ? `de ${name}` : "d'un évènement"}`}>
         <If condition={!!(id && event)}>
           <EventsStatus className='switch' event={event} />
@@ -339,24 +347,21 @@ function NewEvent({ id }) {
           </Grid>
         </div>
         <div id='group'>
-          <label htmlFor='group-select'>Groupe créateur de l&rsquo;évènement :</label>
-          <Select
-            displayEmpty
-            id='group-select'
-            onChange={e => setGroup(e.target.value)}
-            value={group}
-          >
-            <MenuItem value='new'>
-              <em>Nouveau groupe</em>
-            </MenuItem>
-            <Divider />
-            {groups &&
-              groups.map(g => (
-                <MenuItem key={g._id} value={g._id}>
-                  {g.slug}
-                </MenuItem>
-              ))}
-          </Select>
+          <label htmlFor='group-select'>
+            Groupe créateur de l&rsquo;évènement :
+            <Select displayEmpty id='group-select' onChange={e => setGroup(e.target.value)} value={group}>
+              <MenuItem value='new'>
+                <em>Nouveau groupe</em>
+              </MenuItem>
+              <Divider />
+              {groups &&
+                groups.map(g => (
+                  <MenuItem key={g._id} value={g._id}>
+                    {g.slug}
+                  </MenuItem>
+                ))}
+            </Select>
+          </label>
           <If condition={!groupLoading && group === 'new'}>
             <TextField
               className='new-group'
@@ -386,12 +391,7 @@ function NewEvent({ id }) {
               ))}
             </Select>
           </FormControl>
-          <DatePicker
-            date={startDate}
-            disabled={loading || eventLoading}
-            label='Début :'
-            setDate={validateStartDate}
-          />
+          <DatePicker date={startDate} disabled={loading || eventLoading} label='Début :' setDate={validateStartDate} />
           <DatePicker
             date={endDate}
             disabled={loading || eventLoading}
@@ -446,17 +446,8 @@ function NewEvent({ id }) {
             <p className='error'>{addressError}&nbsp;:</p>
           </If>
           <If condition={typeof window !== 'undefined'}>
-            <SingleMap
-              coords={coordinates}
-              locate
-              onClick={({ lat, lng }) => setCoordinates([lng, lat])}
-            />
-            <input
-              placeholder="Cliquez sur la carte pour obtenir l'adresse..."
-              readOnly
-              type='text'
-              value={address}
-            />
+            <SingleMap coords={coordinates} locate onClick={({ lat, lng }) => setCoordinates([lng, lat])} />
+            <input placeholder="Cliquez sur la carte pour obtenir l'adresse..." readOnly type='text' value={address} />
           </If>
         </div>
         <If condition={!!id}>
@@ -493,19 +484,9 @@ function NewEvent({ id }) {
   )
 }
 
-const initialOccurrence = {
-  mon: false,
-  tue: false,
-  wed: false,
-  thu: false,
-  fri: false,
-  sat: false,
-  sun: false
-}
-
 class FrLocalizedUtils extends DateFnsUtils {
   getDateTimePickerHeaderText(date) {
-    return this.format(date, 'd MMM', { locale: this.locale })
+    return this.format(date, 'dd/MM', { locale: this.locale })
   }
 }
 

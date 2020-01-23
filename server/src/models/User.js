@@ -19,7 +19,9 @@ class User extends Model {
         password: String,
         photo: String,
         valid: { type: Boolean, default: false },
-        provider: String
+        provider: String,
+        authLinkToken: String,
+        authLinkExpires: Number
       },
       { timestamps: true }
     )

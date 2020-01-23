@@ -2,14 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import Map from '../Map'
 
-const SingleMap = ({
-  id = 'map',
-  onClick,
-  coords,
-  locate,
-  viewOffset,
-  zoom
-}) => {
+const SingleMap = ({ id = 'map', onClick, coords, locate, viewOffset, zoom }) => {
   const [map, setMap] = useState(null)
 
   useEffect(() => {

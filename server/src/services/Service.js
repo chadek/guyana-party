@@ -24,7 +24,7 @@ class Service {
       }
     }
 
-    this.model
+    return this.model
       .find(query)
       .skip(skip)
       .limit(limit)
@@ -33,21 +33,19 @@ class Service {
       .catch(fallback)
   }
 
-  read = (id, next, fallback) => {
+  read = (id, next, fallback) =>
     this.model
       .findById(id)
       .then(next)
       .catch(fallback)
-  }
 
-  create = (body, next, fallback) => {
+  create = (body, next, fallback) =>
     this.model
       .create(body)
       .then(next)
       .catch(fallback)
-  }
 
-  update = (id, body, next, fallback) => {
+  update = (id, body, next, fallback) =>
     this.model
       .findByIdAndUpdate(id, body, { new: true, runValidators: true })
       .then(data => {
@@ -55,9 +53,8 @@ class Service {
         next(data)
       })
       .catch(fallback)
-  }
 
-  delete = (id, next, fallback) => {
+  delete = (id, next, fallback) =>
     this.model
       .findByIdAndDelete(id)
       .then(data => {
@@ -65,7 +62,6 @@ class Service {
         next(data)
       })
       .catch(fallback)
-  }
 }
 
 export default Service

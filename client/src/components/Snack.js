@@ -60,13 +60,7 @@ function Snack({ msg, variant }) {
       >
         <SnackbarContent
           action={[
-            <IconButton
-              aria-label='Close'
-              className='close'
-              color='inherit'
-              key='close'
-              onClick={hideSnack}
-            >
+            <IconButton aria-label='Close' className='close' color='inherit' key='close' onClick={hideSnack}>
               <CloseIcon className='icon' />
             </IconButton>
           ]}
@@ -84,14 +78,8 @@ function Snack({ msg, variant }) {
   )
 }
 
-Snack.propTypes = {
-  msg: PropTypes.string,
-  variant: PropTypes.string
-}
+Snack.propTypes = { msg: PropTypes.string, variant: PropTypes.string }
 
-export default subscribe(Snack, [snackState], ({ snackState: { msg, variant } }) => ({
-  msg,
-  variant
-}))
+export default subscribe(Snack, [snackState], ({ snackState: { msg, variant } }) => ({ msg, variant }))
 
 export const showSnack = (msg, variant = 'success') => snackState.setState({ msg, variant })

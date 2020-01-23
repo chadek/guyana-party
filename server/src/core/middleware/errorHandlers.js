@@ -7,9 +7,7 @@ import { logError } from '../logger'
   Instead of using try{} catch(e) {} in each controller, we wrap the function in
   catchErrors(), catch any errors they throw, and pass it along to our express middleware with next()
 */
-export const catchErrors = fn => {
-  return (req, res, next) => fn(req, res, next).catch(next)
-}
+export const catchErrors = fn => (req, res, next) => fn(req, res, next).catch(next)
 
 /*
   Not Found Error Handler

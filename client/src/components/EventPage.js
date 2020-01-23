@@ -144,7 +144,7 @@ function EventPage({ slug }) {
       if (occurrence[value]) {
         if (count === 0) setShowDays(true)
         str += (count > 0 ? ', ' : '') + label
-        count++
+        count += 1
       }
     })
     setOccurrenceStr(str)
@@ -167,9 +167,7 @@ function EventPage({ slug }) {
 
   return (
     <Wrapper>
-      {!loading && (
-        <SingleMap coords={event && event.location.coordinates} viewOffset={0.006} zoom={16} />
-      )}
+      {!loading && <SingleMap coords={event && event.location.coordinates} viewOffset={0.006} zoom={16} />}
       <Page loading={loading && !event}>
         {event && (
           <>
@@ -250,11 +248,7 @@ function EventPage({ slug }) {
             </section>
             <SingleMap coords={event && event.location.coordinates} id='mobileMap' zoom={16} />
             <section id='photos'>
-              <p>
-                {`${
-                  event.photos && event.photos.length ? `Photos (${event.photos.length}) :` : ''
-                }`}
-              </p>
+              <p>{`${event.photos && event.photos.length ? `Photos (${event.photos.length}) :` : ''}`}</p>
               <PhotoList className='photos' photos={event.photos} />
             </section>
           </>

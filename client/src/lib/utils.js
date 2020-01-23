@@ -1,16 +1,21 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import dompurify from 'dompurify'
+import Showdown from 'showdown'
+import md5 from 'md5'
+
+export const MISSING_TOKEN_ERR = 'Token de connexion requis'
 
 export const reload = () => {
   if (typeof window !== 'undefined') window.location.reload()
 }
 
-export const gravatar = email => `https://www.gravatar.com/avatar/${require('md5')(email)}?d=retro`
+export const gravatar = email => `https://www.gravatar.com/avatar/${md5(email)}?d=retro`
 
-export const purify = async dirty => require('dompurify').sanitize(dirty)
+export const purify = async dirty => dompurify.sanitize(dirty)
 
 export const markToSafeHTML = markdown => {
-  const Showdown = require('showdown')
+  // const Showdown = require('showdown')
   const converter = new Showdown.Converter({
     tables: true,
     simplifiedAutoLink: true,
@@ -30,12 +35,11 @@ export const getToken = () => ({ jwt: Cookies.get('gp_jwt'), uid: getUID() })
 
 export const fetcher = url => axios.get(url).then(r => r.data)
 
-export const axiosGet = (url, next, fallback) => {
-  return axios
+export const axiosGet = (url, next, fallback) =>
+  axios
     .get(url)
     .then(payload => next(payload))
     .catch(fallback)
-}
 
 export const axiosPost = ({ url, data }, next, fallback) => {
   const jwt = Cookies.get('gp_jwt')
@@ -91,11 +95,8 @@ export const gpsCoords = (lat, lng) => {
 
 export const compress = (files, next) => {
   if (typeof window === 'undefined') return // window not defined in ssr
-  const Compress = require('client-compress')
-  const compressor = new Compress({
-    targetSize: 1.0,
-    quality: 0.75
-  })
+  const Compress = require('client-compress') // eslint-disable-line global-require
+  const compressor = new Compress({ targetSize: 1.0, quality: 0.75 })
   compressor.compress(files).then(data => next(data))
 }
 export const scrollTo = selector => {
@@ -103,10 +104,8 @@ export const scrollTo = selector => {
   if (target) target.scrollIntoView({ behavior: 'smooth', block: 'end' })
 }
 
-export const MISSING_TOKEN_ERR = 'Token de connexion requis'
-
-export const formatResult = res => {
-  return res.map(d => {
+export const formatResult = res =>
+  res.map(d => {
     if (d.photos && d.photos.length > 0) {
       // d.photo = URL.createObjectURL(getBlob(d.photos[0]))
       // delete d.photos
@@ -114,4 +113,3 @@ export const formatResult = res => {
     }
     return d
   })
-}

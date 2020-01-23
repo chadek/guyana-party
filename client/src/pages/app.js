@@ -24,7 +24,7 @@ PrivateRoute.propTypes = {
   component: PropTypes.func
 }
 
-export default () => (
+const app = () => (
   <>
     <Seo title='Tableau de bord' />
     <Router>
@@ -38,3 +38,5 @@ export default () => (
     </Router>
   </>
 )
+
+export default app

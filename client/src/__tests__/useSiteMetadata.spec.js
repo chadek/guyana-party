@@ -1,5 +1,5 @@
-import { expect } from '../lib/test-utils'
 import { renderHook } from '@testing-library/react-hooks'
+import { expect } from '../lib/test-utils'
 
 import useSiteMetadata from '../lib/useSiteMetadata'
 

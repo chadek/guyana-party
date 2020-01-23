@@ -8,8 +8,8 @@ const route = `${api}/events`
 afterAll(done => mongoose.disconnect(done))
 
 describe('GET /events', () => {
-  it('should get data correctly', () => {
-    return request
+  it('should get data correctly', () =>
+    request
       .get(route)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -17,6 +17,5 @@ describe('GET /events', () => {
         expect(body.status).toBe(200)
         expect(body.total).toBeGreaterThanOrEqual(0)
         expect(body.data).toBeDefined()
-      })
-  })
+      }))
 })

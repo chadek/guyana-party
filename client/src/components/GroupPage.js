@@ -14,12 +14,7 @@ import PhotoList from './PhotoList'
 import Community from './Community'
 import { useEventsByGroup } from '../lib/services/eventService'
 import { useGroup, archiveGroup } from '../lib/services/groupService'
-import {
-  isAdmin,
-  confirmMember,
-  addPendingRequest,
-  removePendingRequest
-} from '../lib/services/communityService'
+import { isAdmin, confirmMember, addPendingRequest, removePendingRequest } from '../lib/services/communityService'
 import { markToSafeHTML } from '../lib/utils'
 
 const Wrapper = styled.div`
@@ -117,7 +112,7 @@ function GroupPage({ slug }) {
     })()
   }, [group])
 
-  const archive = (id, author) => {
+  const archive = () => {
     const next = () => {
       showSnack('Groupe archivé avec succès')
       navigate('/app')
@@ -180,21 +175,13 @@ function GroupPage({ slug }) {
                 )}
                 {pending && (
                   <>
-                    <p className='ok'>
-                      Votre demande d&rsquo;adhésion est en cours de traitement.
-                    </p>
-                    <Button
-                      onClick={() => removePendingRequest(group)}
-                      size='small'
-                      variant='contained'
-                    >
+                    <p className='ok'>Votre demande d&rsquo;adhésion est en cours de traitement.</p>
+                    <Button onClick={() => removePendingRequest(group)} size='small' variant='contained'>
                       Annuler la demande
                     </Button>
                   </>
                 )}
-                {denied && (
-                  <strong className='error'>Vous avez été bloqué.</strong>
-                )}
+                {denied && <strong className='error'>Vous avez été bloqué.</strong>}
               </center>
             </section>
 
@@ -206,13 +193,7 @@ function GroupPage({ slug }) {
               />
             </section>
             <section id='photos'>
-              <p>
-                {`${
-                  group.photos && group.photos.length
-                    ? `Photos (${group.photos.length}) :`
-                    : ''
-                }`}
-              </p>
+              <p>{`${group.photos && group.photos.length ? `Photos (${group.photos.length}) :` : ''}`}</p>
               <PhotoList className='photos' photos={group.photos} />
             </section>
             <CardList

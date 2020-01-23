@@ -35,14 +35,6 @@ class UserController extends Controller {
     )
   }
 
-  signup = async (req, res, next) => {
-    this.service.signup(
-      req.body,
-      () => res.status(201).json(this.format({ message: 'Ok', status: 201 })),
-      next
-    )
-  }
-
   login = async (req, res, next) => {
     const success = ({ user, token }) => {
       res.status(200).json(this.format({ custom: { user, token } }))
@@ -50,12 +42,29 @@ class UserController extends Controller {
     const fallback = err => next({ ...err, status: 401 })
 
     const { provider } = req.body
-    if (!provider) {
-      this.service.login(req.body, success, fallback)
-    } else {
+    if (provider) {
       const capProvider = provider.charAt(0).toUpperCase() + provider.slice(1)
       this.service[`login${capProvider}`](req.body, success, fallback)
     }
+  }
+
+  sendEmail = async (req, res, next) => {
+    const { email, linkHost } = req.body
+    this.service.sendEmail(
+      { email, linkHost },
+      provider => res.status(200).json(this.format({ message: 'Ok', status: 200, custom: { provider } })),
+      err => next({ ...err, status: 400 })
+    )
+  }
+
+  loginEmail = async (req, res, next) => {
+    this.service.loginEmail(
+      req.body.authLinkToken,
+      ({ user, token }) => {
+        res.status(200).json(this.format({ custom: { user, token } }))
+      },
+      err => next({ ...err, status: 401 })
+    )
   }
 }
 

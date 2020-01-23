@@ -1,16 +1,7 @@
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { isAdmin, isMember } from './communityService'
-import {
-  axiosGet,
-  axiosPost,
-  axiosPut,
-  axiosDelete,
-  fetcher,
-  getUID,
-  formatResult,
-  MISSING_TOKEN_ERR
-} from '../utils'
+import { axiosGet, axiosPost, axiosPut, axiosDelete, fetcher, getUID, formatResult, MISSING_TOKEN_ERR } from '../utils'
 
 export const createEvent = (payload, next, fallback) => {
   const userId = getUID()
@@ -150,6 +141,11 @@ export const useEvent = ({ id, slug }) => {
   const [error, setError] = useState(null)
   const [event, setEvent] = useState(null)
 
+  const formatError = error => {
+    if (error) setError(error)
+    setLoading(false)
+  }
+
   useEffect(() => {
     if ((!id && !slug) || event) return setLoading(false)
     axiosGet(
@@ -158,7 +154,7 @@ export const useEvent = ({ id, slug }) => {
         if (!res || res.status !== 200 || !res.data) {
           return formatError('Une erreur interne est survenue')
         }
-        const parsePhoto = p => {
+        const parsePhoto = p =>
           // const blob = getBlob(p)
           // Object.assign(blob, {
           //   preview: URL.createObjectURL(blob),
@@ -166,24 +162,22 @@ export const useEvent = ({ id, slug }) => {
           // })
           // return blob
           // return `${process.env.STATIC}/${p}`
-          return { preview: `${process.env.STATIC}/${p}`, name: p }
-        }
+          ({ preview: `${process.env.STATIC}/${p}`, name: p })
+
+        const { data } = res
         if (slug) {
-          res.data[0].photos = res.data[0].photos.map(parsePhoto)
-          res.data = res.data[0]
+          // res.data[0].photos = res.data[0].photos.map(parsePhoto)
+          // res.data = res.data[0]
+          data[0].photos = data[0].photos.map(parsePhoto)
+          setEvent(data[0])
         } else {
-          res.data.photos = res.data.photos.map(parsePhoto)
+          data.photos = data.photos.map(parsePhoto)
+          setEvent(data)
         }
-        setEvent(res.data)
       },
       formatError
     ).finally(formatError)
   }, [event, id, slug])
-
-  const formatError = error => {
-    if (error) setError(error)
-    setLoading(false)
-  }
 
   return { loading, error, event }
 }
@@ -194,10 +188,7 @@ export const useEvents = () => {
   let uid = getUID()
   uid = uid ? `&uid=${uid}` : ''
 
-  const { data, error, isValidating: loading } = useSWR(
-    `${process.env.API}/search?isapp=true${uid}`,
-    fetcher
-  )
+  const { data, error, isValidating: loading } = useSWR(`${process.env.API}/search?isapp=true${uid}`, fetcher)
 
   useEffect(() => {
     if (!error && data && data.total > 0) setEvents(formatResult(data.data))

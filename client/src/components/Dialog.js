@@ -14,12 +14,7 @@ const MyDialog = ({ action, close, isOpen, text, title }) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'))
 
   return (
-    <Dialog
-      aria-labelledby='responsive-dialog-title'
-      fullScreen={fullScreen}
-      onClose={close}
-      open={isOpen}
-    >
+    <Dialog aria-labelledby='responsive-dialog-title' fullScreen={fullScreen} onClose={close} open={isOpen}>
       <DialogTitle id='responsive-dialog-title'>{title}</DialogTitle>
       <DialogContent>
         <DialogContentText>{text}</DialogContentText>
