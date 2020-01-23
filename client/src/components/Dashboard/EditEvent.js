@@ -1,3 +1,6 @@
+import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import DateFnsUtils from '@date-io/date-fns'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -17,9 +20,6 @@ import EditIcon from '@material-ui/icons/Edit'
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import fr from 'date-fns/locale/fr'
 import { navigate } from 'gatsby'
-import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
 import { days, toUTCIsoDate, toZonedTime, userTZ } from '../../lib/date'
 import tzList from '../../lib/tzList'
 import { isAdmin } from '../../lib/services/communityService'
@@ -34,6 +34,7 @@ import Description from './Mde'
 import Page from './Page'
 import Photos from './Photos'
 import SingleMap from './SingleMap'
+import GoBack from './GoBack'
 
 const Wrapper = styled.div`
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
@@ -324,6 +325,7 @@ function NewEvent({ id }) {
 
   return (
     <Wrapper>
+      <GoBack />
       <Page title={`${id ? 'Edition' : 'Création'} ${name ? `de ${name}` : "d'un évènement"}`}>
         <If condition={!!(id && event)}>
           <EventsStatus className='switch' event={event} />

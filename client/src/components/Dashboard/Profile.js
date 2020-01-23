@@ -11,6 +11,7 @@ import { useArchived as useArchivedGroups } from '../../lib/services/groupServic
 import { compress, reload } from '../../lib/utils'
 import FormInput from '../addons/FormInput'
 import { showSnack } from '../Snack'
+import GoBack from './GoBack'
 
 const Wrapper = styled.section`
   max-width: 430px;
@@ -73,8 +74,8 @@ function Profile() {
   const checkName = value => {
     setNameError('')
     if (!value) return setNameError('Veuillez entrer votre nom')
-    if (value.length < 5) {
-      return setNameError('Le nom doit comporter au moins 5 caractères')
+    if (value.length < 3) {
+      return setNameError('Le nom doit comporter au moins 3 caractères')
     }
     return true
   }
@@ -107,60 +108,63 @@ function Profile() {
   }
 
   return (
-    <Page loading={userLoading && !user}>
-      <Wrapper className='grid'>
-        <Image
-          alt='User avatar'
-          className='cover'
-          onClick={() => {
-            document.getElementById('file').click()
-          }}
-          src={photo.preview || photo}
-          title='Cliquez pour modifier votre photo'
-        />
-        <FormWrapper onSubmit={save}>
-          <FormInput accept='image/*' disabled={loading} hidden id='file' onChange={fileHandle} type='file' />
-          <FormInput
-            disabled={loading}
-            error={nameError}
-            id='name'
-            label='Nom'
-            onBlur={e => checkName(e.target.value)}
-            onChange={e => setName(e.target.value)}
-            placeholder='Votre nom'
-            value={name}
+    <>
+      <GoBack style={{ top: '3rem' }} />
+      <Page loading={userLoading && !user}>
+        <Wrapper className='grid'>
+          <Image
+            alt='User avatar'
+            className='cover'
+            onClick={() => {
+              document.getElementById('file').click()
+            }}
+            src={photo.preview || photo}
+            title='Cliquez pour modifier votre photo'
           />
-          <FormInput
-            disabled={loading || !!(user && user.provider)}
-            error={emailError}
-            id='email'
-            label='Email'
-            onBlur={e => checkEmail(e.target.value)}
-            onChange={e => setEmail(e.target.value)}
-            placeholder='exemple@email.com'
-            title={
-              user && user.provider
-                ? `Vous êtes connecté via ${user.provider}, vous ne pouvez éditer votre email ici.`
-                : ''
-            }
-            value={email}
-          />
-          <div className='save center'>
-            <Button
-              aria-label='Enregistrer'
-              color='primary'
-              disabled={loading || userLoading}
-              onClick={save}
-              variant='contained'
-            >
-              {loading ? 'Chargement...' : 'Enregistrer'}
-            </Button>
-          </div>
-        </FormWrapper>
-      </Wrapper>
-      <CardList data={events} isArchived loading={eventLoading} title='Mes évènements archivés' />
-      <CardList data={groups} isArchived isGroup loading={groupLoading} title='Mes groupes archivés' />
-    </Page>
+          <FormWrapper onSubmit={save}>
+            <FormInput accept='image/*' disabled={loading} hidden id='file' onChange={fileHandle} type='file' />
+            <FormInput
+              disabled={loading}
+              error={nameError}
+              id='name'
+              label='Nom'
+              onBlur={e => checkName(e.target.value)}
+              onChange={e => setName(e.target.value)}
+              placeholder='Votre nom'
+              value={name}
+            />
+            <FormInput
+              disabled={loading || !!(user && user.provider)}
+              error={emailError}
+              id='email'
+              label='Email'
+              onBlur={e => checkEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
+              placeholder='exemple@email.com'
+              title={
+                user && user.provider
+                  ? `Vous êtes connecté via ${user.provider}, vous ne pouvez éditer votre email ici.`
+                  : ''
+              }
+              value={email}
+            />
+            <div className='save center'>
+              <Button
+                aria-label='Enregistrer'
+                color='primary'
+                disabled={loading || userLoading}
+                onClick={save}
+                variant='contained'
+              >
+                {loading ? 'Chargement...' : 'Enregistrer'}
+              </Button>
+            </div>
+          </FormWrapper>
+        </Wrapper>
+        <CardList data={events} isArchived loading={eventLoading} title='Mes évènements archivés' />
+        <CardList data={groups} isArchived isGroup loading={groupLoading} title='Mes groupes archivés' />
+      </Page>
+    </>
   )
 }
 
