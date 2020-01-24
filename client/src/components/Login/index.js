@@ -49,7 +49,7 @@ function Login() {
   const googleHandle = res => {
     if (res.error) {
       console.error(res)
-      return showSnack('Une erreur interner est survenue !', 'error')
+      return showSnack('Une erreur interne est survenue !', 'error')
     }
     setLoading(true)
     loginGoogle(
@@ -108,6 +108,7 @@ function Login() {
       err => {
         console.log(err)
         setLoading(false)
+        showSnack('Une erreur interne est survenue !', 'error')
       }
     )
   }
