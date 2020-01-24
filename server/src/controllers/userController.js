@@ -53,7 +53,7 @@ class UserController extends Controller {
     this.service.sendEmail(
       { email, linkHost },
       provider => res.status(200).json(this.format({ message: 'Ok', status: 200, custom: { provider } })),
-      err => next({ ...err, status: 400 })
+      err => next({ ...err })
     )
   }
 

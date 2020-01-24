@@ -74,7 +74,7 @@ class UserService extends Service {
     }
   }
 
-  sendEmail = async ({ email, linkHost }, next) => {
+  sendEmail = async ({ email, linkHost }, next, fallback) => {
     let user = await this.model.findOne({ email })
 
     const authLinkToken = crypto.randomBytes(20).toString('hex')
@@ -95,12 +95,15 @@ class UserService extends Service {
     }
 
     const linkURL = `${linkHost}?token=${authLinkToken}`
-    await sendMail({
-      to: user.email,
-      subject: 'Connectez-vous à Guyana-Party',
-      html: `<p>Bonjour</p><p>Nous avons reçu une demande de connexion à <i>Guyana-Party</i> depuis cette adresse e-mail. Si vous voulez vous connecter avec votre compte <a href="mailto:${email}" target="_blank" rel="noopener noreferrer">${email}</a>, cliquez sur le lien suivant :</p><p><a href="${linkURL}" target="_blank" rel="noopener noreferrer">Se connecter à Guyana-Party</a></p><p>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.</p><p>Merci,</p><p>Votre équipe <i>Guyana-Party</i></p>`
-    })
-    next()
+    sendMail(
+      {
+        to: user.email,
+        subject: 'Connectez-vous à Guyana-Party',
+        html: `<p>Bonjour</p><p>Nous avons reçu une demande de connexion à <i>Guyana-Party</i> depuis cette adresse e-mail. Si vous voulez vous connecter avec votre compte <a href="mailto:${email}" target="_blank" rel="noopener noreferrer">${email}</a>, cliquez sur le lien suivant :</p><p><a href="${linkURL}" target="_blank" rel="noopener noreferrer">Se connecter à Guyana-Party</a></p><p>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.</p><p>Merci,</p><p>Votre équipe <i>Guyana-Party</i></p>`
+      },
+      next,
+      fallback
+    )
   }
 
   loginEmail = async (authLinkToken, next, fallback) => {
