@@ -37,8 +37,8 @@ class Map {
       zoom: this.zoom,
       zoomControl: false, // remove default zoom control
       layers: [
-        L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://openstreetmap.org/copyright">Contributeurs de OpenStreetMap</a>',
           minZoom: 3,
           maxZoom: 19
         })
