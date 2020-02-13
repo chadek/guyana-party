@@ -1,6 +1,10 @@
 import multer from 'multer'
 import jimp from 'jimp'
 import { uuid } from 'uuidv4'
+import fs from 'fs'
+import { logError } from '../logger'
+
+const cloudinary = require('cloudinary').v2
 
 const options = {
   storage: multer.memoryStorage(),
@@ -25,20 +29,28 @@ export default (req, res, next) => {
   mult(req, res, async err => {
     if (err) return next(err)
     if (!req.files) return next()
-    // req.body.photos = req.files.map(p => {
-    //   return { data: p.buffer, contentType: p.mimetype }
-    // })
+
     req.body.photos = req.body.photos || []
+
     await asyncForEach(req.files, async p => {
-      const extension = p.mimetype.split('/')[1]
-      const fileName = `${uuid()}.${extension}`
-      req.body.photos.push(fileName)
+      const fileName = `./uploads/${uuid()}`
+
       const photo = await jimp.read(p.buffer)
       if (photo.bitmap.width > 500) {
         await photo.resize(500, jimp.AUTO)
       }
       await photo.quality(60)
-      await photo.write(`./uploads/${fileName}`)
+      await photo.write(fileName)
+
+      return cloudinary.uploader
+        .upload(fileName, { folder: `libhum/` })
+        .then(data => {
+          req.body.photos.push(data.secure_url)
+          fs.unlink(fileName, err => {
+            if (err) logError(err)
+          })
+        })
+        .catch(logError)
     })
     next()
   })

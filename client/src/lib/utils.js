@@ -15,7 +15,6 @@ export const gravatar = email => `https://www.gravatar.com/avatar/${md5(email)}?
 export const purify = async dirty => dompurify.sanitize(dirty)
 
 export const markToSafeHTML = markdown => {
-  // const Showdown = require('showdown')
   const converter = new Showdown.Converter({
     tables: true,
     simplifiedAutoLink: true,
@@ -24,11 +23,6 @@ export const markToSafeHTML = markdown => {
   })
   return purify(converter.makeHtml(markdown))
 }
-
-// export const getBlob = photo => {
-//   const arrayBufferView = new Uint8Array(photo.data.data)
-//   return new Blob([arrayBufferView], { type: photo.contentType })
-// }
 
 export const getUID = () => Cookies.get('gp_uid')
 export const getToken = () => ({ jwt: Cookies.get('gp_jwt'), uid: getUID() })
@@ -103,13 +97,3 @@ export const scrollTo = selector => {
   const target = document.querySelector(selector)
   if (target) target.scrollIntoView({ behavior: 'smooth', block: 'end' })
 }
-
-export const formatResult = res =>
-  res.map(d => {
-    if (d.photos && d.photos.length > 0) {
-      // d.photo = URL.createObjectURL(getBlob(d.photos[0]))
-      // delete d.photos
-      d.photo = `${process.env.STATIC}/${d.photos[0]}`
-    }
-    return d
-  })

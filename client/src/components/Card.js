@@ -76,7 +76,7 @@ const Wrapper = styled.div`
 `
 
 function Card({
-  data: { name, photo, slug, _id, startDate, endDate, isPrivate, status, group, community },
+  data: { name, photos, slug, _id, startDate, endDate, isPrivate, status, group, community },
   isGroup,
   isArchived
 }) {
@@ -127,7 +127,7 @@ function Card({
 
   return (
     <Wrapper>
-      <Image alt={name} className='cover' height='200' loading='lazy' src={photo || ''} />
+      <Image alt={name} className='cover' height='200' loading='lazy' src={photos.length > 0 ? photos[0] : ''} />
       <div className='caption'>
         <div className='title text-wrap center'>
           <Link aria-label={name} title={name} to={`/${isGroup ? 'group' : 'event'}/${slug}`}>

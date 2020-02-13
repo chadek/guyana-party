@@ -72,10 +72,12 @@ const maxFiles = 3
 function Photos({ photos, setPhotos, disabled }) {
   const [loading, setLoading] = useState(false)
   const [dropError, setDropError] = useState('')
-  // const [objectUrls, setObjectUrls] = useState([])
 
   useEffect(
-    () => () => photos.forEach(p => URL.revokeObjectURL(p.preview)), // Revoke the data uris to avoid memory leaks
+    () => () =>
+      photos.forEach(p => {
+        if (p.preview) URL.revokeObjectURL(p.preview) // Revoke the data uris to avoid memory leaks
+      }),
     [photos]
   )
 
@@ -92,28 +94,27 @@ function Photos({ photos, setPhotos, disabled }) {
     setLoading(true)
 
     compress(acceptedFiles, data => {
-      // const objUrls = []
       const newPhotos = data.map(({ photo, info }) => {
         if (process.env.NODE_ENV !== 'production') {
-          console.log(`Added "${photo.name}":`, info)
+          console.log(`Photo "${photo.name}":`, info)
         }
-        // const preview = URL.createObjectURL(photo.data)
-        // objUrls.push(preview)
         return Object.assign(photo.data, {
           preview: URL.createObjectURL(photo.data)
-          // id: `${Date.now()}${photos.length}${index}`
         })
       })
-      // setObjectUrls(objUrls)
       setPhotos([...photos, ...newPhotos])
       setLoading(false)
     })
   }
 
   const deletePhoto = photo => {
-    // setPhotos(photos.filter(p => p.id !== photo.id))
-    setPhotos(photos.filter(p => p.preview !== photo.preview))
-    // URL.revokeObjectURL(photo.preview)
+    setPhotos(
+      photos.filter(p => {
+        if (p.preview) return p.preview !== photo.preview
+        return p !== photo
+      })
+    )
+    if (photo.preview) URL.revokeObjectURL(photo.preview)
   }
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
@@ -149,8 +150,8 @@ function Photos({ photos, setPhotos, disabled }) {
           {photos && photos.length > 0 && (
             <Grid container spacing={1}>
               {photos.map((p, index) => (
-                <Grid className='grid-item' item key={index}>
-                  <img alt='Preview' className='preview' src={p.preview} />
+                <Grid key={index} className='grid-item' item>
+                  <img alt='Preview' className='preview' src={p.preview || p} />
                   {!disabled && <CloseIcon className='delete' onClick={() => deletePhoto(p)} />}
                 </Grid>
               ))}

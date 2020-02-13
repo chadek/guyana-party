@@ -39,8 +39,8 @@
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.2",
     "enzyme-to-json": "3.4.4",
-    "gatsby": "2.19.16",
-    "gatsby-image": "2.2.40",
+    "gatsby": "2.19.17",
+    "gatsby-image": "2.2.41",
     "gatsby-plugin-create-client-paths": "2.1.22",
     "gatsby-plugin-manifest": "2.2.41",
     "gatsby-plugin-offline": "3.0.34",
@@ -114,7 +114,8 @@
           "jsxSingleQuote": true
         }
       ],
-      "jsx-a11y/label-has-for": 0
+      "jsx-a11y/label-has-for": 0,
+      "react/jsx-sort-props": "warn"
     }
   },
   "author": "Christopher Servius <https://github.com/spidergon>",

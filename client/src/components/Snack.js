@@ -60,7 +60,7 @@ function Snack({ msg, variant }) {
       >
         <SnackbarContent
           action={[
-            <IconButton aria-label='Close' className='close' color='inherit' key='close' onClick={hideSnack}>
+            <IconButton key='close' aria-label='Close' className='close' color='inherit' onClick={hideSnack}>
               <CloseIcon className='icon' />
             </IconButton>
           ]}

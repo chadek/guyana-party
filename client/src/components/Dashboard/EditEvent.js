@@ -415,6 +415,7 @@ function NewEvent({ id }) {
               <FormGroup row>
                 {days.map(({ label, value }, index) => (
                   <FormControlLabel
+                    key={index}
                     className='daylabel'
                     control={
                       <Checkbox
@@ -424,7 +425,6 @@ function NewEvent({ id }) {
                         value={value}
                       />
                     }
-                    key={index}
                     label={label}
                   />
                 ))}

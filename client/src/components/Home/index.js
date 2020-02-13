@@ -126,7 +126,7 @@ function Home() {
         <div className='grid' id='events'>
           {markers &&
             markers.map((marker, index) => (
-              <ListItem item={marker} key={marker.slug + index} selected={marker.slug === current} />
+              <ListItem key={marker.slug + index} item={marker} selected={marker.slug === current} />
             ))}
         </div>
         <div id='add-btn'>

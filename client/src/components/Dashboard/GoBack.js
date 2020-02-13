@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 
 const GoBack = ({ style }) => (
   <Wrapper style={style}>
-    <Link to='/app' title='Retourner au tableau de bord'>
+    <Link title='Retourner au tableau de bord' to='/app'>
       ⬅ Tableau de bord
     </Link>
   </Wrapper>

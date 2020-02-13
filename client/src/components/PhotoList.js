@@ -25,7 +25,7 @@ const PhotoList = ({ photos, className, conf }) => (
     {photos && photos.length > 0 && (
       <Slider {...(conf || sliderConf)}>
         {photos.map((p, index) => (
-          <Image alt='photo' className='cover' height='200' key={index} loading='lazy' src={p.preview || ''} />
+          <Image key={index} alt='photo' className='cover' height='200' loading='lazy' src={p || ''} />
         ))}
       </Slider>
     )}

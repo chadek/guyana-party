@@ -73,7 +73,7 @@ const CardList = ({ addBtn, title, data, isGroup, loading, className, groupId, c
           )) || ( */}
         <Slider {...(conf || sliderConf)}>
           {data.map((d, index) => (
-            <Card data={d} isArchived={isArchived} isGroup={isGroup} key={d.slug + index} />
+            <Card key={d.slug + index} data={d} isArchived={isArchived} isGroup={isGroup} />
           ))}
         </Slider>
         {/* )} */}
