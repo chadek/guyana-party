@@ -108,7 +108,7 @@ function GroupPage({ slug }) {
 
   useEffect(() => {
     ;(async () => {
-      if (group) setDescription(await markToSafeHTML(group.description))
+      if (group) setDescription(await markToSafeHTML(group.description.replace(/(?:\r\n|\r|\n)/g, '<br>')))
     })()
   }, [group])
 

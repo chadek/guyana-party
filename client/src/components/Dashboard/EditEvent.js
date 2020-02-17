@@ -30,7 +30,8 @@ import If from '../addons/If'
 import Dialog from '../Dialog'
 import { showSnack } from '../Snack'
 import EventsStatus from './EventStatus'
-import Description from './Mde'
+// import Description from './Mde'
+import Description from './Description'
 import Page from './Page'
 import Photos from './Photos'
 import SingleMap from './SingleMap'
@@ -98,7 +99,7 @@ const Wrapper = styled.div`
     right: 0;
     margin: 1rem;
   }
-  .mde,
+  .description,
   .photos,
   .save {
     margin-top: 2.5rem;

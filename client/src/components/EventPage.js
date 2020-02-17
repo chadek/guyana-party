@@ -126,7 +126,7 @@ function EventPage({ slug }) {
 
   useEffect(() => {
     ;(async () => {
-      if (event) setDescription(await markToSafeHTML(event.description))
+      if (event) setDescription(await markToSafeHTML(event.description.replace(/(?:\r\n|\r|\n)/g, '<br>')))
     })()
   }, [event])
 

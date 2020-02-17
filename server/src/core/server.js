@@ -25,7 +25,7 @@ if (isDev) server.use(morgan('dev')) // HTTP request logger
 
 setRoutes(server)
 
-server.use('/static', express.static('uploads'))
+// server.use('/static', express.static('uploads'))
 
 server.use(notFound) // manage 404 errors
 

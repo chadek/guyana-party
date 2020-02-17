@@ -14,7 +14,7 @@ import { archiveGroup, createGroup, updateGroup, useGroup } from '../../lib/serv
 import If from '../addons/If'
 import Dialog from '../Dialog'
 import { showSnack } from '../Snack'
-import Description from './Mde'
+import Description from './Description'
 import Page from './Page'
 import Photos from './Photos'
 import GoBack from './GoBack'
@@ -24,7 +24,7 @@ const Wrapper = styled.div`
     max-width: 290px;
     margin: auto;
   }
-  .mde,
+  .description,
   .photos,
   .save {
     margin-top: 2.5rem;
