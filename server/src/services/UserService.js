@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import { OAuth2Client } from 'google-auth-library'
 import crypto from 'crypto'
 import Service from './Service'
-import { googleClientId, secret } from '../core/env'
+import { appName, googleClientId, secret } from '../core/env'
 import { logInfo } from '../core/logger'
 import { sendMail } from '../core/mail'
 
@@ -98,8 +98,8 @@ class UserService extends Service {
     sendMail(
       {
         to: user.email,
-        subject: 'Connectez-vous à Guyana-Party',
-        html: `<p>Bonjour</p><p>Nous avons reçu une demande de connexion à <i>Guyana-Party</i> depuis cette adresse e-mail. Si vous voulez vous connecter avec votre compte <a href="mailto:${email}" target="_blank" rel="noopener noreferrer">${email}</a>, cliquez sur le lien suivant :</p><p><a href="${linkURL}" target="_blank" rel="noopener noreferrer">Se connecter à Guyana-Party</a></p><p>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.</p><p>Merci,</p><p>Votre équipe <i>Guyana-Party</i></p>`
+        subject: `Connectez-vous à ${appName}`,
+        html: `<p>Bonjour</p><p>Nous avons reçu une demande de connexion à <i>${appName}</i> depuis cette adresse e-mail. Si vous voulez vous connecter avec votre compte <a href="mailto:${email}" target="_blank" rel="noopener noreferrer">${email}</a>, cliquez sur le lien suivant :</p><p><a href="${linkURL}" target="_blank" rel="noopener noreferrer">Se connecter à ${appName}</a></p><p>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.</p><p>Merci,</p><p>Votre équipe <i>${appName}</i></p>`
       },
       next,
       fallback

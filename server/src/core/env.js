@@ -1,6 +1,7 @@
 require('dotenv').config()
 
-export const dbUri = process.env.NODE_ENV === 'test' ? process.env.TEST_DB_URI : process.env.DB_URI
+export const appName = process.env.APP_NAME || 'LibHum.org'
+export const dbUri = process.env.NODE_ENV === 'test' ? process.env.TEST_DB_URL : process.env.DB_URL
 export const port = process.env.PORT || 3000
 export const secret = process.env.SECRET
 export const api = process.env.API_ROUTE
