@@ -4,61 +4,69 @@ import { isAdmin, isMember } from './communityService'
 import { axiosGet, axiosPost, axiosPut, axiosDelete, fetcher, getUID, MISSING_TOKEN_ERR } from '../utils'
 
 export const createEvent = (payload, next, fallback) => {
-  const userId = getUID()
-  if (!userId) return fallback(MISSING_TOKEN_ERR)
+  try {
+    const userId = getUID()
+    if (!userId) return fallback(MISSING_TOKEN_ERR)
 
-  const formData = new FormData()
-  formData.append('name', payload.name)
-  formData.append('group', payload.group)
-  formData.append('description', payload.description)
-  formData.append('timezone', payload.timezone)
-  formData.append('startDate', payload.startDate)
-  formData.append('endDate', payload.endDate)
-  formData.append('occurrence', payload.occurrence)
-  formData.append('location[address]', payload.location.address)
-  formData.append('location[coordinates][0]', payload.location.coordinates[0])
-  formData.append('location[coordinates][1]', payload.location.coordinates[1])
-  formData.append('author', userId)
-  payload.photos.forEach(photo => formData.append('files[]', photo))
+    const formData = new FormData()
+    formData.append('name', payload.name)
+    formData.append('group', payload.group)
+    formData.append('description', payload.description)
+    formData.append('timezone', payload.timezone)
+    formData.append('startDate', payload.startDate)
+    formData.append('endDate', payload.endDate)
+    formData.append('occurrence', payload.occurrence)
+    formData.append('location[address]', payload.location.address)
+    formData.append('location[coordinates][0]', payload.location.coordinates[0])
+    formData.append('location[coordinates][1]', payload.location.coordinates[1])
+    formData.append('author', userId)
+    payload.photos.forEach(photo => formData.append('files[]', photo))
 
-  axiosPost(
-    { url: `${process.env.API}/events`, data: formData },
-    ({ data: res }) => {
-      if (res && res.status === 201 && res.data) next(res.data.slug)
-      else fallback('Une erreur interne est survenue')
-    },
-    fallback
-  )
+    axiosPost(
+      { url: `${process.env.API}/events`, data: formData },
+      ({ data: res }) => {
+        if (res && res.status === 201 && res.data) next(res.data.slug)
+        else fallback('Une erreur interne est survenue')
+      },
+      fallback
+    )
+  } catch (error) {
+    fallback(error)
+  }
 }
 
 export const updateEvent = (payload, next, fallback) => {
-  if (!payload.id) fallback()
-  if (!getUID()) return fallback(MISSING_TOKEN_ERR)
+  try {
+    if (!payload.id) fallback()
+    if (!getUID()) return fallback(MISSING_TOKEN_ERR)
 
-  const formData = new FormData()
-  formData.append('name', payload.name)
-  formData.append('group', payload.group)
-  formData.append('description', payload.description)
-  formData.append('timezone', payload.timezone)
-  formData.append('startDate', payload.startDate)
-  formData.append('endDate', payload.endDate)
-  formData.append('occurrence', payload.occurrence)
-  formData.append('location.address', payload.location.address)
-  formData.append('location.coordinates[0]', payload.location.coordinates[0])
-  formData.append('location.coordinates[1]', payload.location.coordinates[1])
-  payload.photos.forEach(photo => {
-    if (photo.size) formData.append('files[]', photo)
-    else formData.append('photos[]', photo)
-  })
+    const formData = new FormData()
+    formData.append('name', payload.name)
+    formData.append('group', payload.group)
+    formData.append('description', payload.description)
+    formData.append('timezone', payload.timezone)
+    formData.append('startDate', payload.startDate)
+    formData.append('endDate', payload.endDate)
+    formData.append('occurrence', payload.occurrence)
+    formData.append('location.address', payload.location.address)
+    formData.append('location.coordinates[0]', payload.location.coordinates[0])
+    formData.append('location.coordinates[1]', payload.location.coordinates[1])
+    payload.photos.forEach(photo => {
+      if (photo.size) formData.append('files[]', photo)
+      else formData.append('photos[]', photo)
+    })
 
-  axiosPut(
-    { url: `${process.env.API}/events/${payload.id}`, data: formData },
-    ({ data: res }) => {
-      if (res && res.status === 200 && res.data) next()
-      else fallback('Une erreur interne est survenue')
-    },
-    fallback
-  )
+    axiosPut(
+      { url: `${process.env.API}/events/${payload.id}`, data: formData },
+      ({ data: res }) => {
+        if (res && res.status === 200 && res.data) next()
+        else fallback('Une erreur interne est survenue')
+      },
+      fallback
+    )
+  } catch (error) {
+    fallback(error)
+  }
 }
 
 export const archiveEvent = (id, next, fallback) => {

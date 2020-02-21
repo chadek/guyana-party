@@ -10,7 +10,7 @@ import { archiveEvent, removeEvent } from '../lib/services/eventService'
 import { archiveGroup, removeGroup } from '../lib/services/groupService'
 import { Image, Link } from './addons'
 import Dialog from './Dialog'
-import { showSnack } from './Snack'
+import { toast } from '../lib/utils'
 
 const Wrapper = styled.div`
   position: relative;
@@ -95,17 +95,17 @@ function Card({
 
   const archive = () => {
     // if (!admin) {
-    //   return showSnack(
+    //   return toast(
     //     `Vous ne pouvez pas archiver ce${isGroup ? ' groupe' : 't évènement'}`,
     //     'error'
     //   )
     // }
     const next = () => {
-      showSnack(`${isGroup ? 'Groupe' : 'Évènement'} archivé avec succès`)
+      toast(`${isGroup ? 'Groupe' : 'Évènement'} archivé avec succès`, 'success')
       if (typeof window !== 'undefined') window.location.reload()
     }
     const fallback = error => {
-      showSnack('Une erreur est survenue', 'error')
+      toast('Une erreur est survenue', 'error')
       console.log(error)
     }
     if (isGroup) return archiveGroup(_id, next, fallback)
@@ -114,11 +114,11 @@ function Card({
 
   const remove = () => {
     const next = () => {
-      showSnack(`${isGroup ? 'Groupe' : 'Évènement'} supprimé avec succès`)
+      toast(`${isGroup ? 'Groupe' : 'Évènement'} supprimé avec succès`, 'success')
       if (typeof window !== 'undefined') window.location.reload()
     }
     const fallback = error => {
-      showSnack('Une erreur est survenue', 'error')
+      toast('Une erreur est survenue', 'error')
       console.log(error)
     }
     if (isGroup) return removeGroup(_id, next, fallback)

@@ -7,8 +7,8 @@ import { FormWrapper, LoginWrapper as Wrapper, OrDivWrapper } from './LoginStyle
 import LoginEmail from './LoginEmail'
 import { If } from '../addons'
 import Button from '../Button'
-import { showSnack } from '../Snack'
 import { useAuth } from '../../lib/services/authService'
+import { toast } from '../../lib/utils'
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -28,7 +28,7 @@ function Login() {
       loginEmail(
         token,
         () => navigate('/app'),
-        () => showSnack('Connexion impossible : Le lien de connexion a expiré ou est invalide !', 'error')
+        () => toast('Connexion impossible : Le lien de connexion a expiré ou est invalide !', 'error')
       )
     }
   }, [loginEmail])
@@ -40,7 +40,7 @@ function Login() {
       () => navigate('/app'),
       error => {
         setLoading(false)
-        showSnack('La connexion a echoué !', 'error')
+        toast('La connexion a echoué !', 'error')
         console.error(error)
       }
     )
@@ -49,7 +49,7 @@ function Login() {
   const googleHandle = res => {
     if (res.error) {
       console.error(res)
-      return showSnack('Une erreur interne est survenue !', 'error')
+      return toast('Une erreur interne est survenue !', 'error')
     }
     setLoading(true)
     loginGoogle(
@@ -57,7 +57,7 @@ function Login() {
       () => navigate('/app'),
       error => {
         setLoading(false)
-        showSnack('La connexion a echoué !', 'error')
+        toast('La connexion a echoué !', 'error')
         console.error(error)
       }
     )
@@ -108,7 +108,7 @@ function Login() {
       err => {
         console.log(err)
         setLoading(false)
-        showSnack('Une erreur interne est survenue !', 'error')
+        toast('Une erreur interne est survenue !', 'error')
       }
     )
   }

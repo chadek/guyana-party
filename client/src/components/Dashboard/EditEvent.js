@@ -10,13 +10,11 @@ import Fab from '@material-ui/core/Fab'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
-import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import DeleteIcon from '@material-ui/icons/Delete'
-import EditIcon from '@material-ui/icons/Edit'
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import fr from 'date-fns/locale/fr'
 import { navigate } from 'gatsby'
@@ -25,17 +23,14 @@ import tzList from '../../lib/tzList'
 import { isAdmin } from '../../lib/services/communityService'
 import { archiveEvent, createEvent, getAddressFromCoords, updateEvent, useEvent } from '../../lib/services/eventService'
 import { createGroup, useGroups } from '../../lib/services/groupService'
-import { scrollTo } from '../../lib/utils'
+import { scrollTo, toast } from '../../lib/utils'
 import If from '../addons/If'
 import Dialog from '../Dialog'
-import { showSnack } from '../Snack'
 import EventsStatus from './EventStatus'
-// import Description from './Mde'
 import Description from './Description'
 import Page from './Page'
 import Photos from './Photos'
 import SingleMap from './SingleMap'
-import GoBack from './GoBack'
 
 const Wrapper = styled.div`
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
@@ -44,8 +39,11 @@ const Wrapper = styled.div`
     margin: 1.5rem 0 2rem;
   }
   #name {
-    max-width: 290px;
-    margin: auto;
+    justify-items: center;
+    margin-top: 2rem;
+    .loading-name {
+      margin-right: 1rem;
+    }
   }
   #group,
   #dates,
@@ -56,13 +54,8 @@ const Wrapper = styled.div`
       margin-bottom: 0.5rem;
     }
   }
-  #group {
-    label {
-      margin-right: 1rem;
-    }
-    .new-group {
-      margin-left: 1rem;
-    }
+  #group .new-group {
+    margin-top: 1rem;
   }
   #dates {
     grid-template-columns: auto auto auto;
@@ -158,7 +151,7 @@ function NewEvent({ id }) {
 
   useEffect(() => {
     if (event && !isAdmin(event.group.community)) {
-      showSnack("Vous n'avez pas accès à ce groupe", 'error')
+      toast("Vous n'avez pas accès à ce groupe", 'error')
       return navigate('/app')
     }
   }, [event])
@@ -175,7 +168,7 @@ function NewEvent({ id }) {
 
   useEffect(() => {
     if (error) {
-      showSnack('Une erreur interne est survenue', 'error')
+      toast('Une erreur interne est survenue', 'error')
       return navigate('/app')
     }
     if (id && event) {
@@ -221,7 +214,7 @@ function NewEvent({ id }) {
       addr => setAddress(addr),
       error => {
         console.log(error)
-        return showSnack('Une erreur est survenue', 'error')
+        return toast('Une erreur est survenue', 'error')
       }
     )
   }, [coordinates])
@@ -261,7 +254,7 @@ function NewEvent({ id }) {
       return setEndDateError('La date de fin doit être différente de la date de début')
     }
     if (!description) {
-      scrollTo('.mde')
+      scrollTo('.description')
       return setDescError('Veuillez saisir une description :')
     }
     if (!address) {
@@ -284,7 +277,7 @@ function NewEvent({ id }) {
     const processEvent = p => {
       const fallback = error => {
         console.log(error)
-        showSnack(`${id ? "L'édition" : 'La création'} de l'évènement a échoué !`, 'error')
+        toast(`${id ? "L'édition" : 'La création'} de l'évènement a échoué !`, 'error')
         setLoading(false)
       }
       if (!id) createEvent(p, slug => navigate(`/event/${slug}`), fallback)
@@ -303,7 +296,7 @@ function NewEvent({ id }) {
         },
         error => {
           console.log(error)
-          showSnack('Une erreur est survenue lors de la création du groupe', 'error')
+          toast('Une erreur est survenue lors de la création du groupe', 'error')
         }
       )
     } else processEvent(payload)
@@ -311,14 +304,14 @@ function NewEvent({ id }) {
 
   const archive = () => {
     if (!isAdmin(event.group.community)) {
-      return showSnack('Vous ne pouvez pas archiver cet évènement', 'error')
+      return toast('Vous ne pouvez pas archiver cet évènement', 'error')
     }
     const next = () => {
-      showSnack('Évènement archivé avec succès')
+      toast('Évènement archivé avec succès', 'success')
       navigate('/app')
     }
     const fallback = error => {
-      showSnack('Une erreur est survenue', 'error')
+      toast('Une erreur est survenue', 'error')
       console.log(error)
     }
     archiveEvent(id, next, fallback)
@@ -326,30 +319,26 @@ function NewEvent({ id }) {
 
   return (
     <Wrapper>
-      <GoBack />
       <Page title={`${id ? 'Edition' : 'Création'} ${name ? `de ${name}` : "d'un évènement"}`}>
         <If condition={!!(id && event)}>
           <EventsStatus className='switch' event={event} />
         </If>
-        <div id='name'>
-          <Grid alignItems='flex-end' container spacing={1}>
-            <Grid item>{loading || eventLoading ? <CircularProgress /> : <EditIcon />}</Grid>
-            <Grid item>
-              <TextField
-                disabled={loading || eventLoading}
-                error={!!nameError}
-                fullWidth
-                helperText={nameError}
-                label='Nom de votre évènement'
-                onChange={e => setName(e.target.value)}
-                value={name}
-              />
-            </Grid>
-          </Grid>
+        <div className='flex' id='name'>
+          {(loading || eventLoading) && <CircularProgress className='loading-name' />}
+          <TextField
+            className='name-field'
+            disabled={loading || eventLoading}
+            error={!!nameError}
+            fullWidth
+            helperText={nameError}
+            label='Nom de votre évènement'
+            onChange={e => setName(e.target.value)}
+            value={name}
+          />
         </div>
         <div id='group'>
           <label htmlFor='group-select'>
-            Groupe créateur de l&rsquo;évènement :
+            Groupe créateur de l&rsquo;évènement :{' '}
             <Select displayEmpty id='group-select' onChange={e => setGroup(e.target.value)} value={group}>
               <MenuItem value='new'>
                 <em>Nouveau groupe</em>
@@ -368,9 +357,10 @@ function NewEvent({ id }) {
               className='new-group'
               disabled={loading || eventLoading}
               error={!!groupError}
+              fullWidth
               helperText={groupError}
               onChange={e => setNewGroup(e.target.value)}
-              placeholder='Nom'
+              placeholder='Nom du nouveau groupe'
               value={newGroup}
             />
           </If>

@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@babel/register": "7.8.3",
-    "bcrypt": "3.0.8",
+    "bcrypt": "4.0.0",
     "cloudinary": "1.19.0",
     "compression": "1.7.4",
     "connect-mongo": "3.2.0",
@@ -28,7 +28,7 @@
     "dotenv": "8.2.0",
     "express": "4.17.1",
     "express-session": "1.17.0",
-    "google-auth-library": "5.9.2",
+    "google-auth-library": "5.10.0",
     "helmet": "3.21.2",
     "html-to-text": "5.1.1",
     "jimp": "0.9.3",

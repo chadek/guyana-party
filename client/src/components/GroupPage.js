@@ -6,7 +6,6 @@ import Fab from '@material-ui/core/Fab'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Button from '@material-ui/core/Button'
-import { showSnack } from './Snack'
 import { If, Page } from './addons'
 import Dialog from './Dialog'
 import CardList from './CardList'
@@ -15,7 +14,7 @@ import Community from './Community'
 import { useEventsByGroup } from '../lib/services/eventService'
 import { useGroup, archiveGroup } from '../lib/services/groupService'
 import { isAdmin, confirmMember, addPendingRequest, removePendingRequest } from '../lib/services/communityService'
-import { markToSafeHTML } from '../lib/utils'
+import { markToSafeHTML, toast } from '../lib/utils'
 
 const Wrapper = styled.div`
   h1,
@@ -92,7 +91,7 @@ function GroupPage({ slug }) {
 
   useEffect(() => {
     if ((!loading && !group) || (group && group.status !== 'online')) {
-      showSnack(`Le group à l'adresse "${slug}" est introuvable`, 'error')
+      toast(`Le group à l'adresse "${slug}" est introuvable`, 'error')
       navigate('/')
     }
   }, [group, loading, slug])
@@ -114,11 +113,11 @@ function GroupPage({ slug }) {
 
   const archive = () => {
     const next = () => {
-      showSnack('Groupe archivé avec succès')
+      toast('Groupe archivé avec succès', 'success')
       navigate('/app')
     }
     const fallback = error => {
-      showSnack('Une erreur est survenue', 'error')
+      toast('Une erreur est survenue', 'error')
       console.log(error)
     }
     archiveGroup(group._id, next, fallback)

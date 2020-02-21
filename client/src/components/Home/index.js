@@ -10,7 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Map from './MainMap'
 import If from '../addons/If'
 import ListItem from './ListItem'
-import { showSnack } from '../Snack'
+import { toast } from '../../lib/utils'
 
 const Wrapper = styled.div`
   height: calc(100vh - ${props => props.theme.headerHeight});
@@ -104,9 +104,7 @@ function Home() {
           <Button
             endIcon={<GpsFixed />}
             onClick={() => {
-              if (mapActions.isDenied()) {
-                return showSnack('La localisation a été désactivée !', 'info')
-              }
+              if (mapActions.isDenied()) return toast('La localisation a été désactivée !')
               mapActions.locate()
             }}
             size='small'

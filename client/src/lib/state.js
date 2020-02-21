@@ -1,5 +1,5 @@
-import { State, subscribe } from 'jstates-react'
+// import { State, subscribe } from 'jstates-react'
 
-export const snackState = new State('snackState', { msg: '', variant: '' })
+// export const snackState = new State('snackState', { msg: '', variant: '' })
 
-export { subscribe }
+// export { subscribe }
