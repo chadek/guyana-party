@@ -1,5 +1,5 @@
 import { expect } from '../lib/test-utils'
-import { gravatar, purify } from '../lib/utils'
+import { gravatar, purify, gpsCoords } from '../lib/utils'
 
 describe('lib > utils.js > gravatar', () => {
   it('should return correct url with hashed email', () => {
@@ -23,5 +23,12 @@ describe('lib > utils.js > purify', () => {
     expect(str).to.equal('<table><tbody><tr><td>HEY</td></tr></tbody></table>')
     str = await purify('<UL><li><A HREF=//google.com>click</UL>')
     expect(str).to.equal('<ul><li><a href="//google.com">click</a></li></ul>')
+  })
+})
+
+describe('lib > utils.js > gpsCoords', () => {
+  it('should convert gps coordinates to DMS', () => {
+    const coord = gpsCoords(4.931609, -52.3009)
+    expect(coord).to.equal('4° 55′ 53″ N, 52° 18′ 3″ W')
   })
 })
