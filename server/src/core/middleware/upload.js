@@ -3,6 +3,7 @@ import jimp from 'jimp'
 import { uuid } from 'uuidv4'
 import fs from 'fs'
 import { logError } from '../logger'
+import { cloudinaryEnv } from '../env'
 
 const cloudinary = require('cloudinary').v2
 
@@ -43,7 +44,7 @@ export default (req, res, next) => {
       await photo.write(fileName)
 
       return cloudinary.uploader
-        .upload(fileName, { folder: `libhum/` })
+        .upload(fileName, { folder: cloudinaryEnv })
         .then(data => {
           req.body.photos.push(data.secure_url)
           fs.unlink(fileName, err => {

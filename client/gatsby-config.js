@@ -1,4 +1,4 @@
-const title = 'Guyana Party'
+const title = 'Libhum'
 
 module.exports = {
   siteMetadata: {
@@ -30,17 +30,16 @@ module.exports = {
       resolve: 'gatsby-plugin-manifest',
       options: {
         name: title,
-        short_name: 'Guyane',
+        short_name: 'Libhum',
         start_url: '/',
         background_color: '#663399',
         theme_color: '#663399',
         display: 'standalone',
         icon: 'src/images/favicon.png' // This path is relative to the root of the site.
       }
-    }
+    },
     // this (optional) plugin enables Progressive Web App + Offline functionality
-    // To learn more, visit: https://gatsby.dev/offline
-    // or https://www.gatsbyjs.org/docs/add-offline-support-with-a-service-worker/
-    // 'gatsby-plugin-offline'
+    // To learn more, visit: https://gatsby.dev/offline or https://www.gatsbyjs.org/docs/add-offline-support-with-a-service-worker/
+    'gatsby-plugin-offline'
   ]
 }

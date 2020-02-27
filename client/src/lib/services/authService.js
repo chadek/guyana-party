@@ -31,7 +31,7 @@ function useProvideAuth() {
         if (res.status !== 200 || !res.data) {
           return formatError('Une erreur interne est survenue')
         }
-        res.data.photo = res.data.photo ? `${process.env.STATIC}/${res.data.photo}` : gravatar(res.data.email)
+        res.data.photo = res.data.photo || gravatar(res.data.email)
         setUser(res.data)
       })
       .catch(error => formatError(error))
@@ -45,7 +45,7 @@ function useProvideAuth() {
     }
     Cookies.set('gp_jwt', token, config)
     Cookies.set('gp_uid', newUser._id, config)
-    newUser.photo = newUser.photo ? `${process.env.STATIC}/${newUser.photo}` : gravatar(newUser.email)
+    newUser.photo = newUser.photo || gravatar(newUser.email)
     setUser(newUser)
   }
 
