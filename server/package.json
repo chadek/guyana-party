@@ -16,10 +16,11 @@
     "lint:fix": "eslint . --fix"
   },
   "engines": {
-    "node": "12.15.x"
+    "node": "12.16.x",
+    "yarn": "1.22.0"
   },
   "dependencies": {
-    "@babel/register": "7.8.3",
+    "@babel/register": "7.8.6",
     "bcrypt": "4.0.0",
     "cloudinary": "1.19.0",
     "compression": "1.7.4",
@@ -45,11 +46,11 @@
     "winston": "3.2.1"
   },
   "devDependencies": {
-    "@babel/core": "7.8.4",
+    "@babel/core": "7.8.6",
     "@babel/node": "7.8.4",
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/plugin-transform-runtime": "7.8.3",
-    "@babel/preset-env": "7.8.4",
+    "@babel/preset-env": "7.8.6",
     "@babel/runtime": "7.8.4",
     "babel-eslint": "9.0.0",
     "babel-jest": "25.1.0",
