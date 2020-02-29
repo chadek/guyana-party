@@ -5,26 +5,26 @@ import styled from 'styled-components'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Fab from '@material-ui/core/Fab'
-import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import DeleteIcon from '@material-ui/icons/Delete'
-import EditIcon from '@material-ui/icons/Edit'
 import { isAdmin } from '../../lib/services/communityService'
 import { archiveGroup, createGroup, updateGroup, useGroup } from '../../lib/services/groupService'
 import If from '../addons/If'
 import Dialog from '../Dialog'
-import { showSnack } from '../Snack'
-import Description from './Mde'
+import Description from './Description'
 import Page from './Page'
 import Photos from './Photos'
-import GoBack from './GoBack'
+import { toast } from '../../lib/utils'
 
 const Wrapper = styled.div`
   #name {
-    max-width: 290px;
-    margin: auto;
+    justify-items: center;
+    margin-top: 2rem;
+    .loading-name {
+      margin-right: 1rem;
+    }
   }
-  .mde,
+  .description,
   .photos,
   .save {
     margin-top: 2.5rem;
@@ -61,14 +61,14 @@ function EditGroup({ id }) {
 
   useEffect(() => {
     if (group && !isAdmin(group.community)) {
-      showSnack("Vous n'avez pas accès à cet évènement", 'error')
+      toast("Vous n'avez pas accès à cet évènement", 'error')
       return navigate('/app')
     }
   }, [group, id])
 
   useEffect(() => {
     if (error) {
-      showSnack('Une erreur interne est survenue', 'error')
+      toast('Une erreur interne est survenue', 'error')
       return navigate('/app')
     }
     if (id && group) {
@@ -92,7 +92,7 @@ function EditGroup({ id }) {
     const next = ({ slug }) => navigate(`/group/${slug || group.slug}`)
     const fallback = error => {
       console.log(error)
-      showSnack(`${id ? "L'édition" : 'La création'} du groupe a échoué !`, 'error')
+      toast(`${id ? "L'édition" : 'La création'} du groupe a échoué !`, 'error')
       setLoading(false)
     }
 
@@ -105,14 +105,14 @@ function EditGroup({ id }) {
 
   const archive = () => {
     if (!isAdmin(group.community)) {
-      return showSnack('Vous ne pouvez pas archiver ce groupe', 'error')
+      return toast('Vous ne pouvez pas archiver ce groupe', 'error')
     }
     const next = () => {
-      showSnack('Groupe archivé avec succès')
+      toast('Groupe archivé avec succès', 'success')
       navigate('/app')
     }
     const fallback = error => {
-      showSnack('Une erreur est survenue', 'error')
+      toast('Une erreur est survenue', 'error')
       console.log(error)
     }
     archiveGroup(id, next, fallback)
@@ -120,23 +120,19 @@ function EditGroup({ id }) {
 
   return (
     <Wrapper>
-      <GoBack />
       <Page title={`${id ? 'Edition' : 'Création'} ${name ? `de ${name}` : "d'un groupe"}`}>
-        <div id='name'>
-          <Grid alignItems='flex-end' container spacing={1}>
-            <Grid item>{loading || groupLoading ? <CircularProgress /> : <EditIcon />}</Grid>
-            <Grid item>
-              <TextField
-                disabled={loading || groupLoading}
-                error={!!nameError}
-                fullWidth
-                helperText={nameError}
-                label='Nom de votre groupe'
-                onChange={e => setName(e.target.value)}
-                value={name}
-              />
-            </Grid>
-          </Grid>
+        <div className='flex' id='name'>
+          {(loading || groupLoading) && <CircularProgress className='loading-name' />}
+          <TextField
+            className='name-field'
+            disabled={loading || groupLoading}
+            error={!!nameError}
+            fullWidth
+            helperText={nameError}
+            label='Nom de votre groupe'
+            onChange={e => setName(e.target.value)}
+            value={name}
+          />
         </div>
         <Description
           error={!!descError}

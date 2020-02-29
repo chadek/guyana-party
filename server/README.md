@@ -28,12 +28,12 @@ You need to have [Node.js](https://nodejs.org/) and [MongoDB](https://docs.mongo
 
 1. Clone this repository or [download zip](https://github.com/chadek/guyana-party/archive/master.zip).
 2. Copy `.env.sample` to `.env` and fill it properly.
-3. Install dependencies: **`npm install`**.
+3. Install dependencies: **`yarn install`**.
 4. Start MongoDB database: **`sudo service mongod start`**.
-5. Run for development: **`npm run dev`**.
-6. Run for production: **`npm start`**.
-7. Run lint test: **`npm run lint`** -> results in file `./eslint_result.html`.
+5. Run for development: **`yarn dev`**.
+6. Run for production: **`yarn start`**.
+7. Run lint test: **`yarn lint`** -> results in file `./eslint_result.html`.
 8. Run unit tests:
-   - **`npm test`** to run once
-   - **`npm run test:watch`** to run in watch mode
-   - **`npm run test:cov`** to run and see coverage
+   - **`yarn test`** to run once
+   - **`yarn test:watch`** to run in watch mode
+   - **`yarn test:cov`** to run and see coverage

@@ -1,64 +1,72 @@
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { isAdmin, isMember } from './communityService'
-import { axiosGet, axiosPost, axiosPut, axiosDelete, fetcher, getUID, formatResult, MISSING_TOKEN_ERR } from '../utils'
+import { axiosGet, axiosPost, axiosPut, axiosDelete, fetcher, getUID, MISSING_TOKEN_ERR } from '../utils'
 
 export const createEvent = (payload, next, fallback) => {
-  const userId = getUID()
-  if (!userId) return fallback(MISSING_TOKEN_ERR)
+  try {
+    const userId = getUID()
+    if (!userId) return fallback(MISSING_TOKEN_ERR)
 
-  const formData = new FormData()
-  formData.append('name', payload.name)
-  formData.append('group', payload.group)
-  formData.append('description', payload.description)
-  formData.append('timezone', payload.timezone)
-  formData.append('startDate', payload.startDate)
-  formData.append('endDate', payload.endDate)
-  formData.append('occurrence', payload.occurrence)
-  formData.append('location[address]', payload.location.address)
-  formData.append('location[coordinates][0]', payload.location.coordinates[0])
-  formData.append('location[coordinates][1]', payload.location.coordinates[1])
-  formData.append('author', userId)
-  payload.photos.forEach(photo => formData.append('files[]', photo))
+    const formData = new FormData()
+    formData.append('name', payload.name)
+    formData.append('group', payload.group)
+    formData.append('description', payload.description)
+    formData.append('timezone', payload.timezone)
+    formData.append('startDate', payload.startDate)
+    formData.append('endDate', payload.endDate)
+    formData.append('occurrence', payload.occurrence)
+    formData.append('location[address]', payload.location.address)
+    formData.append('location[coordinates][0]', payload.location.coordinates[0])
+    formData.append('location[coordinates][1]', payload.location.coordinates[1])
+    formData.append('author', userId)
+    payload.photos.forEach(photo => formData.append('files[]', photo))
 
-  axiosPost(
-    { url: `${process.env.API}/events`, data: formData },
-    ({ data: res }) => {
-      if (res && res.status === 201 && res.data) next(res.data.slug)
-      else fallback('Une erreur interne est survenue')
-    },
-    fallback
-  )
+    axiosPost(
+      { url: `${process.env.API}/events`, data: formData },
+      ({ data: res }) => {
+        if (res && res.status === 201 && res.data) next(res.data.slug)
+        else fallback('Une erreur interne est survenue')
+      },
+      fallback
+    )
+  } catch (error) {
+    fallback(error)
+  }
 }
 
 export const updateEvent = (payload, next, fallback) => {
-  if (!payload.id) fallback()
-  if (!getUID()) return fallback(MISSING_TOKEN_ERR)
+  try {
+    if (!payload.id) fallback()
+    if (!getUID()) return fallback(MISSING_TOKEN_ERR)
 
-  const formData = new FormData()
-  formData.append('name', payload.name)
-  formData.append('group', payload.group)
-  formData.append('description', payload.description)
-  formData.append('timezone', payload.timezone)
-  formData.append('startDate', payload.startDate)
-  formData.append('endDate', payload.endDate)
-  formData.append('occurrence', payload.occurrence)
-  formData.append('location.address', payload.location.address)
-  formData.append('location.coordinates[0]', payload.location.coordinates[0])
-  formData.append('location.coordinates[1]', payload.location.coordinates[1])
-  payload.photos.forEach(photo => {
-    if (!photo.size) formData.append('photos[]', photo.name)
-    else formData.append('files[]', photo)
-  })
+    const formData = new FormData()
+    formData.append('name', payload.name)
+    formData.append('group', payload.group)
+    formData.append('description', payload.description)
+    formData.append('timezone', payload.timezone)
+    formData.append('startDate', payload.startDate)
+    formData.append('endDate', payload.endDate)
+    formData.append('occurrence', payload.occurrence)
+    formData.append('location.address', payload.location.address)
+    formData.append('location.coordinates[0]', payload.location.coordinates[0])
+    formData.append('location.coordinates[1]', payload.location.coordinates[1])
+    payload.photos.forEach(photo => {
+      if (photo.size) formData.append('files[]', photo)
+      else formData.append('photos[]', photo)
+    })
 
-  axiosPut(
-    { url: `${process.env.API}/events/${payload.id}`, data: formData },
-    ({ data: res }) => {
-      if (res && res.status === 200 && res.data) next()
-      else fallback('Une erreur interne est survenue')
-    },
-    fallback
-  )
+    axiosPut(
+      { url: `${process.env.API}/events/${payload.id}`, data: formData },
+      ({ data: res }) => {
+        if (res && res.status === 200 && res.data) next()
+        else fallback('Une erreur interne est survenue')
+      },
+      fallback
+    )
+  } catch (error) {
+    fallback(error)
+  }
 }
 
 export const archiveEvent = (id, next, fallback) => {
@@ -130,7 +138,7 @@ export const requestMarkers = ({ search, box }, next, fallback) => {
       if (!res || res.status !== 200 || !res.data) {
         return fallback('Une erreur interne est survenue')
       }
-      next(formatResult(res.data))
+      next(res.data)
     },
     fallback
   )
@@ -154,26 +162,9 @@ export const useEvent = ({ id, slug }) => {
         if (!res || res.status !== 200 || !res.data) {
           return formatError('Une erreur interne est survenue')
         }
-        const parsePhoto = p =>
-          // const blob = getBlob(p)
-          // Object.assign(blob, {
-          //   preview: URL.createObjectURL(blob),
-          //   id: p._id
-          // })
-          // return blob
-          // return `${process.env.STATIC}/${p}`
-          ({ preview: `${process.env.STATIC}/${p}`, name: p })
-
         const { data } = res
-        if (slug) {
-          // res.data[0].photos = res.data[0].photos.map(parsePhoto)
-          // res.data = res.data[0]
-          data[0].photos = data[0].photos.map(parsePhoto)
-          setEvent(data[0])
-        } else {
-          data.photos = data.photos.map(parsePhoto)
-          setEvent(data)
-        }
+        if (slug) setEvent(data[0])
+        else setEvent(data)
       },
       formatError
     ).finally(formatError)
@@ -191,7 +182,7 @@ export const useEvents = () => {
   const { data, error, isValidating: loading } = useSWR(`${process.env.API}/search?isapp=true${uid}`, fetcher)
 
   useEffect(() => {
-    if (!error && data && data.total > 0) setEvents(formatResult(data.data))
+    if (!error && data && data.total > 0) setEvents(data.data)
   }, [data, error])
 
   return { loading, error, events }
@@ -225,7 +216,7 @@ export const useEventsByGroup = group => {
   const { data, error, isValidating: loading } = useSWR(getQuery(), fetcher)
 
   useEffect(() => {
-    if (!error && data && data.total > 0) setEvents(formatResult(data.data))
+    if (!error && data && data.total > 0) setEvents(data.data)
   }, [data, error])
 
   return { loading, error, events }
@@ -240,7 +231,7 @@ export const useArchived = () => {
   )
 
   useEffect(() => {
-    if (!error && data && data.total > 0) setEvents(formatResult(data.data))
+    if (!error && data && data.total > 0) setEvents(data.data)
   }, [data, error])
 
   return { loading, error, events }

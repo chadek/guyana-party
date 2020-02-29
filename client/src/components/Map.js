@@ -1,8 +1,7 @@
 import L from 'leaflet'
 import { MarkerClusterGroup } from 'leaflet.markercluster'
-import { gpsCoords } from '../lib/utils'
+import { gpsCoords, toast } from '../lib/utils'
 import { formatPlage } from '../lib/date'
-import { showSnack } from './Snack'
 
 const POINTS = [
   [4.931609, -52.3009], // Cayenne
@@ -37,8 +36,8 @@ class Map {
       zoom: this.zoom,
       zoomControl: false, // remove default zoom control
       layers: [
-        L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://openstreetmap.org/copyright">Contributeurs de OpenStreetMap</a>',
           minZoom: 3,
           maxZoom: 19
         })
@@ -132,7 +131,7 @@ class Map {
               lat: location.coordinates[1],
               lng: location.coordinates[0]
             }
-            if (!group) return showSnack(`Groupe absent pour ${slug}`, 'error')
+            if (!group) return toast(`Groupe absent pour ${slug}`, 'error')
             const newMarker = L.marker(latlng, {
               title: `${name} par ${group.name}`
             }).bindPopup(`
@@ -157,7 +156,7 @@ class Map {
       error => {
         console.log(error)
         this.viewActions.setLoading(false)
-        showSnack('Une erreur interne est survenue!', 'error')
+        toast('Une erreur interne est survenue!', 'error')
       }
     )
   }

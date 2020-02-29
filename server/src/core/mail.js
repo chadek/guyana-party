@@ -1,10 +1,11 @@
 import nodemailer from 'nodemailer'
 import htmlToText from 'html-to-text'
+import { appName } from './env'
 import { logError } from './logger'
 
 const transport = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
-  port: process.env.MAIL_PORT,
+  port: process.env.MAIL_PORT || 465,
   secure: true,
   auth: {
     user: process.env.MAIL_USER,
@@ -19,7 +20,7 @@ transport.verify(error => {
 export const sendMail = async ({ to, subject, html }, next, fallback) =>
   transport.sendMail(
     {
-      from: `Guyana Party <noreply@toucandigitalpartner.com>`,
+      from: `${appName} <noreply@libhum.org>`,
       to,
       subject,
       html,

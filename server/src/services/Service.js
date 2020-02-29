@@ -39,11 +39,12 @@ class Service {
       .then(next)
       .catch(fallback)
 
-  create = (body, next, fallback) =>
+  create = (body, next, fallback) => {
     this.model
       .create(body)
       .then(next)
       .catch(fallback)
+  }
 
   update = (id, body, next, fallback) =>
     this.model

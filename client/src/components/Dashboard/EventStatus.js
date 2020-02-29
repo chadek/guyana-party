@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Grid from '@material-ui/core/Grid'
 import Switch from '@material-ui/core/Switch'
-import { showSnack } from '../Snack'
 import { goPublic, publish } from '../../lib/services/eventService'
+import { toast } from '../../lib/utils'
 
 const Wrapper = styled.div`
   grid-template-columns: auto auto;
@@ -28,12 +28,12 @@ function EventStatus({ event: { _id: id, isPrivate, status }, className }) {
     goPublic(
       { id, cancel: isPublicState },
       () => {
-        showSnack(`Votre évènement est ${isPublicState ? 'privé' : 'public'}`)
+        toast(`Votre évènement est ${isPublicState ? 'privé' : 'public'}`, 'success')
         setIsPublicState(!isPublicState)
       },
       error => {
         console.log(error)
-        showSnack('Une erreur interne est survenu', 'error')
+        toast('Une erreur interne est survenu', 'error')
       }
     )
   }
@@ -43,12 +43,12 @@ function EventStatus({ event: { _id: id, isPrivate, status }, className }) {
     publish(
       { id, cancel: isOnlineState },
       () => {
-        showSnack(`Votre évènement est ${isOnlineState ? 'non publié' : 'en ligne !'}`)
+        toast(`Votre évènement est ${isOnlineState ? 'non publié' : 'en ligne !'}`, 'success')
         setIsOnlineState(!isOnlineState)
       },
       error => {
         console.log(error)
-        showSnack('Une erreur interne est survenu', 'error')
+        toast('Une erreur interne est survenu', 'error')
       }
     )
   }

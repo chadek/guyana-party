@@ -1,75 +1,90 @@
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
-import { axiosGet, axiosPost, axiosPut, axiosDelete, fetcher, getUID, formatResult, MISSING_TOKEN_ERR } from '../utils'
+import { axiosGet, axiosPost, axiosPut, axiosDelete, fetcher, getUID, MISSING_TOKEN_ERR } from '../utils'
 
 export const createGroup = (payload, next, fallback) => {
-  const uid = getUID()
-  if (!uid) return fallback(MISSING_TOKEN_ERR)
+  try {
+    const uid = getUID()
+    if (!uid) return fallback(MISSING_TOKEN_ERR)
 
-  const formData = new FormData()
-  formData.append('name', payload.name)
-  formData.append('description', payload.description)
-  formData.append('author', uid)
-  payload.photos = payload.photos || []
-  payload.photos.forEach(photo => formData.append('files[]', photo))
+    const formData = new FormData()
+    formData.append('name', payload.name)
+    formData.append('description', payload.description)
+    formData.append('author', uid)
+    if (payload.photos) payload.photos.forEach(photo => formData.append('files[]', photo))
 
-  axiosPost(
-    { url: `${process.env.API}/groups`, data: formData },
-    ({ data: res }) => {
-      if (res.status === 201 && res.data) {
-        next({ slug: res.data.slug, _id: res.data._id })
-      } else fallback('Une erreur interne est survenue')
-    },
-    fallback
-  )
+    axiosPost(
+      { url: `${process.env.API}/groups`, data: formData },
+      ({ data: res }) => {
+        if (res.status === 201 && res.data) {
+          next({ slug: res.data.slug, _id: res.data._id })
+        } else fallback('Une erreur interne est survenue')
+      },
+      fallback
+    )
+  } catch (error) {
+    fallback(error)
+  }
 }
 
 export const updateGroup = (payload, next, fallback) => {
-  if (!payload.id) fallback()
-  if (!getUID()) return fallback(MISSING_TOKEN_ERR)
+  try {
+    if (!payload.id) fallback()
+    if (!getUID()) return fallback(MISSING_TOKEN_ERR)
 
-  const formData = new FormData()
-  formData.append('name', payload.name)
-  formData.append('description', payload.description)
-  payload.photos.forEach(photo => {
-    if (!photo.size) formData.append('photos[]', photo.name)
-    else formData.append('files[]', photo)
-  })
+    const formData = new FormData()
+    formData.append('name', payload.name)
+    formData.append('description', payload.description)
+    payload.photos.forEach(photo => {
+      if (photo.size) formData.append('files[]', photo)
+      else formData.append('photos[]', photo)
+    })
 
-  axiosPut(
-    { url: `${process.env.API}/groups/${payload.id}`, data: formData },
-    ({ data: res }) => {
-      if (res.status === 200 && res.data) next({})
-      else fallback('Une erreur interne est survenue')
-    },
-    fallback
-  )
+    axiosPut(
+      { url: `${process.env.API}/groups/${payload.id}`, data: formData },
+      ({ data: res }) => {
+        if (res.status === 200 && res.data) next({})
+        else fallback('Une erreur interne est survenue')
+      },
+      fallback
+    )
+  } catch (error) {
+    fallback(error)
+  }
 }
 
 export const archiveGroup = (id, next, fallback) => {
-  if (!getUID()) return fallback(MISSING_TOKEN_ERR)
+  try {
+    if (!getUID()) return fallback(MISSING_TOKEN_ERR)
 
-  axiosPut(
-    { url: `${process.env.API}/groups/${id}`, data: { status: 'archived' } },
-    ({ data: res }) => {
-      if (res.status === 200 && res.data) next()
-      else fallback('Une erreur interne est survenue')
-    },
-    fallback
-  )
+    axiosPut(
+      { url: `${process.env.API}/groups/${id}`, data: { status: 'archived' } },
+      ({ data: res }) => {
+        if (res.status === 200 && res.data) next()
+        else fallback('Une erreur interne est survenue')
+      },
+      fallback
+    )
+  } catch (error) {
+    fallback(error)
+  }
 }
 
 export const removeGroup = (id, next, fallback) => {
-  if (!getUID()) return fallback(MISSING_TOKEN_ERR)
+  try {
+    if (!getUID()) return fallback(MISSING_TOKEN_ERR)
 
-  axiosDelete(
-    `${process.env.API}/groups/${id}`,
-    ({ data: res }) => {
-      if (res.status === 200 && res.data) next()
-      else fallback('Une erreur interne est survenue')
-    },
-    fallback
-  )
+    axiosDelete(
+      `${process.env.API}/groups/${id}`,
+      ({ data: res }) => {
+        if (res.status === 200 && res.data) next()
+        else fallback('Une erreur interne est survenue')
+      },
+      fallback
+    )
+  } catch (error) {
+    fallback(error)
+  }
 }
 
 export const useGroup = ({ id, slug }) => {
@@ -90,17 +105,9 @@ export const useGroup = ({ id, slug }) => {
         if (res.status !== 200 || !res.data) {
           return formatError('Une erreur interne est survenue')
         }
-        const parsePhoto = p => ({ preview: `${process.env.STATIC}/${p}`, name: p })
         const { data } = res
-        if (slug) {
-          // res.data[0].photos = res.data[0].photos.map(parsePhoto)
-          // res.data = res.data[0]
-          data[0].photos = data[0].photos.map(parsePhoto)
-          setGroup(data[0])
-        } else {
-          data.photos = data.photos.map(parsePhoto)
-          setGroup(data)
-        }
+        if (slug) setGroup(data[0])
+        else setGroup(data)
       },
       formatError
     ).finally(formatError)
@@ -121,7 +128,7 @@ export const useGroups = (onlyAdmin = false) => {
   )
 
   useEffect(() => {
-    if (!error && data && data.total > 0) setGroups(formatResult(data.data))
+    if (!error && data && data.total > 0) setGroups(data.data)
   }, [data, error])
 
   return { loading, error, groups }
@@ -136,7 +143,7 @@ export const useArchived = () => {
   )
 
   useEffect(() => {
-    if (!error && data && data.total > 0) setGroups(formatResult(data.data))
+    if (!error && data && data.total > 0) setGroups(data.data)
   }, [data, error])
 
   return { loading, error, groups }

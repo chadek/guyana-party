@@ -7,11 +7,10 @@ import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Dialog from './Dialog'
 import { If, Page, Link, Seo } from './addons'
-import { showSnack } from './Snack'
 import { useEvent, archiveEvent, allowedEvent } from '../lib/services/eventService'
 import { isAdmin } from '../lib/services/communityService'
 import SingleMap from './Dashboard/SingleMap'
-import { markToSafeHTML } from '../lib/utils'
+import { markToSafeHTML, toast } from '../lib/utils'
 import { formatStart, formatPlage, days } from '../lib/date'
 import PhotoList from './PhotoList'
 
@@ -119,14 +118,14 @@ function EventPage({ slug }) {
 
   useEffect(() => {
     if ((!loading && !event) || (event && !allowedEvent(event))) {
-      showSnack(`L'évènement à l'adresse "${slug}" est introuvable`, 'error')
+      toast(`L'évènement à l'adresse "${slug}" est introuvable`, 'error')
       navigate('/')
     }
   }, [event, loading, slug])
 
   useEffect(() => {
     ;(async () => {
-      if (event) setDescription(await markToSafeHTML(event.description))
+      if (event) setDescription(await markToSafeHTML(event.description.replace(/(?:\r\n|\r|\n)/g, '<br>')))
     })()
   }, [event])
 
@@ -152,14 +151,14 @@ function EventPage({ slug }) {
 
   const archive = () => {
     if (!isAdmin(event.group.community)) {
-      return showSnack('Vous ne pouvez pas archiver cet évènement', 'error')
+      return toast('Vous ne pouvez pas archiver cet évènement', 'error')
     }
     const next = () => {
-      showSnack('Évènement archivé avec succès')
+      toast('Évènement archivé avec succès', 'success')
       navigate('/app')
     }
     const fallback = error => {
-      showSnack('Une erreur est survenue', 'error')
+      toast('Une erreur est survenue', 'error')
       console.log(error)
     }
     archiveEvent(event._id, next, fallback)

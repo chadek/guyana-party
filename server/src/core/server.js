@@ -17,6 +17,8 @@ server.use(compression()) // gzip compression of the response body
 server.use(express.json()) // for parsing application/json
 server.use(express.urlencoded({ extended: true }))
 
+server.use(express.static('client_build'))
+
 server.use(require('sanitize').middleware)
 
 if (isProd) server.set('trust proxy', 1) // trust first proxy
@@ -25,7 +27,7 @@ if (isDev) server.use(morgan('dev')) // HTTP request logger
 
 setRoutes(server)
 
-server.use('/static', express.static('uploads'))
+// server.use('/static', express.static('uploads'))
 
 server.use(notFound) // manage 404 errors
 

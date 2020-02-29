@@ -8,10 +8,8 @@ import { FormWrapper } from '../Login/LoginStyles'
 import { useAuth } from '../../lib/services/authService'
 import { useArchived as useArchivedEvents } from '../../lib/services/eventService'
 import { useArchived as useArchivedGroups } from '../../lib/services/groupService'
-import { compress, reload } from '../../lib/utils'
+import { compress, reload, toast } from '../../lib/utils'
 import FormInput from '../addons/FormInput'
-import { showSnack } from '../Snack'
-import GoBack from './GoBack'
 
 const Wrapper = styled.section`
   max-width: 430px;
@@ -96,11 +94,11 @@ function Profile() {
     await updateUser(
       { photo, name, email: !user.provider ? email : null },
       () => {
-        showSnack('Modification éffectuée avec succès !')
+        toast('Modification éffectuée avec succès !', 'success')
         reload()
       },
       error => {
-        showSnack('La modification a echoué !', 'error')
+        toast('La modification a echoué !', 'error')
         console.log(error)
       }
     )
@@ -109,7 +107,6 @@ function Profile() {
 
   return (
     <>
-      <GoBack style={{ top: '3rem' }} />
       <Page loading={userLoading && !user}>
         <Wrapper className='grid'>
           <Image

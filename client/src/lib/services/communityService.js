@@ -1,6 +1,5 @@
 import { navigate } from 'gatsby'
-import { showSnack } from '../../components/Snack'
-import { axiosPut, reload, getUID } from '../utils'
+import { axiosPut, reload, getUID, toast } from '../utils'
 
 export const confirmMember = (community, role) => {
   const uid = getUID()
@@ -18,7 +17,7 @@ export const countAdmins = community => community.filter(o => o.role === 'admin'
 const getUserId = slug => {
   const uid = getUID()
   if (!uid) {
-    showSnack("Veuillez vous connecter pour faire votre demande d'adhésion", 'info')
+    toast("Veuillez vous connecter pour faire votre demande d'adhésion")
     navigate(`/connexion?redirect=/group/${slug}`)
   }
   return uid
@@ -34,15 +33,15 @@ const pendingRequestMember = (group, action, role) => {
     },
     ({ data: res }) => {
       if (res.status === 200 && res.data) {
-        showSnack('Action effectuée !')
+        toast('Action effectuée !', 'success')
         reload()
       } else {
-        showSnack('Une erreur interne est survenue', 'error')
+        toast('Une erreur interne est survenue', 'error')
       }
     },
     error => {
       console.log(error)
-      showSnack('Une erreur interne est survenue', 'error')
+      toast('Une erreur interne est survenue', 'error')
     }
   )
 }
@@ -81,15 +80,15 @@ const pendingRequestAdmin = ({ group, userId }, roleIn, newRole) => {
     { url: `${process.env.API}/groups`, data: query },
     ({ data: res }) => {
       if (res.status === 200 && res.data) {
-        showSnack('Action effectuée !')
+        toast('Action effectuée !', 'success')
         reload()
       } else {
-        showSnack('Une erreur interne est survenue', 'error')
+        toast('Une erreur interne est survenue', 'error')
       }
     },
     error => {
       console.log(error)
-      showSnack('Une erreur interne est survenue', 'error')
+      toast('Une erreur interne est survenue', 'error')
     }
   )
 }

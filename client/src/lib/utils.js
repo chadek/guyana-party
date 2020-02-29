@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 import dompurify from 'dompurify'
 import Showdown from 'showdown'
 import md5 from 'md5'
+import cogoToast from 'cogo-toast'
 
 export const MISSING_TOKEN_ERR = 'Token de connexion requis'
 
@@ -15,7 +16,6 @@ export const gravatar = email => `https://www.gravatar.com/avatar/${md5(email)}?
 export const purify = async dirty => dompurify.sanitize(dirty)
 
 export const markToSafeHTML = markdown => {
-  // const Showdown = require('showdown')
   const converter = new Showdown.Converter({
     tables: true,
     simplifiedAutoLink: true,
@@ -25,12 +25,8 @@ export const markToSafeHTML = markdown => {
   return purify(converter.makeHtml(markdown))
 }
 
-// export const getBlob = photo => {
-//   const arrayBufferView = new Uint8Array(photo.data.data)
-//   return new Blob([arrayBufferView], { type: photo.contentType })
-// }
-
 export const getUID = () => Cookies.get('gp_uid')
+
 export const getToken = () => ({ jwt: Cookies.get('gp_jwt'), uid: getUID() })
 
 export const fetcher = url => axios.get(url).then(r => r.data)
@@ -99,17 +95,18 @@ export const compress = (files, next) => {
   const compressor = new Compress({ targetSize: 1.0, quality: 0.75 })
   compressor.compress(files).then(data => next(data))
 }
+
 export const scrollTo = selector => {
   const target = document.querySelector(selector)
   if (target) target.scrollIntoView({ behavior: 'smooth', block: 'end' })
 }
 
-export const formatResult = res =>
-  res.map(d => {
-    if (d.photos && d.photos.length > 0) {
-      // d.photo = URL.createObjectURL(getBlob(d.photos[0]))
-      // delete d.photos
-      d.photo = `${process.env.STATIC}/${d.photos[0]}`
+export const toast = (msg, variant = 'info', heading = '') => {
+  const { hide } = cogoToast[variant](msg, {
+    hideAfter: 5,
+    heading: heading || (variant === 'error' ? 'Erreur !' : ''),
+    onClick() {
+      hide()
     }
-    return d
   })
+}
