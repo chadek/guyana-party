@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Page /> should match its reference snapshot 1`] = `
+<section
+  class="sc-AxjAm hplAcE pageClass"
+>
+  <div
+    class="container"
+  >
+    <div
+      class="page-content"
+    >
+      <div
+        class="contentDiv"
+      >
+        Content
+      </div>
+    </div>
+  </div>
+</section>
+`;

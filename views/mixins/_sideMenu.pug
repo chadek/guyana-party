@@ -1,9 +1,0 @@
-mixin sideMenu()
-  #menu
-    .pure-menu
-      a.pure-menu-heading(href="/" title="Accueil")= h.siteName
-      ul.pure-menu-list
-        if user
-          li.pure-menu-item: a.pure-menu-link(href='/account' title="Mon compte"): img.avatar(src=`${h.profilePhotoSrc(user)}` alt="Mon compte")
-          li.pure-menu-item: a.pure-menu-link(href='/logout') Se déconnecter
-        li.pure-menu-item: a.pure-menu-link(href='#') Présentation de nos services

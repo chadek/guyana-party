@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useSiteMetadata should match its reference snapshot 1`] = `
+Object {
+  "current": Object {
+    "author": "Christopher Servius",
+    "description": "Une description.",
+    "keywords": Array [
+      "some",
+      "keywords",
+    ],
+    "title": "Site Title",
+  },
+  "error": undefined,
+}
+`;
