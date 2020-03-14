@@ -3,6 +3,8 @@ import useSWR from 'swr'
 import { isAdmin, isMember } from './communityService'
 import { axiosGet, axiosPost, axiosPut, axiosDelete, fetcher, getUID, MISSING_TOKEN_ERR } from '../utils'
 
+const { API_URL } = process.env
+
 export const createEvent = (payload, next, fallback) => {
   try {
     const userId = getUID()
@@ -23,7 +25,7 @@ export const createEvent = (payload, next, fallback) => {
     payload.photos.forEach(photo => formData.append('files[]', photo))
 
     axiosPost(
-      { url: `${process.env.API}/events`, data: formData },
+      { url: `${API_URL}/events`, data: formData },
       ({ data: res }) => {
         if (res && res.status === 201 && res.data) next(res.data.slug)
         else fallback('Une erreur interne est survenue')
@@ -57,7 +59,7 @@ export const updateEvent = (payload, next, fallback) => {
     })
 
     axiosPut(
-      { url: `${process.env.API}/events/${payload.id}`, data: formData },
+      { url: `${API_URL}/events/${payload.id}`, data: formData },
       ({ data: res }) => {
         if (res && res.status === 200 && res.data) next()
         else fallback('Une erreur interne est survenue')
@@ -73,7 +75,7 @@ export const archiveEvent = (id, next, fallback) => {
   if (!getUID()) return fallback(MISSING_TOKEN_ERR)
 
   axiosPut(
-    { url: `${process.env.API}/events/${id}`, data: { status: 'archived' } },
+    { url: `${API_URL}/events/${id}`, data: { status: 'archived' } },
     ({ data: res }) => {
       if (res && res.status === 200 && res.data) next()
       else fallback('Une erreur interne est survenue')
@@ -86,7 +88,7 @@ export const removeEvent = (id, next, fallback) => {
   if (!getUID()) return fallback(MISSING_TOKEN_ERR)
 
   axiosDelete(
-    `${process.env.API}/events/${id}`,
+    `${API_URL}/events/${id}`,
     ({ data: res }) => {
       if (res && res.status === 200 && res.data) next()
       else fallback('Une erreur interne est survenue')
@@ -100,7 +102,7 @@ export const goPublic = (payload, next, fallback) => {
   if (!getUID()) return fallback(MISSING_TOKEN_ERR)
 
   axiosPut(
-    { url: `${process.env.API}/events/${payload.id}`, data: { isPrivate: payload.cancel } },
+    { url: `${API_URL}/events/${payload.id}`, data: { isPrivate: payload.cancel } },
     ({ data: res }) => {
       if (res && res.status === 200 && res.data) next()
       else fallback('Une erreur interne est survenue')
@@ -119,7 +121,7 @@ export const publish = (payload, next, fallback) => {
   if (!payload.cancel) data.published = { date: Date.now(), user: uid }
 
   axiosPut(
-    { url: `${process.env.API}/events/${payload.id}`, data },
+    { url: `${API_URL}/events/${payload.id}`, data },
     ({ data: res }) => {
       if (res && res.status === 200 && res.data) next()
       else fallback('Une erreur interne est survenue')
@@ -133,7 +135,7 @@ export const requestMarkers = ({ search, box }, next, fallback) => {
   uid = uid ? `&uid=${uid}` : ''
   const [[sw1, sw2], [ne1, ne2]] = box
   axiosGet(
-    `${process.env.API}/search?q=${search}${uid}&sort=startDate endDate&sw1=${sw1}&sw2=${sw2}&ne1=${ne1}&ne2=${ne2}`,
+    `${API_URL}/search?q=${search}${uid}&sort=startDate endDate&sw1=${sw1}&sw2=${sw2}&ne1=${ne1}&ne2=${ne2}`,
     ({ data: res }) => {
       if (!res || res.status !== 200 || !res.data) {
         return fallback('Une erreur interne est survenue')
@@ -157,7 +159,7 @@ export const useEvent = ({ id, slug }) => {
   useEffect(() => {
     if ((!id && !slug) || event) return setLoading(false)
     axiosGet(
-      `${process.env.API}/events${slug ? `?slug=${slug}` : `/${id}`}`,
+      `${API_URL}/events${slug ? `?slug=${slug}` : `/${id}`}`,
       ({ data: res }) => {
         if (!res || res.status !== 200 || !res.data) {
           return formatError('Une erreur interne est survenue')
@@ -179,7 +181,7 @@ export const useEvents = () => {
   let uid = getUID()
   uid = uid ? `&uid=${uid}` : ''
 
-  const { data, error, isValidating: loading } = useSWR(`${process.env.API}/search?isapp=true${uid}`, fetcher)
+  const { data, error, isValidating: loading } = useSWR(`${API_URL}/search?isapp=true${uid}`, fetcher)
 
   useEffect(() => {
     if (!error && data && data.total > 0) setEvents(data.data)
@@ -208,7 +210,7 @@ export const useEventsByGroup = group => {
       } else {
         query = `${query}&status=online&isPrivate=false`
       }
-      query = `${process.env.API}/events?${query}`
+      query = `${API_URL}/events?${query}`
     }
     return query
   }
@@ -225,10 +227,7 @@ export const useEventsByGroup = group => {
 export const useArchived = () => {
   const [events, setEvents] = useState([])
 
-  const { data, error, isValidating: loading } = useSWR(
-    `${process.env.API}/events?author=${getUID()}&status=archived`,
-    fetcher
-  )
+  const { data, error, isValidating: loading } = useSWR(`${API_URL}/events?author=${getUID()}&status=archived`, fetcher)
 
   useEffect(() => {
     if (!error && data && data.total > 0) setEvents(data.data)

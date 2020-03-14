@@ -65,7 +65,7 @@ function Login() {
 
   const FacebookBtn = () => (
     <FacebookLogin
-      appId={process.env.FACEBOOK_APP_ID}
+      appId={process.env.GATSBY_FACEBOOK_APP_ID}
       callback={fbHandle}
       fields='name,email'
       render={({ onClick, disabled }) => (
@@ -81,7 +81,7 @@ function Login() {
 
   const GoogleBtn = () => (
     <GoogleLogin
-      clientId={process.env.GOOGLE_APP_ID}
+      clientId={process.env.GATSBY_GOOGLE_APP_ID}
       cookiePolicy='single_host_origin'
       onFailure={googleHandle}
       onSuccess={googleHandle}
