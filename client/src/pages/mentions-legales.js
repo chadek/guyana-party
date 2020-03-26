@@ -3,7 +3,7 @@ import { Page, Seo } from '../components/addons'
 
 const mentionsLegales = () => (
   <Page>
-    <Seo title='Mentions légales' />
+    <Seo title="Mentions légales" />
     <h1>Mentions légales</h1>
     <p>Content</p>
   </Page>

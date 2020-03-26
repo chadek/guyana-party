@@ -171,43 +171,43 @@ function EventPage({ slug }) {
         {event && (
           <>
             <Seo title={event.name} />
-            <section className='grid' id='title'>
+            <section className="grid" id="title">
               <h1>
                 {event.name}{' '}
                 {event.group && (
                   <p>
                     <span>par</span>&nbsp;
-                    <Link title='Voir le group' to={`/group/${event.group.slug}`}>
+                    <Link title="Voir le group" to={`/group/${event.group.slug}`}>
                       {event.group.name}
                     </Link>
                   </p>
                 )}
               </h1>
-              <p className='addr text-wrap'>{event.location.address}</p>
+              <p className="addr text-wrap">{event.location.address}</p>
               <If condition={admin}>
-                <p className='status bold'>
-                  {event.status === 'archived' && <span className='red'>Archivé</span>}
-                  {event.status === 'waiting' && <span className='red'>Hors ligne</span>}
-                  {event.status === 'online' && <span className='green'>En ligne</span>}
+                <p className="status bold">
+                  {event.status === 'archived' && <span className="red">Archivé</span>}
+                  {event.status === 'waiting' && <span className="red">Hors ligne</span>}
+                  {event.status === 'online' && <span className="green">En ligne</span>}
                   {event.isPrivate && ' | Évènement privé'}
                 </p>
-                <div className='controls'>
+                <div className="controls">
                   <Fab
-                    aria-label='Modifier'
-                    className='edit'
+                    aria-label="Modifier"
+                    className="edit"
                     onClick={() => navigate(`/app/event/edit/${event._id}`)}
-                    size='small'
-                    title='Modifier'
+                    size="small"
+                    title="Modifier"
                   >
                     <EditIcon />
                   </Fab>
                   <Fab
-                    aria-label='Archiver'
-                    className='archive'
-                    color='secondary'
+                    aria-label="Archiver"
+                    className="archive"
+                    color="secondary"
                     onClick={() => setDiagOpen(true)}
-                    size='small'
-                    title='Archiver'
+                    size="small"
+                    title="Archiver"
                   >
                     <DeleteIcon />
                   </Fab>
@@ -216,18 +216,18 @@ function EventPage({ slug }) {
                   action={archive}
                   close={() => setDiagOpen(false)}
                   isOpen={diagOpen}
-                  text='Cet évènement ne sera pas supprimé.'
-                  title='Voulez-vous vraiment archiver cet évènement ?'
+                  text="Cet évènement ne sera pas supprimé."
+                  title="Voulez-vous vraiment archiver cet évènement ?"
                 />
               </If>
             </section>
-            <section className='grid' id='content'>
+            <section className="grid" id="content">
               <div
-                className='desc-content'
+                className="desc-content"
                 dangerouslySetInnerHTML={{ __html: description }} // eslint-disable-line react/no-danger
               />
-              <div className='info'>
-                <div className='info-date'>
+              <div className="info">
+                <div className="info-date">
                   <p>
                     <strong>{formatStart(event.startDate)}</strong>
                   </p>
@@ -239,16 +239,16 @@ function EventPage({ slug }) {
                     Tous les <em>{occurrenceStr}</em>
                   </p>
                 )}
-                <p className='address'>
+                <p className="address">
                   Adresse :<br />
                   {event.location.address}
                 </p>
               </div>
             </section>
-            <SingleMap coords={event && event.location.coordinates} id='mobileMap' zoom={16} />
-            <section id='photos'>
+            <SingleMap coords={event && event.location.coordinates} id="mobileMap" zoom={16} />
+            <section id="photos">
               <p>{`${event.photos && event.photos.length ? `Photos (${event.photos.length}) :` : ''}`}</p>
-              <PhotoList className='photos' photos={event.photos} />
+              <PhotoList className="photos" photos={event.photos} />
             </section>
           </>
         )}

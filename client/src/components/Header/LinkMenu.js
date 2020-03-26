@@ -27,8 +27,8 @@ const Wrapper = styled.div`
 
 const LinkMenu = ({ name, to }) => (
   <Wrapper>
-    <Link className='nav' to={to}>
-      <div className='sub grid'>
+    <Link className="nav" to={to}>
+      <div className="sub grid">
         <span>{name}</span>
       </div>
     </Link>

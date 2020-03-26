@@ -125,9 +125,9 @@ function Photos({ photos, setPhotos, disabled }) {
   })
 
   return (
-    <Wrapper className='photos'>
+    <Wrapper className="photos">
       <p className={dropError ? 'error' : ''}>{dropError || 'Déposez vos photos dans la zone ci-dessous :'}</p>
-      <div className='grid dropgrid'>
+      <div className="grid dropgrid">
         <StyledDropArea
           {...getRootProps({
             className: `dropzone${isDragAccept ? ' accepted' : ''}${isDragReject ? ' rejected' : ''}`
@@ -135,11 +135,11 @@ function Photos({ photos, setPhotos, disabled }) {
         >
           <input disabled={disabled} {...getInputProps()} />
           {loading ? (
-            <div className='label'>
+            <div className="label">
               <CircularProgress />
             </div>
           ) : (
-            <p className='label'>
+            <p className="label">
               {isDragAccept && '➡ Déposez... ⬅'}
               {isDragReject && '⚠️ Photo(s) invalide(s) !'}
               {!isDragActive && '➡ Insérez vos photos ici ⬅'}
@@ -150,9 +150,9 @@ function Photos({ photos, setPhotos, disabled }) {
           {photos && photos.length > 0 && (
             <Grid container spacing={1}>
               {photos.map((p, index) => (
-                <Grid key={index} className='grid-item' item>
-                  <img alt='Preview' className='preview' src={p.preview || p} />
-                  {!disabled && <CloseIcon className='delete' onClick={() => deletePhoto(p)} />}
+                <Grid className="grid-item" item key={index}>
+                  <img alt="Preview" className="preview" src={p.preview || p} />
+                  {!disabled && <CloseIcon className="delete" onClick={() => deletePhoto(p)} />}
                 </Grid>
               ))}
             </Grid>

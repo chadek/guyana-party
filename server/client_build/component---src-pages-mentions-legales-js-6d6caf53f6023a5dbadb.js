@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[14],{lIKY:function(e,n,t){"use strict";t.r(n);var l=t("q1tI"),a=t.n(l),c=t("XE6F");n.default=function(){return a.a.createElement(c.d,null,a.a.createElement(c.e,{title:"Mentions légales"}),a.a.createElement("h1",null,"Mentions légales"),a.a.createElement("p",null,"Content"))}}}]);
+//# sourceMappingURL=component---src-pages-mentions-legales-js-6d6caf53f6023a5dbadb.js.map

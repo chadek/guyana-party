@@ -29,7 +29,7 @@ export default function Description({ label, placeholder, value, setValue, readO
   }, [instance, readOnly])
 
   return (
-    <Wrapper className='description'>
+    <Wrapper className="description">
       {label && <p className={`label${error ? ' error' : ''}`}>{label}</p>}
       <SimpleMDE getMdeInstance={setInstance} onChange={setValue} options={{ placeholder }} value={value} />
     </Wrapper>

@@ -321,26 +321,26 @@ function NewEvent({ id }) {
     <Wrapper>
       <Page title={`${id ? 'Edition' : 'Création'} ${name ? `de ${name}` : "d'un évènement"}`}>
         <If condition={!!(id && event)}>
-          <EventsStatus className='switch' event={event} />
+          <EventsStatus className="switch" event={event} />
         </If>
-        <div className='flex' id='name'>
-          {(loading || eventLoading) && <CircularProgress className='loading-name' />}
+        <div className="flex" id="name">
+          {(loading || eventLoading) && <CircularProgress className="loading-name" />}
           <TextField
-            className='name-field'
+            className="name-field"
             disabled={loading || eventLoading}
             error={!!nameError}
             fullWidth
             helperText={nameError}
-            label='Nom de votre évènement'
+            label="Nom de votre évènement"
             onChange={e => setName(e.target.value)}
             value={name}
           />
         </div>
-        <div id='group'>
-          <label htmlFor='group-select'>
+        <div id="group">
+          <label htmlFor="group-select">
             Groupe créateur de l&rsquo;évènement :{' '}
-            <Select displayEmpty id='group-select' onChange={e => setGroup(e.target.value)} value={group}>
-              <MenuItem value='new'>
+            <Select displayEmpty id="group-select" onChange={e => setGroup(e.target.value)} value={group}>
+              <MenuItem value="new">
                 <em>Nouveau groupe</em>
               </MenuItem>
               <Divider />
@@ -354,24 +354,24 @@ function NewEvent({ id }) {
           </label>
           <If condition={!groupLoading && group === 'new'}>
             <TextField
-              className='new-group'
+              className="new-group"
               disabled={loading || eventLoading}
               error={!!groupError}
               fullWidth
               helperText={groupError}
               onChange={e => setNewGroup(e.target.value)}
-              placeholder='Nom du nouveau groupe'
+              placeholder="Nom du nouveau groupe"
               value={newGroup}
             />
           </If>
         </div>
-        <div className='grid' id='dates'>
-          <FormControl className='tz-control'>
-            <InputLabel id='tz-label'>Fuseau horaire</InputLabel>
+        <div className="grid" id="dates">
+          <FormControl className="tz-control">
+            <InputLabel id="tz-label">Fuseau horaire</InputLabel>
             <Select
               displayEmpty
-              id='tz-select'
-              labelId='tz-label'
+              id="tz-select"
+              labelId="tz-label"
               onChange={e => setTimezone(e.target.value)}
               value={timezone}
             >
@@ -382,20 +382,20 @@ function NewEvent({ id }) {
               ))}
             </Select>
           </FormControl>
-          <DatePicker date={startDate} disabled={loading || eventLoading} label='Début :' setDate={validateStartDate} />
+          <DatePicker date={startDate} disabled={loading || eventLoading} label="Début :" setDate={validateStartDate} />
           <DatePicker
             date={endDate}
             disabled={loading || eventLoading}
             error={!!endDateError}
-            label='Fin :'
+            label="Fin :"
             setDate={validateEndDate}
           />
         </div>
         <If condition={!!endDateError}>
-          <p className='date-error error'>{endDateError}</p>
+          <p className="date-error error">{endDateError}</p>
         </If>
-        <div id='occurrence'>
-          <FormControl component='fieldset'>
+        <div id="occurrence">
+          <FormControl component="fieldset">
             <FormGroup row>
               <FormControlLabel
                 control={<Checkbox checked={showDays} onChange={handleShowDaysChange} />}
@@ -406,16 +406,16 @@ function NewEvent({ id }) {
               <FormGroup row>
                 {days.map(({ label, value }, index) => (
                   <FormControlLabel
-                    key={index}
-                    className='daylabel'
+                    className="daylabel"
                     control={
                       <Checkbox
                         checked={occurrence[value]}
-                        color='primary'
+                        color="primary"
                         onChange={handleOccurrenceChange(value)}
                         value={value}
                       />
                     }
+                    key={index}
                     label={label}
                   />
                 ))}
@@ -426,28 +426,28 @@ function NewEvent({ id }) {
         <Description
           error={!!descError}
           label={descError || 'Description :'}
-          placeholder='Donnez envie !'
+          placeholder="Donnez envie !"
           readOnly={loading || eventLoading}
           setValue={setDescription}
           value={description}
         />
         <Photos disabled={loading || eventLoading} photos={photos} setPhotos={setPhotos} />
-        <div className='map-section'>
+        <div className="map-section">
           <If condition={!!addressError} otherwise={<p>Lieu de l&rsquo;évènement&nbsp;:</p>}>
-            <p className='error'>{addressError}&nbsp;:</p>
+            <p className="error">{addressError}&nbsp;:</p>
           </If>
           <If condition={typeof window !== 'undefined'}>
             <SingleMap coords={coordinates} locate onClick={({ lat, lng }) => setCoordinates([lng, lat])} />
-            <input placeholder="Cliquez sur la carte pour obtenir l'adresse..." readOnly type='text' value={address} />
+            <input placeholder="Cliquez sur la carte pour obtenir l'adresse..." readOnly type="text" value={address} />
           </If>
         </div>
         <If condition={!!id}>
           <Fab
-            aria-label='Archiver'
-            className='archive-btn'
-            color='secondary'
+            aria-label="Archiver"
+            className="archive-btn"
+            color="secondary"
             onClick={() => setDiagOpen(true)}
-            title='Archiver'
+            title="Archiver"
           >
             <DeleteIcon />
           </Fab>
@@ -455,17 +455,17 @@ function NewEvent({ id }) {
             action={archive}
             close={() => setDiagOpen(false)}
             isOpen={diagOpen}
-            text='Cet évènement ne sera pas supprimé.'
+            text="Cet évènement ne sera pas supprimé."
             title={`Voulez-vous vraiment archiver "${name}" ?`}
           />
         </If>
-        <div className='save center'>
+        <div className="save center">
           <Button
-            aria-label='Enregistrer'
-            color='primary'
+            aria-label="Enregistrer"
+            color="primary"
             disabled={loading || eventLoading}
             onClick={save}
-            variant='contained'
+            variant="contained"
           >
             {loading || eventLoading ? 'Chargement...' : 'Enregistrer'}
           </Button>
@@ -485,10 +485,10 @@ const DatePicker = ({ label, date, setDate, disabled, error }) => (
   <MuiPickersUtilsProvider locale={fr} utils={FrLocalizedUtils}>
     <DateTimePicker
       ampm={false}
-      cancelLabel='annuler'
+      cancelLabel="annuler"
       disabled={disabled}
       error={error}
-      format='d MMM yyyy à HH:mm'
+      format="d MMM yyyy à HH:mm"
       hideTabs
       label={label}
       onChange={setDate}

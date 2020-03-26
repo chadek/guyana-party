@@ -110,11 +110,11 @@ function Community({ group }) {
               const { action, action2 } = translate[role]
               return (
                 <>
-                  <Button onClick={() => doAction(role, action, id)} size='small' variant='contained'>
+                  <Button onClick={() => doAction(role, action, id)} size="small" variant="contained">
                     {action}
                   </Button>
                   {action2 && (
-                    <Button onClick={() => doAction(role, action2, id)} size='small' variant='contained'>
+                    <Button onClick={() => doAction(role, action2, id)} size="small" variant="contained">
                       {action2}
                     </Button>
                   )}
@@ -126,16 +126,16 @@ function Community({ group }) {
       ]
 
   return (
-    <Wrapper className='community'>
+    <Wrapper className="community">
       <h2>
         La communauté
         {showQuitBtn && (
           <Button
-            aria-label='Quitter la communauté'
+            aria-label="Quitter la communauté"
             onClick={() => quitRequest(group)}
-            size='small'
-            title='Quitter la communauté'
-            variant='contained'
+            size="small"
+            title="Quitter la communauté"
+            variant="contained"
           >
             Quitter
           </Button>

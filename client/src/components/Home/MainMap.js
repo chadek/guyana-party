@@ -16,7 +16,7 @@ const MainMap = ({ setMarkers, onMarkerClick, setActions, setLoading }) => {
     }
   }, [map, onMarkerClick, setActions, setLoading, setMarkers])
 
-  return <div id='map' />
+  return <div id="map" />
 }
 
 MainMap.propTypes = {

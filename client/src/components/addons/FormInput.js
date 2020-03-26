@@ -36,7 +36,7 @@ const FormInput = ({
       </div>
     }
   >
-    <input accept={accept} disabled={disabled} hidden={hidden} id={id} onChange={onChange} type='file' />
+    <input accept={accept} disabled={disabled} hidden={hidden} id={id} onChange={onChange} type="file" />
   </If>
 )
 

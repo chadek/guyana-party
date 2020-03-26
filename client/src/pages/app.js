@@ -26,15 +26,15 @@ PrivateRoute.propTypes = {
 
 const app = () => (
   <>
-    <Seo title='Tableau de bord' />
+    <Seo title="Tableau de bord" />
     <Router>
-      <PrivateRoute component={Dashboard} path='/app' />
-      <PrivateRoute component={NotFound} path='/app/*' />
-      <PrivateRoute component={Profile} path='/app/profile' />
-      <PrivateRoute component={EditEvent} path='/app/event/new' />
-      <PrivateRoute component={EditEvent} path='/app/event/edit/:id' />
-      <PrivateRoute component={EditGroup} path='/app/group/new' />
-      <PrivateRoute component={EditGroup} path='/app/group/edit/:id' />
+      <PrivateRoute component={Dashboard} path="/app" />
+      <PrivateRoute component={NotFound} path="/app/*" />
+      <PrivateRoute component={Profile} path="/app/profile" />
+      <PrivateRoute component={EditEvent} path="/app/event/new" />
+      <PrivateRoute component={EditEvent} path="/app/event/edit/:id" />
+      <PrivateRoute component={EditGroup} path="/app/group/new" />
+      <PrivateRoute component={EditGroup} path="/app/group/edit/:id" />
     </Router>
   </>
 )

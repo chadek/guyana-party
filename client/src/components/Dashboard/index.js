@@ -55,27 +55,27 @@ function Dashboard() {
   const { loading: groupLoading, groups } = useGroups()
 
   return (
-    <Wrapper className='grid'>
-      <section className='menu grid'>
-        <Image alt='User avatar' className='avatar' src={user && user.photo} />
+    <Wrapper className="grid">
+      <section className="menu grid">
+        <Image alt="User avatar" className="avatar" src={user && user.photo} />
         <Fab
-          aria-label='Créer un évènement'
-          className='new'
-          color='primary'
+          aria-label="Créer un évènement"
+          className="new"
+          color="primary"
           onClick={() => navigate('/app/event/new')}
-          size='small'
-          variant='extended'
+          size="small"
+          variant="extended"
         >
           <AddIcon />
           Créer un évènement
         </Fab>
-        <Button aria-label='Mon compte' className='compte' onClick={() => navigate('/app/profile')}>
+        <Button aria-label="Mon compte" className="compte" onClick={() => navigate('/app/profile')}>
           Mon compte
         </Button>
       </section>
-      <section className='content'>
-        <CardList data={events} loading={eventLoading} title='Mes Évènements' />
-        <CardList data={groups} isGroup loading={groupLoading} title='Mes Groupes' />
+      <section className="content">
+        <CardList data={events} loading={eventLoading} title="Mes Évènements" />
+        <CardList data={groups} isGroup loading={groupLoading} title="Mes Groupes" />
       </section>
     </Wrapper>
   )

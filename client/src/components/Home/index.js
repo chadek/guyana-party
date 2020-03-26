@@ -88,8 +88,8 @@ function Home() {
   useEffect(() => () => (canUpdate.current = false), [])
 
   return (
-    <Wrapper className='grid'>
-      <section id='map-section'>
+    <Wrapper className="grid">
+      <section id="map-section">
         <If condition={typeof window !== 'undefined'}>
           <Map
             onMarkerClick={data => setCurrent(data.slug)}
@@ -99,40 +99,40 @@ function Home() {
           />
         </If>
       </section>
-      <section className='grid' id='list-section'>
-        <div id='actions'>
+      <section className="grid" id="list-section">
+        <div id="actions">
           <Button
             endIcon={<GpsFixed />}
             onClick={() => {
               if (mapActions.isDenied()) return toast('La localisation a été désactivée !')
               mapActions.locate()
             }}
-            size='small'
-            variant='outlined'
+            size="small"
+            variant="outlined"
           >
             Autour de moi
           </Button>
-          <Button endIcon={<Shuffle />} onClick={() => mapActions.random()} size='small' variant='outlined'>
+          <Button endIcon={<Shuffle />} onClick={() => mapActions.random()} size="small" variant="outlined">
             AléaTown
           </Button>
           {loading && (
-            <span className='progress'>
+            <span className="progress">
               <CircularProgress />
             </span>
           )}
         </div>
-        <div className='grid' id='events'>
+        <div className="grid" id="events">
           {markers &&
             markers.map((marker, index) => (
-              <ListItem key={marker.slug + index} item={marker} selected={marker.slug === current} />
+              <ListItem item={marker} key={marker.slug + index} selected={marker.slug === current} />
             ))}
         </div>
-        <div id='add-btn'>
+        <div id="add-btn">
           <Fab
-            aria-label='Créer un évènement'
-            color='primary'
+            aria-label="Créer un évènement"
+            color="primary"
             onClick={() => navigate('/app/event/new')}
-            title='Créer un évènement'
+            title="Créer un évènement"
           >
             <AddIcon />
           </Fab>

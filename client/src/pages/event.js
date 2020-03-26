@@ -10,8 +10,8 @@ const Forbidden = () => {
 
 const event = () => (
   <Router>
-    <Forbidden path='/event/*' />
-    <EventPage path='/event/:slug' />
+    <Forbidden path="/event/*" />
+    <EventPage path="/event/:slug" />
   </Router>
 )
 

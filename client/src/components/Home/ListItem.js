@@ -71,11 +71,11 @@ const Wrapper = styled.div`
 
 const ListItem = ({ item, selected }) => (
   <Wrapper className={selected ? 'selected' : ''}>
-    <Link className='grid' to={`/event/${item.slug}`}>
-      <Image alt={item.name} className='cover' src={item.photos.length > 0 ? item.photos[0] : ''} />
-      <div className='content'>
-        <h2 className='text-wrap'>{item.name}</h2>
-        <h3 className='text-wrap'>{item.group && item.group.name}</h3>
+    <Link className="grid" to={`/event/${item.slug}`}>
+      <Image alt={item.name} className="cover" src={item.photos.length > 0 ? item.photos[0] : ''} />
+      <div className="content">
+        <h2 className="text-wrap">{item.name}</h2>
+        <h3 className="text-wrap">{item.group && item.group.name}</h3>
         <p>{formatPlage(item)}</p>
       </div>
     </Link>
