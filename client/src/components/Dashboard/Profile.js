@@ -106,62 +106,60 @@ function Profile() {
   }
 
   return (
-    <>
-      <Page loading={userLoading && !user}>
-        <Wrapper className='grid'>
-          <Image
-            alt='User avatar'
-            className='cover'
-            onClick={() => {
-              document.getElementById('file').click()
-            }}
-            src={photo.preview || photo}
-            title='Cliquez pour modifier votre photo'
+    <Page loading={userLoading && !user}>
+      <Wrapper className="grid">
+        <Image
+          alt="User avatar"
+          className="cover"
+          onClick={() => {
+            document.getElementById('file').click()
+          }}
+          src={photo.preview || photo}
+          title="Cliquez pour modifier votre photo"
+        />
+        <FormWrapper onSubmit={save}>
+          <FormInput accept="image/*" disabled={loading} hidden id="file" onChange={fileHandle} type="file" />
+          <FormInput
+            disabled={loading}
+            error={nameError}
+            id="name"
+            label="Nom"
+            onBlur={e => checkName(e.target.value)}
+            onChange={e => setName(e.target.value)}
+            placeholder="Votre nom"
+            value={name}
           />
-          <FormWrapper onSubmit={save}>
-            <FormInput accept='image/*' disabled={loading} hidden id='file' onChange={fileHandle} type='file' />
-            <FormInput
-              disabled={loading}
-              error={nameError}
-              id='name'
-              label='Nom'
-              onBlur={e => checkName(e.target.value)}
-              onChange={e => setName(e.target.value)}
-              placeholder='Votre nom'
-              value={name}
-            />
-            <FormInput
-              disabled={loading || !!(user && user.provider)}
-              error={emailError}
-              id='email'
-              label='Email'
-              onBlur={e => checkEmail(e.target.value)}
-              onChange={e => setEmail(e.target.value)}
-              placeholder='exemple@email.com'
-              title={
-                user && user.provider
-                  ? `Vous êtes connecté via ${user.provider}, vous ne pouvez éditer votre email ici.`
-                  : ''
-              }
-              value={email}
-            />
-            <div className='save center'>
-              <Button
-                aria-label='Enregistrer'
-                color='primary'
-                disabled={loading || userLoading}
-                onClick={save}
-                variant='contained'
-              >
-                {loading ? 'Chargement...' : 'Enregistrer'}
-              </Button>
-            </div>
-          </FormWrapper>
-        </Wrapper>
-        <CardList data={events} isArchived loading={eventLoading} title='Mes évènements archivés' />
-        <CardList data={groups} isArchived isGroup loading={groupLoading} title='Mes groupes archivés' />
-      </Page>
-    </>
+          <FormInput
+            disabled={loading || !!(user && user.provider)}
+            error={emailError}
+            id="email"
+            label="Email"
+            onBlur={e => checkEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
+            placeholder="exemple@email.com"
+            title={
+              user && user.provider
+                ? `Vous êtes connecté via ${user.provider}, vous ne pouvez éditer votre email ici.`
+                : ''
+            }
+            value={email}
+          />
+          <div className="save center">
+            <Button
+              aria-label="Enregistrer"
+              color="primary"
+              disabled={loading || userLoading}
+              onClick={save}
+              variant="contained"
+            >
+              {loading ? 'Chargement...' : 'Enregistrer'}
+            </Button>
+          </div>
+        </FormWrapper>
+      </Wrapper>
+      <CardList data={events} isArchived loading={eventLoading} title="Mes évènements archivés" />
+      <CardList data={groups} isArchived isGroup loading={groupLoading} title="Mes groupes archivés" />
+    </Page>
   )
 }
 

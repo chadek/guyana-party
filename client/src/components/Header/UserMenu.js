@@ -12,7 +12,7 @@ function UserMenu({ anchor, hide, isOpen, pathname, signout }) {
   }
 
   return (
-    <Menu anchorEl={anchor} id='user-menu' onClose={hide} open={isOpen}>
+    <Menu anchorEl={anchor} id="user-menu" onClose={hide} open={isOpen}>
       {!pathname.match(/^\/+$/) && <MenuItem onClick={() => goTo('/')}>Accueil</MenuItem>}
       {!pathname.match(/^\/+$/) && <Divider />}
       {!pathname.match(/^\/app\/?$/) && <MenuItem onClick={() => goTo('/app')}>Tableau de bord</MenuItem>}

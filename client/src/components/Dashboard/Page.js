@@ -29,10 +29,10 @@ const Wrapper = styled.div`
 
 const Page = ({ title, children }) => (
   <Wrapper>
-    <section className='bg banner_bg'>
+    <section className="bg banner_bg">
       <h1>{title}</h1>
     </section>
-    <section className='content'>{children}</section>
+    <section className="content">{children}</section>
   </Wrapper>
 )
 

@@ -4,7 +4,7 @@ import Login from '../components/Login'
 
 const connexion = () => (
   <Page>
-    <Seo title='Connexion' />
+    <Seo title="Connexion" />
     <Login />
   </Page>
 )

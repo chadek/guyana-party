@@ -8,7 +8,7 @@ function LoginEmail({ email, FacebookBtn, goBack, GoogleBtn, loading, provider, 
   const [resend, setResend] = useState(false)
 
   return (
-    <LoginEmailWrapper className='grid'>
+    <LoginEmailWrapper className="grid">
       {(loading && <CircularProgress />) ||
         (resend && (
           <>
@@ -27,9 +27,9 @@ function LoginEmail({ email, FacebookBtn, goBack, GoogleBtn, loading, provider, 
               Si les étapes décrites plus haut n&rsquo;ont pas résolu le problème, vous pouvez renvoyer l&rsquo;e-mail.
               Sachez que le lien du premier e-mail sera alors désactivé.
             </p>
-            <div className='actions grid'>
+            <div className="actions grid">
               <a
-                href='#resend-email'
+                href="#resend-email"
                 onClick={() => {
                   setResend(false)
                   sendEmail()
@@ -48,7 +48,7 @@ function LoginEmail({ email, FacebookBtn, goBack, GoogleBtn, loading, provider, 
               Vous avez déjà utilisé l&rsquo;adresse <strong>{email}</strong>. Connectez-vous avec {provider} pour
               continuer.
             </p>
-            <div className='actions center'>
+            <div className="actions center">
               {(provider === 'facebook' && <FacebookBtn />) || <GoogleBtn />}
               <Button onClick={goBack}>RETOUR</Button>
             </div>
@@ -56,13 +56,13 @@ function LoginEmail({ email, FacebookBtn, goBack, GoogleBtn, loading, provider, 
         )) || (
           <>
             <h2>E-mail de connexion envoyé</h2>
-            <div className='email-sent-icon' />
+            <div className="email-sent-icon" />
             <p>
               Un e-mail de connexion avec des instructions supplémentaires a été envoyé à <strong>{email}</strong>.
               Consultez cet e-mail pour vous connecter.
             </p>
-            <div className='actions grid'>
-              <a href='#resend-email' onClick={() => setResend(true)}>
+            <div className="actions grid">
+              <a href="#resend-email" onClick={() => setResend(true)}>
                 Vous n&rsquo;avez pas reçu l&rsquo;e-mail ?
               </a>
               <Button onClick={goBack}>RETOUR</Button>

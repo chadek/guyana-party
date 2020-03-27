@@ -67,18 +67,18 @@ class Map {
     L.control.zoom({ zoomInTitle: 'Zoom +', zoomOutTitle: 'Zoom -' }).addTo(this.map)
   }
 
-  locate = (noRandom = true) => {
+  locate(noRandom = true) {
     this.noRandom = noRandom
     this.map.locate({ setView: true, maxZoom: 16 })
   }
 
-  random = () => {
+  random() {
     const pos = POINTS[Math.floor(Math.random() * POINTS.length)]
     this.map.setView(pos, this.zoom)
     console.log('Random position:', { lat: pos[0], lng: pos[1] })
   }
 
-  initSingle = onClick => {
+  initSingle(onClick) {
     this.isSingle = true
     if (typeof onClick !== 'function') return
     this.map.on('click', ({ latlng }) => {
@@ -93,7 +93,7 @@ class Map {
     })
   }
 
-  initSingleMarker = (coords, viewOffset = 0, zoom = this.zoom) => {
+  initSingleMarker(coords, viewOffset = 0, zoom = this.zoom) {
     if (!this.singleMarker && coords && coords.length === 2) {
       console.log('Marker position:', { lat: coords[1], lng: coords[0] })
       this.singleMarker = L.marker(
@@ -105,7 +105,7 @@ class Map {
     }
   }
 
-  initMarkers = actions => {
+  initMarkers(actions) {
     this.viewActions = actions
     const searchInput = document.querySelector('.search_bg')
     if (searchInput) {
@@ -116,7 +116,7 @@ class Map {
     }
   }
 
-  showMarkers = (search = this.search) => {
+  showMarkers(search = this.search) {
     this.viewActions.setLoading(true)
     this.viewActions.requestMarkers(
       { search, box: this.box },

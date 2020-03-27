@@ -10,8 +10,8 @@ const Forbidden = () => {
 
 const group = () => (
   <Router>
-    <Forbidden path='/group/*' />
-    <GroupPage path='/group/:slug' />
+    <Forbidden path="/group/*" />
+    <GroupPage path="/group/:slug" />
   </Router>
 )
 

@@ -55,17 +55,17 @@ function EventStatus({ event: { _id: id, isPrivate, status }, className }) {
 
   return (
     <Wrapper className={`grid ${className || ''}`}>
-      <Grid alignItems='center' component='label' container spacing={1}>
+      <Grid alignItems="center" component="label" container spacing={1}>
         <Grid item>{!isPublicState ? <strong>Privé</strong> : 'Privé'}</Grid>
         <Grid item>
-          <Switch checked={isPublicState} color='primary' onChange={handlePublic} />
+          <Switch checked={isPublicState} color="primary" onChange={handlePublic} />
         </Grid>
         <Grid item>{isPublicState ? <strong>Public</strong> : 'Public'}</Grid>
       </Grid>
-      <Grid alignItems='center' component='label' container spacing={1}>
-        <Grid item>{!isOnlineState ? <strong className='error'>Non publié</strong> : 'Non publié'}</Grid>
+      <Grid alignItems="center" component="label" container spacing={1}>
+        <Grid item>{!isOnlineState ? <strong className="error">Non publié</strong> : 'Non publié'}</Grid>
         <Grid item>
-          <Switch checked={isOnlineState} color='primary' onChange={handleOnline} />
+          <Switch checked={isOnlineState} color="primary" onChange={handleOnline} />
         </Grid>
         <Grid item>{isOnlineState ? <strong>En ligne</strong> : 'En ligne'}</Grid>
       </Grid>

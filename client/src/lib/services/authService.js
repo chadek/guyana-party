@@ -6,6 +6,8 @@ import qs from 'qs'
 import Cookies from 'js-cookie'
 import { gravatar, MISSING_TOKEN_ERR, reload, getUID, getToken, axiosPut } from '../utils'
 
+const { API_URL } = process.env
+
 function useProvideAuth() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -25,7 +27,7 @@ function useProvideAuth() {
     axios({
       method: 'GET',
       headers: { authorization: `bearer ${jwt}` },
-      url: `${process.env.API}/users/${uid}`
+      url: `${API_URL}/users/${uid}`
     })
       .then(({ data: res }) => {
         if (res.status !== 200 || !res.data) {
@@ -59,7 +61,7 @@ function useProvideAuth() {
     formData.append('files[]', photo)
 
     return axiosPut(
-      { url: `${process.env.API}/users/${uid}`, data: formData },
+      { url: `${API_URL}/users/${uid}`, data: formData },
       ({ data: res }) => {
         if (res && res.status === 200 && res.data) next()
         else fallback('Une erreur interne est survenue')
@@ -73,7 +75,7 @@ function useProvideAuth() {
     axios({
       method: 'POST',
       data: qs.stringify({ name, email, provider: 'facebook' }),
-      url: `${process.env.API}/auth/login`
+      url: `${API_URL}/auth/login`
     })
       .then(({ data }) => {
         if (data.status !== 200 || !data.token || !data.user._id) {
@@ -92,7 +94,7 @@ function useProvideAuth() {
     axios({
       method: 'POST',
       data: qs.stringify({ tokenId, provider: 'google' }),
-      url: `${process.env.API}/auth/login`
+      url: `${API_URL}/auth/login`
     })
       .then(({ data }) => {
         if (data.status !== 200 || !data.token || !data.user._id) {
@@ -110,7 +112,7 @@ function useProvideAuth() {
     axios({
       method: 'POST',
       data: qs.stringify({ email, linkHost }),
-      url: `${process.env.API}/auth/sendmail`
+      url: `${API_URL}/auth/sendmail`
     })
       .then(({ data }) => {
         if (data.status !== 200) {
@@ -127,7 +129,7 @@ function useProvideAuth() {
     axios({
       method: 'POST',
       data: qs.stringify({ authLinkToken: token }),
-      url: `${process.env.API}/auth/loginmail`
+      url: `${API_URL}/auth/loginmail`
     })
       .then(({ data }) => {
         if (data.status !== 200 || !data.token || !data.user._id) {
@@ -144,7 +146,7 @@ function useProvideAuth() {
     axios({
       method: 'POST',
       data: qs.stringify({ name, email, password }),
-      url: `${process.env.API}/auth/signup`
+      url: `${API_URL}/auth/signup`
     })
       .then(({ data }) => {
         if (data.status !== 201) {

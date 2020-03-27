@@ -28,7 +28,7 @@ const pendingRequestMember = (group, action, role) => {
   if (!userId) return
   axiosPut(
     {
-      url: `${process.env.API}/groups/${group._id}`,
+      url: `${process.env.GATSBY_API_URL}/groups/${group._id}`,
       data: { [action]: { community: { user: userId, ...role } } }
     },
     ({ data: res }) => {
@@ -77,7 +77,7 @@ const pendingRequestAdmin = ({ group, userId }, roleIn, newRole) => {
     }
   }
   axiosPut(
-    { url: `${process.env.API}/groups`, data: query },
+    { url: `${process.env.GATSBY_API_URL}/groups`, data: query },
     ({ data: res }) => {
       if (res.status === 200 && res.data) {
         toast('Action effectuée !', 'success')

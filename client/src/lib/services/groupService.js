@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { axiosGet, axiosPost, axiosPut, axiosDelete, fetcher, getUID, MISSING_TOKEN_ERR } from '../utils'
 
+const { API_URL } = process.env
+
 export const createGroup = (payload, next, fallback) => {
   try {
     const uid = getUID()
@@ -14,7 +16,7 @@ export const createGroup = (payload, next, fallback) => {
     if (payload.photos) payload.photos.forEach(photo => formData.append('files[]', photo))
 
     axiosPost(
-      { url: `${process.env.API}/groups`, data: formData },
+      { url: `${API_URL}/groups`, data: formData },
       ({ data: res }) => {
         if (res.status === 201 && res.data) {
           next({ slug: res.data.slug, _id: res.data._id })
@@ -41,7 +43,7 @@ export const updateGroup = (payload, next, fallback) => {
     })
 
     axiosPut(
-      { url: `${process.env.API}/groups/${payload.id}`, data: formData },
+      { url: `${API_URL}/groups/${payload.id}`, data: formData },
       ({ data: res }) => {
         if (res.status === 200 && res.data) next({})
         else fallback('Une erreur interne est survenue')
@@ -58,7 +60,7 @@ export const archiveGroup = (id, next, fallback) => {
     if (!getUID()) return fallback(MISSING_TOKEN_ERR)
 
     axiosPut(
-      { url: `${process.env.API}/groups/${id}`, data: { status: 'archived' } },
+      { url: `${API_URL}/groups/${id}`, data: { status: 'archived' } },
       ({ data: res }) => {
         if (res.status === 200 && res.data) next()
         else fallback('Une erreur interne est survenue')
@@ -75,7 +77,7 @@ export const removeGroup = (id, next, fallback) => {
     if (!getUID()) return fallback(MISSING_TOKEN_ERR)
 
     axiosDelete(
-      `${process.env.API}/groups/${id}`,
+      `${API_URL}/groups/${id}`,
       ({ data: res }) => {
         if (res.status === 200 && res.data) next()
         else fallback('Une erreur interne est survenue')
@@ -100,7 +102,7 @@ export const useGroup = ({ id, slug }) => {
   useEffect(() => {
     if ((!id && !slug) || group) return setLoading(false)
     axiosGet(
-      `${process.env.API}/groups${slug ? `?slug=${slug}` : `/${id}`}`,
+      `${API_URL}/groups${slug ? `?slug=${slug}` : `/${id}`}`,
       ({ data: res }) => {
         if (res.status !== 200 || !res.data) {
           return formatError('Une erreur interne est survenue')
@@ -123,7 +125,7 @@ export const useGroups = (onlyAdmin = false) => {
   uid = uid ? `&uid=${uid}` : ''
 
   const { data, error, isValidating: loading } = useSWR(
-    `${process.env.API}/groups?status=online${onlyAdmin ? '&admin=true' : ''}${uid}`,
+    `${API_URL}/groups?status=online${onlyAdmin ? '&admin=true' : ''}${uid}`,
     fetcher
   )
 
@@ -137,10 +139,7 @@ export const useGroups = (onlyAdmin = false) => {
 export const useArchived = () => {
   const [groups, setGroups] = useState([])
 
-  const { data, error, isValidating: loading } = useSWR(
-    `${process.env.API}/groups?author=${getUID()}&status=archived`,
-    fetcher
-  )
+  const { data, error, isValidating: loading } = useSWR(`${API_URL}/groups?author=${getUID()}&status=archived`, fetcher)
 
   useEffect(() => {
     if (!error && data && data.total > 0) setGroups(data.data)

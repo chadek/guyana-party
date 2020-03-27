@@ -4,7 +4,7 @@ import Home from '../components/Home'
 
 const index = () => (
   <>
-    <Seo title='Liberté Humaine' />
+    <Seo title="Liberté Humaine" />
     <Home />
   </>
 )

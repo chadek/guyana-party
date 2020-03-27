@@ -127,56 +127,56 @@ function Card({
 
   return (
     <Wrapper>
-      <Image alt={name} className='cover' height='200' loading='lazy' src={photos.length > 0 ? photos[0] : ''} />
-      <div className='caption'>
-        <div className='title text-wrap center'>
+      <Image alt={name} className="cover" height="200" loading="lazy" src={photos.length > 0 ? photos[0] : ''} />
+      <div className="caption">
+        <div className="title text-wrap center">
           <Link aria-label={name} title={name} to={`/${isGroup ? 'group' : 'event'}/${slug}`}>
             <strong className={status === 'waiting' ? 'red' : ''}>{name}</strong>
           </Link>
           {!isGroup && <p>{formatPlage({ startDate, endDate })}</p>}
         </div>
       </div>
-      <div className='overlay'>
+      <div className="overlay">
         {admin && (
           <>
             <Link to={`/app/${isGroup ? 'group' : 'event'}/edit/${_id}`}>
-              <Fab aria-label='Modifier' className='edit' title='Modifier'>
+              <Fab aria-label="Modifier" className="edit" title="Modifier">
                 <EditIcon />
               </Fab>
             </Link>
             {(!isArchived && (
               <Fab
-                aria-label='Archiver'
-                className='delete'
-                color='secondary'
+                aria-label="Archiver"
+                className="delete"
+                color="secondary"
                 onClick={() => setDiagOpen(true)}
-                title='Archiver'
+                title="Archiver"
               >
                 <DeleteIcon />
               </Fab>
             )) || (
               <Fab
-                aria-label='Supprimer'
-                className='delete'
-                color='secondary'
+                aria-label="Supprimer"
+                className="delete"
+                color="secondary"
                 onClick={() => setDiagRemoveOpen(true)}
-                title='Supprimer'
+                title="Supprimer"
               >
                 <DeleteIcon />
               </Fab>
             )}
           </>
         )}
-        <div className='text'>
+        <div className="text">
           {!isGroup && (
             <>
-              <Link title='Voir le groupe' to={`/group/${group.slug}`}>
-                <p className='text-wrap'>Organisateur : {group.name}</p>
+              <Link title="Voir le groupe" to={`/group/${group.slug}`}>
+                <p className="text-wrap">Organisateur : {group.name}</p>
               </Link>
               {admin && (
                 <p>
-                  {status === 'waiting' && <span className='red'>Hors ligne</span>}
-                  {status === 'online' && <span className='green'>En ligne</span>}
+                  {status === 'waiting' && <span className="red">Hors ligne</span>}
+                  {status === 'online' && <span className="green">En ligne</span>}
                   {isPrivate && ' | Évènement privé'}
                 </p>
               )}

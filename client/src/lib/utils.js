@@ -43,10 +43,7 @@ export const axiosPost = ({ url, data }, next, fallback) => {
 
   const options = { headers: { authorization: `bearer ${jwt}` } }
 
-  return axios
-    .post(url, data, options)
-    .then(next)
-    .catch(fallback)
+  return axios.post(url, data, options).then(next).catch(fallback)
 }
 
 export const axiosPut = ({ url, data }, next, fallback) => {
@@ -55,10 +52,7 @@ export const axiosPut = ({ url, data }, next, fallback) => {
 
   const options = { headers: { authorization: `bearer ${jwt}` } }
 
-  return axios
-    .put(url, data, options)
-    .then(next)
-    .catch(fallback)
+  return axios.put(url, data, options).then(next).catch(fallback)
 }
 
 export const axiosDelete = (url, next, fallback) => {
@@ -67,10 +61,7 @@ export const axiosDelete = (url, next, fallback) => {
 
   const options = { headers: { authorization: `bearer ${jwt}` } }
 
-  return axios
-    .delete(url, options)
-    .then(next)
-    .catch(fallback)
+  return axios.delete(url, options).then(next).catch(fallback)
 }
 
 /* Convert the coordinate (lat or lng) to DMS (degrees minutes seconds). */

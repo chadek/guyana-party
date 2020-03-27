@@ -50,17 +50,17 @@ const CardList = ({ addBtn, title, data, isGroup, loading, className, groupId, c
       {`${title}${data.length > 0 ? ` (${data.length})` : ''}`}
       {addBtn && groupId && (
         <Button
-          aria-label='Ajouter un évènement'
+          aria-label="Ajouter un évènement"
           onClick={() => navigate(`/app/event/new?group=${groupId}`)}
-          size='small'
-          title='Ajouter un évènement'
-          variant='contained'
+          size="small"
+          title="Ajouter un évènement"
+          variant="contained"
         >
           Ajouter
         </Button>
       )}
     </h2>
-    <div id='container'>
+    <div id="container">
       <If condition={data.length !== 0} otherwise={loadingMsg(loading, isGroup)}>
         {/* {(noSlider && (
             <Grid container spacing={1}>
@@ -73,7 +73,7 @@ const CardList = ({ addBtn, title, data, isGroup, loading, className, groupId, c
           )) || ( */}
         <Slider {...(conf || sliderConf)}>
           {data.map((d, index) => (
-            <Card key={d.slug + index} data={d} isArchived={isArchived} isGroup={isGroup} />
+            <Card data={d} isArchived={isArchived} isGroup={isGroup} key={d.slug + index} />
           ))}
         </Slider>
         {/* )} */}

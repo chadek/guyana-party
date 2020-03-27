@@ -99,24 +99,24 @@ function Header({ pathname }) {
 
   return (
     <Wrapper className={`grid ${mainClass}`}>
-      <nav className='logo'>
-        <Link className='nav' to='/'>
+      <nav className="logo">
+        <Link className="nav" to="/">
           <Logo />
         </Link>
       </nav>
-      <nav className='navs'>
+      <nav className="navs">
         <If condition={!!pathname.match(/^\/+$/)}>
-          <input aria-label='filtrer' className='bg search_bg' placeholder='Filtrer...' type='search' />
+          <input aria-label="filtrer" className="bg search_bg" placeholder="Filtrer..." type="search" />
         </If>
       </nav>
-      <nav className='profile flex'>
+      <nav className="profile flex">
         <If condition={!pathname.match('connexion') && !loading && !user}>
-          <LinkMenu name='Connexion' to='/connexion' />
+          <LinkMenu name="Connexion" to="/connexion" />
         </If>
         {loading && !user && <CircularProgress size={36} />}
         {user && (
           <>
-            <Image alt='Profile' onClick={() => setUserMenuOpen(!userMenuOpen)} src={user.photo} />
+            <Image alt="Profile" onClick={() => setUserMenuOpen(!userMenuOpen)} src={user.photo} />
             <UserMenu
               anchor={typeof document !== 'undefined' && document.querySelector('.profile img')}
               hide={() => setUserMenuOpen(false)}

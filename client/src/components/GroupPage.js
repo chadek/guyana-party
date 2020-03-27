@@ -128,26 +128,26 @@ function GroupPage({ slug }) {
       <Wrapper>
         {group && (
           <>
-            <section className='grid' id='title'>
+            <section className="grid" id="title">
               <h1>{group.name}</h1>
               <If condition={admin}>
-                <div className='controls center'>
+                <div className="controls center">
                   <Fab
-                    aria-label='Modifier'
-                    className='edit'
+                    aria-label="Modifier"
+                    className="edit"
                     onClick={() => navigate(`/app/group/edit/${group._id}`)}
-                    size='small'
-                    title='Modifier'
+                    size="small"
+                    title="Modifier"
                   >
                     <EditIcon />
                   </Fab>
                   <Fab
-                    aria-label='Archiver'
-                    className='archive'
-                    color='secondary'
+                    aria-label="Archiver"
+                    className="archive"
+                    color="secondary"
                     onClick={() => setDiagOpen(true)}
-                    size='small'
-                    title='Archiver'
+                    size="small"
+                    title="Archiver"
                   >
                     <DeleteIcon />
                   </Fab>
@@ -156,52 +156,52 @@ function GroupPage({ slug }) {
                   action={archive}
                   close={() => setDiagOpen(false)}
                   isOpen={diagOpen}
-                  text='Ce groupe ne sera pas supprimé.'
-                  title='Voulez-vous vraiment archiver ce groupe ?'
+                  text="Ce groupe ne sera pas supprimé."
+                  title="Voulez-vous vraiment archiver ce groupe ?"
                 />
               </If>
               <center>
                 {!inCommunity && (
                   <Button
-                    aria-label='Adhérer au groupe'
+                    aria-label="Adhérer au groupe"
                     onClick={() => addPendingRequest(group)}
-                    size='small'
-                    title='Adhérer au groupe'
-                    variant='contained'
+                    size="small"
+                    title="Adhérer au groupe"
+                    variant="contained"
                   >
                     Adhérer
                   </Button>
                 )}
                 {pending && (
                   <>
-                    <p className='ok'>Votre demande d&rsquo;adhésion est en cours de traitement.</p>
-                    <Button onClick={() => removePendingRequest(group)} size='small' variant='contained'>
+                    <p className="ok">Votre demande d&rsquo;adhésion est en cours de traitement.</p>
+                    <Button onClick={() => removePendingRequest(group)} size="small" variant="contained">
                       Annuler la demande
                     </Button>
                   </>
                 )}
-                {denied && <strong className='error'>Vous avez été bloqué.</strong>}
+                {denied && <strong className="error">Vous avez été bloqué.</strong>}
               </center>
             </section>
 
-            <section id='desc'>
+            <section id="desc">
               {/* <p>Description :</p> */}
               <div
-                className='desc-content'
+                className="desc-content"
                 dangerouslySetInnerHTML={{ __html: description }} // eslint-disable-line react/no-danger
               />
             </section>
-            <section id='photos'>
+            <section id="photos">
               <p>{`${group.photos && group.photos.length ? `Photos (${group.photos.length}) :` : ''}`}</p>
-              <PhotoList className='photos' photos={group.photos} />
+              <PhotoList className="photos" photos={group.photos} />
             </section>
             <CardList
               addBtn={admin}
-              className='events'
+              className="events"
               data={events}
               groupId={group._id}
               loading={eventLoading}
-              title='Évènements en cours'
+              title="Évènements en cours"
             />
             <Community group={group} />
           </>

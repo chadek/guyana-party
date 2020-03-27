@@ -30,13 +30,13 @@ const Wrapper = styled.section`
 const Page = ({ children, className, loading }) => (
   <Wrapper className={className}>
     {loading && (
-      <center className='progress'>
+      <center className="progress">
         <CircularProgress />
       </center>
     )}
     {!loading && (
-      <div className='container'>
-        <div className='page-content'>{children}</div>
+      <div className="container">
+        <div className="page-content">{children}</div>
       </div>
     )}
   </Wrapper>

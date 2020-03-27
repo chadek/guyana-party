@@ -65,15 +65,15 @@ function Login() {
 
   const FacebookBtn = () => (
     <FacebookLogin
-      appId={process.env.FACEBOOK_APP_ID}
+      appId={process.env.GATSBY_FACEBOOK_APP_ID}
       callback={fbHandle}
-      fields='name,email'
+      fields="name,email"
       render={({ onClick, disabled }) => (
         <Button
-          className='facebook fb_bg'
+          className="facebook fb_bg"
           disabled={loading || disabled}
           onClick={onClick}
-          text='Connexion avec Facebook'
+          text="Connexion avec Facebook"
         />
       )}
     />
@@ -81,12 +81,12 @@ function Login() {
 
   const GoogleBtn = () => (
     <GoogleLogin
-      clientId={process.env.GOOGLE_APP_ID}
-      cookiePolicy='single_host_origin'
+      clientId={process.env.GATSBY_GOOGLE_APP_ID}
+      cookiePolicy="single_host_origin"
       onFailure={googleHandle}
       onSuccess={googleHandle}
       render={({ onClick, disabled }) => (
-        <Button className='google g_bg' disabled={loading || disabled} onClick={onClick} text='Connexion avec Google' />
+        <Button className="google g_bg" disabled={loading || disabled} onClick={onClick} text="Connexion avec Google" />
       )}
     />
   )
@@ -127,9 +127,9 @@ function Login() {
       <h1>Connexion</h1>
       <If
         condition={!initializing && !user}
-        otherwise={!initializing && user && <p className='center'>Vous êtes déjà connecté(e).</p>}
+        otherwise={!initializing && user && <p className="center">Vous êtes déjà connecté(e).</p>}
       >
-        <div className='content'>
+        <div className="content">
           {(emailOk && (
             <LoginEmail
               email={email}
@@ -144,30 +144,30 @@ function Login() {
             <>
               <FacebookBtn />
               <GoogleBtn />
-              <OrDivWrapper className='or-div'>
+              <OrDivWrapper className="or-div">
                 <div />
                 <span>ou</span>
                 <div />
               </OrDivWrapper>
               <FormWrapper>
                 <div className={`email-section ${emailError ? 'error' : ''}`}>
-                  <label htmlFor='email'>{emailError || 'Email'}</label>
+                  <label htmlFor="email">{emailError || 'Email'}</label>
                   <input
                     disabled={loading}
-                    id='email'
+                    id="email"
                     onBlur={e => checkEmail(e.target.value)}
                     onChange={e => setEmail(e.target.value)}
-                    placeholder='exemple@email.com'
-                    type='email'
+                    placeholder="exemple@email.com"
+                    type="email"
                     value={email}
                   />
                 </div>
-                <Button disabled={loading} onClick={validate} text='Suivant' />
+                <Button disabled={loading} onClick={validate} text="Suivant" />
               </FormWrapper>
             </>
           )}
         </div>
-        <div className='copy center'>© GuyanaParty</div>
+        <div className="copy center">© GuyanaParty</div>
       </If>
     </Wrapper>
   )
