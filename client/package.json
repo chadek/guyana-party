@@ -37,7 +37,7 @@
     "date-fns": "2.11.1",
     "date-fns-tz": "1.0.10",
     "dirty-chai": "2.0.1",
-    "dompurify": "2.0.8",
+    "dompurify": "2.0.17",
     "easymde": "2.9.0",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.2",
